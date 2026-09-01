@@ -2,11 +2,6 @@
 """
 from __future__ import annotations
 
-from chatbot_demo_v2.config.settings import load_settings
-from chatbot_demo_v2.app.dependencies import build_context
-from chatbot_demo_v2.rag.adapter_util import FakeRagAdapter
-from langchain_core.messages import HumanMessage
-
 
 class MockRobustnessLlm:
     def __init__(self):
@@ -20,6 +15,11 @@ class MockRobustnessLlm:
 
 
 def test_robustness_tool_integration_enabled(tmp_path):
+    from chatbot_demo_v2.config.settings import load_settings
+    from chatbot_demo_v2.app.dependencies import build_context
+    from chatbot_demo_v2.rag.adapter_util import FakeRagAdapter
+    from langchain_core.messages import HumanMessage
+
     env = {
         "DEMO_EVIDENCE_DIR": str(tmp_path / "ev"),
         "ROBUSTNESS_TOOL_ENABLED": "true",
@@ -128,4 +128,18 @@ def test_spoken_robustness_improvements():
     
     # 진짜 구어체/의문형 등은 통과해야 함
     assert engine.is_colloquial_query("스마트기기 전체에 어플 어떻게 깔아요?") is True
+
+    # (5) 실존 지명 및 유효 명사 과교정(Over-correction) 방지 검증
+    # "강북"은 "경북"과 자소거리 1이지만 Kiwi 등록 표준 명사이므로 "경북"/"경상북도"로 왜곡되지 않아야 함
+    assert engine.correct_typo("강북") == "강북"
+    assert engine.correct_typo("강남") == "강남"
+    assert engine.correct_typo("강서") == "강서"
+    assert engine.correct_typo("도봉") == "도봉"
+    
+    # 전처리 및 파이프라인에서도 "경상북도"로 치환되지 않고 원형 유지
+    res_geo = engine.preprocess_query("강북 지역 학교 무선 인터넷 연결 상태")
+    assert "강북" in res_geo
+    assert "경상북도" not in res_geo
+
+
 

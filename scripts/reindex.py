@@ -38,9 +38,14 @@ sys.path.insert(0, str(PROJECT_ROOT))
 from chatbot_demo_v2.config.settings import load_settings             # noqa: E402
 from chatbot_demo_v2.rag.adapter_util import prepare_ragcore_imports  # noqa: E402
 
-# 원본 카탈로그/PDF — test_3 사전데이터에 있다. **읽기만 한다.**
-SRC_CATALOG = PROJECT_ROOT / "test_3" / "사전데이터" / "데이터카탈로그_DCAT_선정파일_RAG최적화.xlsx"
-SRC_DOCS = PROJECT_ROOT / "test_3" / "사전데이터" / "데이터 카탈로그 작업 파일"
+# 원본 카탈로그/PDF 기본 경로 — 내부 raw_data 우선, 없으면 외부 test_3 폴백
+DEFAULT_CATALOG = PKG_ROOT / "raw_data" / "catalog" / "데이터카탈로그_DCAT_선정파일_RAG최적화.xlsx"
+if not DEFAULT_CATALOG.is_file():
+    DEFAULT_CATALOG = PROJECT_ROOT / "test_3" / "사전데이터" / "데이터카탈로그_DCAT_선정파일_RAG최적화.xlsx"
+
+DEFAULT_DOCS = PKG_ROOT / "raw_data" / "documents"
+if not DEFAULT_DOCS.is_dir():
+    DEFAULT_DOCS = PROJECT_ROOT / "test_3" / "사전데이터" / "데이터 카탈로그 작업 파일"
 
 
 def _dir_stats(p: Path) -> dict:
@@ -50,18 +55,21 @@ def _dir_stats(p: Path) -> dict:
     return {"exists": True, "files": len(files), "bytes": sum(f.stat().st_size for f in files)}
 
 
-def _guard_sources() -> None:
-    """최후의 복구 원천(test_3)을 재색인이 건드리지 않았는지 확인할 기준값을 찍는다."""
-    for p in (SRC_CATALOG.parent, SRC_DOCS):
+def _guard_sources(catalog_path: Path, docs_dir: Path) -> None:
+    """원본이 재색인 과정에서 훼손되지 않았는지 확인할 기준값을 출력한다."""
+    for p in (catalog_path.parent, docs_dir):
         s = _dir_stats(p)
         print("  원본 %-46s %s" % (p.name, s))
 
 
-def build(settings, force: bool) -> dict:
+def build(settings, force: bool, catalog_path: Path | None = None, docs_dir: Path | None = None) -> dict:
     prepare_ragcore_imports(settings)
     from rag3.config import load_config
     from rag3.ingest import run_ingest
     from rag3.models import get_backend
+
+    src_catalog = catalog_path or DEFAULT_CATALOG
+    src_docs = docs_dir or DEFAULT_DOCS
 
     new_dir = Path(settings.ragdata_dir) / "index_new"
     if new_dir.exists():
@@ -70,20 +78,21 @@ def build(settings, force: bool) -> dict:
         shutil.rmtree(new_dir)
     new_dir.mkdir(parents=True, exist_ok=True)
 
-    if not SRC_CATALOG.is_file():
-        raise SystemExit(f"카탈로그 없음: {SRC_CATALOG}")
-    if not SRC_DOCS.is_dir():
-        raise SystemExit(f"원본 문서 폴더 없음: {SRC_DOCS}")
+    if not src_catalog.is_file():
+        raise SystemExit(f"카탈로그 없음: {src_catalog}")
+    if not src_docs.is_dir():
+        raise SystemExit(f"원본 문서 폴더 없음: {src_docs}")
 
     # 색인 대상만 index_new 로 돌린다. 파싱 캐시(source_parsed)는 기존 것을 **읽기만** 한다.
     config = load_config(str(settings.ragcore_config), {
         "index_dir": str(new_dir),
-        "catalog_excel_path": str(SRC_CATALOG),
-        "documents_dir": str(SRC_DOCS),
+        "catalog_excel_path": str(src_catalog),
+        "documents_dir": str(src_docs),
     })
     print("  index_dir      =", config.index_dir)
     print("  source_parsed  =", config.source_parsed, "(읽기 전용)")
-    print("  catalog        =", SRC_CATALOG.name)
+    print("  catalog        =", src_catalog)
+    print("  documents      =", src_docs)
 
     backend = get_backend(config)
     t0 = time.time()
@@ -123,6 +132,8 @@ def main() -> int:
     ap.add_argument("--promote", action="store_true", help="빌드 없이 index_new 를 교체")
     ap.add_argument("--rollback", action="store_true", help="index_old 로 되돌리기")
     ap.add_argument("--force", action="store_true", help="기존 index_new 를 지우고 다시 빌드")
+    ap.add_argument("--catalog", type=Path, default=None, help="카탈로그 엑셀 경로")
+    ap.add_argument("--docs", type=Path, default=None, help="원본 문서 디렉토리 경로")
     ap.add_argument("--report", default=str(PKG_ROOT / "runtime" / "reports" / "reindex_report.json"))
     args = ap.parse_args()
 
@@ -136,10 +147,13 @@ def main() -> int:
         promote(settings)
         return 0
 
+    catalog_path = args.catalog or DEFAULT_CATALOG
+    docs_dir = args.docs or DEFAULT_DOCS
+
     print("원본 무결성 기준값(재색인 전):")
-    _guard_sources()
+    _guard_sources(catalog_path, docs_dir)
     print()
-    summary = build(settings, force=args.force)
+    summary = build(settings, force=args.force, catalog_path=catalog_path, docs_dir=docs_dir)
 
     print()
     print("=" * 80)
@@ -153,8 +167,8 @@ def main() -> int:
              hy.get("oversize_warned", 0), hy.get("chars_saved", 0)))
     print("=" * 80)
     print()
-    print("원본 무결성 확인(재색인 후 — 위 기준값과 같아야 한다):")
-    _guard_sources()
+    print("원본 무결성 확인(재색인 후 -- 위 기준값과 같아야 한다):")
+    _guard_sources(catalog_path, docs_dir)
 
     out = Path(args.report)
     out.parent.mkdir(parents=True, exist_ok=True)

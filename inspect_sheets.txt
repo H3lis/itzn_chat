@@ -1,0 +1,19 @@
+Target File: 전체질문_개선RAG_비교.xlsx
+Sheet Names: ['스쿨넷', '학내망', '무선망', '유무선통합관제']
+
+=== Sheet: 스쿨넷 (Rows: 53, Cols: 9) ===
+Headers: ['No', '질문 유형', '장애 유형', '질문', '답변', '질문 답변 생성 근거 파일명', 'RAG 답변 - 요약', 'RAG 답변 - 상세', 'RAG 답변 생성 근거 파일명']
+Total Questions: 52, Filled RAG answers: 0, Remaining: 52
+
+=== Sheet: 학내망 (Rows: 51, Cols: 9) ===
+Headers: ['No', '질문 유형', '장애 유형', '질문', '답변', '질문 답변 생성 근거 파일명', 'RAG 답변 - 요약', 'RAG 답변 - 상세', 'RAG 답변 생성 근거 파일명']
+Total Questions: 50, Filled RAG answers: 0, Remaining: 50
+
+=== Sheet: 무선망 (Rows: 85, Cols: 9) ===
+Headers: ['No', '질문 유형', '장애 유형', '질문', '답변', '질문 답변 생성 근거 파일명', 'RAG 답변 - 요약', 'RAG 답변 - 상세', 'RAG 답변 생성 근거 파일명']
+Total Questions: 84, Filled RAG answers: 68, Remaining: 16
+
+=== Sheet: 유무선통합관제 (Rows: 103, Cols: 9) ===
+Headers: ['No', '질문 유형', '장애 유형', '질문', '답변', '질문 답변 생성 근거 파일명', 'RAG 답변 - 요약', 'RAG 답변 - 상세', 'RAG 답변 생성 근거 파일명']
+Total Questions: 50, Filled RAG answers: 0, Remaining: 50
+

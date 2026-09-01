@@ -143,6 +143,18 @@ class Settings:
         return self.data_dir / "faq_doc_links.json"
 
     @property
+    def raw_data_dir(self) -> Path:
+        return PKG_ROOT / "raw_data"
+
+    @property
+    def raw_catalog_path(self) -> Path:
+        return self.raw_data_dir / "catalog" / "데이터카탈로그_DCAT_선정파일_RAG최적화.xlsx"
+
+    @property
+    def raw_documents_dir(self) -> Path:
+        return self.raw_data_dir / "documents"
+
+    @property
     def parsed_dir(self) -> Path:
         """파싱 캐시(페이지 이미지/표 크롭) 루트. faq 근거 이미지 해석에 사용."""
         return self.ragdata_dir / "parsed_v25"

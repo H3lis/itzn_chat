@@ -100,6 +100,8 @@ class SpokenRobustnessEngine:
         self.auto_spell_dict: Dict[str, int] = {}
         self.jamo_cache: Dict[str, str] = {}
         self.compound_pattern = None
+        self._kiwi = None
+        self._valid_noun_cache: Dict[str, bool] = {}
         
         # 1. 동의어 기반 기본 오타 사전 사전 빌드
         default_vocab = {}
@@ -173,12 +175,44 @@ class SpokenRobustnessEngine:
         self.compound_pattern = re.compile("|".join(re.escape(key) for key in sorted_keys))
 
     def _get_kiwi(self):
-        """Kiwi 형태소 분석기를 안전하게 로드합니다."""
+        """Kiwi 형태소 분석기를 인스턴스 레벨에서 싱글톤으로 안전하게 로드 및 캐시합니다."""
+        if self._kiwi is not None:
+            return self._kiwi
         try:
             from kiwipiepy import Kiwi
-            return Kiwi()
+            self._kiwi = Kiwi()
+            return self._kiwi
         except ImportError:
             return None
+
+    def _is_valid_standalone_noun(self, word: str) -> bool:
+        """단어가 Kiwi 형태소 분석기 사전(In-Vocabulary)에 등록된 유효한 단일 명사/고유명사인지 검사합니다."""
+        if not word or len(word) < 2:
+            return False
+        if word in self._valid_noun_cache:
+            return self._valid_noun_cache[word]
+            
+        kiwi = self._get_kiwi()
+        if not kiwi:
+            self._valid_noun_cache[word] = False
+            return False
+            
+        try:
+            tokens = kiwi.tokenize(word)
+            # 단일 형태소로 온전하게 분절되고, 사전 미등록어(OOV)가 아니며, 명사류(NNG, NNP, NR, NP)인 경우 유효 단어로 판정
+            if (
+                len(tokens) == 1
+                and tokens[0].form == word
+                and not getattr(tokens[0], "oov", False)
+                and tokens[0].tag in ("NNG", "NNP", "NR", "NP")
+            ):
+                self._valid_noun_cache[word] = True
+                return True
+        except Exception:
+            pass
+            
+        self._valid_noun_cache[word] = False
+        return False
 
     def is_colloquial_query(self, question: str) -> bool:
         """사용자 입력 질문이 구어체, 질문형, 감탄문, 또는 어미/대명사에 해당하는지 판별합니다."""
@@ -271,19 +305,24 @@ class SpokenRobustnessEngine:
         return question
 
     def correct_typo(self, word: str) -> str:
-        """자소 편집거리를 적용해 3중 가드레일(동의어 우회, 편집거리 1~2, 빈도 10회 이상) 기반 오타 교정을 수행합니다."""
+        """자소 편집거리를 적용해 3중 가드레일(동의어 우회, 유효 명사 보호, 편집거리 1~2, 빈도 가변) 기반 오타 교정을 수행합니다."""
         if not self.auto_spell_dict or len(word) < 2:
             return word
             
-        # 1. Exact Match & 보호용 기능어/대명사/의문사 바이패스
+        # 1. Exact Match 바이패스
         if word in self.auto_spell_dict:
             return word
             
+        # 2. 보호용 기능어/대명사/의문사 바이패스
         BYPASS_WORDS = {
             "어디", "언제", "어떻게", "무엇", "누구", "어느", "어떤", "어찌", "왜", "몇",
             "우리", "저희", "나", "너", "그", "이", "저", "안", "못", "잘", "더", "다"
         }
         if word in BYPASS_WORDS:
+            return word
+            
+        # 3. 형태소 분석기(Kiwi) 기준 유효한 단일 명사/고유명사(NNG/NNP) 바이패스 (과교정 방지)
+        if self._is_valid_standalone_noun(word):
             return word
             
         word_jamo = decompose_hangul(word)
