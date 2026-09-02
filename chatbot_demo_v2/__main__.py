@@ -13,7 +13,7 @@ from .config.settings import load_settings
 def main() -> None:
     settings = load_settings()
     parser = argparse.ArgumentParser(description="school-network-chatbot-demo-v2")
-    parser.add_argument("--host", default="127.0.0.1")
+    parser.add_argument("--host", default="0.0.0.0")
     parser.add_argument("--port", type=int, default=settings.demo_port)
     parser.add_argument("--log-level", default="info")
     args = parser.parse_args()
