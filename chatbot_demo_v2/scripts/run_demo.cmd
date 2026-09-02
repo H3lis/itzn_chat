@@ -13,15 +13,15 @@ if "%PORT%"=="" set "PORT=8002"
 rem this script lives in ...\chatbot_demo_v2\scripts -> go up two levels
 cd /d "%~dp0..\.."
 
-call conda activate rag_local
-if errorlevel 1 (
-    echo [ERROR] failed to activate conda env "rag_local".
-    echo         Run from Anaconda Prompt, or run "conda init cmd.exe" once.
-    exit /b 1
+if exist ".venv\Scripts\python.exe" (
+    set "PY=.venv\Scripts\python.exe"
+) else (
+    call conda activate rag_local >nul 2>&1
+    set "PY=python"
 )
 
 echo.
 echo   chatbot_demo_v2  :  http://127.0.0.1:%PORT%
 echo   press Ctrl+C to stop
 echo.
-python -X utf8 -m chatbot_demo_v2 --port %PORT%
+%PY% -X utf8 -m chatbot_demo_v2 --port %PORT%

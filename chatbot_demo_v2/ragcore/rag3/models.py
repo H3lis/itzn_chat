@@ -55,9 +55,14 @@ def _resize_for_vlm(image_path: Path, max_side: int) -> bytes:
 
 class OllamaBackend(Backend):
     def __init__(self, config: Config):
+        import os
         import ollama
 
-        self._ollama = ollama
+        host = getattr(config, "ollama_host", None) or os.environ.get("OLLAMA_HOST")
+        if host:
+            self._ollama = ollama.Client(host=host)
+        else:
+            self._ollama = ollama
         self.config = config
         self.backend_id = f"ollama-{config.embedding_model}"
 

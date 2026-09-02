@@ -1,29 +1,41 @@
-# 환경변수(비밀 포함)
+# --- 비밀키 / 환경 ---
 .env
+*.key
 
-# 복사 데이터(590MB) — bootstrap_data.py 로 재생성
-ragdata/
-
-# 원복용 스냅샷(색인 69MB · .env 유일본). 절대 커밋하지 않는다 — .env 가 들어 있다.
-# 복원 절차는 _backup/RESTORE.md 참조.
-_backup/
-
-# 런타임 생성물
-runtime/evidence/*
-!runtime/evidence/.gitkeep
-runtime/rag_outputs/
-runtime/rag_cache/
-runtime/reports/*
-!runtime/reports/.gitkeep
-
-# vendored ragcore 의 데이터 하위폴더가 실수로 생성될 경우
-ragcore/rag3/index/
-ragcore/rag3/cache/
-ragcore/rag3/outputs/
-
-# 파이썬 캐시/테스트
+# --- Python ---
 __pycache__/
 *.py[cod]
-.pytest_cache/
-.ruff_cache/
 *.egg-info/
+.ipynb_checkpoints/
+.venv/
+venv/
+.tools/
+
+# --- 대용량 빌드 산출물 (재생성 가능) ---
+**/cache/
+**/parsed_v25/
+**/index_new/
+**/index_prev/
+쓰잘데기/
+
+# --- 실행 로그 / 임시 ---
+*.log
+tmp/
+**/tmp/
+**/outputs/runs/
+**/outputs/evidence/
+
+# --- OS / 에디터 ---
+.DS_Store
+Thumbs.db
+.claude/
+CLAUDE.md
+
+# --- 로컬 전용(GitHub 미게시) ---
+_git_history/
+mobile_app/
+test_1/
+test_2/
+test_3/
+chatbot_demo/
+ask_compare_cli.py

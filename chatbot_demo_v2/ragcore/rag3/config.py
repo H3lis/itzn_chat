@@ -95,6 +95,8 @@ class Config:
     rollback_rerank_tau_high: float = 0.5
     deadline_seconds: int = 180
     verify_model: str = ""
+    ollama_host: str = ""
+    reranker_endpoint: str = ""
 
     @property
     def source_parsed(self) -> Path:
@@ -201,4 +203,6 @@ def load_config(path: str | Path | None = None, overrides: dict[str, Any] | None
         rollback_rerank_tau_high=float(raw.get("rollback_rerank_tau_high", 0.5)),
         deadline_seconds=int(raw.get("deadline_seconds", 180)),
         verify_model=raw.get("verify_model", "") or "",
+        ollama_host=str(raw.get("ollama_host", "") or ""),
+        reranker_endpoint=str(raw.get("reranker_endpoint", "") or ""),
     )

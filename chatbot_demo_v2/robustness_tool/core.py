@@ -186,7 +186,7 @@ class SpokenRobustnessEngine:
             return None
 
     def _is_valid_standalone_noun(self, word: str) -> bool:
-        """단어가 Kiwi 형태소 분석기 사전(In-Vocabulary)에 등록된 유효한 단일 명사/고유명사인지 검사합니다."""
+        """단어가 Kiwi 형태소 분석기 사전(In-Vocabulary)에 등록된 유효한 표준어(명사, 관형사, 부사 등)인지 검사합니다."""
         if not word or len(word) < 2:
             return False
         if word in self._valid_noun_cache:
@@ -199,12 +199,14 @@ class SpokenRobustnessEngine:
             
         try:
             tokens = kiwi.tokenize(word)
-            # 단일 형태소로 온전하게 분절되고, 사전 미등록어(OOV)가 아니며, 명사류(NNG, NNP, NR, NP)인 경우 유효 단어로 판정
+            # 단일 형태소로 온전하게 분절되고, 사전 미등록어(OOV)가 아니며, 표준어 품사(체언/수식언/용언)인 경우 유효 단어로 판정
+            # 관형사(MM, 예: '여러'), 일반부사(MAG, 예: '자주'), 체언(NNG, NNP, NR, NP) 등 과교정 방지
+            VALID_TAGS = ("NNG", "NNP", "NR", "NP", "MM", "MAG", "MAJ", "XR", "VV", "VA")
             if (
                 len(tokens) == 1
                 and tokens[0].form == word
                 and not getattr(tokens[0], "oov", False)
-                and tokens[0].tag in ("NNG", "NNP", "NR", "NP")
+                and tokens[0].tag in VALID_TAGS
             ):
                 self._valid_noun_cache[word] = True
                 return True
@@ -291,7 +293,10 @@ class SpokenRobustnessEngine:
             "출력:"
         )
         try:
-            raw = self._call_llm(prompt).strip()
+            res = self._call_llm(prompt)
+            if not res:
+                return ""
+            raw = str(res).strip()
             match = re.search(r"<rewritten_query>(.*?)</rewritten_query>", raw, re.DOTALL)
             if match:
                 cleaned = match.group(1).strip()
@@ -313,10 +318,12 @@ class SpokenRobustnessEngine:
         if word in self.auto_spell_dict:
             return word
             
-        # 2. 보호용 기능어/대명사/의문사 바이패스
+        # 2. 보호용 기능어/대명사/의문사/수식어 바이패스
         BYPASS_WORDS = {
             "어디", "언제", "어떻게", "무엇", "누구", "어느", "어떤", "어찌", "왜", "몇",
-            "우리", "저희", "나", "너", "그", "이", "저", "안", "못", "잘", "더", "다"
+            "우리", "저희", "나", "너", "그", "이", "저", "안", "못", "잘", "더", "다",
+            "여러", "모든", "각각", "자주", "가끔", "전부", "다시", "바로", "서로", "따로",
+            "함께", "먼저", "이미", "점차", "매우", "너무", "아주", "상당히", "대부분", "전체", "일부"
         }
         if word in BYPASS_WORDS:
             return word

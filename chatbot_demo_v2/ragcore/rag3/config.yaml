@@ -37,6 +37,11 @@ embedding_model: "embeddinggemma"
 embed_doc_prefix: "title: none | text: "
 embed_query_prefix: "task: search result | query: "
 
+# 외부/GCP GPU Ollama 호스트 (비어있으면 로컬 127.0.0.1:11434 또는 환경변수 OLLAMA_HOST 사용)
+ollama_host: ""
+# 원격 리랭커 HTTP 엔드포인트 (비어있으면 내부 CrossEncoder 또는 환경변수 RERANKER_ENDPOINT 사용)
+reranker_endpoint: ""
+
 top_docs: 2
 top_pages: 3
 

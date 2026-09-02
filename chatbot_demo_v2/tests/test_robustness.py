@@ -65,7 +65,10 @@ def test_robustness_tool_integration_enabled(tmp_path):
 
 
 def test_spoken_robustness_improvements():
-    from robustness_tool.core import SpokenRobustnessEngine
+    try:
+        from chatbot_demo_v2.robustness_tool.core import SpokenRobustnessEngine
+    except ImportError:
+        from robustness_tool.core import SpokenRobustnessEngine
     
     # 1. SpokenRobustnessEngine 직접 초기화
     # 오타 교정용 사전 구성

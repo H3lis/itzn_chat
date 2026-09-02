@@ -142,9 +142,48 @@ def collect_chunk_records(
     run_ingest(전체 재구축)와 add_doc(증분 추가)이 반드시 이 한 곳을 공유한다.
     content_list가 없으면(None) 청크 색인 불가.
     """
+    prefix = prefix_map.get(slug, f"문서: {doc_info.document_name}")
     cl = _load_content_list(config, slug)
     if cl is None:
-        return None
+        # Fallback: build chunks directly from doc_info.pages (pdfplumber)
+        ids: list[str] = []
+        texts: list[str] = []
+        metas: list[dict[str, Any]] = []
+        type_counts: dict[str, int] = {"text": 0}
+        for p in doc_info.pages:
+            p_text = (p.text or "").strip()
+            if not p_text:
+                continue
+            paras = [para.strip() for para in p_text.split("\n") if para.strip()]
+            cur_chunk = ""
+            chunk_seq = 1
+            for para in paras:
+                if len(cur_chunk) + len(para) > config.chunk_target_chars and len(cur_chunk) >= config.chunk_min_chars:
+                    cid = f"{slug}_p{p.page_number:04d}_c{chunk_seq:02d}"
+                    ids.append(cid)
+                    texts.append(f"{prefix} | p{p.page_number}\n{cur_chunk.strip()}")
+                    m = _page_metadata(doc_info, p)
+                    m["chunk_id"] = cid
+                    m["block_type"] = "text"
+                    m["heading_path"] = ""
+                    metas.append(m)
+                    type_counts["text"] += 1
+                    chunk_seq += 1
+                    cur_chunk = para + "\n"
+                else:
+                    cur_chunk += para + "\n"
+            if cur_chunk.strip():
+                cid = f"{slug}_p{p.page_number:04d}_c{chunk_seq:02d}"
+                ids.append(cid)
+                texts.append(f"{prefix} | p{p.page_number}\n{cur_chunk.strip()}")
+                m = _page_metadata(doc_info, p)
+                m["chunk_id"] = cid
+                m["block_type"] = "text"
+                m["heading_path"] = ""
+                metas.append(m)
+                type_counts["text"] += 1
+        return ids, texts, metas, type_counts
+
     content_list, images_root = cl
     page_meta_by_num = {p.page_number: _page_metadata(doc_info, p) for p in doc_info.pages}
     chunks = build_chunks(
