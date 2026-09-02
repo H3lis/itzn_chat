@@ -28,9 +28,12 @@
 GCP VM에 SSH로 접속한 뒤, 프로젝트 폴더에서 아래 스크립트를 실행하면 필요한 모든 도구(NVIDIA CUDA, Ollama, Python 3.11, PyTorch GPU 패키지)가 자동으로 설치됩니다.
 
 ```bash
-# 1. 깃 저장소 클론 및 이동
-git clone <저장소_URL> /home/$USER/chatbot
-cd /home/$USER/chatbot
+# 1. 깃 저장소 클론 및 이동 (처음인 경우)
+git clone https://github.com/H3lis/itzn_chat.git ~/chatbot
+cd ~/chatbot
+
+# (이미 클론된 폴더가 있다면 최신 코드로 업데이트)
+# cd ~/chatbot && git pull origin main
 
 # 2. 실행 권한 부여 및 원클릭 설치 스크립트 실행
 chmod +x chatbot_demo_v2/scripts/gcp_gpu_setup.sh
