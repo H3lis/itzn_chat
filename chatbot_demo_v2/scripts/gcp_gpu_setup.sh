@@ -53,7 +53,7 @@ pip install torch torchvision torchaudio --index-url https://download.pytorch.or
 
 # 프로젝트 의존성 패키지 설치
 pip install -r chatbot_demo_v2/requirements.txt || true
-pip install fastapi uvicorn sentence-transformers chromadb langgraph langchain-core kiwipiepy pdfplumber pymupdf requests python-dotenv ollama
+pip install fastapi uvicorn sentence-transformers chromadb rank_bm25 langgraph langchain-core kiwipiepy pdfplumber pymupdf requests python-dotenv ollama
 
 echo "=== [6/6] GPU 및 PyTorch 가속 정상 여부 검증 ==="
 python -c "import torch; print('PyTorch CUDA 가용성:', torch.cuda.is_available()); print('GPU 장치명:', torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'CPU 모드')"
