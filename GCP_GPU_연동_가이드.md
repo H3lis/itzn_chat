@@ -50,7 +50,7 @@ chmod +x chatbot_demo_v2/scripts/gcp_gpu_setup.sh
 ```bash
 # GCP VM 터미널
 source .venv/bin/activate
-python -m chatbot_demo_v2 --port 8002
+python -m chatbot_demo_v2 --host 0.0.0.0 --port 8002
 ```
 > 브라우저 접속: `http://<GCP_VM_외부IP>:8002`
 
