@@ -158,10 +158,8 @@ def build_graph(ctx: Any, checkpointer: Any | None = None):
 
     # 합성 → 해결도 판정 → (FAQ 미해결이면 RAG 재시도 사이클 / RAG 미해결이면 웹검색) → 최종
     g.add_edge("compose_answer", "answer_grader")
-    # 웹검색 활성 여부는 설정 고정값이라 컴파일 시점에 닫아 둔다(런타임 상태에 넣지 않는다).
-    web_enabled = bool(getattr(getattr(ctx, "settings", None), "web_search_enabled", False))
-
     def _after_grader(state):
+        web_enabled = bool(getattr(getattr(ctx, "settings", None), "web_search_enabled", False))
         return select_after_grader(state, web_enabled=web_enabled)
 
     g.add_conditional_edges(

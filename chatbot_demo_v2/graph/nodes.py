@@ -632,10 +632,11 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
 
     # ---------- 8. rag_result_evaluator ----------
     def rag_result_evaluator(state: ChatState) -> dict:
+        cur_settings = getattr(ctx, "settings", settings)
         route, reason, warns = evaluate_rag_result(
             state,
-            web_enabled=settings.web_search_enabled,
-            web_scope=settings.web_search_scope,
+            web_enabled=getattr(cur_settings, "web_search_enabled", False),
+            web_scope=getattr(cur_settings, "web_search_scope", "in_domain_unresolved"),
         )
         warnings = list(state.get("warnings") or []) + warns
         _node_meta({"eval_route": route, "eval_reason": reason}, tags=[f"eval:{route}"])
@@ -676,7 +677,8 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
                         or (state.get("rag_result") or {}).get("final_answer") or "").strip()
         fallback_route = "rag3x" if prior_answer else "abstain"
 
-        if settings.web_search_scope != "any_unresolved":
+        cur_settings = getattr(ctx, "settings", settings)
+        if getattr(cur_settings, "web_search_scope", "in_domain_unresolved") != "any_unresolved":
             _progress("web", "웹에서 찾아봐도 되는 질문인지 확인하고 있어요…")
             verdict = _domain_gate(question)
             if verdict is not True:
@@ -693,7 +695,12 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
             _node_meta({"web_domain_gate": True}, tags=["web_gate:pass"])
 
         _progress("web", "웹에서 관련 정보를 찾고 있어요…")
-        system = ctx.prompts.render_optional("web_search") if ctx.prompts is not None else ""
+        prior_text = prior_answer if prior_answer else "(내부 문서에서 생성된 사전 답변 없음 - RAG 무응답)"
+        system = (
+            ctx.prompts.render_optional("web_search", prior_answer=prior_text)
+            if ctx.prompts is not None
+            else ""
+        )
         t0 = time.time()
         res = ctx.web_provider.search_and_answer(question, context={"system": system or None})
         timings = dict(state.get("timings") or {})

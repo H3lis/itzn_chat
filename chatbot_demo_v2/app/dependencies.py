@@ -92,6 +92,8 @@ class AppContext:
     llm: Any = None          # LlmHelper (contextualize/composer/grader) — 지연 초기화
     prompts: Any = None      # PromptLoader (prompts/*.md 핫리로드)
     faq_links: dict = None   # faq_id → [{doc_slug, document_name, pages}] (근거 이미지용)
+    doc_manager: Any = None  # DocumentManager (문서 업로드/삭제/조회)
+    reindex_runner: Any = None  # ReindexRunner (재색인 파이프라인 백그라운드 러너)
 
 
 def build_context(
@@ -156,6 +158,11 @@ def build_context(
     except Exception:  # noqa: BLE001
         faq_links = {}
 
+    from .admin_service import DocumentManager, ReindexRunner
+
+    doc_manager = DocumentManager(settings)
+    reindex_runner = ReindexRunner(settings, rag_adapter=rag_adapter)
+
     ctx = AppContext(
         settings=settings,
         faq=faq,
@@ -169,6 +176,8 @@ def build_context(
         llm=llm,
         prompts=prompts,
         faq_links=faq_links,
+        doc_manager=doc_manager,
+        reindex_runner=reindex_runner,
     )
     ctx.graph = build_graph(ctx, checkpointer=checkpointer)
     return ctx

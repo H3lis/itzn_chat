@@ -93,4 +93,11 @@ def create_app(ctx: Optional[AppContext] = None) -> FastAPI:
             return FileResponse(str(idx))
         return JSONResponse({"detail": "index.html 없음"}, status_code=404)
 
+    @app.get("/admin")
+    def admin_page():
+        adm = static_dir / "admin.html"
+        if adm.is_file():
+            return FileResponse(str(adm))
+        return JSONResponse({"detail": "admin.html 없음"}, status_code=404)
+
     return app

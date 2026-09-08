@@ -236,8 +236,13 @@ def run_ingest(config: Config, backend: Backend, *, force: bool = False, limit_d
     all_page_texts: list[str] = []
     all_page_metas: list[dict] = []
 
-    for row in matched_rows:
-        rel_path = row.matched_file_path
+    target_rel_paths: list[str] = [r.matched_file_path for r in matched_rows if r.matched_file_path]
+    if not limit_docs and getattr(report, "unmatched_pdfs", None):
+        for un_pdf in report.unmatched_pdfs:
+            if un_pdf not in target_rel_paths:
+                target_rel_paths.append(un_pdf)
+
+    for rel_path in target_rel_paths:
         slug = doc_slug(rel_path)
 
         # 1) 소스 캐시에서 manifest 로드(없으면 MinerU 재파싱 폴백)

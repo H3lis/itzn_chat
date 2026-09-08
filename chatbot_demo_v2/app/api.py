@@ -8,12 +8,15 @@ Phase 1: v1 동등(+run_id). Phase 3(clarify)·5(stream/feedback) 에서 확장.
 
 from __future__ import annotations
 
+import asyncio
 import json
+import logging
 import re
 import uuid
 from pathlib import Path
+from typing import Optional
 
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, File, Form, HTTPException, Request, UploadFile
 from fastapi.responses import FileResponse, StreamingResponse
 
 from .dependencies import AppContext
@@ -22,13 +25,17 @@ from .schemas import (
     ChatResponse,
     FeedbackRequest,
     HealthResponse,
+    ReindexRequest,
     ResetRequest,
     ScenarioBlock,
     WarmupRequest,
+    WebSearchStatusResponse,
+    WebSearchToggleRequest,
 )
 from ..observability.langsmith import build_invoke_config
 from ..rag.adapter_util import RagBusyError, RagUnavailableError
 
+logger = logging.getLogger("chatbot_demo_v2.api")
 router = APIRouter()
 
 _RUNID_RE = re.compile(r"^[A-Za-z0-9_\-]{1,64}$")
@@ -311,3 +318,166 @@ def evidence(request: Request, run_id: str, filename: str):
     if not target.is_file():
         raise HTTPException(status_code=404, detail="not found")
     return FileResponse(str(target))
+
+
+# =====================================================================
+# 관리자 (Admin) API — RAG 문서 관리 & 사전 청킹/재색인 파이프라인
+# =====================================================================
+
+@router.get("/api/admin/documents")
+def admin_list_documents(request: Request) -> dict:
+    ctx = _ctx(request)
+    docs = ctx.doc_manager.list_documents()
+    return {"documents": docs, "count": len(docs)}
+
+
+@router.post("/api/admin/documents/upload")
+async def admin_upload_documents(
+    request: Request,
+    files: list[UploadFile] = File(...),
+    subfolder: str = Form(""),
+) -> dict:
+    ctx = _ctx(request)
+    saved_list = []
+    errors = []
+    for file in files:
+        try:
+            res = await ctx.doc_manager.save_uploaded_file(file, subfolder=subfolder)
+            saved_list.append(res)
+        except Exception as e:
+            errors.append({"filename": file.filename, "error": str(e)})
+    return {"saved": saved_list, "errors": errors, "total": len(saved_list)}
+
+
+@router.delete("/api/admin/documents/{doc_path:path}")
+def admin_delete_document(request: Request, doc_path: str) -> dict:
+    ctx = _ctx(request)
+    try:
+        ok = ctx.doc_manager.delete_document(doc_path)
+        if not ok:
+            raise HTTPException(status_code=404, detail="파일을 찾을 수 없습니다.")
+        return {"deleted": True, "path": doc_path}
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve))
+
+
+@router.get("/api/admin/stats")
+def admin_stats(request: Request) -> dict:
+    ctx = _ctx(request)
+    stats = ctx.doc_manager.get_stats()
+    stats["web_search_enabled"] = bool(ctx.settings.web_search_enabled)
+    return stats
+
+
+def _update_env_file(key: str, val: str) -> None:
+    """chatbot_demo_v2/.env 파일 내 환경변수 값을 업데이트하거나 추가한다."""
+    from ..config.settings import PKG_ROOT
+
+    env_path = PKG_ROOT / ".env"
+    if not env_path.is_file():
+        return
+    try:
+        content = env_path.read_text(encoding="utf-8")
+        pattern = re.compile(rf"^(#?\s*{re.escape(key)}\s*=).*$", re.MULTILINE)
+        new_line = f"{key}={val}"
+        if pattern.search(content):
+            content = pattern.sub(new_line, content, count=1)
+        else:
+            content = content.rstrip() + f"\n{new_line}\n"
+        env_path.write_text(content, encoding="utf-8")
+    except Exception as e:
+        logger.warning(".env 파일 갱신 실패 [%s=%s]: %s", key, val, e)
+
+
+def _get_web_search_status(ctx: AppContext) -> WebSearchStatusResponse:
+    s = ctx.settings
+    wp = ctx.web_provider
+    return WebSearchStatusResponse(
+        enabled=bool(s.web_search_enabled),
+        provider=getattr(wp, "name", "unknown"),
+        model=getattr(wp, "model", None),
+        scope=s.web_search_scope,
+        dedicated_key=bool(s.web_search_api_key_present),
+        key_source=getattr(wp, "key_source", None),
+        daily_budget=s.web_search_daily_budget,
+        usage=wp.usage() if hasattr(wp, "usage") else None,
+    )
+
+
+@router.get("/api/admin/web-search", response_model=WebSearchStatusResponse)
+def admin_get_web_search(request: Request) -> WebSearchStatusResponse:
+    """관리자용 웹 검색 현재 상태 및 통계 조회."""
+    ctx = _ctx(request)
+    return _get_web_search_status(ctx)
+
+
+@router.post("/api/admin/web-search", response_model=WebSearchStatusResponse)
+def admin_toggle_web_search(request: Request, body: WebSearchToggleRequest) -> WebSearchStatusResponse:
+    """관리자용 웹 검색 on/off 토글 (런타임 즉시 반영 + .env 영구 보존)."""
+    import dataclasses
+    import os
+    from .dependencies import build_web_provider
+
+    ctx = _ctx(request)
+    new_enabled = bool(body.enabled)
+
+    # 1. 런타임 settings 불변 객체 갱신
+    ctx.settings = dataclasses.replace(ctx.settings, web_search_enabled=new_enabled)
+
+    # 2. 프로세스 환경변수 갱신
+    val_str = "true" if new_enabled else "false"
+    os.environ["WEB_SEARCH_ENABLED"] = val_str
+
+    # 3. Provider 인스턴스 핫스왑 (Enabled ↔ Disabled)
+    ctx.web_provider = build_web_provider(ctx.settings)
+
+    # 4. chatbot_demo_v2/.env 파일에 영구 반영
+    _update_env_file("WEB_SEARCH_ENABLED", val_str)
+
+    logger.info("관리자 웹 검색 설정 변경: enabled=%s (provider=%s)", new_enabled, getattr(ctx.web_provider, "name", "unknown"))
+    return _get_web_search_status(ctx)
+
+
+@router.post("/api/admin/reindex")
+def admin_start_reindex(request: Request, body: Optional[ReindexRequest] = None) -> dict:
+    ctx = _ctx(request)
+    force = bool(body.force) if body else False
+    started = ctx.reindex_runner.start_reindex(force=force)
+    state = ctx.reindex_runner.get_state()
+    return {"started": started, **state}
+
+
+@router.get("/api/admin/reindex/status")
+def admin_reindex_status(request: Request) -> dict:
+    ctx = _ctx(request)
+    return ctx.reindex_runner.get_state()
+
+
+@router.get("/api/admin/reindex/stream")
+async def admin_reindex_stream(request: Request):
+    """SSE 실시간 재색인 진행률 및 로그 스트리밍."""
+    ctx = _ctx(request)
+    runner = ctx.reindex_runner
+    q = runner.register_listener()
+
+    async def event_generator():
+        init_state = runner.get_state()
+        yield _sse("init", init_state)
+        try:
+            while True:
+                if await request.is_disconnected():
+                    break
+                try:
+                    msg = await asyncio.wait_for(q.get(), timeout=2.0)
+                    event_type = msg.get("type", "update")
+                    yield _sse(event_type, msg)
+                except asyncio.TimeoutError:
+                    yield ": ping\n\n"
+        finally:
+            runner.unregister_listener(q)
+
+    return StreamingResponse(
+        event_generator(),
+        media_type="text/event-stream",
+        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+    )

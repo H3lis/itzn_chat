@@ -280,6 +280,15 @@ class Rag3xAdapter:
         t = threading.Thread(target=_run, name="rag3x-warmup", daemon=True)
         t.start()
 
+    def reload(self) -> None:
+        """재색인 후 엔진 및 인덱스를 새로 로드."""
+        with self._init_lock:
+            self._engine = None
+            self._status = STATUS_NOT_LOADED
+            self._deep_warmed = False
+            self._error = None
+        self.ensure_ready()
+
     def ask(self, question: str, run_id: Optional[str] = None, progress=None) -> dict:
         # progress: 블랙박스 경로라 내부 단계를 알 수 없어 무시(시그니처 호환용).
         acquired = self._ask_lock.acquire(blocking=False)
@@ -420,6 +429,19 @@ class SubgraphRagAdapter:
         t = threading.Thread(target=_run, name="rag3x-subgraph-warmup", daemon=True)
         t.start()
 
+    def reload(self) -> None:
+        """재색인 후 엔진, 서브그래프, TTL 캐시를 새로 로드."""
+        with self._init_lock:
+            self._engine = None
+            self._deps = None
+            self._subgraph = None
+            self._status = STATUS_NOT_LOADED
+            self._deep_warmed = False
+            self._error = None
+            with self._cache_lock:
+                self._cache.clear()
+        self.ensure_ready()
+
     def ask(self, question: str, run_id: Optional[str] = None, progress=None) -> dict:
         """질문 1건 처리. progress(dict) 콜백을 주면 서브그래프 각 단계를 스트리밍한다."""
         # 캐시는 락 획득 전에 확인 — 다른 질문 처리 중이어도 캐시된 답변은 즉시 준다(429 회피).
@@ -502,6 +524,9 @@ class FakeRagAdapter:
 
     def start_warmup_background(self, deep: bool = False) -> None:
         self.warmup_calls += 1
+
+    def reload(self) -> None:
+        pass
 
     def ask(self, question: str, run_id: str | None = None, progress=None) -> dict:
         self.ask_calls += 1

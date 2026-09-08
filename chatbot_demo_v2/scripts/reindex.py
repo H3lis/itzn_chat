@@ -101,18 +101,65 @@ def build(settings, force: bool, catalog_path: Path | None = None, docs_dir: Pat
     return summary
 
 
+import gc
+
+def _safe_promote_dir(new_dir: Path, cur_dir: Path, old_dir: Path, root: Path) -> None:
+    """Windows 파일 락([WinError 5] Access Denied)에 안전한 원자적 색인 승격."""
+    gc.collect()
+
+    # 1) 기존 index_old 보존
+    if old_dir.exists():
+        stamp = datetime.now().strftime("%Y%m%dT%H%M%S")
+        dest_old = root / f"index_old_{stamp}"
+        try:
+            old_dir.rename(dest_old)
+            print("  기존 index_old 를 index_old_%s 로 보존" % stamp)
+        except Exception:
+            try:
+                shutil.copytree(str(old_dir), str(dest_old), dirs_exist_ok=True)
+                shutil.rmtree(str(old_dir), ignore_errors=True)
+                print("  기존 index_old 를 index_old_%s 로 복사 보존" % stamp)
+            except Exception as e:
+                print("  index_old 보존 건너뜀: %s" % e)
+
+    # 2) 현재 index -> index_old 백업
+    if cur_dir.exists():
+        try:
+            cur_dir.rename(old_dir)
+        except Exception:
+            try:
+                shutil.copytree(str(cur_dir), str(old_dir), dirs_exist_ok=True)
+                shutil.rmtree(str(cur_dir), ignore_errors=True)
+            except Exception as e:
+                print("  기존 index 백업: %s" % e)
+
+    # 3) index_new -> index 승격
+    gc.collect()
+    time.sleep(0.3)
+    try:
+        if cur_dir.exists():
+            shutil.rmtree(str(cur_dir), ignore_errors=True)
+        new_dir.rename(cur_dir)
+        print("  교체 완료 (rename): index → index_old, index_new → index")
+    except Exception as e:
+        print("  Windows 파일 락 감지(%s) -> copytree 방식으로 안전하게 교체 승격" % e)
+        if cur_dir.exists():
+            shutil.rmtree(str(cur_dir), ignore_errors=True)
+        shutil.copytree(str(new_dir), str(cur_dir), dirs_exist_ok=True)
+        try:
+            shutil.rmtree(str(new_dir), ignore_errors=True)
+        except Exception:
+            pass
+        print("  교체 완료 (copytree): index_new → index")
+
+
 def promote(settings) -> None:
     root = Path(settings.ragdata_dir)
     cur, new, old = root / "index", root / "index_new", root / "index_old"
     if not new.is_dir():
         raise SystemExit(f"새 색인이 없다: {new} (먼저 빌드할 것)")
-    if old.exists():
-        stamp = datetime.now().strftime("%Y%m%dT%H%M%S")
-        old.rename(root / f"index_old_{stamp}")
-        print("  기존 index_old 를 index_old_%s 로 보존" % stamp)
-    cur.rename(old)
-    new.rename(cur)
-    print("  교체 완료: index → index_old, index_new → index")
+    
+    _safe_promote_dir(new, cur, old, root)
     print("  되돌리려면: --rollback")
 
 
@@ -121,10 +168,22 @@ def rollback(settings) -> None:
     cur, old = root / "index", root / "index_old"
     if not old.is_dir():
         raise SystemExit(f"되돌릴 직전 색인이 없다: {old}")
+    gc.collect()
     failed = root / ("index_failed_" + datetime.now().strftime("%Y%m%dT%H%M%S"))
-    cur.rename(failed)
-    old.rename(cur)
-    print("  롤백 완료: index → %s, index_old → index" % failed.name)
+    try:
+        cur.rename(failed)
+    except Exception:
+        try:
+            shutil.copytree(str(cur), str(failed), dirs_exist_ok=True)
+            shutil.rmtree(str(cur), ignore_errors=True)
+        except Exception:
+            pass
+    try:
+        old.rename(cur)
+        print("  롤백 완료 (rename): index → %s, index_old → index" % failed.name)
+    except Exception:
+        shutil.copytree(str(old), str(cur), dirs_exist_ok=True)
+        print("  롤백 완료 (copytree): index → %s, index_old → index" % failed.name)
 
 
 def main() -> int:

@@ -88,3 +88,23 @@ class HealthResponse(BaseModel):
     routing: dict = {}
     toggles: dict = {}
     graph_mermaid: Optional[str] = None
+
+
+class ReindexRequest(BaseModel):
+    force: bool = False
+
+
+class WebSearchToggleRequest(BaseModel):
+    enabled: bool
+
+
+class WebSearchStatusResponse(BaseModel):
+    enabled: bool
+    provider: str
+    model: Optional[str] = None
+    scope: str = "in_domain_unresolved"
+    dedicated_key: bool = False
+    key_source: Optional[str] = None
+    daily_budget: int = 100
+    usage: Optional[dict] = None
+

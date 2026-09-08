@@ -188,9 +188,8 @@ class GeminiGroundingProvider:
             "contents": [{"role": "user", "parts": [{"text": question}]}],
             "tools": [{"google_search": {}}],
             "systemInstruction": {"parts": [{"text": system}]},
-            # 사고(thinking) 토큰도 maxOutputTokens 를 함께 소진한다 → 답변이 잘려 빈 문자열이
-            # 되지 않도록 여유 있게 잡는다(RAG 백엔드와 동일한 2048).
-            "generationConfig": {"temperature": 0.2, "maxOutputTokens": 2048},
+            # Grounding 검색 도구 활성화를 위해 temperature는 0.7을 사용한다(0.2는 도구 사용을 과도하게 억제함).
+            "generationConfig": {"temperature": 0.7, "maxOutputTokens": 2048},
         }
         t0 = time.time()
         try:
