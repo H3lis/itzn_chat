@@ -23,11 +23,26 @@ from .dependencies import AppContext
 from .schemas import (
     ChatRequest,
     ChatResponse,
+    DocRenameRequest,
+    FaqCreateRequest,
+    FaqItem,
+    FaqListResponse,
+    FaqStatsResponse,
+    FaqUpdateRequest,
     FeedbackRequest,
     HealthResponse,
     ReindexRequest,
     ResetRequest,
     ScenarioBlock,
+    ScenarioNodeCreateRequest,
+    ScenarioNodeSaveRequest,
+    ScenarioOptionItem,
+    ScenarioTreeResponse,
+    ScenarioValidationResponse,
+    DocMetadataExtractRequest,
+    DocMetadataItem,
+    DocMetadataScope,
+    DocMetadataUpdateRequest,
     WarmupRequest,
     WebSearchStatusResponse,
     WebSearchToggleRequest,
@@ -328,6 +343,16 @@ def evidence(request: Request, run_id: str, filename: str):
 def admin_list_documents(request: Request) -> dict:
     ctx = _ctx(request)
     docs = ctx.doc_manager.list_documents()
+    all_meta = ctx.metadata_manager.list_all_metadata()
+    from ..ragcore.rag3.utils import doc_slug
+    for doc in docs:
+        slug = doc_slug(doc.get("rel_path") or doc.get("name") or "")
+        meta = all_meta.get(slug)
+        doc["has_metadata"] = meta is not None
+        if meta:
+            doc["meta_title"] = meta.get("title")
+            doc["meta_keywords"] = meta.get("keywords", [])
+            doc["meta_publisher"] = meta.get("publisher", "")
     return {"documents": docs, "count": len(docs)}
 
 
@@ -359,6 +384,109 @@ def admin_delete_document(request: Request, doc_path: str) -> dict:
         return {"deleted": True, "path": doc_path}
     except ValueError as ve:
         raise HTTPException(status_code=400, detail=str(ve))
+
+
+@router.post("/api/admin/documents/rename")
+def admin_rename_document(request: Request, body: DocRenameRequest) -> dict:
+    """RAG 문서 파일명 변경 및 파싱 캐시 동기화."""
+    ctx = _ctx(request)
+    try:
+        res = ctx.doc_manager.rename_document(body.old_rel_path, body.new_name)
+        return res
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve))
+    except Exception as e:
+        logger.error("문서 이름 변경 실패: %s", e, exc_info=True)
+        raise HTTPException(status_code=500, detail=f"이름 변경 실패: {e}")
+
+
+# ==================== FAQ 관리 API ====================
+@router.get("/api/admin/faq/stats", response_model=FaqStatsResponse)
+def admin_faq_stats(request: Request) -> FaqStatsResponse:
+    """FAQ 통계, 시트 목록, 장애유형 목록 반환."""
+    ctx = _ctx(request)
+    return FaqStatsResponse(**ctx.faq_manager.get_stats())
+
+
+@router.get("/api/admin/faq", response_model=FaqListResponse)
+def admin_list_faqs(
+    request: Request,
+    sheet: Optional[str] = None,
+    fault_type: Optional[str] = None,
+    search: Optional[str] = None,
+    page: int = 1,
+    page_size: int = 20,
+) -> FaqListResponse:
+    """FAQ 목록 조회 (필터, 검색, 페이징)."""
+    ctx = _ctx(request)
+    data = ctx.faq_manager.list_faqs(
+        sheet=sheet,
+        fault_type=fault_type,
+        search=search,
+        page=page,
+        page_size=page_size,
+    )
+    return FaqListResponse(**data)
+
+
+@router.get("/api/admin/faq/{faq_id:path}", response_model=FaqItem)
+def admin_get_faq(request: Request, faq_id: str) -> FaqItem:
+    """FAQ 단건 상세 조회."""
+    ctx = _ctx(request)
+    item = ctx.faq_manager.get_faq(faq_id)
+    if not item:
+        raise HTTPException(status_code=404, detail="FAQ 항목을 찾을 수 없습니다.")
+    return FaqItem(**item)
+
+
+@router.post("/api/admin/faq", response_model=FaqItem)
+def admin_create_faq(request: Request, body: FaqCreateRequest) -> FaqItem:
+    """FAQ 신규 등록 및 런타임 매처 즉시 핫리로드."""
+    ctx = _ctx(request)
+    try:
+        new_entry = ctx.faq_manager.create_faq(body.model_dump())
+        # 저장 즉시 챗봇 런타임 핫리로드
+        ctx.faq_manager.reload_runtime(ctx)
+        return FaqItem(**new_entry)
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve))
+    except Exception as e:
+        logger.error("FAQ 등록 실패: %s", e, exc_info=True)
+        raise HTTPException(status_code=500, detail=f"FAQ 등록 실패: {e}")
+
+
+@router.put("/api/admin/faq/{faq_id:path}", response_model=FaqItem)
+def admin_update_faq(request: Request, faq_id: str, body: FaqUpdateRequest) -> FaqItem:
+    """FAQ 항목 수정 및 런타임 매처 즉시 핫리로드."""
+    ctx = _ctx(request)
+    try:
+        updated = ctx.faq_manager.update_faq(faq_id, body.model_dump(exclude_unset=True))
+        # 저장 즉시 챗봇 런타임 핫리로드
+        ctx.faq_manager.reload_runtime(ctx)
+        return FaqItem(**updated)
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve))
+    except Exception as e:
+        logger.error("FAQ 수정 실패: %s", e, exc_info=True)
+        raise HTTPException(status_code=500, detail=f"FAQ 수정 실패: {e}")
+
+
+@router.delete("/api/admin/faq/{faq_id:path}")
+def admin_delete_faq(request: Request, faq_id: str) -> dict:
+    """FAQ 항목 삭제 및 런타임 매처 즉시 핫리로드."""
+    ctx = _ctx(request)
+    try:
+        ok = ctx.faq_manager.delete_faq(faq_id)
+        if not ok:
+            raise HTTPException(status_code=404, detail="삭제할 FAQ 항목을 찾을 수 없습니다.")
+        # 삭제 즉시 챗봇 런타임 핫리로드
+        ctx.faq_manager.reload_runtime(ctx)
+        return {"deleted": True, "id": faq_id}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error("FAQ 삭제 실패: %s", e, exc_info=True)
+        raise HTTPException(status_code=500, detail=f"FAQ 삭제 실패: {e}")
 
 
 @router.get("/api/admin/stats")
@@ -481,3 +609,132 @@ async def admin_reindex_stream(request: Request):
         media_type="text/event-stream",
         headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
     )
+
+
+# =========================================================================
+# 관리자 시나리오 관리 API (Phase 2)
+# =========================================================================
+
+@router.get("/api/admin/scenarios", response_model=ScenarioTreeResponse)
+def admin_get_scenarios(request: Request) -> ScenarioTreeResponse:
+    """전체 시나리오 노드 목록, 트리 계층 및 무결성 검증 결과 반환."""
+    ctx = _ctx(request)
+    tree_data = ctx.scenario_manager.get_tree()
+    return ScenarioTreeResponse(**tree_data)
+
+
+@router.get("/api/admin/scenarios/validate", response_model=ScenarioValidationResponse)
+def admin_validate_scenarios(request: Request) -> ScenarioValidationResponse:
+    """시나리오 트리 무결성(루트 존재, 깨진 링크, 도달 불가능 노드 등) 검사."""
+    ctx = _ctx(request)
+    data = ctx.scenario_manager._read_data()
+    val = ctx.scenario_manager.validate_integrity(data)
+    return ScenarioValidationResponse(**val)
+
+
+@router.get("/api/admin/scenarios/nodes/{node_id:path}")
+def admin_get_scenario_node(request: Request, node_id: str) -> dict:
+    """특정 시나리오 노드 상세 정보 조회."""
+    ctx = _ctx(request)
+    node = ctx.scenario_manager.get_node(node_id)
+    if not node:
+        raise HTTPException(status_code=404, detail=f"노드 '{node_id}'를 찾을 수 없습니다.")
+    return node
+
+
+@router.post("/api/admin/scenarios/nodes")
+def admin_create_scenario_node(request: Request, body: ScenarioNodeCreateRequest) -> dict:
+    """새로운 시나리오 노드 추가 및 챗봇 런타임 핫리로드."""
+    ctx = _ctx(request)
+    try:
+        created = ctx.scenario_manager.create_node(body.model_dump(exclude_unset=True))
+        ctx.scenario_manager.reload_runtime(ctx)
+        return created
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve))
+    except Exception as e:
+        logger.error("시나리오 노드 생성 실패: %s", e, exc_info=True)
+        raise HTTPException(status_code=500, detail=f"시나리오 노드 생성 실패: {e}")
+
+
+@router.put("/api/admin/scenarios/nodes/{node_id:path}")
+def admin_update_scenario_node(request: Request, node_id: str, body: ScenarioNodeSaveRequest) -> dict:
+    """시나리오 노드 수정 및 챗봇 런타임 핫리로드."""
+    ctx = _ctx(request)
+    try:
+        updated = ctx.scenario_manager.save_node(node_id, body.model_dump(exclude_unset=True))
+        ctx.scenario_manager.reload_runtime(ctx)
+        return updated
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve))
+    except Exception as e:
+        logger.error("시나리오 노드 수정 실패: %s", e, exc_info=True)
+        raise HTTPException(status_code=500, detail=f"시나리오 노드 수정 실패: {e}")
+
+
+@router.delete("/api/admin/scenarios/nodes/{node_id:path}")
+def admin_delete_scenario_node(request: Request, node_id: str) -> dict:
+    """시나리오 노드 삭제 및 챗봇 런타임 핫리로드."""
+    ctx = _ctx(request)
+    try:
+        ok = ctx.scenario_manager.delete_node(node_id)
+        if not ok:
+            raise HTTPException(status_code=404, detail=f"삭제할 노드 '{node_id}'를 찾을 수 없습니다.")
+        ctx.scenario_manager.reload_runtime(ctx)
+        return {"deleted": True, "node_id": node_id}
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve))
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error("시나리오 노드 삭제 실패: %s", e, exc_info=True)
+        raise HTTPException(status_code=500, detail=f"시나리오 노드 삭제 실패: {e}")
+
+
+# =========================================================================
+# 관리자 RAG 문서 메타데이터 관리 API (Phase 2)
+# =========================================================================
+
+@router.get("/api/admin/documents/{doc_path:path}/metadata", response_model=DocMetadataItem)
+def admin_get_document_metadata(request: Request, doc_path: str) -> DocMetadataItem:
+    """RAG 문서의 4대 메타데이터(3줄요약, 키워드5개, 발행기관, 적용대상) 조회.
+    기존 메타데이터가 없다면 자동으로 최초 추출(LLM 또는 규칙 기반)을 실행하여 반환."""
+    ctx = _ctx(request)
+    try:
+        meta = ctx.metadata_manager.get_metadata(doc_path)
+        if not meta:
+            meta = ctx.metadata_manager.extract_and_save(doc_path, force=False)
+        return DocMetadataItem(**meta)
+    except FileNotFoundError:
+        raise HTTPException(status_code=404, detail=f"문서 파일을 찾을 수 없습니다: {doc_path}")
+    except Exception as e:
+        logger.error("문서 메타데이터 조회 실패 [%s]: %s", doc_path, e, exc_info=True)
+        raise HTTPException(status_code=500, detail=f"메타데이터 조회 실패: {e}")
+
+
+@router.put("/api/admin/documents/{doc_path:path}/metadata", response_model=DocMetadataItem)
+def admin_update_document_metadata(request: Request, doc_path: str, body: DocMetadataUpdateRequest) -> DocMetadataItem:
+    """관리자가 직접 수정한 RAG 문서 메타데이터 저장."""
+    ctx = _ctx(request)
+    try:
+        updated = ctx.metadata_manager.update_metadata(doc_path, body.model_dump(exclude_unset=True))
+        return DocMetadataItem(**updated)
+    except Exception as e:
+        logger.error("문서 메타데이터 수정 실패 [%s]: %s", doc_path, e, exc_info=True)
+        raise HTTPException(status_code=500, detail=f"메타데이터 수정 실패: {e}")
+
+
+@router.post("/api/admin/documents/{doc_path:path}/metadata/extract", response_model=DocMetadataItem)
+def admin_extract_document_metadata(request: Request, doc_path: str, body: Optional[DocMetadataExtractRequest] = None) -> DocMetadataItem:
+    """Gemini LLM / 규칙 기반으로 RAG 문서 메타데이터 강제 재추출 실행."""
+    ctx = _ctx(request)
+    force = bool(body.force) if body else True
+    try:
+        meta = ctx.metadata_manager.extract_and_save(doc_path, force=force)
+        return DocMetadataItem(**meta)
+    except FileNotFoundError:
+        raise HTTPException(status_code=404, detail=f"문서 파일을 찾을 수 없습니다: {doc_path}")
+    except Exception as e:
+        logger.error("문서 메타데이터 추출 실패 [%s]: %s", doc_path, e, exc_info=True)
+        raise HTTPException(status_code=500, detail=f"메타데이터 추출 실패: {e}")
+

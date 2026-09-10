@@ -1,89 +1,76 @@
-# 🚀 Google Cloud GPU 연동 및 가속화 가이드
+# 🚀 챗봇 구동 및 GPU 가속화 가이드 (2가지 운영 방식)
 
-본 문서는 **Google Cloud Platform (GCP)의 GPU 인스턴스(NVIDIA L4 / T4 등)**를 활용하여 챗봇의 **BGE 리랭커(22초 ➔ 0.3초)** 및 **임베딩 연산**을 초고속으로 가속화하는 가이드입니다.
+본 문서는 학교 유무선 장애상담 챗봇 시스템을 실행하는 **2가지 공식 운영 방식(로컬 PC 단독 운영 vs GCP GPU VM 단독 운영)**과 GCP GPU 가속화 절차를 정리한 가이드입니다.
 
----
-
-## 1. 🖥️ GCP GPU 인스턴스 생성 방법
-
-1. **Google Cloud Console 접속**
-   - [GCP Console ➔ Compute Engine ➔ VM 인스턴스](https://console.cloud.google.com/compute/instances) 이동 후 **[인스턴스 만들기]** 클릭.
-2. **머신 구성 (추천 스펙)**
-   - **리전(Region)**: `asia-northeast3 (서울)` 또는 `asia-northeast1 (도쿄)`
-   - **머신 계열**: **GPU** 선택
-   - **GPU 유형**: `NVIDIA L4` (1개) 또는 `NVIDIA T4` (1개)
-   - **머신 유형**: `g2-standard-4` (4 vCPU, 16GB RAM) 또는 `n1-standard-4`
-3. **부팅 디스크 (중요 ⭐)**
-   - **운영체제**: **Ubuntu**
-   - **버전**: **Ubuntu 22.04 LTS** (또는 Deep Learning on Linux 이미지)
-   - **크기**: **50 GB SSD** 이상
-4. **방화벽 설정**
-   - `HTTP 트래픽 허용`, `HTTPS 트래픽 허용` 체크.
-   - *GCP VPC 방화벽 규칙에서 포트 `8002`(챗봇) 및 `11434`(Ollama), `8008`(리랭커) 인바운드 허용.*
+> 📌 **핵심 아키텍처 원칙**:
+> 1. **2가지 단독 구동 방식 제공**:
+>    - **[방법 1] 로컬 PC 단독 운영**: 폐쇄망 및 로컬 환경에서 단독 구동 (`포트 8002`).
+>    - **[방법 2] GCP GPU VM 단독 운영**: 클라우드 GPU 인스턴스에서 올인원 단독 구동 (BGE 리랭커 60배 가속).
+> 2. **하이브리드 연동 기각**: 로컬과 GCP를 쪼개어 통신하는 하이브리드 연동은 네트워크 지연(RTT) 및 외부 포트 보안 이슈로 기각되었습니다.
+> 3. **VPC 방화벽 포트 80 임시 개방**: GCP GPU 서버 운영 시 통신 이슈로 인해 **`포트 80 (HTTP)`을 임시로 강제 개방하여 확인 및 시연 중**입니다.
 
 ---
 
-## 2. ⚡ 원클릭 GPU 환경 구성 (GCP VM 터미널에서 실행)
+## 1. 🖥️ 구동 방식 선택 (2가지 공식 운영 방법)
 
-GCP VM에 SSH로 접속한 뒤, 프로젝트 폴더에서 아래 스크립트를 실행하면 필요한 모든 도구(NVIDIA CUDA, Ollama, Python 3.11, PyTorch GPU 패키지)가 자동으로 설치됩니다.
+### 🌟 [방법 1] 로컬 PC 단독 운영 (온프레미스 / 폐쇄망 환경)
+클라우드 연결 없이 로컬 PC(Windows 등)에서 챗봇 전체 시스템을 자립 구동합니다.
 
 ```bash
-# 1. 깃 저장소 클론 및 이동 (처음인 경우)
+# 로컬 PC 터미널 또는 배치 파일 실행
+run_chatbot.bat
+```
+- **접속 주소**: `http://localhost:8002` (관리자: `http://localhost:8002/admin`)
+- **특징**: 외부 인터넷이나 클라우드 없이도 완벽하게 독립 동작하며, 로컬 CPU로 임베딩/리랭킹 연산 수행.
+
+---
+
+### ⚡ [방법 2] GCP GPU VM 단독 운영 (클라우드 GPU 가속 환경)
+GCP Compute Engine GPU 인스턴스(NVIDIA L4/T4)에서 챗봇 전체 시스템을 올인원으로 구동하여 초고속으로 처리합니다.
+
+#### 1) GCP GPU 인스턴스 생성 사양
+- **리전**: `asia-northeast3 (서울)`
+- **GPU / 머신**: `NVIDIA L4` (1개) + `g2-standard-4` (4 vCPU, 16GB RAM)
+- **OS**: `Ubuntu 22.04 LTS` (부팅 디스크 50GB SSD 이상)
+- **방화벽 설정**: `HTTP 트래픽 허용` (포트 80 개방 ⭐ - *현재 통신 이슈로 임시 개방 중*)
+
+#### 2) 원클릭 환경 설정 (GCP VM 터미널)
+```bash
 git clone https://github.com/H3lis/itzn_chat.git ~/chatbot
 cd ~/chatbot
-
-# (이미 클론된 폴더가 있다면 최신 코드로 업데이트)
-# cd ~/chatbot && git pull origin main
-
-# 2. 실행 권한 부여 및 원클릭 설치 스크립트 실행
 chmod +x chatbot_demo_v2/scripts/gcp_gpu_setup.sh
 ./chatbot_demo_v2/scripts/gcp_gpu_setup.sh
 ```
 
----
-
-## 3. 🎯 구동 방식 선택 (2가지 옵션)
-
-### 🌟 옵션 A. 전체 챗봇 서버를 GCP GPU VM에서 실행 (가장 추천)
-네트워크 지연 없이 GPU의 최대 속도를 활용합니다.
-
+#### 3) GCP 단독 올인원 실행
 ```bash
-# GCP VM 터미널
+cd ~/chatbot
 source .venv/bin/activate
-python -m chatbot_demo_v2 --host 0.0.0.0 --port 8002
+
+# 포트 80으로 직접 실행 (포트 80 임시 개방 활용 시, sudo 필요)
+sudo ~/chatbot/.venv/bin/python -m chatbot_demo_v2 --host 0.0.0.0 --port 80
 ```
-> 브라우저 접속: `http://<GCP_VM_외부IP>:8002`
+- **접속 주소**: `http://<GCP_VM_외부IP>` (관리자: `http://<GCP_VM_외부IP>/admin`)
+- **특징**: BGE 리랭커가 GPU 가속되어 **0.3초** 만에 초고속 응답.
 
 ---
 
-### 🌐 옵션 B. 하이브리드 연동 (로컬 챗봇 + GCP GPU 원격 연동)
-챗봇 UI와 서버는 로컬 PC에서 실행하고, **GPU 연산(Ollama & 리랭커)만 GCP VM으로 위임**합니다.
+## 2. 📊 운영 방식별 성능 및 환경 비교
 
-#### 1) GCP GPU VM에서 원격 서비스 실행
-```bash
-# 터미널 1: Ollama 서비스는 백그라운드로 자동 실행 중 (포트 11434)
-
-# 터미널 2: 원격 리랭커 마이크로서비스 실행 (포트 8008)
-source .venv/bin/activate
-python chatbot_demo_v2/scripts/serve_remote_reranker.py
-```
-
-#### 2) 로컬 PC의 `.env` 파일 설정
-로컬 PC의 `chatbot_demo_v2/.env` 파일에서 GCP VM의 외부 IP를 입력합니다:
-```properties
-OLLAMA_HOST=http://<GCP_VM_외부IP>:11434
-RERANKER_ENDPOINT=http://<GCP_VM_외부IP>:8008/rerank
-```
-
-#### 3) 로컬 챗봇 실행
-- 로컬 PC에서 `run_chatbot.bat` 실행 시, 무거운 임베딩과 리랭킹이 GCP GPU로 전송되어 **초고속으로 처리**됩니다.
+| 비교 항목 | [방법 1] 로컬 PC 단독 운영 | [방법 2] GCP GPU VM 단독 운영 |
+| :--- | :--- | :--- |
+| **운영 인프라** | 사용자 로컬 PC (Windows) | GCP Compute Engine (Ubuntu + L4 GPU) |
+| **접속 포트** | `포트 8002` | `⚠️ 포트 80 (임시 강제 개방 중)` |
+| **BGE 리랭커 연산** | 약 20 ~ 25초 (CPU) | **0.2 ~ 0.4초 (GPU 가속 ⚡)** |
+| **전체 RAG 응답** | 약 25 ~ 35초 | **3 ~ 5초 (체감 지연 90% 단축 🚀)** |
+| **네트워크 의존성** | 완전 독립 자립 구동 (폐쇄망 가능) | 클라우드 접속 필요 (외부 시연용) |
+| **적합한 용도** | 로컬 개발/기능 검증 및 폐쇄망 운영 | 실시간 외부 시연 및 고속 응답 서비스 |
 
 ---
 
-## 4. 📊 기대 성능 비교
-
-| 구분 | 로컬 CPU 환경 (현재) | GCP GPU (L4/T4) 연동 시 | 개선 효과 |
-| :--- | :--- | :--- | :--- |
-| **BGE 리랭커 연산** | 약 22 ~ 25초 | **0.2 ~ 0.4초** | **약 60배 가속** ⚡ |
-| **Ollama 임베딩** | 약 0.2초 | **0.03초** | **약 7배 가속** ⚡ |
-| **전체 RAG 응답 시간** | 약 30 ~ 40초 | **3 ~ 5초** | **체감 지연 90% 감소** 🚀 |
+## 3. ❌ 기각된 방안 기록: 하이브리드 연동
+* **내용**: 로컬 PC에서 챗봇 WAS를 띄우고, 무거운 연산(Ollama 및 리랭커)만 GCP로 원격 전송하는 방식.
+* **기각 사유**: 
+  - 질의마다 수십 개 청크 텍스트를 왕복 전송하는 **네트워크 지연(RTT)** 발생
+  - 외부 공인 IP로 내부 서비스 포트를 노출해야 하는 **보안 취약성**
+* **결론**: **[방법 1] 로컬 단독** 또는 **[방법 2] GCP 단독** 2가지 독립 운영 방식으로 완전 분리 확정.

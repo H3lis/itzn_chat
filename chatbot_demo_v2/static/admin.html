@@ -3,21 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RAG 근거 문서 관리자 — 학교 유무선 장애상담 챗봇</title>
+  <title>학교 유무선 장애상담 챗봇 — 통합 관리자 콘솔</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/admin.css" />
 </head>
 <body>
-  <!-- ==================== 상단 네비게이션 ==================== -->
+  <!-- ==================== 상단 네비게이션 헤더 ==================== -->
   <header class="admin-topbar">
     <div class="brand-group">
-      <a href="/" class="brand-link" title="챗봇 메인 화면으로 이동">
+      <a href="/" class="brand-link" title="챗봇 대화 화면으로 이동">
         <span class="brand-icon">🏫</span>
         <span class="brand-title">학교 유무선 장애상담 챗봇</span>
       </a>
-      <span class="admin-badge">RAG 관리자 콘솔</span>
+      <span class="admin-badge">통합 관리자 콘솔 · RAG 관리자</span>
     </div>
 
     <div class="topbar-actions">
@@ -37,225 +37,707 @@
   </header>
 
   <main class="admin-container">
-    <!-- ==================== 통계 대시보드 카드 ==================== -->
-    <section class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-icon-wrapper blue">📄</div>
-        <div class="stat-info">
-          <div class="stat-label">등록 원본 문서</div>
-          <div id="stat-docs" class="stat-value">-</div>
-          <div id="stat-raw-size" class="stat-sub">용량: -</div>
+    <!-- ==================== 4대 핵심 기능 탭 네비게이션 ==================== -->
+    <nav class="admin-nav-tabs" id="admin-tabs">
+      <button class="nav-tab-btn active" data-tab="tab-faq" id="tab-btn-faq">
+        <span>💬 FAQ 관리 (CRUD)</span>
+        <span class="tab-badge" id="tab-badge-faq">-</span>
+      </button>
+      <button class="nav-tab-btn" data-tab="tab-rag" id="tab-btn-rag">
+        <span>📂 RAG 문서 & 재색인</span>
+        <span class="tab-badge" id="tab-badge-docs">-</span>
+      </button>
+      <button class="nav-tab-btn" data-tab="tab-scenario" id="tab-btn-scenario">
+        <span>🌳 시나리오 에디터</span>
+        <span class="tab-badge" id="tab-badge-scenario">-</span>
+      </button>
+      <button class="nav-tab-btn" data-tab="tab-websearch" id="tab-btn-websearch">
+        <span>🌐 웹 검색 설정</span>
+        <span class="tab-badge" id="tab-badge-websearch">-</span>
+      </button>
+    </nav>
+
+    <!-- ==================== [탭 1] FAQ 관리 섹션 ==================== -->
+    <div id="tab-faq" class="tab-pane active">
+      <!-- FAQ 통계 요약 배지 바 -->
+      <div class="faq-stats-bar" id="faq-stats-bar">
+        <div class="faq-stat-pill primary">
+          <span>등록 FAQ:</span>
+          <span class="val" id="faq-stat-total">- 건</span>
+        </div>
+        <div id="faq-stat-sheets" style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+          <!-- 시트별 건수 배지가 JS로 동적 렌더링됨 -->
         </div>
       </div>
 
-      <div class="stat-card">
-        <div class="stat-icon-wrapper purple">📑</div>
-        <div class="stat-info">
-          <div class="stat-label">총 문서 페이지</div>
-          <div id="stat-pages" class="stat-value">-</div>
-          <div class="stat-sub">PDF 파싱 기준</div>
+      <!-- FAQ 조작 및 필터 툴바 -->
+      <div class="faq-toolbar">
+        <div class="faq-filter-group">
+          <select id="faq-sheet-filter" class="faq-select" title="시트(분류) 선택">
+            <option value="">전체 시트 (전체)</option>
+          </select>
+          <select id="faq-fault-filter" class="faq-select" title="장애유형 선택">
+            <option value="">전체 장애유형 (전체)</option>
+          </select>
+          <input type="text" id="faq-search-input" class="faq-search-input" placeholder="질문, 답변, ID 검색…" />
+          <button id="btn-refresh-faq" class="btn btn-secondary btn-sm" title="새로고침">🔄 새로고침</button>
         </div>
+
+        <button id="btn-add-faq" class="btn btn-primary">
+          <span class="btn-icon">➕</span>
+          <span>신규 FAQ 등록</span>
+        </button>
       </div>
 
-      <div class="stat-card">
-        <div class="stat-icon-wrapper emerald">🧩</div>
-        <div class="stat-info">
-          <div class="stat-label">활성 색인 청크</div>
-          <div id="stat-chunks" class="stat-value">-</div>
-          <div id="stat-index-pages" class="stat-sub">색인 페이지: -</div>
-        </div>
-      </div>
-
-      <div class="stat-card">
-        <div class="stat-icon-wrapper amber">🧠</div>
-        <div class="stat-info">
-          <div class="stat-label">임베딩 모델</div>
-          <div id="stat-backend" class="stat-value">embeddinggemma</div>
-          <div id="stat-index-time" class="stat-sub">최근 갱신: -</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== 외부 웹 검색 실시간 보완 (Google Search Grounding) ==================== -->
-    <section class="admin-section websearch-section" id="websearch-section">
-      <div class="websearch-card" id="websearch-card">
-        <div class="websearch-info">
-          <div class="websearch-header">
-            <div class="websearch-icon-wrapper">🌐</div>
-            <div>
-              <div class="websearch-title-row">
-                <h2 class="websearch-title">웹 검색 실시간 보완 (Google Search Grounding)</h2>
-                <span id="websearch-badge" class="badge badge-idle">확인 중…</span>
-              </div>
-              <p class="websearch-desc">
-                내부 문서(RAG) 및 매뉴얼로 답변을 찾지 못했을 때(최종 보루), Gemini Grounding을 통해 실시간 Google 웹 검색을 수행하여 신뢰성 있는 최신 정보로 답변을 보완합니다.
-              </p>
-            </div>
-          </div>
-          <div class="websearch-meta-grid">
-            <div class="websearch-meta-item">
-              <span class="meta-label">검색 모델</span>
-              <span id="websearch-model" class="meta-val">gemini-3.1-flash-lite</span>
-            </div>
-            <div class="websearch-meta-item">
-              <span class="meta-label">탐색 범위</span>
-              <span id="websearch-scope" class="meta-val">in_domain_unresolved</span>
-            </div>
-            <div class="websearch-meta-item">
-              <span class="meta-label">일일 호출 한도</span>
-              <span id="websearch-budget" class="meta-val">100회</span>
-            </div>
-            <div class="websearch-meta-item">
-              <span class="meta-label">오늘 사용량 / 비용</span>
-              <span id="websearch-usage" class="meta-val">0회 / $0.00</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="websearch-toggle-box">
-          <div class="toggle-container">
-            <span class="toggle-status-label" id="websearch-toggle-label">OFF</span>
-            <label class="toggle-switch" for="toggle-web-search" title="웹 검색 기능 On/Off 전환">
-              <input type="checkbox" id="toggle-web-search" />
-              <span class="toggle-slider"></span>
-            </label>
-          </div>
-          <div class="toggle-help-text" id="toggle-help-text">토글 시 즉시 반영 및 저장</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== 사전 청킹 & 재색인 파이프라인 콘솔 ==================== -->
-    <section class="admin-section reindex-section">
-      <div class="section-head">
-        <div>
-          <h2 class="section-title">⚡ 사전 청킹 & 재색인 파이프라인 (Pre-processing & Re-index)</h2>
-          <p class="section-desc">
-            문서를 추가하거나 삭제한 후 아래 버튼을 누르면, 백그라운드에서 <b>PDF 파싱 → 청크 분할 → 위생 정제(중복/노이즈 제거) → 임베딩 생성 → 색인 원자적 교체 및 엔진 핫리로드</b>가 자동으로 실행됩니다.
-          </p>
-        </div>
-        <div class="reindex-cta-group">
-          <label class="checkbox-label" title="기존 파싱 캐시를 무시하고 모든 문서를 처음부터 다시 파싱합니다.">
-            <input type="checkbox" id="chk-force" />
-            <span>강제 전체 재파싱 (Force)</span>
-          </label>
-          <button id="btn-reindex" class="btn btn-primary btn-lg">
-            <span class="btn-spinner hidden" id="reindex-spinner"></span>
-            <span class="btn-icon">🚀</span>
-            <span id="btn-reindex-text">RAG 전처리 및 재색인 시작</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- 5단계 진행률 스테퍼 -->
-      <div class="stepper-wrapper">
-        <div class="progress-bar-container">
-          <div id="progress-bar-fill" class="progress-bar-fill" style="width: 0%;"></div>
-        </div>
-        <div class="stepper-steps">
-          <div class="step-item" id="step-scan">
-            <div class="step-bubble">1</div>
-            <div class="step-title">문서 스캔</div>
-          </div>
-          <div class="step-item" id="step-parse">
-            <div class="step-bubble">2</div>
-            <div class="step-title">PDF 파싱</div>
-          </div>
-          <div class="step-item" id="step-chunk">
-            <div class="step-bubble">3</div>
-            <div class="step-title">청킹 & 정제</div>
-          </div>
-          <div class="step-item" id="step-embed">
-            <div class="step-bubble">4</div>
-            <div class="step-title">임베딩 생성</div>
-          </div>
-          <div class="step-item" id="step-promote">
-            <div class="step-bubble">5</div>
-            <div class="step-title">색인 배포 & 갱신</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 요약 결과 카드 (완료 시 표시) -->
-      <div id="reindex-summary-box" class="summary-box hidden">
-        <div class="summary-icon">✨</div>
-        <div class="summary-content">
-          <div class="summary-title">전처리 및 재색인이 완료되었습니다!</div>
-          <div id="summary-metrics" class="summary-metrics"></div>
-        </div>
-      </div>
-
-      <!-- 실시간 터미널 로그 콘솔 -->
-      <div class="terminal-card">
-        <div class="terminal-head">
-          <div class="terminal-title">
-            <span class="terminal-dot red"></span>
-            <span class="terminal-dot yellow"></span>
-            <span class="terminal-dot green"></span>
-            <span class="terminal-name">실시간 처리 콘솔 (Live Pipeline Logs)</span>
-          </div>
-          <div class="terminal-actions">
-            <span id="terminal-status-badge" class="badge badge-idle">대기 중</span>
-            <button id="btn-clear-logs" class="btn-icon-link" title="로그 지우기">🗑️ 지우기</button>
-            <button id="btn-copy-logs" class="btn-icon-link" title="로그 복사">📋 복사</button>
-          </div>
-        </div>
-        <div id="terminal-body" class="terminal-body">
-          <div class="terminal-line muted">시스템 준비 완료. 'RAG 전처리 및 재색인 시작' 버튼을 누르면 실시간 로그가 여기에 출력됩니다.</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== RAG 근거 문서 관리 (업로드 / 목록 / 삭제) ==================== -->
-    <section class="admin-section">
-      <div class="section-head">
-        <div>
-          <h2 class="section-title">📂 RAG 근거 문서 관리 (Documents)</h2>
-          <p class="section-desc">학교 유무선 장애상담 챗봇의 검색 근거가 되는 PDF 매뉴얼 및 지침서 문서들입니다.</p>
-        </div>
-        <div class="table-search-box">
-          <input type="text" id="doc-search" placeholder="문서명 검색…" />
-          <button id="btn-refresh-docs" class="btn btn-secondary btn-sm" title="새로고침">🔄 새로고침</button>
-        </div>
-      </div>
-
-      <!-- 드래그 앤 드롭 업로드 영역 -->
-      <div id="dropzone" class="dropzone">
-        <input type="file" id="file-input" multiple accept=".pdf,.xlsx,.txt" class="file-input-hidden" />
-        <div class="dropzone-inner">
-          <div class="dropzone-icon">📤</div>
-          <div class="dropzone-text">
-            <b>여기에 PDF 파일을 드래그하여 놓거나</b> 클릭하여 업로드하세요
-          </div>
-          <div class="dropzone-sub">
-            학교 운영 가이드라인, 매뉴얼 등 RAG 검색 근거로 사용할 PDF 문서를 등록할 수 있습니다.
-          </div>
-        </div>
-        <div id="upload-progress-list" class="upload-progress-list"></div>
-      </div>
-
-      <!-- 문서 목록 테이블 -->
+      <!-- FAQ 목록 테이블 -->
       <div class="table-container">
-        <table class="doc-table">
+        <table class="faq-table">
           <thead>
             <tr>
-              <th>파일명 / 경로</th>
-              <th style="width: 110px;">파일 크기</th>
-              <th style="width: 120px;">페이지 수</th>
-              <th style="width: 130px;">파싱 상태</th>
-              <th style="width: 170px;">최종 수정일</th>
-              <th style="width: 90px; text-align: center;">관리</th>
+              <th style="width: 100px;">ID</th>
+              <th style="width: 110px;">분류(시트)</th>
+              <th style="width: 130px;">장애 유형</th>
+              <th>질문 및 정규화 질의</th>
+              <th>답변 요약</th>
+              <th style="width: 130px; text-align: center;">관리</th>
             </tr>
           </thead>
-          <tbody id="doc-tbody">
+          <tbody id="faq-tbody">
             <tr>
-              <td colspan="6" class="text-center muted" style="padding: 2.5rem;">문서 목록을 불러오는 중…</td>
+              <td colspan="6" class="text-center muted" style="padding: 2.5rem;">FAQ 데이터를 불러오는 중…</td>
             </tr>
           </tbody>
         </table>
       </div>
-    </section>
+
+      <!-- 페이지네이션 컨트롤러 -->
+      <div class="pagination-container" id="faq-pagination">
+        <div id="faq-page-info">0건 중 0 - 0건 표시</div>
+        <div class="pagination-buttons" id="faq-pagination-buttons">
+          <!-- 페이지네이션 버튼 동적 렌더링 -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== [탭 2] RAG 문서 관리 & 5단계 재색인 섹션 ==================== -->
+    <div id="tab-rag" class="tab-pane">
+      <!-- 통계 대시보드 카드 -->
+      <section class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon-wrapper blue">📄</div>
+          <div class="stat-info">
+            <div class="stat-label">등록 원본 문서</div>
+            <div id="stat-docs" class="stat-value">-</div>
+            <div id="stat-raw-size" class="stat-sub">용량: -</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon-wrapper purple">📑</div>
+          <div class="stat-info">
+            <div class="stat-label">총 문서 페이지</div>
+            <div id="stat-pages" class="stat-value">-</div>
+            <div class="stat-sub">PDF 파싱 기준</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon-wrapper emerald">🧩</div>
+          <div class="stat-info">
+            <div class="stat-label">활성 색인 청크</div>
+            <div id="stat-chunks" class="stat-value">-</div>
+            <div id="stat-index-pages" class="stat-sub">색인 페이지: -</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon-wrapper amber">🧠</div>
+          <div class="stat-info">
+            <div class="stat-label">임베딩 모델</div>
+            <div id="stat-backend" class="stat-value">embeddinggemma</div>
+            <div id="stat-index-time" class="stat-sub">최근 갱신: -</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 사전 청킹 & 재색인 파이프라인 콘솔 -->
+      <section class="admin-section reindex-section">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">⚡ 사전 청킹 & 재색인 파이프라인 (Pre-processing & Re-index)</h2>
+            <p class="section-desc">
+              문서를 추가하거나 수정한 후 아래 버튼을 누르면, 백그라운드에서 <b>PDF 파싱 → 청크 분할 → 위생 정제 → 임베딩 생성 → 색인 원자적 교체 및 엔진 핫리로드</b>가 실행됩니다.
+            </p>
+          </div>
+          <div class="reindex-cta-group">
+            <label class="checkbox-label" title="기존 파싱 캐시를 무시하고 모든 문서를 처음부터 다시 파싱합니다.">
+              <input type="checkbox" id="chk-force" />
+              <span>강제 전체 재파싱 (Force)</span>
+            </label>
+            <button id="btn-reindex" class="btn btn-primary btn-lg">
+              <span class="btn-spinner hidden" id="reindex-spinner"></span>
+              <span class="btn-icon">🚀</span>
+              <span id="btn-reindex-text">RAG 전처리 및 재색인 시작</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 5단계 진행률 스테퍼 -->
+        <div class="stepper-wrapper">
+          <div class="progress-bar-container">
+            <div id="progress-bar-fill" class="progress-bar-fill" style="width: 0%;"></div>
+          </div>
+          <div class="stepper-steps">
+            <div class="step-item" id="step-scan">
+              <div class="step-bubble">1</div>
+              <div class="step-title">문서 스캔</div>
+            </div>
+            <div class="step-item" id="step-parse">
+              <div class="step-bubble">2</div>
+              <div class="step-title">PDF 파싱</div>
+            </div>
+            <div class="step-item" id="step-chunk">
+              <div class="step-bubble">3</div>
+              <div class="step-title">청킹 & 정제</div>
+            </div>
+            <div class="step-item" id="step-embed">
+              <div class="step-bubble">4</div>
+              <div class="step-title">임베딩 생성</div>
+            </div>
+            <div class="step-item" id="step-promote">
+              <div class="step-bubble">5</div>
+              <div class="step-title">색인 배포 & 갱신</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 요약 결과 카드 -->
+        <div id="reindex-summary-box" class="summary-box hidden">
+          <div class="summary-icon">✨</div>
+          <div class="summary-content">
+            <div class="summary-title">전처리 및 재색인이 완료되었습니다!</div>
+            <div id="summary-metrics" class="summary-metrics"></div>
+          </div>
+        </div>
+
+        <!-- 실시간 터미널 로그 콘솔 -->
+        <div class="terminal-card">
+          <div class="terminal-head">
+            <div class="terminal-title">
+              <span class="terminal-dot red"></span>
+              <span class="terminal-dot yellow"></span>
+              <span class="terminal-dot green"></span>
+              <span class="terminal-name">실시간 처리 콘솔 (Live Pipeline Logs)</span>
+            </div>
+            <div class="terminal-actions">
+              <span id="terminal-status-badge" class="badge badge-idle">대기 중</span>
+              <button id="btn-clear-logs" class="btn-icon-link" title="로그 지우기">🗑️ 지우기</button>
+              <button id="btn-copy-logs" class="btn-icon-link" title="로그 복사">📋 복사</button>
+            </div>
+          </div>
+          <div id="terminal-body" class="terminal-body">
+            <div class="terminal-line muted">시스템 준비 완료. 'RAG 전처리 및 재색인 시작' 버튼을 누르면 실시간 로그가 여기에 출력됩니다.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RAG 근거 문서 관리 (업로드 / 목록 / 이름수정 / 삭제) -->
+      <section class="admin-section">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">📂 RAG 근거 문서 관리 (Documents)</h2>
+            <p class="section-desc">학교 유무선 장애상담 챗봇의 검색 근거가 되는 PDF 매뉴얼 및 지침서 문서들입니다.</p>
+          </div>
+          <div class="table-search-box">
+            <input type="text" id="doc-search" placeholder="문서명 검색…" />
+            <button id="btn-refresh-docs" class="btn btn-secondary btn-sm" title="새로고침">🔄 새로고침</button>
+          </div>
+        </div>
+
+        <!-- 드래그 앤 드롭 업로드 영역 -->
+        <div id="dropzone" class="dropzone">
+          <input type="file" id="file-input" multiple accept=".pdf,.xlsx,.txt" class="file-input-hidden" />
+          <div class="dropzone-inner">
+            <div class="dropzone-icon">📤</div>
+            <div class="dropzone-text">
+              <b>여기에 PDF 파일을 드래그하여 놓거나</b> 클릭하여 업로드하세요
+            </div>
+            <div class="dropzone-sub">
+              학교 운영 가이드라인, 매뉴얼 등 RAG 검색 근거로 사용할 PDF 문서를 등록할 수 있습니다.
+            </div>
+          </div>
+          <div id="upload-progress-list" class="upload-progress-list"></div>
+        </div>
+
+        <!-- 문서 목록 테이블 -->
+        <div class="table-container">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th>파일명 / 지능형 메타 요약</th>
+                <th style="width: 100px;">파일 크기</th>
+                <th style="width: 90px;">페이지 수</th>
+                <th style="width: 120px;">메타데이터</th>
+                <th style="width: 150px;">최종 수정일</th>
+                <th style="width: 220px; text-align: center;">관리</th>
+              </tr>
+            </thead>
+            <tbody id="doc-tbody">
+              <tr>
+                <td colspan="6" class="text-center muted" style="padding: 2.5rem;">문서 목록을 불러오는 중…</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <!-- ==================== [탭 3] 시나리오 에디터 (버튼형 장애 분기 트리 관리) ==================== -->
+    <div id="tab-scenario" class="tab-pane">
+      <!-- 시나리오 상단 툴바 및 무결성 상태바 -->
+      <div class="scenario-toolbar-card">
+        <div class="scenario-toolbar-info">
+          <div class="scenario-badge-group">
+            <h2 class="scenario-title">🌳 장애 문제 버튼형 시나리오 트리 관리자</h2>
+            <span id="scenario-tree-stats" class="badge badge-info">총 0개 노드</span>
+          </div>
+          <p class="scenario-desc">
+            사용자가 버튼을 눌러 장애 원인을 좁혀가는 분기 트리를 시각적으로 편집하고 챗봇 런타임에 즉시 핫리로드합니다.
+          </p>
+        </div>
+
+        <div class="scenario-toolbar-actions">
+          <div id="scenario-integrity-badge" class="integrity-badge valid">
+            <span class="dot"></span>
+            <span class="text" id="scenario-integrity-text">트리 무결성 정상</span>
+          </div>
+          <button id="btn-validate-scenario" class="btn btn-secondary btn-sm" title="트리 연결 무결성 재검사">
+            <span>🔍 무결성 검증</span>
+          </button>
+          <button id="btn-create-scenario-node" class="btn btn-primary btn-sm">
+            <span class="btn-icon">➕</span>
+            <span>새 노드 생성</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 무결성 경고/에러 배너 -->
+      <div id="scenario-validation-alert" class="validation-alert hidden"></div>
+
+      <!-- 2열 메인 레이아웃 (좌: 계층 트리 뷰 / 우: 노드 상세 폼) -->
+      <div class="scenario-workspace-grid">
+        <!-- 좌측: 시나리오 노드 탐색기 -->
+        <aside class="scenario-tree-panel">
+          <div class="panel-header">
+            <div class="panel-title-row">
+              <span class="panel-title">노드 네비게이터</span>
+              <span id="scenario-node-count" class="counter-badge">0</span>
+            </div>
+            <div class="tree-filter-box">
+              <input type="text" id="scenario-tree-search" class="tree-search-input" placeholder="노드 ID / 안내문구 검색…" />
+            </div>
+          </div>
+          <div class="scenario-tree-scroll" id="scenario-tree-container">
+            <!-- 계층형 노드 아이템들이 JS로 렌더링됨 -->
+          </div>
+        </aside>
+
+        <!-- 우측: 선택된 노드 상세 에디터 -->
+        <section class="scenario-editor-panel">
+          <div id="scenario-editor-empty" class="editor-empty-state">
+            <div class="empty-icon">👈</div>
+            <h3>편집할 시나리오 노드를 선택하세요</h3>
+            <p>좌측 트리에서 노드를 클릭하거나, 상단의 <b>[새 노드 생성]</b> 버튼을 눌러 신규 분기점을 추가할 수 있습니다.</p>
+          </div>
+
+          <form id="scenario-node-form" class="scenario-node-form hidden">
+            <div class="editor-header">
+              <div class="node-title-group">
+                <span class="node-type-pill" id="form-node-type-badge">질문 분기</span>
+                <h3 class="node-id-display" id="form-node-id-display">node_id</h3>
+              </div>
+              <div class="editor-header-actions">
+                <button type="button" class="btn btn-danger btn-sm" id="btn-delete-scenario-node">
+                  <span>🗑️ 노드 삭제</span>
+                </button>
+                <button type="submit" class="btn btn-primary btn-sm" id="btn-save-scenario-node">
+                  <span class="btn-icon">💾</span>
+                  <span>노드 저장 및 즉시 반영</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="editor-body">
+              <input type="hidden" id="form-node-id" />
+
+              <div class="form-row-2">
+                <div class="form-group">
+                  <label for="form-scenario-id">시나리오 대분류 (Scenario ID)</label>
+                  <input type="text" id="form-scenario-id" placeholder="예: schoolnet, internal_net, wifi 등" required />
+                </div>
+                <div class="form-group">
+                  <label for="form-node-type">노드 유형 (Node Type)</label>
+                  <select id="form-node-type" required>
+                    <option value="question">질문 분기 노드 (하위 버튼 선택지 제공)</option>
+                    <option value="terminal">종단 솔루션 노드 (최종 해결 가이드 제공)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="form-node-text">안내 문구 / 질문 내용 (Text)</label>
+                <textarea id="form-node-text" rows="3" placeholder="사용자에게 보여줄 질문 또는 상황 안내 문구를 입력하세요."></textarea>
+              </div>
+
+              <!-- 분기 질문(question) 노드용 옵션 버튼 관리 영역 -->
+              <div id="section-branch-options" class="node-sub-section">
+                <div class="sub-section-head">
+                  <div>
+                    <h4 class="sub-title">🔘 하위 분기 버튼 옵션 (Options)</h4>
+                    <p class="sub-desc">사용자가 누를 선택지 버튼 라벨과 각 버튼 클릭 시 이동할 다음 노드 ID를 지정합니다.</p>
+                  </div>
+                  <button type="button" class="btn btn-secondary btn-sm" id="btn-add-option-row">
+                    <span>➕ 선택지 버튼 추가</span>
+                  </button>
+                </div>
+
+                <div class="options-table-wrapper">
+                  <table class="options-table">
+                    <thead>
+                      <tr>
+                        <th style="width: 140px;">버튼 ID</th>
+                        <th>버튼 표시 문구 (Label)</th>
+                        <th style="width: 200px;">이동할 다음 노드 ID</th>
+                        <th style="width: 60px; text-align: center;">삭제</th>
+                      </tr>
+                    </thead>
+                    <tbody id="options-tbody">
+                      <!-- 버튼 행들이 동적으로 추가됨 -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- 종단 솔루션(terminal) 노드용 답변 설정 영역 -->
+              <div id="section-terminal-answer" class="node-sub-section hidden">
+                <div class="sub-section-head">
+                  <div>
+                    <h4 class="sub-title">🎯 최종 솔루션 답변 설정 (Terminal Answer)</h4>
+                    <p class="sub-desc">이 분기의 마지막 단계에서 사용자에게 전달할 구체적인 조치 방법 또는 연계 FAQ를 지정합니다.</p>
+                  </div>
+                </div>
+
+                <div class="form-row-2">
+                  <div class="form-group">
+                    <label for="form-answer-source">답변 출처 유형 (Source Type)</label>
+                    <select id="form-answer-source">
+                      <option value="scenario_ppt">직접 작성 조치 가이드 (scenario_ppt)</option>
+                      <option value="faq_ref">기존 FAQ 참조 (faq_ref)</option>
+                    </select>
+                  </div>
+                  <div class="form-group" id="group-answer-ref">
+                    <label for="form-answer-ref">참조할 FAQ ID (answer_ref)</label>
+                    <input type="text" id="form-answer-ref" placeholder="예: faq_003" />
+                  </div>
+                </div>
+
+                <div class="form-group" id="group-answer-text">
+                  <label for="form-answer-text">해결 솔루션 안내문 (Answer Text)</label>
+                  <textarea id="form-answer-text" rows="5" placeholder="장애 해결을 위한 구체적인 단계별 점검 수칙 및 조치 방안을 상세히 작성하세요."></textarea>
+                </div>
+              </div>
+            </div>
+          </form>
+        </section>
+      </div>
+    </div>
+
+    <!-- ==================== [탭 3] 웹 검색 실시간 보완 (Google Search Grounding) ==================== -->
+    <div id="tab-websearch" class="tab-pane">
+      <section class="admin-section websearch-section" id="websearch-section">
+        <div class="websearch-card" id="websearch-card">
+          <div class="websearch-info">
+            <div class="websearch-header">
+              <div class="websearch-icon-wrapper">🌐</div>
+              <div>
+                <div class="websearch-title-row">
+                  <h2 class="websearch-title">웹 검색 실시간 보완 (Google Search Grounding)</h2>
+                  <span id="websearch-badge" class="badge badge-idle">확인 중…</span>
+                </div>
+                <p class="websearch-desc">
+                  내부 문서(RAG) 및 매뉴얼로 답변을 찾지 못했을 때(최종 보루), Gemini Grounding을 통해 실시간 Google 웹 검색을 수행하여 신뢰성 있는 최신 정보로 답변을 보완합니다.
+                </p>
+              </div>
+            </div>
+            <div class="websearch-meta-grid">
+              <div class="websearch-meta-item">
+                <span class="meta-label">검색 모델</span>
+                <span id="websearch-model" class="meta-val">gemini-3.1-flash-lite</span>
+              </div>
+              <div class="websearch-meta-item">
+                <span class="meta-label">탐색 범위</span>
+                <span id="websearch-scope" class="meta-val">in_domain_unresolved</span>
+              </div>
+              <div class="websearch-meta-item">
+                <span class="meta-label">일일 호출 한도</span>
+                <span id="websearch-budget" class="meta-val">100회</span>
+              </div>
+              <div class="websearch-meta-item">
+                <span class="meta-label">오늘 사용량 / 비용</span>
+                <span id="websearch-usage" class="meta-val">0회 / $0.00</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="websearch-toggle-box">
+            <div class="toggle-container">
+              <span class="toggle-status-label" id="websearch-toggle-label">OFF</span>
+              <label class="toggle-switch" for="toggle-web-search" title="웹 검색 기능 On/Off 전환">
+                <input type="checkbox" id="toggle-web-search" />
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <div class="toggle-help-text" id="toggle-help-text">토글 시 즉시 반영 및 저장</div>
+          </div>
+        </div>
+      </section>
+    </div>
   </main>
+
+  <!-- ==================== FAQ 등록 / 수정 모달 ==================== -->
+  <div class="modal-overlay hidden" id="faq-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title" id="faq-modal-title">➕ 신규 FAQ 등록</h3>
+        <button class="modal-close" id="btn-faq-modal-close" title="닫기">&times;</button>
+      </div>
+      <form id="faq-form">
+        <div class="modal-body">
+          <input type="hidden" id="faq-form-id" />
+          
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="modal-field">
+              <label for="faq-form-sheet">분류 (시트) <span style="color: var(--rose);">*</span></label>
+              <select id="faq-form-sheet" required>
+                <option value="스쿨넷">스쿨넷</option>
+                <option value="학내망">학내망</option>
+                <option value="무선망">무선망</option>
+                <option value="유무선통합관제">유무선통합관제</option>
+                <option value="기타">기타</option>
+              </select>
+            </div>
+            <div class="modal-field">
+              <label for="faq-form-fault">장애 유형</label>
+              <input type="text" id="faq-form-fault" placeholder="예: 회선 불통, AP 전원 등" />
+            </div>
+          </div>
+
+          <div class="modal-field">
+            <label for="faq-form-question">사용자 질문 원문 <span style="color: var(--rose);">*</span></label>
+            <textarea id="faq-form-question" required placeholder="예: 스쿨넷이 뭐예요? 와이파이랑 같은 건가요?"></textarea>
+          </div>
+
+          <div class="modal-field">
+            <label for="faq-form-qnorm">정규화 질문 (옵션)</label>
+            <input type="text" id="faq-form-qnorm" placeholder="비워두면 특수문자 제거 및 자동 정규화됩니다." />
+            <span class="field-desc">챗봇 검색 매칭 정확도를 높이기 위한 정제된 질문 형태입니다.</span>
+          </div>
+
+          <div class="modal-field">
+            <label for="faq-form-answer">답변 내용 <span style="color: var(--rose);">*</span></label>
+            <textarea id="faq-form-answer" required style="min-height: 120px;" placeholder="사용자에게 전달할 친절하고 정확한 안내 답변을 입력하세요."></textarea>
+          </div>
+
+          <div class="modal-field">
+            <label for="faq-form-source">근거 문서 및 출처 (선택)</label>
+            <input type="text" id="faq-form-source" placeholder="예: 23년 학교 유무선 운영관리 안내서 18쪽" />
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="btn-faq-modal-cancel">취소</button>
+          <button type="submit" class="btn btn-primary" id="btn-faq-modal-save">
+            <span class="btn-icon">💾</span>
+            <span>저장 및 즉시 반영</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== RAG 문서 이름 변경(Rename) 모달 ==================== -->
+  <div class="modal-overlay hidden" id="doc-rename-modal">
+    <div class="modal-card" style="max-width: 480px;">
+      <div class="modal-header">
+        <h3 class="modal-title">✏️ 문서 파일명 수정 (Rename)</h3>
+        <button class="modal-close" id="btn-rename-close" title="닫기">&times;</button>
+      </div>
+      <form id="doc-rename-form">
+        <div class="modal-body">
+          <input type="hidden" id="rename-old-path" />
+          <div class="modal-field">
+            <label>현재 파일명</label>
+            <div id="rename-current-name" style="padding: 0.65rem 0.85rem; background: rgba(0,0,0,0.3); border-radius: 0.5rem; font-family: var(--font-mono); font-size: 0.85rem; color: #94a3b8; word-break: break-all;">-</div>
+          </div>
+          <div class="modal-field">
+            <label for="rename-new-name">새 파일명 <span style="color: var(--rose);">*</span></label>
+            <input type="text" id="rename-new-name" required placeholder="변경할 새 파일명을 입력하세요" />
+            <span class="field-desc">확장자를 생략하면 기존 확장자(.pdf 등)가 자동 유지됩니다.</span>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="btn-rename-cancel">취소</button>
+          <button type="submit" class="btn btn-primary" id="btn-rename-save">
+            <span>변경 저장</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== 신규 시나리오 노드 생성 모달 ==================== -->
+  <div class="modal-overlay hidden" id="scenario-create-modal">
+    <div class="modal-card" style="max-width: 500px;">
+      <div class="modal-header">
+        <h3 class="modal-title">➕ 신규 시나리오 노드 생성</h3>
+        <button class="modal-close" id="btn-scenario-modal-close" title="닫기">&times;</button>
+      </div>
+      <form id="scenario-create-form">
+        <div class="modal-body">
+          <div class="modal-field">
+            <label for="modal-new-node-id">노드 고유 ID <span style="color: var(--rose);">*</span></label>
+            <input type="text" id="modal-new-node-id" required placeholder="예: schoolnet.speed_issue" />
+            <span class="field-desc">영문, 숫자, 마침표, 언더스코어 권장 (예: wifi.ap_power)</span>
+          </div>
+
+          <div class="modal-field">
+            <label for="modal-new-scenario-id">시나리오 대분류 (Scenario ID)</label>
+            <input type="text" id="modal-new-scenario-id" placeholder="비워두면 ID 앞자리 자동 사용 (예: schoolnet)" />
+          </div>
+
+          <div class="modal-field">
+            <label for="modal-new-node-type">노드 유형</label>
+            <select id="modal-new-node-type">
+              <option value="question">질문 분기 노드 (하위 버튼 선택지 제공)</option>
+              <option value="terminal">종단 솔루션 노드 (최종 해결 가이드 제공)</option>
+            </select>
+          </div>
+
+          <div class="modal-field">
+            <label for="modal-new-node-text">질문 / 상황 설명 문구</label>
+            <textarea id="modal-new-node-text" rows="3" placeholder="예: 인터넷 접속이 전혀 안 되시나요, 아니면 특정 사이트만 느린가요?"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="btn-scenario-modal-cancel">취소</button>
+          <button type="submit" class="btn btn-primary" id="btn-scenario-modal-submit">
+            <span>생성 및 편집 열기</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== RAG 문서 메타데이터 사이드 드로어 ==================== -->
+  <div class="drawer-overlay hidden" id="meta-drawer-overlay">
+    <aside class="drawer-panel" id="meta-drawer">
+      <div class="drawer-header">
+        <div class="drawer-title-group">
+          <span class="drawer-badge">문서 지능화 메타데이터</span>
+          <h3 class="drawer-title" id="drawer-doc-name">문서명.pdf</h3>
+          <div class="drawer-meta-info" id="drawer-meta-info">경로: - | 총 - 페이지</div>
+        </div>
+        <button class="drawer-close" id="btn-drawer-close" title="닫기">&times;</button>
+      </div>
+
+      <div class="drawer-body">
+        <!-- AI 자동 추출 액션 배너 -->
+        <div class="drawer-action-banner">
+          <div class="banner-text">
+            <b>🤖 Gemini Flash 지능형 메타데이터 추출</b>
+            <p>PDF 앞부분 텍스트를 고속 분석하여 3줄 요약문, 핵심 키워드 5개, 발행기관, 적용 대상을 자동 추출합니다.</p>
+          </div>
+          <button type="button" class="btn btn-primary btn-sm" id="btn-ai-extract-meta">
+            <span class="btn-spinner hidden" id="meta-extract-spinner"></span>
+            <span class="btn-icon">✨</span>
+            <span id="btn-ai-extract-text">AI 메타데이터 자동 추출</span>
+          </button>
+        </div>
+
+        <form id="doc-meta-form">
+          <input type="hidden" id="meta-rel-path" />
+
+          <div class="meta-field-card">
+            <label for="meta-input-title" class="field-label">
+              <span>📌 문서 공식 명칭 (Title) <span style="color: var(--rose);">*</span></span>
+              <span class="field-hint">공식 지침서/매뉴얼 제목</span>
+            </label>
+            <input type="text" id="meta-input-title" class="form-input" required />
+          </div>
+
+          <div class="meta-field-card">
+            <label for="meta-input-summary" class="field-label">
+              <span>📝 3줄 핵심 요약문 (3-line Executive Summary) <span style="color: var(--rose);">*</span></span>
+              <span class="field-hint">문서의 핵심 취지와 처리 기준 요약</span>
+            </label>
+            <textarea id="meta-input-summary" class="form-textarea" rows="4" required></textarea>
+          </div>
+
+          <div class="meta-field-card">
+            <label for="meta-input-keywords" class="field-label">
+              <span>🏷️ 핵심 키워드 5개 (Keywords)</span>
+              <span class="field-hint">쉼표(,)로 구분하여 입력</span>
+            </label>
+            <input type="text" id="meta-input-keywords" class="form-input" placeholder="스쿨넷, 보안게이트웨이, 학내망, 트래픽, 유지보수" />
+            <div id="meta-keyword-tags" class="keyword-tags-wrapper"></div>
+          </div>
+
+          <div class="meta-field-card">
+            <label for="meta-input-publisher" class="field-label">
+              <span>🏛️ 발행 기관 (Publisher)</span>
+              <span class="field-hint">문서를 제정/배포한 주체 기관</span>
+            </label>
+            <input type="text" id="meta-input-publisher" class="form-input" placeholder="예: 한국지능정보사회진흥원, 교육부, 시도교육청" />
+          </div>
+
+          <div class="meta-field-card">
+            <div class="field-label">
+              <span>🎯 적용 대상 및 범위 (Target Scope)</span>
+              <span class="field-hint">지침이 적용되는 구체적 범위 (쉼표 구분)</span>
+            </div>
+            
+            <div class="sub-field-group">
+              <label for="meta-scope-roles">👤 주체 및 담당자 역할 (Roles)</label>
+              <input type="text" id="meta-scope-roles" class="form-input" placeholder="예: 학교 정보담당교사, 행정실장, 교육청 관제요원" />
+            </div>
+
+            <div class="sub-field-group">
+              <label for="meta-scope-equipment">💻 대상 장비 및 시스템 (Equipment)</label>
+              <input type="text" id="meta-scope-equipment" class="form-input" placeholder="예: 스쿨넷 라우터, PoE 스위치, AP 컨트롤러" />
+            </div>
+
+            <div class="sub-field-group">
+              <label for="meta-scope-spaces">📍 적용 공간 및 장소 (Spaces)</label>
+              <input type="text" id="meta-scope-spaces" class="form-input" placeholder="예: 교무실, 컴퓨터실, 스마트교실, 강당" />
+            </div>
+          </div>
+
+          <div class="drawer-footer">
+            <div class="drawer-footer-meta">
+              <span id="drawer-extracted-at" class="muted-stamp">추출 일시: -</span>
+            </div>
+            <div class="drawer-footer-buttons">
+              <button type="button" class="btn btn-secondary" id="btn-drawer-cancel">닫기</button>
+              <button type="submit" class="btn btn-primary" id="btn-drawer-save">
+                <span class="btn-icon">💾</span>
+                <span>메타데이터 저장</span>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </aside>
+  </div>
 
   <!-- 토스트 메시지 -->
   <div id="toast" class="toast hidden"></div>

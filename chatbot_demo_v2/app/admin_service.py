@@ -208,6 +208,51 @@ class DocumentManager:
 
         return True
 
+    def rename_document(self, old_rel_path: str, new_name: str) -> dict[str, Any]:
+        """문서 파일 이름 변경 및 파싱 캐시 디렉터리 동기화."""
+        clean_old = os.path.normpath(old_rel_path).lstrip(r"\/").replace("..", "")
+        old_target = (self.docs_dir / clean_old).resolve()
+        if not str(old_target).startswith(str(self.docs_dir.resolve())) or not old_target.is_file():
+            raise ValueError("수정할 대상 문서가 존재하지 않습니다.")
+
+        clean_new_name = os.path.basename(new_name).strip()
+        safe_new_name = re.sub(r'[\\/:*?"<>|]', '_', clean_new_name)
+        if not safe_new_name:
+            raise ValueError("유효하지 않은 새 파일명입니다.")
+        # 확장자가 없으면 기존 확장자 보존
+        if not Path(safe_new_name).suffix and old_target.suffix:
+            safe_new_name += old_target.suffix
+
+        new_target = old_target.parent / safe_new_name
+        if new_target.resolve() != old_target and new_target.exists():
+            raise ValueError("이미 동일한 이름의 파일이 존재합니다.")
+
+        old_slug = doc_slug(clean_old)
+        old_target.rename(new_target)
+
+        new_rel_path = str(new_target.relative_to(self.docs_dir)).replace("\\", "/")
+        new_slug = doc_slug(new_rel_path)
+
+        # 파싱 캐시 디렉터리 동기화
+        old_cache = self.parsed_dir / old_slug
+        new_cache = self.parsed_dir / new_slug
+        if old_cache.is_dir() and old_slug != new_slug:
+            try:
+                if new_cache.exists():
+                    shutil.rmtree(new_cache)
+                old_cache.rename(new_cache)
+                logger.info("파싱 캐시 이름변경 완료 [%s -> %s]", old_slug, new_slug)
+            except Exception as e:
+                logger.warning("파싱 캐시 이름변경 실패 [%s -> %s]: %s", old_slug, new_slug, e)
+
+        stat = new_target.stat()
+        return {
+            "old_rel_path": clean_old,
+            "new_rel_path": new_rel_path,
+            "name": safe_new_name,
+            "size_formatted": _format_size(stat.st_size),
+        }
+
 
 class _LogCapturingHandler(logging.Handler):
     """실시간 로그를 캡처하여 ReindexRunner 버퍼에 전송하는 핸들러."""

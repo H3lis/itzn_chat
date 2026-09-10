@@ -94,6 +94,9 @@ class AppContext:
     faq_links: dict = None   # faq_id → [{doc_slug, document_name, pages}] (근거 이미지용)
     doc_manager: Any = None  # DocumentManager (문서 업로드/삭제/조회)
     reindex_runner: Any = None  # ReindexRunner (재색인 파이프라인 백그라운드 러너)
+    faq_manager: Any = None  # FaqManager (FAQ CRUD 및 런타임 동기화)
+    scenario_manager: Any = None  # ScenarioManager (시나리오 트리 에디터 및 무결성 검증)
+    metadata_manager: Any = None  # DocumentMetadataManager (문서 메타데이터 자동 추출 및 관리)
 
 
 def build_context(
@@ -159,9 +162,15 @@ def build_context(
         faq_links = {}
 
     from .admin_service import DocumentManager, ReindexRunner
+    from .faq_service import FaqManager
+    from .scenario_service import ScenarioManager
+    from .metadata_service import DocumentMetadataManager
 
     doc_manager = DocumentManager(settings)
     reindex_runner = ReindexRunner(settings, rag_adapter=rag_adapter)
+    faq_manager = FaqManager(settings)
+    scenario_manager = ScenarioManager(settings)
+    metadata_manager = DocumentMetadataManager(settings)
 
     ctx = AppContext(
         settings=settings,
@@ -178,6 +187,9 @@ def build_context(
         faq_links=faq_links,
         doc_manager=doc_manager,
         reindex_runner=reindex_runner,
+        faq_manager=faq_manager,
+        scenario_manager=scenario_manager,
+        metadata_manager=metadata_manager,
     )
     ctx.graph = build_graph(ctx, checkpointer=checkpointer)
     return ctx

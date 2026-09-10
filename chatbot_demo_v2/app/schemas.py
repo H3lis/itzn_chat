@@ -6,7 +6,7 @@ original_answer/faq_evidence/composed/grader_verdict.
 
 from __future__ import annotations
 
-from typing import Optional
+from typing import Any, Optional
 
 from pydantic import BaseModel, Field
 
@@ -107,4 +107,142 @@ class WebSearchStatusResponse(BaseModel):
     key_source: Optional[str] = None
     daily_budget: int = 100
     usage: Optional[dict] = None
+
+
+# ---------- 관리자 FAQ 스키마 ----------
+class FaqItem(BaseModel):
+    id: str
+    sheet: str
+    row: Optional[int] = None
+    no: Optional[int] = None
+    question_type: Optional[str] = None
+    fault_type: Optional[str] = None
+    question: str
+    question_normalized: Optional[str] = None
+    answer: str
+    source_files: list[str] = []
+
+
+class FaqCreateRequest(BaseModel):
+    id: Optional[str] = None
+    sheet: str
+    fault_type: Optional[str] = "일반"
+    question_type: Optional[str] = "일반질문"
+    question: str
+    question_normalized: Optional[str] = None
+    answer: str
+    source_files: list[str] = []
+
+
+class FaqUpdateRequest(BaseModel):
+    sheet: Optional[str] = None
+    fault_type: Optional[str] = None
+    question_type: Optional[str] = None
+    question: Optional[str] = None
+    question_normalized: Optional[str] = None
+    answer: Optional[str] = None
+    source_files: Optional[list[str]] = None
+
+
+class FaqListResponse(BaseModel):
+    items: list[FaqItem]
+    total: int
+    page: int
+    page_size: int
+    total_pages: int
+
+
+class FaqStatsResponse(BaseModel):
+    total_count: int
+    per_sheet: dict[str, int]
+    sheets: list[str]
+    fault_types: list[str]
+    last_modified: Optional[str] = None
+
+
+# ---------- 관리자 RAG 문서 Rename 스키마 ----------
+class DocRenameRequest(BaseModel):
+    old_rel_path: str
+    new_name: str
+
+
+# ---------- 관리자 시나리오 트리 스키마 ----------
+class ScenarioOptionItem(BaseModel):
+    option_id: str
+    label: str
+    next_node_id: str
+
+
+class ScenarioNodeSaveRequest(BaseModel):
+    scenario_id: Optional[str] = None
+    type: Optional[str] = "question"
+    text: Optional[str] = ""
+    options: list[ScenarioOptionItem] = []
+    answer: Optional[dict] = None
+    answer_text: Optional[str] = None
+
+
+class ScenarioNodeCreateRequest(BaseModel):
+    node_id: str
+    scenario_id: Optional[str] = None
+    type: str = "question"
+    text: Optional[str] = ""
+    options: list[ScenarioOptionItem] = []
+    answer: Optional[dict] = None
+    answer_text: Optional[str] = None
+
+
+class ScenarioTreeResponse(BaseModel):
+    root_node_id: str
+    total_nodes: int
+    groups: dict[str, list[str]]
+    nodes: dict[str, Any]
+    validation: dict[str, Any]
+
+
+class ScenarioValidationResponse(BaseModel):
+    is_valid: bool
+    errors: list[str]
+    warnings: list[str]
+    reachable_count: int
+    unreachable_count: int
+    unreachable_nodes: list[str]
+
+
+# ---------- 관리자 RAG 문서 메타데이터 스키마 ----------
+class DocMetadataScope(BaseModel):
+    roles: list[str] = []
+    equipment: list[str] = []
+    spaces: list[str] = []
+
+
+class DocMetadataItem(BaseModel):
+    doc_slug: Optional[str] = None
+    name: Optional[str] = None
+    rel_path: Optional[str] = None
+    title: str
+    summary: str
+    keywords: list[str] = []
+    publisher: Optional[str] = ""
+    target_scope: DocMetadataScope = DocMetadataScope()
+    page_count: Optional[int] = None
+    extracted_at: Optional[str] = None
+    method: Optional[str] = "gemini_flash"
+
+
+class DocMetadataUpdateRequest(BaseModel):
+    title: Optional[str] = None
+    summary: Optional[str] = None
+    keywords: Optional[list[str]] = None
+    publisher: Optional[str] = None
+    target_scope: Optional[dict] = None
+
+
+class DocMetadataExtractRequest(BaseModel):
+    force: bool = False
+
+
+ScenarioTreeResponse.model_rebuild()
+ScenarioValidationResponse.model_rebuild()
+DocMetadataItem.model_rebuild()
 
