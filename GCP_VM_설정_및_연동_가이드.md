@@ -576,8 +576,8 @@ python -c "import torch; print('CUDA 가용 여부:', torch.cuda.is_available())
 
 #### 1) GCP VM에서 서비스 백그라운드 실행
 ```bash
-source ~/itzn_chat/.venv/bin/activate
-cd ~/itzn_chat
+source ~/chatbot/.venv/bin/activate
+cd ~/chatbot
 
 # BGE Reranker 마이크로서비스 백그라운드 구동 (포트 8008)
 nohup python chatbot_demo_v2/scripts/serve_remote_reranker.py > reranker.log 2>&1 &
@@ -618,8 +618,8 @@ GEMINI_API_KEY=your_gemini_api_key_here
 
 #### 2) 챗봇 서버 백그라운드 실행
 ```bash
-source ~/itzn_chat/.venv/bin/activate
-cd ~/itzn_chat
+source ~/chatbot/.venv/bin/activate
+cd ~/chatbot
 
 # 8002 포트로 챗봇 전체 서빙 실행
 nohup python -m chatbot_demo_v2 --port 8002 > chatbot.log 2>&1 &
