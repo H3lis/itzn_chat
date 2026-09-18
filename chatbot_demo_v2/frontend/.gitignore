@@ -8,7 +8,7 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
-dist
+# dist (서버 무설치 서빙을 위해 Git 추적 허용)
 dist-ssr
 *.local
 
