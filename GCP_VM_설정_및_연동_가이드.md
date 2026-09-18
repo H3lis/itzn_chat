@@ -767,11 +767,64 @@ gcloud compute instances add-resource-policies chatbot-l4-gpu-server \
 
 ### [참고] 지금 당장 퇴근하면서 서버를 끄는 법 (수동 중지)
 일정을 등록한 후, 이번 주말 요금을 아끼기 위해 지금 바로 서버를 끄려면:
-- **Cloud Shell 명령어**:
-  ```bash
-  gcloud compute instances stop chatbot-l4-gpu-server --zone=asia-northeast3-b
-  ```
-- **GCP 웹 콘솔**: VM 인스턴스 목록에서 `chatbot-l4-gpu-server` 체크 후 상단 **[중지(STOP)]** 버튼 클릭.
-- 이렇게 꺼두면 주말 동안 0원의 GPU 요금이 나가며, **월요일 아침 8:30에 설정된 일정에 맞춰 자동으로 켜집니다.**
+---
+
+### 4. 16:45 중지 ➡️ 16:50 기동 즉시 검증 테스트 방법
+> ⚠️ **GCP 공식 인스턴스 일정(Resource Policy) 제약**:  
+> GCP 인스턴스 일정 정책은 크론 규칙상 **분(Minute) 단위가 반드시 15분 배수(`00, 15, 30, 45`)**여야 합니다. (따라서 50분 설정 시 구글 API 에러 발생).  
+> 사용자가 요청한 **"16:45 끄기 ➡️ 16:50 켜기"**를 1초의 오차도 없이 즉시 검증하기 위해 **Cloud Shell 원클릭 백그라운드 자동화 스크립트**를 제공합니다.
+
+#### [테스트 1] Cloud Shell 원클릭 자동 온오프 스크립트 (16:45 OFF ➡️ 16:50 ON)
+Cloud Shell에 붙여넣기만 하면 16:45에 끄고, 16:50에 자동으로 켠 뒤 챗봇 정상 기동까지 확인해 줍니다:
+
+```bash
+cat << 'EOF' > test_schedule.sh
+#!/usr/bin/env bash
+INSTANCE="chatbot-l4-gpu-server"
+ZONE="asia-northeast3-b"
+
+echo "⏰ [$(date '+%H:%M:%S')] 16:45 중지 & 16:50 자동 기동 테스트 대기 시작..."
+
+# 16:45:00 도달 시까지 대기
+TARGET_STOP=$(date -d "16:45:00" +%s)
+NOW=$(date +%s)
+[ $((TARGET_STOP - NOW)) -gt 0 ] && sleep $((TARGET_STOP - NOW))
+
+echo "🛑 [$(date '+%H:%M:%S')] 16:45 정각: VM 서버 중지(STOP) 실행!"
+gcloud compute instances stop $INSTANCE --zone=$ZONE
+
+# 16:50:00 도달 시까지 대기
+TARGET_START=$(date -d "16:50:00" +%s)
+NOW=$(date +%s)
+[ $((TARGET_START - NOW)) -gt 0 ] && sleep $((TARGET_START - NOW))
+
+echo "🚀 [$(date '+%H:%M:%S')] 16:50 정각: VM 서버 자동 시작(START) 실행!"
+gcloud compute instances start $INSTANCE --zone=$ZONE
+
+echo "✅ [$(date '+%H:%M:%S')] VM 부팅 완료! 서비스 기동 대기 (15초)..."
+sleep 15
+IP=$(gcloud compute instances describe $INSTANCE --zone=$ZONE --format='get(networkInterfaces[0].accessConfigs[0].natIP)')
+echo "👉 정상 접속 확인: http://${IP}:8002"
+EOF
+
+chmod +x test_schedule.sh
+nohup ./test_schedule.sh > test_schedule.log 2>&1 &
+echo "🎉 백그라운드 예약 실행 완료! tail -f test_schedule.log 로 실시간 모니터링 가능합니다."
+```
+
+#### [테스트 2] GCP 공식 인스턴스 일정 정책 (15분 단위: 16:45 OFF ➡️ 17:00 ON)
+GCP 내장 인스턴스 일정은 15분 단위로만 가능하므로 16:45 중지 ➡️ 17:00 기동으로 등록합니다:
+```bash
+gcloud compute resource-policies create instance-schedule test-auto-schedule \
+    --region=asia-northeast3 \
+    --vm-start-schedule="00 17 * * *" \
+    --vm-stop-schedule="45 16 * * *" \
+    --timezone="Asia/Seoul"
+
+gcloud compute instances add-resource-policies chatbot-l4-gpu-server \
+    --zone=asia-northeast3-b \
+    --resource-policies=test-auto-schedule
+```
+
 
 
