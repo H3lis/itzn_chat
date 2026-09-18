@@ -700,3 +700,78 @@ gcloud compute addresses create chatbot-fixed-ip \
 gcloud compute addresses delete chatbot-fixed-ip --region=asia-northeast3 --quiet
 ```
 
+---
+
+## 📌 8. VM 자동 시작/중지 스케줄링 (월요일 자동 기동 & 주말 자동 정지)
+
+퇴근 후나 주말 동안 비싼 GPU 비용(시간당 약 1,100원, 주말 48시간 방치 시 약 5~6만 원)이 나가는 것을 막기 위해, **GCP의 '인스턴스 일정(Instance Schedule)' 기능**을 사용하여 **월요일 출근 시간에 서버가 자동으로 켜지도록** 설정할 수 있습니다.
+
+> 💡 **부팅 후 자동 실행 보장**:  
+> 이미 `chatbot.service`, `ollama.service`, `reranker.service`가 systemd 서비스로 등록(`systemctl enable`)되어 있으므로, **VM 전원이 켜지면 사람이 SSH로 접속하지 않아도 챗봇, AI 모델, 웹 UI가 100% 전자동으로 실행**됩니다!
+
+---
+
+### [방법 A] Cloud Shell 명령어 스크립트로 30초 설정 (추천 ⭐)
+
+GCP Cloud Shell에서 아래 3단계를 순서대로 실행하면 끝납니다:
+
+#### 1단계: 인스턴스 일정 정책 생성 (월~금 아침 8:30 시작, 저녁 19:00 정지 / 서울 시간 기준)
+```bash
+# 평일(월~금) 오전 8:30 자동 시작, 오후 19:00 자동 중지 (주말엔 계속 꺼짐)
+gcloud compute resource-policies create instance-schedule weekday-office-hours \
+    --region=asia-northeast3 \
+    --vm-start-schedule="30 8 * * 1-5" \
+    --vm-stop-schedule="00 19 * * 1-5" \
+    --timezone="Asia/Seoul"
+```
+
+#### 2단계: Compute Engine 서비스 계정에 인스턴스 제어 권한 부여
+GCP의 스케줄러 로봇이 VM을 켜고 끌 수 있도록 권한을 1회 부여합니다:
+```bash
+PROJECT_ID=$(gcloud config get-value project)
+PROJECT_NUM=$(gcloud projects describe $PROJECT_ID --format="value(projectNumber)")
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+    --member="serviceAccount:service-${PROJECT_NUM}@compute-system.iam.gserviceaccount.com" \
+    --role="roles/compute.instanceAdmin.v1"
+```
+
+#### 3단계: 우리 챗봇 GPU 서버에 일정 연결
+```bash
+gcloud compute instances add-resource-policies chatbot-l4-gpu-server \
+    --zone=asia-northeast3-b \
+    --resource-policies=weekday-office-hours
+```
+*연결 완료 후 이제 오늘 퇴근 시 서버를 꺼두면, 다음 주 월요일 아침 8시 30분에 알아서 전원이 켜지고 챗봇이 자동 기동됩니다.*
+
+---
+
+### [방법 B] GCP 웹 콘솔(GUI) 마우스 클릭 방식
+
+1. **[Compute Engine] ➡️ [인스턴스 일정] 메뉴 이동**:
+   - GCP 콘솔 좌측 메뉴에서 **Compute Engine** 클릭 후 **인스턴스 일정 (Instance schedules)**을 클릭합니다.
+   - 상단의 **[일정 만들기(CREATE SCHEDULE)]**를 누릅니다.
+2. **일정 세부정보 입력**:
+   - **이름**: `weekday-office-hours`
+   - **리전**: `asia-northeast3 (서울)`
+   - **시작 시간**: `08:30` / 요일: `월, 화, 수, 목, 금` 체크
+   - **중지 시간**: `19:00` / 요일: `월, 화, 수, 목, 금` 체크
+   - **시간대**: `(GMT+09:00) 한국 표준시 (서울)`
+   - [제출] 또는 [저장] 클릭
+3. **VM 인스턴스 연결**:
+   - 생성된 `weekday-office-hours` 일정을 클릭하고 상단의 **[인스턴스 추가]**를 누릅니다.
+   - 드롭다운에서 `chatbot-l4-gpu-server`를 선택하고 [추가]를 누르면 완료됩니다.
+   - *(콘솔에서 필요 권한을 자동으로 부여해 줍니다)*
+
+---
+
+### [참고] 지금 당장 퇴근하면서 서버를 끄는 법 (수동 중지)
+일정을 등록한 후, 이번 주말 요금을 아끼기 위해 지금 바로 서버를 끄려면:
+- **Cloud Shell 명령어**:
+  ```bash
+  gcloud compute instances stop chatbot-l4-gpu-server --zone=asia-northeast3-b
+  ```
+- **GCP 웹 콘솔**: VM 인스턴스 목록에서 `chatbot-l4-gpu-server` 체크 후 상단 **[중지(STOP)]** 버튼 클릭.
+- 이렇게 꺼두면 주말 동안 0원의 GPU 요금이 나가며, **월요일 아침 8:30에 설정된 일정에 맞춰 자동으로 켜집니다.**
+
+
