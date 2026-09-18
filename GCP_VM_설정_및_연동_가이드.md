@@ -711,38 +711,48 @@ gcloud compute addresses delete chatbot-fixed-ip --region=asia-northeast3 --quie
 
 ---
 
-### [방법 A] Cloud Shell 명령어 스크립트로 30초 설정 (추천 ⭐)
+### [방법 A] Cloud Shell 원클릭 자동 설정 스크립트 (가장 추천 ⭐)
 
-GCP Cloud Shell에서 아래 3단계를 순서대로 실행하면 끝납니다:
+Cloud Shell에 아래 블록 전체를 복사해서 붙여넣으면 기존 설정 정리부터 권한 부여, VM 연결 및 확인까지 한 번에 완료됩니다:
 
-#### 1단계: 인스턴스 일정 정책 생성 (월~금 아침 8:30 시작, 저녁 19:00 정지 / 서울 시간 기준)
 ```bash
-# 평일(월~금) 오전 8:30 자동 시작, 오후 19:00 자동 중지 (주말엔 계속 꺼짐)
+# 1. 이전 정책이 있다면 깔끔하게 분리 및 삭제
+gcloud compute instances remove-resource-policies chatbot-l4-gpu-server \
+    --zone=asia-northeast3-b \
+    --resource-policies=weekday-office-hours 2>/dev/null || true
+gcloud compute resource-policies delete weekday-office-hours \
+    --region=asia-northeast3 --quiet 2>/dev/null || true
+
+# 2. 한국 시간(Asia/Seoul) 기준 평일(월~금) 08:30 자동 시작 / 19:00 자동 종료 정책 생성
 gcloud compute resource-policies create instance-schedule weekday-office-hours \
     --region=asia-northeast3 \
     --vm-start-schedule="30 8 * * 1-5" \
     --vm-stop-schedule="00 19 * * 1-5" \
     --timezone="Asia/Seoul"
-```
 
-#### 2단계: Compute Engine 서비스 계정에 인스턴스 제어 권한 부여
-GCP의 스케줄러 로봇이 VM을 켜고 끌 수 있도록 권한을 1회 부여합니다:
-```bash
+# 3. GCP 스케줄러 로봇에게 VM 제어 권한 자동 부여
 PROJECT_ID=$(gcloud config get-value project)
 PROJECT_NUM=$(gcloud projects describe $PROJECT_ID --format="value(projectNumber)")
-
 gcloud projects add-iam-policy-binding $PROJECT_ID \
     --member="serviceAccount:service-${PROJECT_NUM}@compute-system.iam.gserviceaccount.com" \
     --role="roles/compute.instanceAdmin.v1"
-```
 
-#### 3단계: 우리 챗봇 GPU 서버에 일정 연결
-```bash
+# 4. 우리 챗봇 VM에 정책 최종 연결
 gcloud compute instances add-resource-policies chatbot-l4-gpu-server \
     --zone=asia-northeast3-b \
     --resource-policies=weekday-office-hours
+
+# 5. 정상 적용 확인
+echo "======================================================"
+echo "🎉 한국 시간(Asia/Seoul) 기준 평일 스케줄 등록 완료!"
+gcloud compute instances describe chatbot-l4-gpu-server \
+    --zone=asia-northeast3-b \
+    --format='value(resourcePolicies)'
+echo "👉 매주 월~금 08:30 자동 시작 / 19:00 자동 정지"
+echo "👉 주말(토, 일)은 켜지지 않고 0원 유지"
+echo "======================================================"
 ```
-*연결 완료 후 이제 오늘 퇴근 시 서버를 꺼두면, 다음 주 월요일 아침 8시 30분에 알아서 전원이 켜지고 챗봇이 자동 기동됩니다.*
+
 
 ---
 
