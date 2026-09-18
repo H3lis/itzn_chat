@@ -3,12 +3,13 @@
    Modern Glassmorphism, Dark Accents, Premium Polish
    ===================================================================== */
 
-:root {
+.admin-wrapper {
   --bg-main: #0f172a;
   --bg-card: rgba(30, 41, 59, 0.7);
   --bg-card-hover: rgba(51, 65, 85, 0.7);
   --bg-darker: #090d16;
   --border-color: rgba(255, 255, 255, 0.1);
+  --border-subtle: rgba(255, 255, 255, 0.08);
   --border-focus: #38bdf8;
   
   --text-main: #f8fafc;
@@ -27,15 +28,8 @@
   
   --font-sans: 'Pretendard', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', Consolas, Monaco, monospace;
-}
 
-* {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
   font-family: var(--font-sans);
   background-color: var(--bg-main);
   background-image: 
@@ -43,10 +37,26 @@ body {
     radial-gradient(at 100% 0%, rgba(139, 92, 246, 0.12) 0px, transparent 50%),
     radial-gradient(at 50% 100%, rgba(16, 185, 129, 0.08) 0px, transparent 50%);
   color: var(--text-main);
-  min-height: 100vh;
+  height: 100vh;
+  overflow-y: auto;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
+
+.admin-wrapper h1,
+.admin-wrapper h2,
+.admin-wrapper h3,
+.admin-wrapper h4,
+.admin-wrapper .brand-title {
+  color: #f8fafc !important;
+}
+
+.admin-wrapper p,
+.admin-wrapper span,
+.admin-wrapper div {
+  box-sizing: border-box;
+}
+
 
 /* ==================== 상단 네비게이션 ==================== */
 .admin-topbar {
@@ -1337,14 +1347,15 @@ body {
 }
 
 /* ==================== 모달 다이얼로그 (Modals) ==================== */
-.modal-overlay {
+.modal-overlay,
+.modal-backdrop {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(6px);
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1353,7 +1364,8 @@ body {
   animation: modalFadeIn 0.2s ease;
 }
 
-.modal-overlay.hidden {
+.modal-overlay.hidden,
+.modal-backdrop.hidden {
   display: none;
 }
 
@@ -1362,7 +1374,8 @@ body {
   to { opacity: 1; }
 }
 
-.modal-card {
+.modal-card,
+.modal-content {
   background: #0f172a;
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 1rem;
@@ -1370,7 +1383,7 @@ body {
   max-width: 640px;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.05);
   display: flex;
   flex-direction: column;
   animation: modalSlideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
@@ -1398,7 +1411,8 @@ body {
   gap: 0.5rem;
 }
 
-.modal-close {
+.modal-close,
+.btn-close {
   background: transparent;
   border: none;
   font-size: 1.25rem;
@@ -1409,7 +1423,8 @@ body {
   transition: all 0.2s;
 }
 
-.modal-close:hover {
+.modal-close:hover,
+.btn-close:hover {
   color: var(--text-main);
   background: rgba(255, 255, 255, 0.1);
 }
@@ -1427,10 +1442,12 @@ body {
   gap: 0.45rem;
 }
 
-.modal-field label {
-  font-size: 0.85rem;
+.modal-field label,
+.form-label {
+  font-size: 0.82rem;
   font-weight: 600;
-  color: var(--text-main);
+  color: var(--text-sub);
+  display: block;
 }
 
 .modal-field .field-desc {

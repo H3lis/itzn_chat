@@ -158,6 +158,31 @@ document.addEventListener("DOMContentLoaded", () => {
   const drawerExtractedAt = document.getElementById("drawer-extracted-at");
   const btnDrawerSave = document.getElementById("btn-drawer-save");
 
+  // [Phase 3] 대화 이력 & 비식별화 요소
+  const tabBadgeHistory = document.getElementById("tab-badge-history");
+  const histStatTotal = document.getElementById("hist-stat-total");
+  const histStatSatisfaction = document.getElementById("hist-stat-satisfaction");
+  const histStatPosCount = document.getElementById("hist-stat-pos-count");
+  const histStatNeg = document.getElementById("hist-stat-neg");
+  const histStatLatency = document.getElementById("hist-stat-latency");
+  const historyRoutesPills = document.getElementById("history-routes-pills");
+  const btnFilterNegatives = document.getElementById("btn-filter-negatives");
+  const histFilterStart = document.getElementById("hist-filter-start");
+  const histFilterEnd = document.getElementById("hist-filter-end");
+  const histFilterRoute = document.getElementById("hist-filter-route");
+  const histFilterFeedback = document.getElementById("hist-filter-feedback");
+  const histSearchInput = document.getElementById("hist-search-input");
+  const btnSearchHistory = document.getElementById("btn-search-history");
+  const btnRefreshHistory = document.getElementById("btn-refresh-history");
+  const historyTbody = document.getElementById("history-tbody");
+  const btnHistPrev = document.getElementById("btn-hist-prev");
+  const btnHistNext = document.getElementById("btn-hist-next");
+  const histPageIndicator = document.getElementById("hist-page-indicator");
+  const historyDetailModal = document.getElementById("history-detail-modal");
+  const btnHistoryModalClose = document.getElementById("btn-history-modal-close");
+  const btnHistoryModalCloseFooter = document.getElementById("btn-history-modal-close-footer");
+  const historyModalBody = document.getElementById("history-modal-body");
+
   // ==================== 상태 변수 ====================
   let currentFaqPage = 1;
   const faqPageSize = 15;
@@ -170,6 +195,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // [Phase 2] 시나리오 상태
   let scenarioTreeCache = null;
   let selectedScenarioNodeId = null;
+
+  // [Phase 3] 대화 이력 상태
+  let currentHistoryPage = 1;
+  const historyPageSize = 15;
 
   const STAGES = ["scan", "parse", "chunk", "embed", "promote"];
 
@@ -203,6 +232,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (tabId === "tab-scenario") {
       loadScenarios();
+    } else if (tabId === "tab-history") {
+      loadHistory(1);
+      loadHistoryAnalytics();
     }
   }
 
@@ -1606,6 +1638,278 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // ==================== 8. 대화 이력 & PII 비식별화 관리 로직 (Phase 3) ====================
+  const ROUTE_LABELS = {
+    faq: "FAQ 모범답변",
+    rag3x: "RAG 매뉴얼 검색",
+    scenario: "시나리오 버튼",
+    web_search: "실시간 웹검색",
+    clarify: "되묻기 인터럽트",
+    abstain: "답변 보류",
+    none: "일반"
+  };
+
+  const PII_LABELS = {
+    phone: "전화번호",
+    ipv4: "IP 주소",
+    rrn: "주민등록번호",
+    email: "이메일",
+    card: "카드번호",
+    name: "성명(교직원)",
+    serial: "시리얼번호",
+    mac: "MAC 주소"
+  };
+
+  async function loadHistoryAnalytics() {
+    try {
+      const res = await fetch("/api/admin/history/analytics");
+      if (!res.ok) return;
+      const data = await res.json();
+
+      if (histStatTotal) histStatTotal.textContent = `${data.total_queries || 0}건`;
+      if (tabBadgeHistory) tabBadgeHistory.textContent = `${data.total_queries || 0}`;
+
+      const pos = data.positive_feedback || 0;
+      const neg = data.negative_feedback || 0;
+      const rate = data.satisfaction_rate || 0.0;
+
+      if (histStatSatisfaction) histStatSatisfaction.textContent = `${rate}%`;
+      if (histStatPosCount) histStatPosCount.textContent = `(긍정 ${pos}건 / 전체 ${pos + neg}건 평가)`;
+      if (histStatNeg) histStatNeg.textContent = `${neg}건`;
+      if (histStatLatency) histStatLatency.textContent = `${data.avg_latency_seconds || 0}초`;
+
+      // 경로별 분포 배지
+      if (historyRoutesPills) {
+        const routes = data.routes_distribution || {};
+        const entries = Object.entries(routes);
+        if (!entries.length) {
+          historyRoutesPills.innerHTML = '<span class="muted" style="font-size: 0.75rem;">기록된 경로 없음</span>';
+        } else {
+          historyRoutesPills.innerHTML = entries.map(([r, cnt]) => {
+            const label = ROUTE_LABELS[r] || r;
+            return `<span class="route-pill">${escapeHtml(label)}: <strong>${cnt}건</strong></span>`;
+          }).join("");
+        }
+      }
+    } catch (e) {
+      console.warn("대화 이력 통계 로드 실패:", e);
+    }
+  }
+
+  async function loadHistory(page = 1) {
+    currentHistoryPage = page;
+    if (historyTbody) {
+      historyTbody.innerHTML = `<tr><td colspan="7" class="text-center muted" style="padding: 2.5rem;">대화 이력 조회 중…</td></tr>`;
+    }
+
+    try {
+      const params = new URLSearchParams();
+      params.set("page", page);
+      params.set("page_size", historyPageSize);
+
+      if (histFilterStart && histFilterStart.value) params.set("start_date", histFilterStart.value);
+      if (histFilterEnd && histFilterEnd.value) params.set("end_date", histFilterEnd.value);
+      if (histFilterRoute && histFilterRoute.value) params.set("route", histFilterRoute.value);
+      if (histFilterFeedback && histFilterFeedback.value) params.set("feedback", histFilterFeedback.value);
+      if (histSearchInput && histSearchInput.value.trim()) params.set("keyword", histSearchInput.value.trim());
+
+      const res = await fetch(`/api/admin/history?${params.toString()}`);
+      if (!res.ok) throw new Error(`이력 조회 실패 (${res.status})`);
+      const data = await res.json();
+
+      renderHistoryTable(data.items || []);
+      renderHistoryPagination(data.total || 0, data.page || 1, data.total_pages || 1);
+    } catch (err) {
+      if (historyTbody) {
+        historyTbody.innerHTML = `<tr><td colspan="7" class="text-center muted" style="padding: 2.5rem; color: #f87171;">조회 실패: ${escapeHtml(err.message)}</td></tr>`;
+      }
+    }
+  }
+
+  function renderHistoryTable(items) {
+    if (!historyTbody) return;
+    if (!items.length) {
+      historyTbody.innerHTML = `<tr><td colspan="7" class="text-center muted" style="padding: 2.5rem;">조회된 대화 이력이 없습니다.</td></tr>`;
+      return;
+    }
+
+    historyTbody.innerHTML = items.map(item => {
+      const route = item.route || "none";
+      const routeLabel = ROUTE_LABELS[route] || route;
+
+      // PII 배지
+      const piiTypes = Array.isArray(item.pii_types) ? item.pii_types : [];
+      const piiBadges = piiTypes.map(t => {
+        const label = PII_LABELS[t] || t;
+        return `<span class="pii-badge">${escapeHtml(label)}</span>`;
+      }).join("");
+
+      // 피드백 태그
+      let fbTag = '<span class="feedback-tag none">-</span>';
+      if (item.feedback === "POSITIVE") {
+        fbTag = '<span class="feedback-tag positive">👍 긍정</span>';
+      } else if (item.feedback === "NEGATIVE") {
+        fbTag = '<span class="feedback-tag negative">👎 부정</span>';
+      }
+
+      return `
+        <tr>
+          <td>
+            <div style="font-weight: 600; color: #cbd5e1;">${escapeHtml(item.created_at)}</div>
+          </td>
+          <td>
+            <code style="font-size: 0.75rem; color: #93c5fd;">${escapeHtml((item.session_id || "").slice(0, 8))}</code>
+            <div style="font-size: 0.68rem; color: var(--text-muted);">${escapeHtml((item.run_id || "").slice(0, 8))}</div>
+          </td>
+          <td>
+            <div class="masked-q-text">${escapeHtml(item.masked_question || item.raw_question || "")}</div>
+            ${piiBadges ? `<div class="pii-badge-group">${piiBadges}</div>` : ""}
+          </td>
+          <td>
+            <span class="route-badge ${escapeHtml(route)}">${escapeHtml(routeLabel)}</span>
+          </td>
+          <td>
+            <span style="font-family: monospace; color: #94a3b8;">${item.latency_s != null ? item.latency_s.toFixed(2) + 's' : '-'}</span>
+          </td>
+          <td style="text-align: center;">
+            ${fbTag}
+          </td>
+          <td style="text-align: center;">
+            <button class="btn btn-secondary btn-sm btn-hist-detail" data-run-id="${escapeHtml(item.run_id)}">
+              보기
+            </button>
+          </td>
+        </tr>
+      `;
+    }).join("");
+
+    // 상세보기 버튼 바인딩
+    historyTbody.querySelectorAll(".btn-hist-detail").forEach(btn => {
+      btn.addEventListener("click", () => {
+        openHistoryDetail(btn.dataset.runId);
+      });
+    });
+  }
+
+  function renderHistoryPagination(total, page, totalPages) {
+    if (histPageIndicator) {
+      histPageIndicator.textContent = `${page} / ${totalPages} 페이지 (총 ${total}건)`;
+    }
+    if (btnHistPrev) btnHistPrev.disabled = (page <= 1);
+    if (btnHistNext) btnHistNext.disabled = (page >= totalPages);
+  }
+
+  async function openHistoryDetail(runId) {
+    if (!historyDetailModal || !historyModalBody) return;
+    historyModalBody.innerHTML = `<div class="text-center muted" style="padding: 2rem;">상세 이력 로딩 중…</div>`;
+    historyDetailModal.classList.remove("hidden");
+
+    try {
+      const res = await fetch(`/api/admin/history/${encodeURIComponent(runId)}`);
+      if (!res.ok) throw new Error("상세 내역 조회 실패");
+      const item = await res.json();
+
+      const routeLabel = ROUTE_LABELS[item.route] || item.route;
+      const piiTypes = Array.isArray(item.pii_types) ? item.pii_types : [];
+      const piiBadges = piiTypes.map(t => `<span class="pii-badge">${escapeHtml(PII_LABELS[t] || t)}</span>`).join("");
+
+      historyModalBody.innerHTML = `
+        <div class="timeline-container">
+          <!-- 1. 사용자 질문 (비식별화) -->
+          <div class="timeline-step">
+            <div class="timeline-icon">👤</div>
+            <div class="timeline-content">
+              <div class="timeline-title">
+                <span>사용자 질문 (개인정보 비식별화)</span>
+                <span style="font-size: 0.72rem; color: var(--text-muted);">${escapeHtml(item.created_at)}</span>
+              </div>
+              <div style="margin-bottom: 0.4rem;">
+                <div class="timeline-body-text" style="color: #6ee7b7; font-weight: 600; font-size: 0.95rem;">${escapeHtml(item.masked_question)}</div>
+                ${piiBadges ? `<div class="pii-badge-group" style="margin-top: 0.45rem;">${piiBadges}</div>` : ""}
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. 챗봇 답변 -->
+          <div class="timeline-step">
+            <div class="timeline-icon">🤖</div>
+            <div class="timeline-content">
+              <div class="timeline-title">
+                <span>챗봇 답변</span>
+              </div>
+              <div class="timeline-body-text" style="white-space: pre-wrap; line-height: 1.6;">${escapeHtml(item.final_answer || "(응답 없음)")}</div>
+            </div>
+          </div>
+
+          <!-- 3. 대화 정보 및 만족도 피드백 -->
+          <div class="timeline-step">
+            <div class="timeline-icon">${item.feedback === 'POSITIVE' ? '👍' : (item.feedback === 'NEGATIVE' ? '👎' : '📊')}</div>
+            <div class="timeline-content">
+              <div class="timeline-title">
+                <span>만족도 및 대화 정보</span>
+                <span>
+                  ${item.feedback === 'POSITIVE' ? '<span class="feedback-tag positive">👍 만족</span>' :
+                    (item.feedback === 'NEGATIVE' ? '<span class="feedback-tag negative">👎 불만족</span>' : '<span class="feedback-tag none">미평가</span>')}
+                </span>
+              </div>
+              ${item.feedback === 'NEGATIVE' && item.feedback_reason ? `
+                <div class="timeline-body-text" style="color: #fca5a5; margin-bottom: 0.5rem;">
+                  <strong>불만족 사유:</strong> ${escapeHtml(item.feedback_reason)}
+                </div>
+              ` : ""}
+              <div class="timeline-meta-box">
+                <div>• 세션 ID: <code>${escapeHtml(item.session_id)}</code> | Run ID: <code>${escapeHtml(item.run_id)}</code></div>
+                <div>• 응답 소요 시간: <strong>${item.latency_s != null ? item.latency_s.toFixed(2) + '초' : '-'}</strong></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    } catch (err) {
+      historyModalBody.innerHTML = `<div class="text-center" style="padding: 2rem; color: #f87171;">오류: ${escapeHtml(err.message)}</div>`;
+    }
+  }
+
+  function closeHistoryDetail() {
+    if (historyDetailModal) historyDetailModal.classList.add("hidden");
+  }
+
+  // 대화 이력 탭 이벤트 리스너
+  if (btnSearchHistory) btnSearchHistory.addEventListener("click", () => loadHistory(1));
+  if (btnRefreshHistory) btnRefreshHistory.addEventListener("click", () => { loadHistory(1); loadHistoryAnalytics(); });
+  if (histSearchInput) {
+    histSearchInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") loadHistory(1);
+    });
+  }
+  if (histFilterRoute) histFilterRoute.addEventListener("change", () => loadHistory(1));
+  if (histFilterFeedback) histFilterFeedback.addEventListener("change", () => loadHistory(1));
+  if (histFilterStart) histFilterStart.addEventListener("change", () => loadHistory(1));
+  if (histFilterEnd) histFilterEnd.addEventListener("change", () => loadHistory(1));
+
+  if (btnFilterNegatives) {
+    btnFilterNegatives.addEventListener("click", () => {
+      if (histFilterFeedback) histFilterFeedback.value = "NEGATIVE";
+      loadHistory(1);
+      showToast("👎 부정 피드백 발생 건만 필터링합니다.");
+    });
+  }
+
+  if (btnHistPrev) btnHistPrev.addEventListener("click", () => {
+    if (currentHistoryPage > 1) loadHistory(currentHistoryPage - 1);
+  });
+  if (btnHistNext) btnHistNext.addEventListener("click", () => {
+    loadHistory(currentHistoryPage + 1);
+  });
+
+  if (btnHistoryModalClose) btnHistoryModalClose.addEventListener("click", closeHistoryDetail);
+  if (btnHistoryModalCloseFooter) btnHistoryModalCloseFooter.addEventListener("click", closeHistoryDetail);
+  if (historyDetailModal) {
+    historyDetailModal.addEventListener("click", (e) => {
+      if (e.target === historyDetailModal) closeHistoryDetail();
+    });
+  }
+
   // ==================== 10. 초기화 실행 ====================
   loadFaqStats();
   loadFaqs(1);
@@ -1613,5 +1917,6 @@ document.addEventListener("DOMContentLoaded", () => {
   loadWebSearchStatus();
   loadDocuments();
   loadScenarios();
+  loadHistoryAnalytics();
   connectReindexStream();
 });

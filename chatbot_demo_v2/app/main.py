@@ -81,23 +81,55 @@ def create_app(ctx: Optional[AppContext] = None) -> FastAPI:
 
     app.include_router(router)
 
-    # --- static ---
+    # --- static & frontend ---
     static_dir = Path(ctx.settings.static_dir)
+    frontend_dist = Path(__file__).resolve().parent.parent / "frontend" / "dist"
+
+    if (frontend_dist / "assets").is_dir():
+        app.mount("/assets", StaticFiles(directory=str(frontend_dist / "assets")), name="react_assets")
+
     if static_dir.is_dir():
         app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
 
     @app.get("/")
     def index():
+        react_index = frontend_dist / "index.html"
+        if react_index.is_file():
+            return FileResponse(
+                str(react_index),
+                headers={"Cache-Control": "no-cache, no-store, must-revalidate"},
+            )
         idx = static_dir / "index.html"
         if idx.is_file():
-            return FileResponse(str(idx))
+            return FileResponse(
+                str(idx),
+                headers={"Cache-Control": "no-cache, no-store, must-revalidate"},
+            )
         return JSONResponse({"detail": "index.html 없음"}, status_code=404)
 
+    @app.get("/favicon.svg")
+    def favicon():
+        fav = frontend_dist / "favicon.svg"
+        if fav.is_file():
+            return FileResponse(str(fav))
+        return JSONResponse({"detail": "favicon 없음"}, status_code=404)
+
     @app.get("/admin")
-    def admin_page():
+    @app.get("/admin/{rest_of_path:path}")
+    def admin_page(rest_of_path: str = ""):
+        if rest_of_path == "legacy":
+            adm = static_dir / "admin.html"
+            if adm.is_file():
+                return FileResponse(str(adm))
+        react_index = frontend_dist / "index.html"
+        if react_index.is_file():
+            return FileResponse(
+                str(react_index),
+                headers={"Cache-Control": "no-cache, no-store, must-revalidate"},
+            )
         adm = static_dir / "admin.html"
         if adm.is_file():
             return FileResponse(str(adm))
-        return JSONResponse({"detail": "admin.html 없음"}, status_code=404)
+        return JSONResponse({"detail": "admin 페이지 없음"}, status_code=404)
 
     return app

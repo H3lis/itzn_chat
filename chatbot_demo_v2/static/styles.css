@@ -289,14 +289,22 @@ button.secondary:hover { color: var(--accent); border-color: var(--accent); back
   display: inline-block; padding: 0 5px; border-radius: 4px;
   background: var(--ok-bg); color: var(--ok); font-size: .64rem; font-weight: 700;
 }
-.fb { display: flex; align-items: center; gap: 4px; }
+.fb { display: flex; align-items: center; gap: 6px; }
 .fb-btn {
   border: 1px solid var(--border); background: var(--surface); cursor: pointer;
-  border-radius: 6px; padding: 1px 6px; font-size: .8rem; line-height: 1.4;
+  border-radius: 6px; padding: 2px 8px; font-size: .82rem; line-height: 1.4;
+  transition: all .2s ease;
 }
-.fb-btn:hover:not(:disabled) { background: var(--accent-weak); border-color: #bcd4ff; }
-.fb-btn:disabled { opacity: .4; cursor: default; }
-.fb-msg { font-size: .68rem; color: var(--muted); }
+.fb-btn:hover:not(:disabled) { background: var(--accent-weak); border-color: #bcd4ff; transform: scale(1.05); }
+.fb-btn:disabled { opacity: .45; cursor: default; }
+.fb-btn.selected {
+  opacity: 1 !important;
+  background: var(--accent-weak);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+  transform: scale(1.08);
+}
+.fb-msg { font-size: .75rem; color: var(--accent); font-weight: 500; }
 
 /* 원문 보기(합성 답변일 때) */
 details.orig { margin-top: 8px; border-top: 1px dashed var(--border); padding-top: 6px; }

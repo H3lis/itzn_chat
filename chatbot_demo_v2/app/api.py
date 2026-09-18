@@ -9,12 +9,15 @@ Phase 1: v1 동등(+run_id). Phase 3(clarify)·5(stream/feedback) 에서 확장.
 from __future__ import annotations
 
 import asyncio
+import concurrent.futures
 import json
 import logging
 import re
 import uuid
 from pathlib import Path
 from typing import Optional
+
+_history_executor = concurrent.futures.ThreadPoolExecutor(max_workers=2, thread_name_prefix="history_worker")
 
 from fastapi import APIRouter, File, Form, HTTPException, Request, UploadFile
 from fastapi.responses import FileResponse, StreamingResponse
@@ -203,6 +206,10 @@ def chat(request: Request, body: ChatRequest) -> ChatResponse:
 
     payload = _extract_interrupt(result)
     if payload is not None:
+        _safe_record_history(ctx, session_id, run_id, body, {
+            "route": "clarify", "route_reason": "모호 질의 되묻기",
+            "final_answer": "어떤 상황인지 확인이 필요해요 (후보 제시)"
+        })
         return ChatResponse(
             session_id=session_id,
             type="clarify",
@@ -212,7 +219,45 @@ def chat(request: Request, body: ChatRequest) -> ChatResponse:
             clarify={"candidates": payload.get("candidates") or []},
             trace=result.get("trace") or [],
         )
+    _safe_record_history(ctx, session_id, run_id, body, result)
     return _shape_response(session_id, run_id, result)
+
+
+def _safe_record_history(ctx: AppContext, session_id: str, run_id: str, body: ChatRequest, result: dict) -> None:
+    """대화 결과를 비식별화 후 chat_history.db 에 안전 저장 (비동기 스레드 풀 격리)."""
+    if not ctx or not getattr(ctx, "history_service", None):
+        return
+
+    def _task():
+        try:
+            raw_q = (body.message or (body.action.label if body.action else "") or
+                     (f"선택: {body.clarify_response.choice}" if body.clarify_response else "") or "")
+            final_ans = str(result.get("final_answer") or "")
+            route = str(result.get("route") or "none")
+            timings = result.get("timings") or {}
+            latency_s = float(timings.get("total_s") or 0.0)
+            confidence = str(result.get("confidence") or "unknown")
+
+            # 사용자 요청: AI 추론 및 라우팅 판단 근거는 저장하지 않음
+            ctx.history_service.record_turn(
+                session_id=session_id,
+                run_id=run_id,
+                raw_question=raw_q,
+                final_answer=final_ans,
+                route=route,
+                route_reason="",
+                latency_s=latency_s,
+                confidence=confidence,
+                source_meta=None,
+                evidence=None,
+            )
+        except Exception as e:
+            logger.warning("대화 이력 비동기 적재 실패: %s", e)
+
+    try:
+        _history_executor.submit(_task)
+    except Exception as e:
+        logger.warning("대화 이력 작업 큐 등록 실패: %s", e)
 
 
 def _sse(event: str, data: dict) -> str:
@@ -269,10 +314,15 @@ def chat_stream(request: Request, body: ChatRequest):
                     "run_id": run_id,
                     "candidates": interrupt_payload.get("candidates") or [],
                 })
+                _safe_record_history(ctx, session_id, run_id, body, {
+                    "route": "clarify", "route_reason": "모호 질의 되묻기",
+                    "final_answer": "어떤 상황인지 확인이 필요해요 (후보 제시)"
+                })
                 return
 
             result = ctx.graph.get_state(config).values
             yield _sse("final", _shape_response(session_id, run_id, result).model_dump())
+            _safe_record_history(ctx, session_id, run_id, body, result)
         except (RagBusyError, RagUnavailableError) as exc:
             status = 429 if isinstance(exc, RagBusyError) else 503
             detail = ("이미 다른 질문을 처리 중입니다. 잠시 후 다시 시도해 주세요."
@@ -290,11 +340,27 @@ def chat_stream(request: Request, body: ChatRequest):
 
 @router.post("/api/feedback")
 def feedback(request: Request, body: FeedbackRequest) -> dict:
-    """👍/👎 를 LangSmith 피드백으로 기록. 추적 비활성이면 no-op(recorded=false)."""
+    """👍/👎 를 chat_history.db 및 LangSmith 피드백으로 기록."""
+    ctx = _ctx(request)
+    fb = (body.feedback or "").upper()
+    if not fb:
+        if body.score == 1:
+            fb = "POSITIVE"
+        elif body.score == 0:
+            fb = "NEGATIVE"
+        else:
+            fb = "NONE"
+
+    if ctx.history_service:
+        try:
+            ctx.history_service.update_feedback(body.run_id, fb, reason=body.reason or body.comment)
+        except Exception:
+            pass
+
     from ..observability.langsmith import send_feedback
 
     ok = send_feedback(body.run_id, body.score, body.comment)
-    return {"recorded": bool(ok)}
+    return {"recorded": bool(ok), "run_id": body.run_id, "feedback": fb}
 
 
 @router.post("/api/reset")
@@ -737,4 +803,88 @@ def admin_extract_document_metadata(request: Request, doc_path: str, body: Optio
     except Exception as e:
         logger.error("문서 메타데이터 추출 실패 [%s]: %s", doc_path, e, exc_info=True)
         raise HTTPException(status_code=500, detail=f"메타데이터 추출 실패: {e}")
+
+
+# =========================================================================
+# 대화 이력 관리, PII 비식별화 및 답변 만족도 API (Phase 3)
+# =========================================================================
+
+@router.post("/api/chat/feedback")
+def submit_chat_feedback(request: Request, body: FeedbackRequest) -> dict:
+    """사용자 답변 만족도(👍 POSITIVE / 👎 NEGATIVE) 피드백 등록 및 DB 적재."""
+    ctx = _ctx(request)
+    if not ctx.history_service:
+        raise HTTPException(status_code=503, detail="이력 서비스가 초기화되지 않았습니다.")
+
+    fb = (body.feedback or "").upper()
+    if not fb:
+        if body.score == 1:
+            fb = "POSITIVE"
+        elif body.score == 0:
+            fb = "NEGATIVE"
+        else:
+            fb = "NONE"
+
+    reason = body.reason or body.comment
+    ok = ctx.history_service.update_feedback(body.run_id, fb, reason=reason)
+    if not ok:
+        raise HTTPException(status_code=404, detail=f"run_id '{body.run_id}' 에 해당하는 대화 기록을 찾을 수 없습니다.")
+
+    try:
+        from ..observability.langsmith import send_feedback
+        score_val = body.score if body.score is not None else (1 if fb == "POSITIVE" else (0 if fb == "NEGATIVE" else None))
+        if score_val is not None:
+            send_feedback(body.run_id, score_val, reason)
+    except Exception:
+        pass
+
+    return {"ok": True, "run_id": body.run_id, "feedback": fb}
+
+
+@router.get("/api/admin/history")
+def admin_get_history(
+    request: Request,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+    route: Optional[str] = None,
+    feedback: Optional[str] = None,
+    keyword: Optional[str] = None,
+    page: int = 1,
+    page_size: int = 20,
+) -> dict:
+    """대화 이력 다차원 필터링 및 페이징 검색."""
+    ctx = _ctx(request)
+    if not ctx.history_service:
+        return {"total": 0, "page": 1, "page_size": page_size, "total_pages": 1, "items": []}
+    return ctx.history_service.search_history(
+        start_date=start_date,
+        end_date=end_date,
+        route=route,
+        feedback=feedback,
+        keyword=keyword,
+        page=page,
+        page_size=page_size,
+    )
+
+
+@router.get("/api/admin/history/analytics")
+def admin_get_history_analytics(request: Request, days: int = 30) -> dict:
+    """대화 이력 만족도, 처리 경로별 통계 및 부정 피드백 요약 조회."""
+    ctx = _ctx(request)
+    if not ctx.history_service:
+        return {"period_days": days, "total_queries": 0, "satisfaction_rate": 0.0}
+    return ctx.history_service.get_analytics_summary(days=days)
+
+
+@router.get("/api/admin/history/{run_id}")
+def admin_get_history_detail(request: Request, run_id: str) -> dict:
+    """세션 상세 대화 타임라인 조회를 위한 단건 상세 조회."""
+    ctx = _ctx(request)
+    if not ctx.history_service:
+        raise HTTPException(status_code=503, detail="이력 서비스가 초기화되지 않았습니다.")
+    item = ctx.history_service.get_turn_detail(run_id)
+    if not item:
+        raise HTTPException(status_code=404, detail=f"run_id '{run_id}'에 해당하는 대화 기록을 찾을 수 없습니다.")
+    return item
+
 

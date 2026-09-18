@@ -41,8 +41,10 @@ class WarmupRequest(BaseModel):
 
 class FeedbackRequest(BaseModel):
     run_id: str
-    score: int          # 1(👍) | 0(👎)
+    score: Optional[int] = None          # 1(👍) | 0(👎)
+    feedback: Optional[str] = None       # "POSITIVE" | "NEGATIVE"
     comment: Optional[str] = None
+    reason: Optional[str] = None
 
 
 class ScenarioBlock(BaseModel):

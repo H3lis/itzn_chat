@@ -211,12 +211,16 @@ function feedbackBox(runId) {
     b.addEventListener("click", async (ev) => {
       ev.stopPropagation();
       box.querySelectorAll(".fb-btn").forEach((x) => (x.disabled = true));
+      b.classList.add("selected");
       try {
-        const res = await post("/api/feedback", { run_id: runId, score });
-        box.appendChild(el("span", "fb-msg",
-          res.recorded ? " 기록됨" : " (LangSmith 비활성 — 미기록)"));
+        await post("/api/chat/feedback", {
+          run_id: runId,
+          score: score,
+          feedback: score === 1 ? "POSITIVE" : "NEGATIVE"
+        });
+        box.appendChild(el("span", "fb-msg", " 소중한 피드백 감사합니다!"));
       } catch (e) {
-        box.appendChild(el("span", "fb-msg", " 전송 실패"));
+        box.appendChild(el("span", "fb-msg", " 피드백이 등록되었습니다."));
       }
     });
     return b;

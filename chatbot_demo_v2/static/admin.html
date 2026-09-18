@@ -55,6 +55,10 @@
         <span>🌐 웹 검색 설정</span>
         <span class="tab-badge" id="tab-badge-websearch">-</span>
       </button>
+      <button class="nav-tab-btn" data-tab="tab-history" id="tab-btn-history">
+        <span>📊 대화 이력 & 비식별화</span>
+        <span class="tab-badge" id="tab-badge-history">-</span>
+      </button>
     </nav>
 
     <!-- ==================== [탭 1] FAQ 관리 섹션 ==================== -->
@@ -502,6 +506,110 @@
         </div>
       </section>
     </div>
+
+    <!-- ==================== [탭 5] 대화 이력 & 비식별화 감사 섹션 ==================== -->
+    <div id="tab-history" class="tab-pane">
+      <!-- 상단 통계 KPI 카드 그리드 -->
+      <div class="history-stats-grid">
+        <div class="history-stat-card">
+          <div class="stat-icon">💬</div>
+          <div class="stat-content">
+            <span class="stat-label">총 대화 쿼리</span>
+            <span class="stat-val" id="hist-stat-total">0건</span>
+          </div>
+        </div>
+        <div class="history-stat-card success">
+          <div class="stat-icon">👍</div>
+          <div class="stat-content">
+            <span class="stat-label">만족도 긍정률</span>
+            <span class="stat-val" id="hist-stat-satisfaction">0.0%</span>
+            <span class="stat-sub" id="hist-stat-pos-count">(긍정 0건)</span>
+          </div>
+        </div>
+        <div class="history-stat-card warning">
+          <div class="stat-icon">👎</div>
+          <div class="stat-content">
+            <span class="stat-label">부정 피드백</span>
+            <span class="stat-val" id="hist-stat-neg">0건</span>
+            <button class="btn-stat-action" id="btn-filter-negatives" title="부정 피드백 발생 건만 즉시 모아보기">
+              원클릭 모아보기 &rarr;
+            </button>
+          </div>
+        </div>
+        <div class="history-stat-card info">
+          <div class="stat-icon">⚡</div>
+          <div class="stat-content">
+            <span class="stat-label">평균 응답 속도</span>
+            <span class="stat-val" id="hist-stat-latency">0.00초</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 경로별 분포 배지 바 -->
+      <div class="history-routes-bar" id="history-routes-bar">
+        <span class="route-bar-title">경로별 처리량:</span>
+        <div class="route-pills" id="history-routes-pills">
+          <!-- 경로별 건수 렌더링 -->
+        </div>
+      </div>
+
+      <!-- 검색 필터 툴바 -->
+      <div class="history-toolbar">
+        <div class="history-filter-group">
+          <div class="date-filter-box">
+            <label for="hist-filter-start">기간:</label>
+            <input type="date" id="hist-filter-start" class="faq-select" />
+            <span>~</span>
+            <input type="date" id="hist-filter-end" class="faq-select" />
+          </div>
+          <select id="hist-filter-route" class="faq-select" title="처리 경로 선택">
+            <option value="all">전체 경로 (전체)</option>
+            <option value="faq">FAQ 모범답변</option>
+            <option value="rag3x">RAG 매뉴얼 검색</option>
+            <option value="scenario">시나리오 버튼</option>
+            <option value="web_search">실시간 웹검색</option>
+            <option value="clarify">되묻기 인터럽트</option>
+            <option value="abstain">답변 보류</option>
+          </select>
+          <select id="hist-filter-feedback" class="faq-select" title="만족도 피드백 선택">
+            <option value="all">전체 피드백 (전체)</option>
+            <option value="POSITIVE">👍 긍정 피드백만</option>
+            <option value="NEGATIVE">👎 부정 피드백만</option>
+            <option value="NONE">미평가 건만</option>
+          </select>
+          <input type="text" id="hist-search-input" class="faq-search-input" placeholder="질문, 답변, 세션ID 검색…" />
+          <button id="btn-search-history" class="btn btn-primary btn-sm">🔍 검색</button>
+          <button id="btn-refresh-history" class="btn btn-secondary btn-sm" title="새로고침">🔄 새로고침</button>
+        </div>
+      </div>
+
+      <!-- 이력 목록 테이블 -->
+      <div class="table-container">
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th style="width: 150px;">일시</th>
+              <th style="width: 110px;">세션 / Run ID</th>
+              <th>사용자 질의 (PII 실시간 비식별화)</th>
+              <th style="width: 120px;">처리 경로</th>
+              <th style="width: 85px;">소요시간</th>
+              <th style="width: 80px; text-align: center;">만족도</th>
+              <th style="width: 80px; text-align: center;">상세</th>
+            </tr>
+          </thead>
+          <tbody id="history-tbody">
+            <!-- 행들이 동적으로 렌더링됨 -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 페이징 컨트롤 -->
+      <div class="pagination-bar" id="history-pagination">
+        <button id="btn-hist-prev" class="btn btn-secondary btn-sm" disabled>&larr; 이전</button>
+        <span class="page-indicator" id="hist-page-indicator">1 / 1 페이지</span>
+        <button id="btn-hist-next" class="btn btn-secondary btn-sm" disabled>다음 &rarr;</button>
+      </div>
+    </div>
   </main>
 
   <!-- ==================== FAQ 등록 / 수정 모달 ==================== -->
@@ -737,6 +845,22 @@
         </form>
       </div>
     </aside>
+  </div>
+
+  <!-- ==================== 세션 대화 타임라인 상세 모달 ==================== -->
+  <div class="modal-overlay hidden" id="history-detail-modal">
+    <div class="modal-card modal-lg">
+      <div class="modal-header">
+        <h3 class="modal-title" id="history-modal-title">💬 대화 상세 내역</h3>
+        <button class="modal-close" id="btn-history-modal-close" title="닫기">&times;</button>
+      </div>
+      <div class="modal-body" id="history-modal-body">
+        <!-- 타임라인 콘텐츠 동적 렌더링 -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="btn-history-modal-close-footer">닫기</button>
+      </div>
+    </div>
   </div>
 
   <!-- 토스트 메시지 -->

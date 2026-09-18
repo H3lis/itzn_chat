@@ -43,10 +43,10 @@ def _build_test_ctx(tmp_path: Path) -> tuple[TestClient, Settings]:
 def test_admin_page_and_stats(tmp_path: Path):
     client, _ = _build_test_ctx(tmp_path)
 
-    # 1. /admin HTML serving
+    # 1. /admin HTML serving (React SPA bundle or legacy HTML)
     res = client.get("/admin")
     assert res.status_code == 200
-    assert "RAG 관리자" in res.text
+    assert '<div id="root"></div>' in res.text or "RAG 관리자" in res.text
 
     # 2. /api/admin/stats
     res = client.get("/api/admin/stats")

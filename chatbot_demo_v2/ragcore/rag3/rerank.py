@@ -35,14 +35,19 @@ class RemoteHttpReranker:
         if not docs:
             return []
         try:
+            doc_snippets = [d[:6000] for d in docs]
             resp = requests.post(
                 self.endpoint,
-                json={"query": query, "texts": [d[:6000] for d in docs]},
+                json={"query": query, "texts": doc_snippets, "passages": doc_snippets},
                 timeout=15,
             )
             resp.raise_for_status()
             data = resp.json()
-            results = data.get("results") if isinstance(data, dict) else data
+            if isinstance(data, dict):
+                results = data.get("results") or data.get("scores")
+            else:
+                results = data
+
             if results and isinstance(results[0], dict):
                 return [RerankHit(index=int(r["index"]), score=float(r["score"])) for r in results]
             elif results and isinstance(results[0], (int, float)):

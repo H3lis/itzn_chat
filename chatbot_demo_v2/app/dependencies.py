@@ -97,6 +97,8 @@ class AppContext:
     faq_manager: Any = None  # FaqManager (FAQ CRUD 및 런타임 동기화)
     scenario_manager: Any = None  # ScenarioManager (시나리오 트리 에디터 및 무결성 검증)
     metadata_manager: Any = None  # DocumentMetadataManager (문서 메타데이터 자동 추출 및 관리)
+    pii_masker: Any = None  # PiiMasker (개인정보 실시간 비식별화)
+    history_service: Any = None  # HistoryService (대화 이력 적재 및 피드백 통계)
 
 
 def build_context(
@@ -165,12 +167,21 @@ def build_context(
     from .faq_service import FaqManager
     from .scenario_service import ScenarioManager
     from .metadata_service import DocumentMetadataManager
+    from .pii_service import PiiMasker
+    from .history_service import HistoryService
 
     doc_manager = DocumentManager(settings)
     reindex_runner = ReindexRunner(settings, rag_adapter=rag_adapter)
     faq_manager = FaqManager(settings)
     scenario_manager = ScenarioManager(settings)
     metadata_manager = DocumentMetadataManager(settings)
+    pii_masker = PiiMasker(
+        backend=settings.pii_backend,
+        sllm_model=settings.pii_sllm_model,
+        sllm_host=settings.pii_sllm_host,
+        timeout_s=settings.pii_sllm_timeout_s,
+    )
+    history_service = HistoryService(settings, pii_masker=pii_masker)
 
     ctx = AppContext(
         settings=settings,
@@ -190,6 +201,8 @@ def build_context(
         faq_manager=faq_manager,
         scenario_manager=scenario_manager,
         metadata_manager=metadata_manager,
+        pii_masker=pii_masker,
+        history_service=history_service,
     )
     ctx.graph = build_graph(ctx, checkpointer=checkpointer)
     return ctx
