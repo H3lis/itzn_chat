@@ -8,6 +8,7 @@ import {
   AlertTriangle,
   Zap,
   ExternalLink,
+  X,
 } from 'lucide-react';
 
 function confBadgeClass(c) {
@@ -29,6 +30,8 @@ export function InspectorColumn({
   warmupMsg,
   onWarmup,
   onOpenEvidence,
+  isOpenMobile,
+  onCloseMobile,
 }) {
   const resp = response;
 
@@ -45,13 +48,25 @@ export function InspectorColumn({
   const onStr = (b) => (b ? 'on' : 'off');
 
   return (
-    <aside className="inspector-column">
+    <aside className={`inspector-column ${isOpenMobile ? 'mobile-open' : ''}`}>
       {/* Header */}
       <div className="inspector-header">
         <div className="inspector-title">
           <Activity size={18} color="#2563eb" />
           <span>답변 근거 · 처리 과정</span>
         </div>
+
+        {onCloseMobile && (
+          <button
+            type="button"
+            className="inspector-mobile-close-btn"
+            onClick={onCloseMobile}
+            aria-label="인스펙터 닫기"
+            title="닫기"
+          >
+            <X size={20} />
+          </button>
+        )}
 
         {resp && (
           <div className="inspector-badges-row">

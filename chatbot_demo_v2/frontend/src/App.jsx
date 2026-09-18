@@ -63,6 +63,19 @@ export function App() {
   } = useChatStream();
 
   const [lightboxUrl, setLightboxUrl] = useState(null);
+  const [isMobileInspectorOpen, setIsMobileInspectorOpen] = useState(false);
+
+  // 모바일에서 메시지 선택 시 인스펙터 자동 열기 지원
+  const handleSelectMsg = (id) => {
+    setActiveMsgId(id);
+    if (window.innerWidth <= 768) {
+      setIsMobileInspectorOpen(true);
+    }
+  };
+
+  const handleOpenEvidence = (url) => {
+    setLightboxUrl(url);
+  };
 
   // /admin 경로인 경우 관리자 콘솔 전면 렌더링
   if (path.startsWith('/admin')) {
@@ -76,7 +89,12 @@ export function App() {
   return (
     <div className="app-container">
       {/* 1. 상단 글로벌 네비게이션 헤더 */}
-      <TopBar status={status} onNavigate={navigate} />
+      <TopBar
+        status={status}
+        onNavigate={navigate}
+        onToggleInspector={() => setIsMobileInspectorOpen((prev) => !prev)}
+        isMobileInspectorOpen={isMobileInspectorOpen}
+      />
 
       {/* 2. 메인 2분할 (Split) 레이아웃 */}
       <main className="main-split">
@@ -84,7 +102,7 @@ export function App() {
         <ChatColumn
           messages={messages}
           activeMsgId={activeMsgId}
-          onSelectMsg={setActiveMsgId}
+          onSelectMsg={handleSelectMsg}
           inFlight={inFlight}
           busyText={busyText}
           busySteps={busySteps}
@@ -95,20 +113,31 @@ export function App() {
           onSelectOption={sendAction}
           onSelectClarify={sendClarify}
           onReset={resetSession}
-          onOpenEvidence={(url) => setLightboxUrl(url)}
+          onOpenEvidence={handleOpenEvidence}
           onFeedback={sendFeedback}
         />
 
-        {/* 우측: 근거 · 파이프라인 인스펙터 컬럼 */}
+        {/* 우측: 근거 · 파이프라인 인스펙터 컬럼 (모바일에서는 슬라이드 드로어로 변환) */}
         <InspectorColumn
           response={activeResponse}
           health={health}
           warmupLoading={warmupLoading}
           warmupMsg={warmupMsg}
           onWarmup={triggerWarmup}
-          onOpenEvidence={(url) => setLightboxUrl(url)}
+          onOpenEvidence={handleOpenEvidence}
+          isOpenMobile={isMobileInspectorOpen}
+          onCloseMobile={() => setIsMobileInspectorOpen(false)}
         />
       </main>
+
+      {/* 모바일 인스펙터 열림 시 뒷배경 딤(Backdrop) 오버레이 */}
+      {isMobileInspectorOpen && (
+        <div
+          className="mobile-inspector-backdrop"
+          onClick={() => setIsMobileInspectorOpen(false)}
+          aria-hidden="true"
+        />
+      )}
 
       {/* 3. 근거 원본 이미지 모달 라이트박스 */}
       <LightboxModal

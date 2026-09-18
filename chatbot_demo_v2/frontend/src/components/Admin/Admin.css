@@ -2589,5 +2589,54 @@
   color: #94a3b8;
 }
 
+/* =====================================================================
+   Admin Console Mobile Safeguards (max-width: 900px)
+   ===================================================================== */
+.admin-nav-tabs {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  white-space: nowrap;
+  padding-bottom: 4px;
+}
+
+.admin-nav-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.nav-tab-btn {
+  flex-shrink: 0;
+}
+
+@media (max-width: 900px) {
+  .admin-topbar {
+    padding: 0.75rem 1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .admin-container {
+    padding: 1rem 0.75rem !important;
+  }
+
+  .admin-badge {
+    display: none;
+  }
+
+  .modal-card {
+    width: 95vw !important;
+    max-width: 95vw !important;
+    margin: 10px auto !important;
+    padding: 1.25rem 1rem !important;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)) !important;
+    gap: 0.75rem !important;
+  }
+}
+
 
 
