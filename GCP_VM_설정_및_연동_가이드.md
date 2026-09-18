@@ -723,10 +723,10 @@ gcloud compute instances remove-resource-policies chatbot-l4-gpu-server \
 gcloud compute resource-policies delete weekday-office-hours \
     --region=asia-northeast3 --quiet 2>/dev/null || true
 
-# 2. 한국 시간(Asia/Seoul) 기준 평일(월~금) 08:30 자동 시작 / 19:00 자동 종료 정책 생성
+# 2. 한국 시간(Asia/Seoul) 기준 평일(월~금) 09:30 자동 시작 / 19:00 자동 종료 정책 생성
 gcloud compute resource-policies create instance-schedule weekday-office-hours \
     --region=asia-northeast3 \
-    --vm-start-schedule="30 8 * * 1-5" \
+    --vm-start-schedule="30 9 * * 1-5" \
     --vm-stop-schedule="00 19 * * 1-5" \
     --timezone="Asia/Seoul"
 
@@ -748,7 +748,7 @@ echo "🎉 한국 시간(Asia/Seoul) 기준 평일 스케줄 등록 완료!"
 gcloud compute instances describe chatbot-l4-gpu-server \
     --zone=asia-northeast3-b \
     --format='value(resourcePolicies)'
-echo "👉 매주 월~금 08:30 자동 시작 / 19:00 자동 정지"
+echo "👉 매주 월~금 09:30 자동 시작 / 19:00 자동 정지"
 echo "👉 주말(토, 일)은 켜지지 않고 0원 유지"
 echo "======================================================"
 ```
