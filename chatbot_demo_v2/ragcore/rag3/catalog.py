@@ -110,6 +110,9 @@ def _read_sheet_rows(path: Path, sheet_name: str) -> tuple[list[str], list[dict[
 
 
 def load_catalog(config: Config) -> list[CatalogRow]:
+    if not config.catalog_excel_path.exists():
+        logger.info("Excel 카탈로그 파일 없음 (%s) — 빈 카탈로그 반환 (가상 행 fallback 활성화)", config.catalog_excel_path)
+        return []
     logger.info("Excel 카탈로그 로드: %s [시트: %s]", config.catalog_excel_path, config.catalog_sheet)
     headers, records = _read_sheet_rows(config.catalog_excel_path, config.catalog_sheet)
     roles = _infer_column_roles(headers)
