@@ -46,7 +46,10 @@ export function App() {
   const { path, navigate } = useRoute();
   const { health, status, warmupLoading, warmupMsg, triggerWarmup } = useHealth();
   const {
+    sessionId,
+    updateSession,
     messages,
+    setMessages,
     activeMsgId,
     activeResponse,
     setActiveMsgId,
@@ -94,7 +97,10 @@ export function App() {
         <ClientLayout
           status={status}
           onNavigate={navigate}
+          sessionId={sessionId}
+          updateSession={updateSession}
           messages={messages}
+          setMessages={setMessages}
           activeMsgId={activeMsgId}
           setActiveMsgId={setActiveMsgId}
           inFlight={inFlight}

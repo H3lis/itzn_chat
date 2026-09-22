@@ -1,12 +1,28 @@
 import React, { useState } from 'react';
-import { School, Settings, Terminal, RotateCcw, CheckCircle2, AlertCircle } from 'lucide-react';
+import {
+  School,
+  Settings,
+  Terminal,
+  PlusCircle,
+  MessageSquare,
+  Trash2,
+  PanelLeftClose,
+  PanelLeft,
+  Clock,
+  ChevronRight,
+  ShieldCheck,
+} from 'lucide-react';
 import { ChatColumn } from './Chat/ChatColumn';
 import { LightboxModal } from './LightboxModal';
+import { useClientHistory } from '../hooks/useClientHistory';
 
 export function ClientLayout({
   status,
   onNavigate,
+  sessionId,
+  updateSession,
   messages,
+  setMessages,
   activeMsgId,
   setActiveMsgId,
   inFlight,
@@ -22,24 +38,66 @@ export function ClientLayout({
   sendFeedback,
 }) {
   const [lightboxUrl, setLightboxUrl] = useState(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const isReady = status === 'ready';
   const isError = status === 'error';
 
+  // 사용자 대화 히스토리 훅 연동
+  const {
+    sessions,
+    currentSessionId,
+    startNewChat,
+    selectSession,
+    deleteSession,
+    clearAllSessions,
+  } = useClientHistory({
+    messages,
+    setMessages,
+    sessionId,
+    updateSession,
+    resetSession,
+  });
+
   return (
     <div className="app-container client-app-container">
-      {/* 1. 고객용 전용 상단 글로벌 헤더 */}
+      {/* 1. 고객용 글로벌 상단 헤더 */}
       <header className="topbar client-topbar">
         <div className="brand-section">
+          {/* 히스토리 사이드바 접기/펼치기 토글 버튼 */}
+          <button
+            type="button"
+            className="btn-history-toggle"
+            onClick={() => setIsSidebarOpen((prev) => !prev)}
+            title={isSidebarOpen ? '대화 히스토리 사이드바 접기' : '대화 히스토리 사이드바 열기'}
+            aria-label="히스토리 토글"
+          >
+            {isSidebarOpen ? <PanelLeftClose size={19} /> : <PanelLeft size={19} />}
+          </button>
+
           <div className="brand-logo" aria-hidden="true">
-            <School size={22} />
+            <School size={22} color="#38bdf8" />
           </div>
+
           <div className="brand-title">
-            <span className="brand-title-text">학교 유무선 장애상담 지원센터</span>
-            <span className="tag-badge client-badge">정식 서비스</span>
+            <span className="brand-title-text client-title-prominent">
+              학교 유무선 장애상담 지원센터
+            </span>
+            {/* 사용자 요청에 따라 '정식 서비스' 뱃지는 완전히 제거됨 */}
           </div>
         </div>
 
         <div className="topbar-actions">
+          {/* 신규 상담 시작 버튼 */}
+          <button
+            type="button"
+            className="btn-new-chat-topbar"
+            onClick={startNewChat}
+            title="현재 대화를 저장하고 새로운 상담을 시작합니다"
+          >
+            <PlusCircle size={15} />
+            <span className="btn-text">새 상담 시작</span>
+          </button>
+
           {/* 서버 연결 상태 표시 */}
           <div className="status-pill" title="상담 지원 서버 연결 상태">
             <span className={`status-dot ${isReady ? 'ready' : isError ? 'error' : ''}`} />
@@ -72,29 +130,115 @@ export function ClientLayout({
         </div>
       </header>
 
-      {/* 2. 고객용 대화 단독(Wide) 컨테이너 (인스펙터 패널 없음) */}
-      <main className="client-main">
-        <div className="client-chat-wrapper">
-          <ChatColumn
-            messages={messages}
-            activeMsgId={activeMsgId}
-            onSelectMsg={(id) => setActiveMsgId(id)}
-            inFlight={inFlight}
-            busyText={busyText}
-            busySteps={busySteps}
-            elapsedSeconds={elapsedSeconds}
-            scenarioOptions={scenarioOptions}
-            scenarioInfo={scenarioInfo}
-            onSend={sendMessage}
-            onSelectOption={sendAction}
-            onSelectClarify={sendClarify}
-            onReset={resetSession}
-            onOpenEvidence={(url) => setLightboxUrl(url)}
-            onFeedback={sendFeedback}
-            isClient={true}
+      {/* 2. 본문: 좌측 히스토리 사이드바 + 중앙 와이드 대화 화면 */}
+      <div className="client-layout-body">
+        {/* 좌측: 지난 대화 히스토리 사이드바 */}
+        <aside className={`client-history-sidebar ${isSidebarOpen ? 'open' : 'closed'}`}>
+          <div className="history-sidebar-header">
+            <div className="history-header-title">
+              <Clock size={16} />
+              <span>지난 상담 내역</span>
+            </div>
+            <button
+              type="button"
+              className="btn-new-chat-sidebar"
+              onClick={startNewChat}
+              title="새로운 질문으로 대화 시작"
+            >
+              <PlusCircle size={14} />
+              <span>새 상담</span>
+            </button>
+          </div>
+
+          <div className="history-session-list">
+            {sessions.length === 0 ? (
+              <div className="history-empty-state">
+                <MessageSquare size={20} style={{ opacity: 0.4, marginBottom: 6 }} />
+                <p>진행된 상담 기록이 없습니다.</p>
+                <span>질문을 입력하시면 자동으로 보관됩니다.</span>
+              </div>
+            ) : (
+              sessions.map((sess) => {
+                const isActive = sess.id === currentSessionId;
+                return (
+                  <div
+                    key={sess.id}
+                    className={`history-session-item ${isActive ? 'active' : ''}`}
+                    onClick={() => selectSession(sess.id)}
+                    title={sess.title}
+                  >
+                    <div className="history-item-icon">
+                      <MessageSquare size={14} />
+                    </div>
+                    <div className="history-item-content">
+                      <div className="history-item-title">{sess.title}</div>
+                      <div className="history-item-meta">
+                        <span>{sess.updatedAt || sess.createdAt}</span>
+                        {sess.turnCount > 0 && <span>· 답변 {sess.turnCount}개</span>}
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      className="btn-delete-session"
+                      onClick={(e) => deleteSession(sess.id, e)}
+                      title="이 상담 기록 삭제"
+                      aria-label="상담 삭제"
+                    >
+                      <Trash2 size={13} />
+                    </button>
+                  </div>
+                );
+              })
+            )}
+          </div>
+
+          {sessions.length > 1 && (
+            <div className="history-sidebar-footer">
+              <button
+                type="button"
+                className="btn-clear-all-history"
+                onClick={clearAllSessions}
+              >
+                <Trash2 size={12} />
+                <span>전체 기록 삭제</span>
+              </button>
+            </div>
+          )}
+        </aside>
+
+        {/* 모바일 사이드바 열림 시 딤 오버레이 */}
+        {isSidebarOpen && (
+          <div
+            className="client-sidebar-backdrop"
+            onClick={() => setIsSidebarOpen(false)}
+            aria-hidden="true"
           />
-        </div>
-      </main>
+        )}
+
+        {/* 중앙: 대화 본문 쾌적한 와이드 컨테이너 */}
+        <main className="client-main">
+          <div className="client-chat-wrapper">
+            <ChatColumn
+              messages={messages}
+              activeMsgId={activeMsgId}
+              onSelectMsg={(id) => setActiveMsgId(id)}
+              inFlight={inFlight}
+              busyText={busyText}
+              busySteps={busySteps}
+              elapsedSeconds={elapsedSeconds}
+              scenarioOptions={scenarioOptions}
+              scenarioInfo={scenarioInfo}
+              onSend={sendMessage}
+              onSelectOption={sendAction}
+              onSelectClarify={sendClarify}
+              onReset={startNewChat}
+              onOpenEvidence={(url) => setLightboxUrl(url)}
+              onFeedback={sendFeedback}
+              isClient={true}
+            />
+          </div>
+        </main>
+      </div>
 
       {/* 3. 매뉴얼/증빙 이미지 라이트박스 모달 */}
       <LightboxModal

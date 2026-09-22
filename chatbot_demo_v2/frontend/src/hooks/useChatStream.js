@@ -317,7 +317,10 @@ export function useChatStream() {
   const activeResponse = messages.find((m) => m.id === activeMsgId)?.resp || null;
 
   return {
+    sessionId,
+    updateSession,
     messages,
+    setMessages,
     activeMsgId,
     activeResponse,
     setActiveMsgId,
