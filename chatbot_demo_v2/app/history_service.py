@@ -49,8 +49,13 @@ class HistoryService:
         self._init_db()
 
     def _get_conn(self) -> sqlite3.Connection:
-        conn = sqlite3.connect(str(self.db_path), timeout=15.0)
+        conn = sqlite3.connect(str(self.db_path), timeout=30.0)
         conn.row_factory = sqlite3.Row
+        try:
+            conn.execute("PRAGMA journal_mode=WAL;")
+            conn.execute("PRAGMA busy_timeout=10000;")
+        except Exception:
+            pass
         return conn
 
     def _init_db(self) -> None:
@@ -101,16 +106,30 @@ class HistoryService:
         created_at: Optional[str] = None,
     ) -> dict[str, Any]:
         """대화 턴 완료 시 자동 PII 비식별화 후 DB에 안전 적재."""
-        mask_q_res = self.pii_masker.mask_text(raw_question or "")
-        mask_ans_res = self.pii_masker.mask_text(final_answer or "")
+        from .pii_service import MaskResult
+
+        try:
+            mask_q_res = self.pii_masker.mask_text(raw_question or "")
+        except Exception as e:
+            logger.warning("질문 PII 비식별화 실패 (원문 안전 fallback): %s", e)
+            mask_q_res = MaskResult(masked_text=raw_question or "", detected_types=[], has_pii=False)
+
+        try:
+            mask_ans_res = self.pii_masker.mask_text(final_answer or "")
+        except Exception as e:
+            logger.warning("답변 PII 비식별화 실패 (원문 안전 fallback): %s", e)
+            mask_ans_res = MaskResult(masked_text=final_answer or "", detected_types=[], has_pii=False)
+
         now_str = created_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         all_pii = sorted(list(set(mask_q_res.detected_types + mask_ans_res.detected_types)))
         pii_json = json.dumps(all_pii, ensure_ascii=False)
 
+        masked_q = mask_q_res.masked_text or raw_question or "(질문 내용 없음)"
+        masked_a = mask_ans_res.masked_text or final_answer or ""
+
         with self._lock, self._get_conn() as conn:
             # 개인정보보호법 준수: 원본 질의(raw_question)는 마스킹 즉시 휘발되며,
-            # 디스크 DB에는 오직 실시간 비식별화된 질문(masked_question) 및 답변(masked_answer)만 저장됩니다.
-            # 또한 AI 내부 추론 및 라우팅 판단 근거는 일체 저장하지 않고 순수 질의/답변만 적재합니다.
+            # 디스크 DB에는 오직 실시간 비식별화된 질문(masked_question) 및 답변만 저장됩니다.
             conn.execute(
                 """
                 INSERT OR REPLACE INTO chat_history (
@@ -124,8 +143,8 @@ class HistoryService:
                     run_id,
                     now_str,
                     "",  # raw_question 영구 저장 금지 (개인정보보호법 준수)
-                    mask_q_res.masked_text,
-                    mask_ans_res.masked_text,  # 답변 내 개인정보도 비식별화하여 저장
+                    masked_q,
+                    masked_a,
                     route,
                     "",  # AI 라우팅 판단 근거 저장 제외
                     round(float(latency_s), 3),
@@ -139,8 +158,8 @@ class HistoryService:
 
         return {
             "run_id": run_id,
-            "masked_question": mask_q_res.masked_text,
-            "final_answer": mask_ans_res.masked_text,
+            "masked_question": masked_q,
+            "final_answer": masked_a,
             "has_pii": bool(all_pii),
             "detected_pii": all_pii,
         }

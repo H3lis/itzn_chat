@@ -228,40 +228,35 @@ def chat(request: Request, body: ChatRequest) -> ChatResponse:
 
 
 def _safe_record_history(ctx: AppContext, session_id: str, run_id: str, body: ChatRequest, result: dict) -> None:
-    """대화 결과를 비식별화 후 chat_history.db 에 안전 저장 (비동기 스레드 풀 격리)."""
+    """대화 결과를 비식별화 후 chat_history.db 에 즉시 안전 저장."""
     if not ctx or not getattr(ctx, "history_service", None):
         return
 
-    def _task():
-        try:
-            raw_q = (body.message or (body.action.label if body.action else "") or
-                     (f"선택: {body.clarify_response.choice}" if body.clarify_response else "") or "")
-            final_ans = str(result.get("final_answer") or "")
-            route = str(result.get("route") or "none")
-            timings = result.get("timings") or {}
-            latency_s = float(timings.get("total_s") or 0.0)
-            confidence = str(result.get("confidence") or "unknown")
-
-            # 사용자 요청: AI 추론 및 라우팅 판단 근거는 저장하지 않음
-            ctx.history_service.record_turn(
-                session_id=session_id,
-                run_id=run_id,
-                raw_question=raw_q,
-                final_answer=final_ans,
-                route=route,
-                route_reason="",
-                latency_s=latency_s,
-                confidence=confidence,
-                source_meta=None,
-                evidence=None,
-            )
-        except Exception as e:
-            logger.warning("대화 이력 비동기 적재 실패: %s", e)
-
     try:
-        _history_executor.submit(_task)
+        raw_q = (body.message or (body.action.label if body.action else "") or
+                 (f"선택: {body.clarify_response.choice}" if body.clarify_response else "") or "")
+        final_ans = str(result.get("final_answer") or "")
+        route = str(result.get("route") or "none")
+        timings = result.get("timings") or {}
+        latency_s = float(timings.get("total_s") or 0.0)
+        confidence = str(result.get("confidence") or "unknown")
+
+        # 사용자 요청: AI 추론 및 라우팅 판단 근거는 저장하지 않고 질의/답변만 적재
+        ctx.history_service.record_turn(
+            session_id=session_id,
+            run_id=run_id,
+            raw_question=raw_q,
+            final_answer=final_ans,
+            route=route,
+            route_reason="",
+            latency_s=latency_s,
+            confidence=confidence,
+            source_meta=None,
+            evidence=None,
+        )
+        logger.info("대화 이력 DB 적재 성공: run_id=%s, route=%s, q=%s", run_id, route, raw_q[:20])
     except Exception as e:
-        logger.warning("대화 이력 작업 큐 등록 실패: %s", e)
+        logger.error("대화 이력 적재 실패: run_id=%s, error=%s", run_id, e, exc_info=True)
 
 
 def _sse(event: str, data: dict) -> str:
