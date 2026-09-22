@@ -1,20 +1,22 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { MessageSquare, Globe, CheckCircle2, AlertCircle, Database, GitFork, History } from 'lucide-react';
+import { MessageSquare, Globe, CheckCircle2, AlertCircle, Database, GitFork, History, Cpu } from 'lucide-react';
 import { FaqTab } from './FaqTab';
 import { RagTab } from './RagTab';
 import { ScenarioTab } from './ScenarioTab';
 import { WebSearchTab } from './WebSearchTab';
 import { HistoryTab } from './HistoryTab';
+import { SettingsTab } from './SettingsTab';
 import './Admin.css';
 
 export function AdminLayout({ onNavigate }) {
-  const [activeTab, setActiveTab] = useState('faq'); // 'faq' | 'rag' | 'scenario' | 'websearch' | 'history'
+  const [activeTab, setActiveTab] = useState('faq'); // 'faq' | 'rag' | 'scenario' | 'websearch' | 'history' | 'settings'
   const [badges, setBadges] = useState({
     faq: '-',
     docs: '-',
     scenario: '-',
     websearch: 'OFF',
-    history: '-'
+    history: '-',
+    settings: 'Gemini'
   });
   const [connReady, setConnReady] = useState(false);
   const [webSearchEnabled, setWebSearchEnabled] = useState(false);
@@ -41,6 +43,7 @@ export function AdminLayout({ onNavigate }) {
   const handleDocsBadge = useCallback((val) => updateBadge('docs', val), [updateBadge]);
   const handleScenarioBadge = useCallback((val) => updateBadge('scenario', val), [updateBadge]);
   const handleHistoryBadge = useCallback((val) => updateBadge('history', val), [updateBadge]);
+  const handleSettingsBadge = useCallback((val) => updateBadge('settings', val), [updateBadge]);
 
   return (
     <div className="admin-wrapper" style={{ minHeight: '100vh', background: 'var(--bg-main)', color: 'var(--text-main)' }}>
@@ -159,6 +162,14 @@ export function AdminLayout({ onNavigate }) {
             <span>📊 대화 이력 & 비식별화</span>
             <span className="tab-badge">{badges.history}</span>
           </button>
+
+          <button
+            className={`nav-tab-btn ${activeTab === 'settings' ? 'active' : ''}`}
+            onClick={() => setActiveTab('settings')}
+          >
+            <span>⚙️ 모델 & API 설정</span>
+            <span className="tab-badge">{badges.settings}</span>
+          </button>
         </nav>
 
         {/* 탭 본문 렌더링 */}
@@ -174,6 +185,7 @@ export function AdminLayout({ onNavigate }) {
           />
         )}
         {activeTab === 'history' && <HistoryTab onUpdateBadge={handleHistoryBadge} />}
+        {activeTab === 'settings' && <SettingsTab onUpdateBadge={handleSettingsBadge} />}
       </main>
     </div>
   );

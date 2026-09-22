@@ -250,7 +250,86 @@ class DocMetadataExtractRequest(BaseModel):
     force: bool = False
 
 
+# ---------- 관리자 통합 모델 & API 키 설정 스키마 ----------
+class AdminSettingsResponse(BaseModel):
+    # 메인 LLM & RAG 백엔드
+    rag_backend: str = "gemini"
+    gemini_api_key_masked: str = ""
+    gemini_api_key_set: bool = False
+    gemini_model: str = "gemini-2.5-flash"
+    
+    # 웹 검색 (Grounding)
+    web_search_enabled: bool = False
+    web_search_gemini_api_key_masked: str = ""
+    web_search_gemini_api_key_set: bool = False
+    web_search_model: str = "gemini-3.1-flash-lite"
+    web_search_daily_budget: int = 100
+    
+    # PII 비식별화
+    pii_backend: str = "sllm"
+    pii_sllm_model: str = "qwen2.5:1.5b"
+    pii_sllm_host: str = "http://34.64.143.198:11434"
+    pii_sllm_timeout_s: float = 8.0
+    
+    # 원격 GPU & 매칭
+    ollama_host: str = "http://34.64.143.198:11434"
+    reranker_endpoint: str = "http://34.64.143.198:8008/rerank"
+    scenario_match_backend: str = "semantic"
+    scenario_match_threshold: float = 0.80
+    
+    # LangSmith 관측성
+    langsmith_tracing: bool = False
+    langsmith_api_key_masked: str = ""
+    langsmith_api_key_set: bool = False
+    langsmith_project: str = "school-network-chatbot-demo-v2"
+
+
+class AdminSettingsUpdateRequest(BaseModel):
+    # 메인 LLM & RAG
+    rag_backend: Optional[str] = None
+    gemini_api_key: Optional[str] = None
+    gemini_model: Optional[str] = None
+    
+    # 웹 검색
+    web_search_enabled: Optional[bool] = None
+    web_search_gemini_api_key: Optional[str] = None
+    web_search_model: Optional[str] = None
+    web_search_daily_budget: Optional[int] = None
+    
+    # PII 비식별화
+    pii_backend: Optional[str] = None
+    pii_sllm_model: Optional[str] = None
+    pii_sllm_host: Optional[str] = None
+    pii_sllm_timeout_s: Optional[float] = None
+    
+    # 원격 GPU & 매칭
+    ollama_host: Optional[str] = None
+    reranker_endpoint: Optional[str] = None
+    scenario_match_backend: Optional[str] = None
+    scenario_match_threshold: Optional[float] = None
+    
+    # LangSmith
+    langsmith_tracing: Optional[bool] = None
+    langsmith_api_key: Optional[str] = None
+    langsmith_project: Optional[str] = None
+
+
+class ConnectionTestRequest(BaseModel):
+    target: str  # "gemini" | "web_search" | "ollama" | "reranker"
+    api_key: Optional[str] = None
+    host: Optional[str] = None
+    model: Optional[str] = None
+
+
+class ConnectionTestResponse(BaseModel):
+    target: str
+    success: bool
+    message: str
+    latency_ms: Optional[float] = None
+
+
 ScenarioTreeResponse.model_rebuild()
 ScenarioValidationResponse.model_rebuild()
 DocMetadataItem.model_rebuild()
+AdminSettingsResponse.model_rebuild()
 

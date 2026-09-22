@@ -46,6 +46,10 @@ from .schemas import (
     DocMetadataItem,
     DocMetadataScope,
     DocMetadataUpdateRequest,
+    AdminSettingsResponse,
+    AdminSettingsUpdateRequest,
+    ConnectionTestRequest,
+    ConnectionTestResponse,
     WarmupRequest,
     WebSearchStatusResponse,
     WebSearchToggleRequest,
@@ -972,5 +976,291 @@ def admin_get_history_detail(request: Request, run_id: str) -> dict:
     if not item:
         raise HTTPException(status_code=404, detail=f"run_id '{run_id}'에 해당하는 대화 기록을 찾을 수 없습니다.")
     return item
+
+
+# ---------- 관리자 통합 모델 & API 키 설정 엔드포인트 ----------
+
+def _mask_key(key: Optional[str]) -> str:
+    """API 키의 앞뒤 4자리만 남기고 마스킹한다."""
+    if not key:
+        return ""
+    if len(key) <= 8:
+        return "********"
+    return f"{key[:4]}...{key[-4:]}"
+
+
+@router.get("/api/admin/settings", response_model=AdminSettingsResponse)
+def admin_get_settings(request: Request) -> AdminSettingsResponse:
+    """관리자용 모델, API 키, 엔드포인트 현재 설정 조회 (키는 보안 마스킹됨)."""
+    import os
+    ctx = _ctx(request)
+    s = ctx.settings
+
+    gemini_key = os.environ.get("GEMINI_API_KEY", "")
+    ws_gemini_key = os.environ.get("WEB_SEARCH_GEMINI_API_KEY", "")
+    langsmith_key = os.environ.get("LANGSMITH_API_KEY", "")
+
+    return AdminSettingsResponse(
+        rag_backend=s.rag_backend,
+        gemini_api_key_masked=_mask_key(gemini_key),
+        gemini_api_key_set=bool(gemini_key),
+        gemini_model=os.environ.get("GEMINI_MODEL", "gemini-2.5-flash"),
+        web_search_enabled=s.web_search_enabled,
+        web_search_gemini_api_key_masked=_mask_key(ws_gemini_key),
+        web_search_gemini_api_key_set=bool(ws_gemini_key),
+        web_search_model=s.web_search_model,
+        web_search_daily_budget=s.web_search_daily_budget,
+        pii_backend=s.pii_backend,
+        pii_sllm_model=s.pii_sllm_model,
+        pii_sllm_host=s.pii_sllm_host,
+        pii_sllm_timeout_s=s.pii_sllm_timeout_s,
+        ollama_host=os.environ.get("OLLAMA_HOST", "http://34.64.143.198:11434"),
+        reranker_endpoint=os.environ.get("RERANKER_ENDPOINT", "http://34.64.143.198:8008/rerank"),
+        scenario_match_backend=s.scenario_match_backend,
+        scenario_match_threshold=s.scenario_match_threshold,
+        langsmith_tracing=s.langsmith_tracing,
+        langsmith_api_key_masked=_mask_key(langsmith_key),
+        langsmith_api_key_set=bool(langsmith_key),
+        langsmith_project=s.langsmith_project,
+    )
+
+
+@router.put("/api/admin/settings", response_model=AdminSettingsResponse)
+def admin_update_settings(request: Request, body: AdminSettingsUpdateRequest) -> AdminSettingsResponse:
+    """관리자 모델/키 설정 실시간 핫리로드 및 .env 파일 영구 반영."""
+    import dataclasses
+    import os
+    from .dependencies import build_web_provider
+
+    ctx = _ctx(request)
+    s = ctx.settings
+    updates_for_settings = {}
+
+    if body.rag_backend is not None:
+        updates_for_settings["rag_backend"] = body.rag_backend
+        os.environ["RAG_BACKEND"] = body.rag_backend
+        _update_env_file("RAG_BACKEND", body.rag_backend)
+
+    if body.gemini_api_key is not None and body.gemini_api_key.strip():
+        k = body.gemini_api_key.strip()
+        os.environ["GEMINI_API_KEY"] = k
+        _update_env_file("GEMINI_API_KEY", k)
+        updates_for_settings["gemini_api_key_present"] = True
+
+    if body.gemini_model is not None:
+        os.environ["GEMINI_MODEL"] = body.gemini_model
+        _update_env_file("GEMINI_MODEL", body.gemini_model)
+
+    if body.web_search_enabled is not None:
+        updates_for_settings["web_search_enabled"] = body.web_search_enabled
+        os.environ["WEB_SEARCH_ENABLED"] = "true" if body.web_search_enabled else "false"
+        _update_env_file("WEB_SEARCH_ENABLED", "true" if body.web_search_enabled else "false")
+
+    if body.web_search_gemini_api_key is not None and body.web_search_gemini_api_key.strip():
+        k = body.web_search_gemini_api_key.strip()
+        os.environ["WEB_SEARCH_GEMINI_API_KEY"] = k
+        _update_env_file("WEB_SEARCH_GEMINI_API_KEY", k)
+        updates_for_settings["web_search_api_key_present"] = True
+
+    if body.web_search_model is not None:
+        updates_for_settings["web_search_model"] = body.web_search_model
+        os.environ["WEB_SEARCH_MODEL"] = body.web_search_model
+        _update_env_file("WEB_SEARCH_MODEL", body.web_search_model)
+
+    if body.web_search_daily_budget is not None:
+        updates_for_settings["web_search_daily_budget"] = body.web_search_daily_budget
+        os.environ["WEB_SEARCH_DAILY_BUDGET"] = str(body.web_search_daily_budget)
+        _update_env_file("WEB_SEARCH_DAILY_BUDGET", str(body.web_search_daily_budget))
+
+    if body.pii_backend is not None:
+        updates_for_settings["pii_backend"] = body.pii_backend
+        os.environ["PII_BACKEND"] = body.pii_backend
+        _update_env_file("PII_BACKEND", body.pii_backend)
+
+    if body.pii_sllm_model is not None:
+        updates_for_settings["pii_sllm_model"] = body.pii_sllm_model
+        os.environ["PII_SLLM_MODEL"] = body.pii_sllm_model
+        _update_env_file("PII_SLLM_MODEL", body.pii_sllm_model)
+
+    if body.pii_sllm_host is not None:
+        updates_for_settings["pii_sllm_host"] = body.pii_sllm_host
+        os.environ["PII_SLLM_HOST"] = body.pii_sllm_host
+        _update_env_file("PII_SLLM_HOST", body.pii_sllm_host)
+
+    if body.pii_sllm_timeout_s is not None:
+        updates_for_settings["pii_sllm_timeout_s"] = body.pii_sllm_timeout_s
+        os.environ["PII_SLLM_TIMEOUT_S"] = str(body.pii_sllm_timeout_s)
+        _update_env_file("PII_SLLM_TIMEOUT_S", str(body.pii_sllm_timeout_s))
+
+    if body.ollama_host is not None:
+        os.environ["OLLAMA_HOST"] = body.ollama_host
+        _update_env_file("OLLAMA_HOST", body.ollama_host)
+
+    if body.reranker_endpoint is not None:
+        os.environ["RERANKER_ENDPOINT"] = body.reranker_endpoint
+        _update_env_file("RERANKER_ENDPOINT", body.reranker_endpoint)
+
+    if body.scenario_match_backend is not None:
+        updates_for_settings["scenario_match_backend"] = body.scenario_match_backend
+        os.environ["SCENARIO_MATCH_BACKEND"] = body.scenario_match_backend
+        _update_env_file("SCENARIO_MATCH_BACKEND", body.scenario_match_backend)
+
+    if body.scenario_match_threshold is not None:
+        updates_for_settings["scenario_match_threshold"] = body.scenario_match_threshold
+        os.environ["SCENARIO_MATCH_THRESHOLD"] = str(body.scenario_match_threshold)
+        _update_env_file("SCENARIO_MATCH_THRESHOLD", str(body.scenario_match_threshold))
+
+    if body.langsmith_tracing is not None:
+        updates_for_settings["langsmith_tracing"] = body.langsmith_tracing
+        os.environ["LANGSMITH_TRACING"] = "true" if body.langsmith_tracing else "false"
+        _update_env_file("LANGSMITH_TRACING", "true" if body.langsmith_tracing else "false")
+
+    if body.langsmith_api_key is not None and body.langsmith_api_key.strip():
+        k = body.langsmith_api_key.strip()
+        os.environ["LANGSMITH_API_KEY"] = k
+        _update_env_file("LANGSMITH_API_KEY", k)
+        updates_for_settings["langsmith_api_key_present"] = True
+
+    if body.langsmith_project is not None:
+        updates_for_settings["langsmith_project"] = body.langsmith_project
+        os.environ["LANGSMITH_PROJECT"] = body.langsmith_project
+        _update_env_file("LANGSMITH_PROJECT", body.langsmith_project)
+
+    # 런타임 settings 객체 갱신
+    if updates_for_settings:
+        ctx.settings = dataclasses.replace(ctx.settings, **updates_for_settings)
+        # 웹 검색 프로바이더 재빌드
+        ctx.web_provider = build_web_provider(ctx.settings)
+
+    logger.info("관리자 설정 갱신 완료: %s", list(updates_for_settings.keys()))
+    return admin_get_settings(request)
+
+
+@router.post("/api/admin/settings/test-connection", response_model=ConnectionTestResponse)
+def admin_test_connection(request: Request, body: ConnectionTestRequest) -> ConnectionTestResponse:
+    """Gemini / Ollama / Reranker 원격 연결 핑 및 응답 지연시간(ms) 테스트."""
+    import json
+    import os
+    import time
+    import urllib.request
+    import urllib.error
+
+    t0 = time.perf_counter()
+    target = body.target.lower()
+
+    if target in ("gemini", "web_search"):
+        api_key = body.api_key or os.environ.get("WEB_SEARCH_GEMINI_API_KEY" if target == "web_search" else "GEMINI_API_KEY", "")
+        if not api_key:
+            return ConnectionTestResponse(
+                target=body.target,
+                success=False,
+                message="설정되거나 입력된 Gemini API Key가 없습니다.",
+                latency_ms=0.0,
+            )
+        try:
+            url = f"https://generativelanguage.googleapis.com/v1beta/models?key={api_key}"
+            req = urllib.request.Request(url, headers={"User-Agent": "ChatbotAdmin/2.0"})
+            with urllib.request.urlopen(req, timeout=5.0) as resp:
+                status = resp.status
+                latency = round((time.perf_counter() - t0) * 1000, 1)
+                if status == 200:
+                    return ConnectionTestResponse(
+                        target=body.target,
+                        success=True,
+                        message=f"Gemini API 연결 및 인증 성공 (HTTP {status})",
+                        latency_ms=latency,
+                    )
+                else:
+                    return ConnectionTestResponse(
+                        target=body.target,
+                        success=False,
+                        message=f"Gemini API 응답 비정상 (HTTP {status})",
+                        latency_ms=latency,
+                    )
+        except urllib.error.HTTPError as he:
+            latency = round((time.perf_counter() - t0) * 1000, 1)
+            return ConnectionTestResponse(
+                target=body.target,
+                success=False,
+                message=f"Gemini API 인증 실패: HTTP {he.code} {he.reason}",
+                latency_ms=latency,
+            )
+        except Exception as e:
+            latency = round((time.perf_counter() - t0) * 1000, 1)
+            return ConnectionTestResponse(
+                target=body.target,
+                success=False,
+                message=f"Gemini API 연결 실패: {e}",
+                latency_ms=latency,
+            )
+
+    elif target == "ollama":
+        host = body.host or os.environ.get("OLLAMA_HOST", "http://34.64.143.198:11434")
+        host = host.rstrip("/")
+        url = f"{host}/api/tags"
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": "ChatbotAdmin/2.0"})
+            with urllib.request.urlopen(req, timeout=4.0) as resp:
+                data = json.loads(resp.read().decode("utf-8"))
+                models = [m.get("name", "") for m in data.get("models", [])]
+                latency = round((time.perf_counter() - t0) * 1000, 1)
+                models_preview = ", ".join(models[:3]) + (f" 외 {len(models)-3}개" if len(models) > 3 else "")
+                return ConnectionTestResponse(
+                    target=body.target,
+                    success=True,
+                    message=f"Ollama 연결 성공 (모델 목록: {models_preview or '없음'})",
+                    latency_ms=latency,
+                )
+        except Exception as e:
+            latency = round((time.perf_counter() - t0) * 1000, 1)
+            return ConnectionTestResponse(
+                target=body.target,
+                success=False,
+                message=f"Ollama 연결 실패 ({host}): {e}",
+                latency_ms=latency,
+            )
+
+    elif target == "reranker":
+        endpoint = body.host or os.environ.get("RERANKER_ENDPOINT", "http://34.64.143.198:8008/rerank")
+        test_url = endpoint
+        if "/rerank" in test_url:
+            base_url = test_url.rsplit("/rerank", 1)[0]
+        else:
+            base_url = test_url
+        url = f"{base_url}/health"
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": "ChatbotAdmin/2.0"})
+            with urllib.request.urlopen(req, timeout=4.0) as resp:
+                latency = round((time.perf_counter() - t0) * 1000, 1)
+                return ConnectionTestResponse(
+                    target=body.target,
+                    success=True,
+                    message=f"Reranker 서비스 정상 (HTTP {resp.status})",
+                    latency_ms=latency,
+                )
+        except urllib.error.HTTPError as he:
+            latency = round((time.perf_counter() - t0) * 1000, 1)
+            return ConnectionTestResponse(
+                target=body.target,
+                success=True,
+                message=f"Reranker 포트 통신 성공 (HTTP {he.code})",
+                latency_ms=latency,
+            )
+        except Exception as e:
+            latency = round((time.perf_counter() - t0) * 1000, 1)
+            return ConnectionTestResponse(
+                target=body.target,
+                success=False,
+                message=f"Reranker 연결 실패 ({endpoint}): {e}",
+                latency_ms=latency,
+            )
+
+    return ConnectionTestResponse(
+        target=body.target,
+        success=False,
+        message=f"지원하지 않는 연결 테스트 대상입니다: '{body.target}'",
+        latency_ms=0.0,
+    )
+
 
 
