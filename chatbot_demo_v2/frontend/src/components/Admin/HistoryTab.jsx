@@ -8,6 +8,9 @@ const ROUTE_LABELS = {
   rag3x: 'RAG 심층검색',
   clarify: '모호 되묻기',
   web_search: '웹 검색',
+  error: '처리 오류',
+  busy: '엔진 지연',
+  abstain: '응답 보류',
 };
 
 const PII_LABELS = {
@@ -286,6 +289,7 @@ export function HistoryTab({ onUpdateBadge }) {
             <option value="rag">RAG 심층 검색</option>
             <option value="clarify">모호 질의 되묻기</option>
             <option value="web_search">웹 검색 (Web Search)</option>
+            <option value="error">처리 오류 (Error)</option>
           </select>
 
           <select
