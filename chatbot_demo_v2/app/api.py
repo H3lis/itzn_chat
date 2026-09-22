@@ -867,6 +867,41 @@ def admin_get_history(
     )
 
 
+@router.get("/api/admin/history/export/excel")
+def admin_export_history_excel(
+    request: Request,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+    route: Optional[str] = None,
+    feedback: Optional[str] = None,
+    keyword: Optional[str] = None,
+):
+    """대화 이력 다차원 필터링 결과 엑셀(XLSX) 서식 파일 스트리밍 다운로드."""
+    ctx = _ctx(request)
+    if not ctx.history_service:
+        raise HTTPException(status_code=503, detail="이력 서비스가 초기화되지 않았습니다.")
+
+    excel_buf = ctx.history_service.export_history_excel(
+        start_date=start_date,
+        end_date=end_date,
+        route=route,
+        feedback=feedback,
+        keyword=keyword,
+    )
+
+    from datetime import datetime
+    filename = f"chat_history_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx"
+    headers = {
+        "Content-Disposition": f'attachment; filename="{filename}"',
+        "Access-Control-Expose-Headers": "Content-Disposition",
+    }
+    return StreamingResponse(
+        excel_buf,
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        headers=headers,
+    )
+
+
 @router.get("/api/admin/history/analytics")
 def admin_get_history_analytics(request: Request, days: int = 30) -> dict:
     """대화 이력 만족도, 처리 경로별 통계 및 부정 피드백 요약 조회."""

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { History, RefreshCw, ThumbsUp, ThumbsDown, ShieldCheck, Eye } from 'lucide-react';
+import { History, RefreshCw, ThumbsUp, ThumbsDown, ShieldCheck, Eye, Download } from 'lucide-react';
 
 const ROUTE_LABELS = {
   scenario: '시나리오',
@@ -30,6 +30,7 @@ export function HistoryTab({ onUpdateBadge }) {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [downloadingExcel, setDownloadingExcel] = useState(false);
 
   // 필터
   const [routeFilter, setRouteFilter] = useState('');
@@ -41,6 +42,45 @@ export function HistoryTab({ onUpdateBadge }) {
 
   // PII 검증 모달
   const [inspectItem, setInspectItem] = useState(null);
+
+  const handleExportExcel = async () => {
+    try {
+      setDownloadingExcel(true);
+      const params = new URLSearchParams();
+      if (routeFilter) params.append('route', routeFilter);
+      if (feedbackFilter) params.append('feedback', feedbackFilter);
+      if (keyword) params.append('keyword', keyword);
+
+      const res = await fetch(`/api/admin/history/export/excel?${params.toString()}`);
+      if (!res.ok) {
+        throw new Error(`다운로드 실패 (HTTP ${res.status})`);
+      }
+
+      let filename = `chat_history_${new Date().toISOString().slice(0, 10)}.xlsx`;
+      const disposition = res.headers.get('Content-Disposition');
+      if (disposition && disposition.includes('filename=')) {
+        const match = disposition.match(/filename=["']?([^"';]+)["']?/);
+        if (match && match[1]) {
+          filename = match[1];
+        }
+      }
+
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (err) {
+      console.error('엑셀 다운로드 중 오류:', err);
+      alert('엑셀 파일 다운로드에 실패했습니다: ' + err.message);
+    } finally {
+      setDownloadingExcel(false);
+    }
+  };
 
   const fetchAnalytics = useCallback(async () => {
     try {
@@ -175,6 +215,21 @@ export function HistoryTab({ onUpdateBadge }) {
             title="대화 이력 새로고침"
           >
             <RefreshCw size={14} className={loading ? 'spinner' : ''} />
+          </button>
+
+          <button
+            className="btn btn-excel btn-sm"
+            onClick={handleExportExcel}
+            disabled={downloadingExcel}
+            title="현재 필터 조건으로 엑셀(XLSX) 서식 다운로드"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', fontWeight: 600 }}
+          >
+            {downloadingExcel ? (
+              <RefreshCw size={14} className="spinner" />
+            ) : (
+              <Download size={14} />
+            )}
+            <span>엑셀 다운로드</span>
           </button>
         </div>
       </div>

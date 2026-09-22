@@ -9,8 +9,10 @@
 """
 from __future__ import annotations
 
+import io
 import json
 import logging
+import re
 import sqlite3
 import threading
 from datetime import datetime, timedelta
@@ -342,3 +344,183 @@ class HistoryService:
             except Exception:
                 d["pii_types"] = []
             return d
+
+    def export_history_excel(
+        self,
+        *,
+        start_date: Optional[str] = None,
+        end_date: Optional[str] = None,
+        route: Optional[str] = None,
+        feedback: Optional[str] = None,
+        keyword: Optional[str] = None,
+        max_rows: int = 10000,
+    ) -> io.BytesIO:
+        """필터 조건에 일치하는 대화 이력을 스타일링된 Excel(XLSX) 바이트 버퍼로 내보내기."""
+        import openpyxl
+        from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
+        from openpyxl.utils import get_column_letter
+
+        where_clauses: list[str] = []
+        params: list[Any] = []
+
+        if start_date:
+            where_clauses.append("created_at >= ?")
+            params.append(f"{start_date} 00:00:00")
+        if end_date:
+            where_clauses.append("created_at <= ?")
+            params.append(f"{end_date} 23:59:59")
+        if route and route != "all":
+            where_clauses.append("route = ?")
+            params.append(route)
+        if feedback and feedback != "all":
+            where_clauses.append("feedback = ?")
+            params.append(feedback.upper())
+        if keyword:
+            kw = f"%{keyword.strip()}%"
+            where_clauses.append("(masked_question LIKE ? OR final_answer LIKE ? OR session_id LIKE ?)")
+            params.extend([kw, kw, kw])
+
+        where_sql = ("WHERE " + " AND ".join(where_clauses)) if where_clauses else ""
+
+        with self._lock, self._get_conn() as conn:
+            query_sql = f"""
+                SELECT id, session_id, run_id, created_at, masked_question, final_answer,
+                       route, route_reason, latency_s, confidence, feedback, feedback_reason,
+                       feedback_at, pii_types
+                FROM chat_history
+                {where_sql}
+                ORDER BY created_at DESC
+                LIMIT ?
+            """
+            cur = conn.execute(query_sql, params + [max_rows])
+            rows = [dict(r) for r in cur.fetchall()]
+
+        route_map = {
+            "scenario": "시나리오",
+            "faq": "FAQ 매칭",
+            "rag": "RAG 심층검색",
+            "rag3x": "RAG 심층검색",
+            "clarify": "모호 되묻기",
+            "web_search": "웹 검색",
+        }
+        feedback_map = {
+            "POSITIVE": "👍 만족",
+            "NEGATIVE": "👎 불만족",
+            "NONE": "미평가",
+        }
+        pii_map = {
+            "name": "인명",
+            "phone": "전화번호",
+            "serial": "시리얼",
+            "ip": "IP주소",
+            "mac": "MAC주소",
+            "rrn": "주민번호",
+        }
+
+        tag_re = re.compile(r"<[^>]+>")
+
+        wb = openpyxl.Workbook()
+        ws = wb.active
+        ws.title = "대화상담이력"
+        ws.views.sheetView[0].showGridLines = True
+
+        headers = [
+            "번호",
+            "상담일시",
+            "세션 ID",
+            "처리 경로",
+            "사용자 질문 (비식별화)",
+            "챗봇 응답",
+            "소요시간(초)",
+            "만족도",
+            "피드백 사유",
+            "비식별화 항목",
+        ]
+
+        header_font = Font(name="맑은 고딕", size=11, bold=True, color="FFFFFF")
+        header_fill = PatternFill(start_color="1E293B", end_color="1E293B", fill_type="solid")
+        header_align = Alignment(horizontal="center", vertical="center", wrap_text=False)
+
+        cell_font = Font(name="맑은 고딕", size=10)
+        even_fill = PatternFill(start_color="F8FAFC", end_color="F8FAFC", fill_type="solid")
+        odd_fill = PatternFill(fill_type=None)
+
+        thin_border = Border(
+            left=Side(style="thin", color="CBD5E1"),
+            right=Side(style="thin", color="CBD5E1"),
+            top=Side(style="thin", color="CBD5E1"),
+            bottom=Side(style="thin", color="CBD5E1"),
+        )
+
+        align_center = Alignment(horizontal="center", vertical="center")
+        align_left = Alignment(horizontal="left", vertical="center", wrap_text=True)
+
+        ws.row_dimensions[1].height = 28
+        for col_idx, h in enumerate(headers, start=1):
+            cell = ws.cell(row=1, column=col_idx, value=h)
+            cell.font = header_font
+            cell.fill = header_fill
+            cell.alignment = header_align
+            cell.border = thin_border
+
+        for row_idx, r in enumerate(rows, start=2):
+            ws.row_dimensions[row_idx].height = 24
+            fill = even_fill if row_idx % 2 == 0 else odd_fill
+
+            try:
+                raw_pii = json.loads(r.get("pii_types") or "[]")
+            except Exception:
+                raw_pii = []
+            pii_text = ", ".join([pii_map.get(p, p) for p in raw_pii]) if raw_pii else "없음"
+
+            user_q = r.get("masked_question") or ""
+            bot_a = tag_re.sub("", r.get("final_answer") or "").strip()
+            fb_raw = (r.get("feedback") or "NONE").upper()
+            fb_text = feedback_map.get(fb_raw, fb_raw)
+            route_raw = r.get("route") or ""
+            route_text = route_map.get(route_raw, route_raw or "-")
+
+            values = [
+                row_idx - 1,
+                r.get("created_at") or "-",
+                r.get("session_id") or "-",
+                route_text,
+                user_q,
+                bot_a,
+                round(float(r.get("latency_s") or 0.0), 3),
+                fb_text,
+                r.get("feedback_reason") or "-",
+                pii_text,
+            ]
+
+            for col_idx, val in enumerate(values, start=1):
+                cell = ws.cell(row=row_idx, column=col_idx, value=val)
+                cell.font = cell_font
+                cell.fill = fill
+                cell.border = thin_border
+                if col_idx in (1, 2, 3, 4, 7, 8, 10):
+                    cell.alignment = align_center
+                else:
+                    cell.alignment = align_left
+
+        col_widths = {
+            1: 8,
+            2: 20,
+            3: 16,
+            4: 15,
+            5: 42,
+            6: 52,
+            7: 13,
+            8: 13,
+            9: 22,
+            10: 18,
+        }
+        for col_idx, width in col_widths.items():
+            col_letter = get_column_letter(col_idx)
+            ws.column_dimensions[col_letter].width = width
+
+        output = io.BytesIO()
+        wb.save(output)
+        output.seek(0)
+        return output
+
