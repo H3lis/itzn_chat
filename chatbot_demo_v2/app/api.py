@@ -19,7 +19,7 @@ from typing import Optional
 
 _history_executor = concurrent.futures.ThreadPoolExecutor(max_workers=2, thread_name_prefix="history_worker")
 
-from fastapi import APIRouter, File, Form, HTTPException, Request, UploadFile
+from fastapi import APIRouter, File, Form, HTTPException, Query, Request, UploadFile
 from fastapi.responses import FileResponse, StreamingResponse
 
 from .dependencies import AppContext
@@ -414,11 +414,15 @@ def admin_list_documents(request: Request) -> dict:
     for doc in docs:
         slug = doc_slug(doc.get("rel_path") or doc.get("name") or "")
         meta = all_meta.get(slug)
+        if not meta:
+            meta = all_meta.get(doc_slug(doc.get("name") or ""))
         doc["has_metadata"] = meta is not None
         if meta:
             doc["meta_title"] = meta.get("title")
-            doc["meta_keywords"] = meta.get("keywords", [])
+            doc["meta_keywords"] = [k.lstrip("#") for k in (meta.get("keywords") or [])]
             doc["meta_publisher"] = meta.get("publisher", "")
+            doc["meta_summary"] = meta.get("summary", "")
+            doc["meta_summary_lines"] = meta.get("summary_lines", [])
     return {"documents": docs, "count": len(docs)}
 
 
@@ -789,46 +793,58 @@ def admin_delete_scenario_node(request: Request, node_id: str) -> dict:
 # =========================================================================
 
 @router.get("/api/admin/documents/{doc_path:path}/metadata", response_model=DocMetadataItem)
-def admin_get_document_metadata(request: Request, doc_path: str) -> DocMetadataItem:
+@router.get("/api/admin/document-metadata", response_model=DocMetadataItem)
+def admin_get_document_metadata(request: Request, doc_path: Optional[str] = None, path: Optional[str] = Query(None)) -> DocMetadataItem:
     """RAG 문서의 4대 메타데이터(3줄요약, 키워드5개, 발행기관, 적용대상) 조회.
     기존 메타데이터가 없다면 자동으로 최초 추출(LLM 또는 규칙 기반)을 실행하여 반환."""
     ctx = _ctx(request)
+    target_path = doc_path or path or ""
+    if not target_path:
+        raise HTTPException(status_code=400, detail="문서 경로(doc_path 또는 path)가 필요합니다.")
     try:
-        meta = ctx.metadata_manager.get_metadata(doc_path)
+        meta = ctx.metadata_manager.get_metadata(target_path)
         if not meta:
-            meta = ctx.metadata_manager.extract_and_save(doc_path, force=False)
+            meta = ctx.metadata_manager.extract_and_save(target_path, force=False)
         return DocMetadataItem(**meta)
     except FileNotFoundError:
-        raise HTTPException(status_code=404, detail=f"문서 파일을 찾을 수 없습니다: {doc_path}")
+        raise HTTPException(status_code=404, detail=f"문서 파일을 찾을 수 없습니다: {target_path}")
     except Exception as e:
-        logger.error("문서 메타데이터 조회 실패 [%s]: %s", doc_path, e, exc_info=True)
+        logger.error("문서 메타데이터 조회 실패 [%s]: %s", target_path, e, exc_info=True)
         raise HTTPException(status_code=500, detail=f"메타데이터 조회 실패: {e}")
 
 
 @router.put("/api/admin/documents/{doc_path:path}/metadata", response_model=DocMetadataItem)
-def admin_update_document_metadata(request: Request, doc_path: str, body: DocMetadataUpdateRequest) -> DocMetadataItem:
+@router.put("/api/admin/document-metadata", response_model=DocMetadataItem)
+def admin_update_document_metadata(request: Request, body: DocMetadataUpdateRequest, doc_path: Optional[str] = None, path: Optional[str] = Query(None)) -> DocMetadataItem:
     """관리자가 직접 수정한 RAG 문서 메타데이터 저장."""
     ctx = _ctx(request)
+    target_path = doc_path or path or body.doc_path or ""
+    if not target_path:
+        raise HTTPException(status_code=400, detail="문서 경로(doc_path 또는 path)가 필요합니다.")
     try:
-        updated = ctx.metadata_manager.update_metadata(doc_path, body.model_dump(exclude_unset=True))
+        updated = ctx.metadata_manager.update_metadata(target_path, body.model_dump(exclude_unset=True))
         return DocMetadataItem(**updated)
     except Exception as e:
-        logger.error("문서 메타데이터 수정 실패 [%s]: %s", doc_path, e, exc_info=True)
+        logger.error("문서 메타데이터 수정 실패 [%s]: %s", target_path, e, exc_info=True)
         raise HTTPException(status_code=500, detail=f"메타데이터 수정 실패: {e}")
 
 
 @router.post("/api/admin/documents/{doc_path:path}/metadata/extract", response_model=DocMetadataItem)
-def admin_extract_document_metadata(request: Request, doc_path: str, body: Optional[DocMetadataExtractRequest] = None) -> DocMetadataItem:
+@router.post("/api/admin/document-metadata/extract", response_model=DocMetadataItem)
+def admin_extract_document_metadata(request: Request, body: Optional[DocMetadataExtractRequest] = None, doc_path: Optional[str] = None, path: Optional[str] = Query(None)) -> DocMetadataItem:
     """Gemini LLM / 규칙 기반으로 RAG 문서 메타데이터 강제 재추출 실행."""
     ctx = _ctx(request)
+    target_path = doc_path or path or (body.doc_path if body else None) or ""
+    if not target_path:
+        raise HTTPException(status_code=400, detail="문서 경로(doc_path 또는 path)가 필요합니다.")
     force = bool(body.force) if body else True
     try:
-        meta = ctx.metadata_manager.extract_and_save(doc_path, force=force)
+        meta = ctx.metadata_manager.extract_and_save(target_path, force=force)
         return DocMetadataItem(**meta)
     except FileNotFoundError:
-        raise HTTPException(status_code=404, detail=f"문서 파일을 찾을 수 없습니다: {doc_path}")
+        raise HTTPException(status_code=404, detail=f"문서 파일을 찾을 수 없습니다: {target_path}")
     except Exception as e:
-        logger.error("문서 메타데이터 추출 실패 [%s]: %s", doc_path, e, exc_info=True)
+        logger.error("문서 메타데이터 추출 실패 [%s]: %s", target_path, e, exc_info=True)
         raise HTTPException(status_code=500, detail=f"메타데이터 추출 실패: {e}")
 
 

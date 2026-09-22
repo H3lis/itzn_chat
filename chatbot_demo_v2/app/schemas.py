@@ -235,6 +235,7 @@ class DocMetadataItem(BaseModel):
 
 
 class DocMetadataUpdateRequest(BaseModel):
+    doc_path: Optional[str] = None
     title: Optional[str] = None
     summary: Optional[str] = None
     summary_lines: Optional[list[str]] = None
@@ -245,6 +246,7 @@ class DocMetadataUpdateRequest(BaseModel):
 
 
 class DocMetadataExtractRequest(BaseModel):
+    doc_path: Optional[str] = None
     force: bool = False
 
 

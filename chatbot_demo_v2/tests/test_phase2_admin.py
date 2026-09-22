@@ -131,13 +131,15 @@ def test_document_metadata_api(client: TestClient):
     assert not any(k.startswith("#") for k in updated_meta["keywords"])
     assert updated_meta["target_audience"] == "학교 정보부장 교사, 전산담당자"
 
-    # 3. 문서 목록에서 has_metadata 및 meta_title 반영 확인
+    # 3. 문서 목록에서 has_metadata, meta_title, meta_summary_lines 반영 확인
     recheck_docs = client.get("/api/admin/documents").json()["documents"]
     target_doc = next((d for d in recheck_docs if d["rel_path"] == sample_path), None)
     assert target_doc is not None
     assert target_doc.get("has_metadata") is True
     assert target_doc.get("meta_title") == new_title
-    print(f"[PASS] 문서 목록 연동 확인: has_metadata=True, meta_title='{target_doc.get('meta_title')}'")
+    assert "meta_summary_lines" in target_doc
+    assert len(target_doc["meta_summary_lines"]) == 3
+    print(f"[PASS] 문서 목록 연동 확인: has_metadata=True, meta_title='{target_doc.get('meta_title')}', 요약행={target_doc.get('meta_summary_lines')}")
 
     # 4. 강제 재추출 API (POST /metadata/extract) 검증
     extract_res = client.post(f"/api/admin/documents/{sample_path}/metadata/extract", json={"force": True})
@@ -148,3 +150,13 @@ def test_document_metadata_api(client: TestClient):
     assert len(extracted["keywords"]) > 0
     assert not any(k.startswith("#") for k in extracted["keywords"])
     print(f"[PASS] 강제 재추출 완료: 요약행={extracted['summary_lines']}, 키워드={extracted['keywords']}")
+
+    # 5. 안전한 document-metadata 쿼리 파라미터 및 바디 엔드포인트 검증
+    query_res = client.get(f"/api/admin/document-metadata?path={sample_path}")
+    assert query_res.status_code == 200
+    assert len(query_res.json()["summary_lines"]) == 3
+
+    body_extract_res = client.post("/api/admin/document-metadata/extract", json={"doc_path": sample_path, "force": False})
+    assert body_extract_res.status_code == 200
+    assert len(body_extract_res.json()["summary_lines"]) == 3
+    print("[PASS] document-metadata 쿼리/바디 안전 엔드포인트 검증 완료")

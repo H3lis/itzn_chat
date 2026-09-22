@@ -102,14 +102,60 @@ class DocumentMetadataManager:
 
         return enriched
 
+    def _resolve_doc_file(self, doc_rel_path: str) -> tuple[Path, str]:
+        """주어진 경로(상대경로, 파일명, URL 인코딩 등)로부터 실제 디스크 파일 및 정규화된 rel_path 반환."""
+        clean_path = doc_rel_path.replace("\\", "/").lstrip("/")
+
+        # 1. 직접 상대경로 매칭
+        direct = self.docs_dir / clean_path
+        if direct.is_file():
+            return direct, str(direct.relative_to(self.docs_dir)).replace("\\", "/")
+
+        # 2. 파일명 기준 재귀 탐색 (하위 디렉토리 어디에 있든 파일명으로 100% 탐색)
+        target_name = Path(clean_path).name
+        for p in self.docs_dir.rglob("*"):
+            if p.is_file() and p.name == target_name:
+                return p, str(p.relative_to(self.docs_dir)).replace("\\", "/")
+
+        # 3. 대소문자 무시 매칭
+        target_lower = target_name.lower()
+        for p in self.docs_dir.rglob("*"):
+            if p.is_file() and p.name.lower() == target_lower:
+                return p, str(p.relative_to(self.docs_dir)).replace("\\", "/")
+
+        raise FileNotFoundError(f"문서 파일을 찾을 수 없습니다: {doc_rel_path}")
+
     def get_metadata(self, doc_rel_path: str) -> Optional[dict[str, Any]]:
-        """문서 상대경로에 매핑된 메타데이터 반환."""
-        slug = doc_slug(doc_rel_path)
+        """문서 상대경로 또는 파일명에 매핑된 메타데이터 반환."""
         catalog = self._read_catalog()
-        doc = catalog.get("documents", {}).get(slug)
-        if not doc:
-            return None
-        return self._enrich_metadata_dict(doc)
+        docs = catalog.get("documents", {})
+
+        # 1. 직접 slug 매칭
+        slug = doc_slug(doc_rel_path)
+        if slug in docs:
+            return self._enrich_metadata_dict(docs[slug])
+
+        # 2. 파일명 단독 slug 매칭
+        base_name = Path(doc_rel_path).name
+        base_slug = doc_slug(base_name)
+        if base_slug in docs:
+            return self._enrich_metadata_dict(docs[base_slug])
+
+        # 3. rel_path 또는 name 속성 일치 검색
+        for s, d in docs.items():
+            if d.get("rel_path") == doc_rel_path or d.get("name") == base_name:
+                return self._enrich_metadata_dict(d)
+
+        # 4. 파일 실존 여부 확인 후 정규화된 rel_path로 재시도
+        try:
+            _, resolved_rel = self._resolve_doc_file(doc_rel_path)
+            res_slug = doc_slug(resolved_rel)
+            if res_slug in docs:
+                return self._enrich_metadata_dict(docs[res_slug])
+        except Exception:
+            pass
+
+        return None
 
     def list_all_metadata(self) -> dict[str, Any]:
         """모든 문서의 메타데이터 맵 반환."""
@@ -118,14 +164,19 @@ class DocumentMetadataManager:
 
     def update_metadata(self, doc_rel_path: str, payload: dict[str, Any]) -> dict[str, Any]:
         """관리자가 직접 수정한 메타데이터 반영."""
-        slug = doc_slug(doc_rel_path)
+        try:
+            _, resolved_rel = self._resolve_doc_file(doc_rel_path)
+        except Exception:
+            resolved_rel = doc_rel_path
+
+        slug = doc_slug(resolved_rel)
         catalog = self._read_catalog()
         docs = catalog.get("documents", {})
 
         current = docs.get(slug, {})
         current["doc_slug"] = slug
-        current["rel_path"] = doc_rel_path
-        current["name"] = Path(doc_rel_path).name
+        current["rel_path"] = resolved_rel
+        current["name"] = Path(resolved_rel).name
 
         if "title" in payload and payload["title"]:
             current["title"] = payload["title"].strip()
@@ -168,21 +219,22 @@ class DocumentMetadataManager:
         catalog["documents"] = docs
         self._write_catalog(catalog)
 
-        logger.info("문서 메타데이터 수동 저장 완료 [%s]", doc_rel_path)
+        logger.info("문서 메타데이터 수동 저장 완료 [%s]", resolved_rel)
         return self._enrich_metadata_dict(current)
 
     def extract_metadata(self, doc_rel_path: str, force: bool = False) -> dict[str, Any]:
         """PDF 문서의 앞부분 텍스트를 추출하고 Gemini LLM을 통해 4대 메타데이터 생성."""
-        slug = doc_slug(doc_rel_path)
+        doc_file, resolved_rel = self._resolve_doc_file(doc_rel_path)
+        slug = doc_slug(resolved_rel)
+
         catalog = self._read_catalog()
         existing = catalog.get("documents", {}).get(slug)
+        if not existing:
+            # 파일명 단독 slug로도 확인
+            existing = catalog.get("documents", {}).get(doc_slug(doc_file.name))
 
         if existing and not force:
             return self._enrich_metadata_dict(existing)
-
-        doc_file = self.docs_dir / doc_rel_path
-        if not doc_file.is_file():
-            raise FileNotFoundError(f"문서 파일을 찾을 수 없습니다: {doc_rel_path}")
 
         # 1. PyMuPDF 고속 텍스트 추출 (앞 1~3페이지)
         extracted_text, page_count = self._extract_preview_text(doc_file)

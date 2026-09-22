@@ -227,7 +227,7 @@ export function RagTab({ onUpdateBadge }) {
     setMetaLoading(true);
     try {
       const docPath = doc.rel_path || doc.name;
-      const res = await fetch(`/api/admin/documents/${encodeURIComponent(docPath)}/metadata`);
+      const res = await fetch(`/api/admin/document-metadata?path=${encodeURIComponent(docPath)}`);
       if (res.ok) {
         const data = await res.json();
         let lines = ['', '', ''];
@@ -260,10 +260,10 @@ export function RagTab({ onUpdateBadge }) {
     setMetaExtracting(true);
     try {
       const docPath = metaItem.rel_path || metaItem.name;
-      const res = await fetch(`/api/admin/documents/${encodeURIComponent(docPath)}/metadata/extract`, {
+      const res = await fetch('/api/admin/document-metadata/extract', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ force: true })
+        body: JSON.stringify({ doc_path: docPath, force: true })
       });
       if (res.ok) {
         const data = await res.json();
@@ -302,10 +302,10 @@ export function RagTab({ onUpdateBadge }) {
     if (!metaItem) return;
     try {
       const docPath = metaItem.rel_path || metaItem.name;
-      const res = await fetch(`/api/admin/documents/${encodeURIComponent(docPath)}/metadata`, {
+      const res = await fetch('/api/admin/document-metadata', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(metaForm)
+        body: JSON.stringify({ doc_path: docPath, ...metaForm })
       });
       if (res.ok) {
         alert('메타데이터가 저장되었습니다.');
@@ -554,8 +554,23 @@ export function RagTab({ onUpdateBadge }) {
                         <div style={{ fontWeight: 600, color: '#38bdf8', fontSize: '0.85rem' }}>
                           {doc.meta_title}
                         </div>
+                        {/* 3줄 핵심 요약 블록 직접 노출 */}
+                        {doc.meta_summary_lines && doc.meta_summary_lines.length > 0 ? (
+                          <div style={{ background: 'rgba(56, 189, 248, 0.05)', padding: '0.35rem 0.5rem', borderRadius: '4px', borderLeft: '2px solid #38bdf8', margin: '0.35rem 0', fontSize: '0.73rem', color: 'var(--text-sub)', lineHeight: '1.4' }}>
+                            {doc.meta_summary_lines.filter(Boolean).map((line, li) => (
+                              <div key={li} style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '380px' }} title={line}>
+                                <span style={{ color: '#38bdf8', fontWeight: 600, marginRight: '0.3rem' }}>{li + 1}.</span>
+                                {line}
+                              </div>
+                            ))}
+                          </div>
+                        ) : doc.meta_summary ? (
+                          <div style={{ fontSize: '0.73rem', color: 'var(--text-sub)', margin: '0.35rem 0', lineHeight: '1.4' }}>
+                            {doc.meta_summary.split('\n').slice(0, 2).join(' ')}…
+                          </div>
+                        ) : null}
                         <div style={{ display: 'flex', gap: '0.25rem', flexWrap: 'wrap', marginTop: '0.25rem' }}>
-                          {(doc.meta_keywords || []).slice(0, 4).map((kw, i) => (
+                          {(doc.meta_keywords || []).slice(0, 5).map((kw, i) => (
                             <span key={i} className="badge-pill" style={{ fontSize: '0.7rem' }}>
                               #{kw}
                             </span>
