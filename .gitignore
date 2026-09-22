@@ -21,6 +21,8 @@ venv/
 
 # --- 실행 로그 / 임시 ---
 *.log
+*.db-shm
+*.db-wal
 tmp/
 **/tmp/
 **/outputs/runs/

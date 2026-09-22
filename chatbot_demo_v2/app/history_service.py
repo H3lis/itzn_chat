@@ -15,7 +15,7 @@ import logging
 import re
 import sqlite3
 import threading
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Optional
 
@@ -23,6 +23,9 @@ from ..config.settings import Settings
 from .pii_service import PiiMasker, default_masker
 
 logger = logging.getLogger("chatbot_demo_v2.history")
+
+# 한국 표준시 (KST, UTC+9) 고정
+KST = timezone(timedelta(hours=9))
 
 
 class HistoryService:
@@ -87,6 +90,15 @@ class HistoryService:
             conn.execute("CREATE INDEX IF NOT EXISTS idx_chat_history_feedback ON chat_history (feedback)")
             conn.execute("CREATE INDEX IF NOT EXISTS idx_chat_history_session ON chat_history (session_id)")
             conn.execute("CREATE INDEX IF NOT EXISTS idx_chat_history_run_id ON chat_history (run_id)")
+            # 시스템 타임존(UTC) 영향으로 2026-09-22 08:xx대로 오저장된 레코드 KST(+9h) 1회 자동 보정
+            try:
+                conn.execute("""
+                    UPDATE chat_history
+                    SET created_at = strftime('%Y-%m-%d %H:%M:%S', datetime(created_at, '+9 hours'))
+                    WHERE created_at LIKE '2026-09-22 08:%'
+                """)
+            except Exception:
+                pass
             conn.commit()
             logger.info("대화 이력 DB 초기화 완료: %s", self.db_path)
 
@@ -120,7 +132,7 @@ class HistoryService:
             logger.warning("답변 PII 비식별화 실패 (원문 안전 fallback): %s", e)
             mask_ans_res = MaskResult(masked_text=final_answer or "", detected_types=[], has_pii=False)
 
-        now_str = created_at or datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        now_str = created_at or datetime.now(KST).strftime("%Y-%m-%d %H:%M:%S")
         all_pii = sorted(list(set(mask_q_res.detected_types + mask_ans_res.detected_types)))
         pii_json = json.dumps(all_pii, ensure_ascii=False)
 
@@ -175,7 +187,7 @@ class HistoryService:
         if fb not in ("POSITIVE", "NEGATIVE", "NONE"):
             raise ValueError(f"지원하지 않는 피드백 유형: {feedback}")
 
-        now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        now_str = datetime.now(KST).strftime("%Y-%m-%d %H:%M:%S")
         with self._lock, self._get_conn() as conn:
             cur = conn.execute(
                 """
@@ -235,7 +247,7 @@ class HistoryService:
                        feedback_at, pii_types
                 FROM chat_history
                 {where_sql}
-                ORDER BY created_at DESC
+                ORDER BY id DESC
                 LIMIT ? OFFSET ?
             """
             item_cur = conn.execute(query_sql, params + [page_size, offset])
@@ -258,7 +270,7 @@ class HistoryService:
 
     def get_analytics_summary(self, days: int = 30) -> dict[str, Any]:
         """만족도 통계, 처리 경로별 통계 및 부정 피드백 목록 집계."""
-        cutoff = (datetime.now() - timedelta(days=days)).strftime("%Y-%m-%d 00:00:00")
+        cutoff = (datetime.now(KST) - timedelta(days=days)).strftime("%Y-%m-%d 00:00:00")
 
         with self._lock, self._get_conn() as conn:
             # 1. 전체/만족도 통계
@@ -311,6 +323,7 @@ class HistoryService:
             recent_negatives = [dict(row) for row in cur.fetchall()]
 
             # 4. 일자별 쿼리수 및 피드백 추이 (최근 7일)
+            seven_days_ago = (datetime.now(KST) - timedelta(days=7)).strftime("%Y-%m-%d 00:00:00")
             cur = conn.execute(
                 """
                 SELECT
@@ -319,10 +332,11 @@ class HistoryService:
                     SUM(CASE WHEN feedback = 'POSITIVE' THEN 1 ELSE 0 END) as pos,
                     SUM(CASE WHEN feedback = 'NEGATIVE' THEN 1 ELSE 0 END) as neg
                 FROM chat_history
-                WHERE created_at >= date('now', '-7 days')
+                WHERE created_at >= ?
                 GROUP BY dt
                 ORDER BY dt ASC
-                """
+                """,
+                (seven_days_ago,)
             )
             daily_trend = [dict(row) for row in cur.fetchall()]
 
@@ -408,7 +422,7 @@ class HistoryService:
                        feedback_at, pii_types
                 FROM chat_history
                 {where_sql}
-                ORDER BY created_at DESC
+                ORDER BY id DESC
                 LIMIT ?
             """
             cur = conn.execute(query_sql, params + [max_rows])
