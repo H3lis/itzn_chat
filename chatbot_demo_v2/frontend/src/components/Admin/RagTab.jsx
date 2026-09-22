@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   FileText, UploadCloud, RefreshCw, Trash2, Edit3, Sparkles, Play, Terminal, Copy,
-  Clock, Database, Layers
+  Clock, Database, Layers, Zap, Loader2
 } from 'lucide-react';
 
 export function RagTab({ onUpdateBadge }) {
@@ -22,6 +22,8 @@ export function RagTab({ onUpdateBadge }) {
   // 업로드 상태
   const [uploading, setUploading] = useState(false);
   const [uploadStatus, setUploadStatus] = useState('');
+  const [autoIndexOnUpload, setAutoIndexOnUpload] = useState(true);
+  const [indexingPath, setIndexingPath] = useState(null);
   const fileInputRef = useRef(null);
 
   // 이름변경 모달
@@ -104,8 +106,9 @@ export function RagTab({ onUpdateBadge }) {
     for (let i = 0; i < files.length; i++) {
       formData.append('files', files[i]);
     }
+    formData.append('auto_index', autoIndexOnUpload);
     setUploading(true);
-    setUploadStatus(`${files.length}개 파일 업로드 중…`);
+    setUploadStatus(autoIndexOnUpload ? `${files.length}개 파일 업로드 및 실시간 색인 중… (약 15~25초)` : `${files.length}개 파일 업로드 중…`);
     try {
       const res = await fetch('/api/admin/documents/upload', {
         method: 'POST',
@@ -113,7 +116,12 @@ export function RagTab({ onUpdateBadge }) {
       });
       if (res.ok) {
         const data = await res.json();
-        alert(`업로드 완료: ${data.total}개 파일 저장 성공`);
+        const indexedItems = (data.saved || []).filter(s => s.indexed);
+        if (indexedItems.length > 0) {
+          alert(`🎉 업로드 및 증분 색인 완료!\n- 저장: ${data.total}개 파일\n- 실시간 색인 반영: ${indexedItems.length}개 문서\n런타임 핫리로드가 완료되어 챗봇에서 즉시 검색 가능합니다.`);
+        } else {
+          alert(`업로드 완료: ${data.total}개 파일 저장 성공`);
+        }
         fetchStats();
         fetchDocs();
       } else {
@@ -125,6 +133,33 @@ export function RagTab({ onUpdateBadge }) {
     } finally {
       setUploading(false);
       setUploadStatus('');
+    }
+  };
+
+  // 단일 문서 즉시 증분 색인 (원자적 Append / 핫리로드)
+  const handleIndexSingleDoc = async (doc) => {
+    const docPath = doc.rel_path || doc.name;
+    if (!window.confirm(`[${doc.name}] 문서를 증분 색인하시겠습니까?\n\n- 전체 재색인 없이 해당 문서만 고속(약 10~20초) 파싱·임베딩됩니다.\n- 기존 인덱스에 원자적으로 추가/교체되어 챗봇에서 즉시 검색됩니다.`)) {
+      return;
+    }
+    setIndexingPath(docPath);
+    try {
+      const res = await fetch(`/api/admin/documents/${encodeURIComponent(docPath)}/index`, {
+        method: 'POST'
+      });
+      if (res.ok) {
+        const data = await res.json();
+        alert(`⚡ 색인 완료!\n- 문서명: ${data.document_name}\n- 추가된 청크: ${data.chunks_added}개\n- 총 청크: ${data.total_chunks}개 (총 ${data.total_pages}페이지)\n- 소요 시간: ${data.elapsed_seconds}초\n새 지식이 챗봇에 즉시 반영되었습니다.`);
+        fetchStats();
+        fetchDocs();
+      } else {
+        const err = await res.json();
+        alert(`색인 실패: ${err.detail || '오류 발생'}`);
+      }
+    } catch (e) {
+      alert(`색인 통신 에러: ${e.message}`);
+    } finally {
+      setIndexingPath(null);
     }
   };
 
@@ -429,6 +464,19 @@ export function RagTab({ onUpdateBadge }) {
         )}
       </div>
 
+      {/* 업로드 시 즉시 증분 색인 옵션 */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', marginTop: '-0.75rem', marginBottom: '1.25rem', fontSize: '0.85rem' }}>
+        <label style={{ display: 'inline-flex', alignItems: 'center', gap: '0.45rem', cursor: 'pointer', userSelect: 'none', color: 'var(--text-main)' }}>
+          <input
+            type="checkbox"
+            checked={autoIndexOnUpload}
+            onChange={(e) => setAutoIndexOnUpload(e.target.checked)}
+            style={{ accentColor: '#0284c7', cursor: 'pointer', width: '15px', height: '15px' }}
+          />
+          <span style={{ fontWeight: 600 }}>⚡ 업로드 즉시 단일 문서 자동 색인 반영 (권장: 10~20초 고속 추가)</span>
+        </label>
+      </div>
+
       {/* 3. 문서 목록 테이블 */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
         <h3 style={{ fontSize: '1.1rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -458,7 +506,7 @@ export function RagTab({ onUpdateBadge }) {
               <th>파일명 / 상대경로</th>
               <th style={{ width: '100px' }}>파일 크기</th>
               <th>지능형 메타데이터 (요약 & 키워드)</th>
-              <th style={{ width: '180px', textAlign: 'center' }}>관리 작업</th>
+              <th style={{ width: '240px', textAlign: 'center' }}>관리 작업</th>
             </tr>
           </thead>
           <tbody>
@@ -504,6 +552,21 @@ export function RagTab({ onUpdateBadge }) {
                   </td>
                   <td style={{ textAlign: 'center' }}>
                     <div style={{ display: 'inline-flex', gap: '0.35rem' }}>
+                      {doc.is_pdf && (
+                        <button
+                          className="btn btn-zap btn-sm"
+                          disabled={indexingPath === (doc.rel_path || doc.name)}
+                          onClick={() => handleIndexSingleDoc(doc)}
+                          title="단일 문서 즉시 증분 색인 (기존 인덱스에 원자적 추가)"
+                        >
+                          {indexingPath === (doc.rel_path || doc.name) ? (
+                            <Loader2 size={13} className="spin" />
+                          ) : (
+                            <Zap size={13} />
+                          )}
+                          <span>{indexingPath === (doc.rel_path || doc.name) ? '색인중' : '색인'}</span>
+                        </button>
+                      )}
                       <button
                         className="btn btn-secondary btn-sm"
                         onClick={() => handleOpenMetadata(doc)}

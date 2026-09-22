@@ -170,7 +170,7 @@ def build_context(
     from .pii_service import PiiMasker
     from .history_service import HistoryService
 
-    doc_manager = DocumentManager(settings)
+    doc_manager = DocumentManager(settings, rag_adapter=rag_adapter)
     reindex_runner = ReindexRunner(settings, rag_adapter=rag_adapter)
     faq_manager = FaqManager(settings)
     scenario_manager = ScenarioManager(settings)

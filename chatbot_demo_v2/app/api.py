@@ -427,6 +427,7 @@ async def admin_upload_documents(
     request: Request,
     files: list[UploadFile] = File(...),
     subfolder: str = Form(""),
+    auto_index: bool = Form(True),
 ) -> dict:
     ctx = _ctx(request)
     saved_list = []
@@ -434,10 +435,36 @@ async def admin_upload_documents(
     for file in files:
         try:
             res = await ctx.doc_manager.save_uploaded_file(file, subfolder=subfolder)
+            # auto_index가 켜져 있고 파일이 PDF인 경우 즉시 단일 문서 증분 색인 실행
+            if auto_index and res.get("rel_path", "").lower().endswith(".pdf"):
+                try:
+                    idx_res = ctx.doc_manager.index_single_document(res["rel_path"], run_vlm=False)
+                    res["indexed"] = True
+                    res["index_details"] = idx_res
+                except Exception as ie:
+                    logger.warning("업로드 후 자동 색인 실패 [%s]: %s", res["rel_path"], ie)
+                    res["indexed"] = False
+                    res["index_error"] = str(ie)
+            else:
+                res["indexed"] = False
             saved_list.append(res)
         except Exception as e:
             errors.append({"filename": file.filename, "error": str(e)})
     return {"saved": saved_list, "errors": errors, "total": len(saved_list)}
+
+
+@router.post("/api/admin/documents/{doc_path:path}/index")
+def admin_index_single_document(request: Request, doc_path: str) -> dict:
+    """단일 문서만 즉시 파싱/임베딩하여 기존 인덱스에 원자적으로 Append/교체하고 핫리로드."""
+    ctx = _ctx(request)
+    try:
+        res = ctx.doc_manager.index_single_document(doc_path, run_vlm=False)
+        return res
+    except FileNotFoundError as fe:
+        raise HTTPException(status_code=404, detail=str(fe))
+    except Exception as e:
+        logger.error("단일 문서 색인 실패 [%s]: %s", doc_path, e, exc_info=True)
+        raise HTTPException(status_code=500, detail=f"색인 실패: {e}")
 
 
 @router.delete("/api/admin/documents/{doc_path:path}")

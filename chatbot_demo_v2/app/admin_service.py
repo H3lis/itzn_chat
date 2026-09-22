@@ -42,8 +42,9 @@ def _format_size(size_bytes: int) -> str:
 class DocumentManager:
     """RAG 원본 문서(raw_data/documents) 파일 관리."""
 
-    def __init__(self, settings: Settings):
+    def __init__(self, settings: Settings, rag_adapter=None):
         self.settings = settings
+        self.rag_adapter = rag_adapter
         self.docs_dir = Path(settings.raw_data_dir) / "documents" if hasattr(settings, "raw_data_dir") else (
             Path(settings.project_root) / "chatbot_demo_v2" / "raw_data" / "documents"
         )
@@ -184,8 +185,55 @@ class DocumentManager:
             "status": "saved",
         }
 
+    def index_single_document(self, rel_path: str, run_vlm: bool = False, force_parse: bool = False) -> dict[str, Any]:
+        """단일 문서만 빠르게 파싱/임베딩하여 기존 인덱스에 원자적으로 Append/교체하고 핫리로드."""
+        clean_rel = os.path.normpath(rel_path).lstrip(r"\/").replace("..", "")
+        target = (self.docs_dir / clean_rel).resolve()
+        if not str(target).startswith(str(self.docs_dir.resolve())) or not target.is_file():
+            raise FileNotFoundError(f"문서 파일을 찾을 수 없습니다: {clean_rel}")
+
+        t0 = time.monotonic()
+        prepare_ragcore_imports(self.settings)
+        from ..ragcore.rag3.config import load_config
+        from ..ragcore.rag3.models import get_backend
+        from ..ragcore.rag3.add_doc import add_documents, invalidate_flat_cache
+
+        rag_config = load_config(str(self.settings.ragcore_config))
+        rag_backend = get_backend(self.settings.rag_backend, rag_config)
+
+        # 단일 문서 추가/교체 실행
+        summary = add_documents(rag_config, rag_backend, [clean_rel], run_vlm=run_vlm, force_parse=force_parse)
+        invalidate_flat_cache()
+
+        # 어댑터 인메모리 핫리로드
+        adapter_reloaded = False
+        if self.rag_adapter and hasattr(self.rag_adapter, "reload"):
+            try:
+                self.rag_adapter.reload()
+                adapter_reloaded = True
+                logger.info("[%s] RAG 어댑터 런타임 핫리로드 완료", clean_rel)
+            except Exception as e:
+                logger.warning("[%s] RAG 어댑터 핫리로드 경고: %s", clean_rel, e)
+
+        doc_res = summary.get("results", [{}])[0]
+        elapsed = round(time.monotonic() - t0, 1)
+
+        return {
+            "success": True,
+            "document_name": doc_res.get("document_name", target.name),
+            "doc_slug": doc_res.get("doc_slug", ""),
+            "mode": doc_res.get("mode", "add"),
+            "chunks_added": doc_res.get("chunks_added", 0),
+            "chunks_removed_before": doc_res.get("chunks_removed_before", 0),
+            "pages": doc_res.get("pages", 0),
+            "total_chunks": summary.get("total_chunks", 0),
+            "total_pages": summary.get("total_pages", 0),
+            "adapter_reloaded": adapter_reloaded,
+            "elapsed_seconds": elapsed,
+        }
+
     def delete_document(self, rel_path: str) -> bool:
-        """문서 파일 및 관련 파싱 캐시 삭제."""
+        """문서 파일, 관련 파싱 캐시, 및 활성 RAG 인덱스 청크/페이지 원자적 삭제."""
         # 보안: docs_dir 내부 경로인지 엄격 확인
         clean_rel = os.path.normpath(rel_path).lstrip(r"\/").replace("..", "")
         target = (self.docs_dir / clean_rel).resolve()
@@ -205,6 +253,24 @@ class DocumentManager:
                 shutil.rmtree(cache_dir)
             except Exception as e:
                 logger.warning("파싱 캐시 삭제 실패 [%s]: %s", slug, e)
+
+        # 활성 인덱스에서 청크/페이지 원자적 제거
+        try:
+            prepare_ragcore_imports(self.settings)
+            from ..ragcore.rag3.config import load_config
+            from ..ragcore.rag3.models import get_backend
+            from ..ragcore.rag3.add_doc import remove_document, invalidate_flat_cache
+
+            rag_config = load_config(str(self.settings.ragcore_config))
+            rag_backend = get_backend(self.settings.rag_backend, rag_config)
+            remove_document(rag_config, rag_backend, slug)
+            invalidate_flat_cache()
+
+            if self.rag_adapter and hasattr(self.rag_adapter, "reload"):
+                self.rag_adapter.reload()
+            logger.info("[%s] 인덱스 청크 제거 및 핫리로드 완료", slug)
+        except Exception as e:
+            logger.info("[%s] 인덱스에서 문서 제거 건너뜀/실패 (색인 전 파일이거나 오류): %s", slug, e)
 
         return True
 

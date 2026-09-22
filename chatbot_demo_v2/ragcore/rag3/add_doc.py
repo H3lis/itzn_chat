@@ -50,25 +50,78 @@ def _nfc(s: str) -> str:
     return unicodedata.normalize("NFC", s or "")
 
 
-def _find_target_row(rows: list[CatalogRow], pdf_name: str) -> CatalogRow:
-    """--pdf 인자(파일명 또는 상대경로)에 해당하는 매칭된 카탈로그 행을 찾는다."""
+def invalidate_flat_cache() -> None:
+    """인메모리 FlatChunkIndex 캐시를 무효화하여 다음 쿼리 시 디스크 최신 인덱스를 재로드하게 한다."""
+    from .flat_index import _FLAT_CACHE
+    count = len(_FLAT_CACHE)
+    _FLAT_CACHE.clear()
+    logger.info("FlatChunkIndex 인메모리 캐시 무효화 완료 (%d개 인스턴스 클리어)", count)
+
+
+def _find_target_row(rows: list[CatalogRow], pdf_name: str, config: Config | None = None) -> CatalogRow:
+    """--pdf 인자(파일명 또는 상대경로)에 해당하는 매칭된 카탈로그 행을 찾는다.
+    
+    Excel 카탈로그에 해당 파일이 없는 경우, 에러로 중단하지 않고 신규 문서에 대한
+    가상 카탈로그 행(Virtual Catalog Row)을 동적으로 생성하여 반환한다.
+    """
     want = _nfc(Path(pdf_name).name)
     matched = [r for r in rows if r.matched_file_path]
     for r in matched:
         if _nfc(Path(r.matched_file_path).name) == want or _nfc(r.matched_file_path) == _nfc(pdf_name):
             return r
-    # 실패: 근접 후보를 알려주고 명확히 실패
-    scored = sorted(
-        ((fuzz.token_set_ratio(want, _nfc(Path(r.matched_file_path).name)), r) for r in matched),
-        key=lambda x: -x[0],
-    )
-    cands = [f"{r.matched_file_path} ({s:.0f})" for s, r in scored[:3]]
-    unmatched = [r.columns.get("title", "") for r in rows if not r.matched_file_path]
-    raise FileNotFoundError(
-        f"'{pdf_name}'에 해당하는 카탈로그 매칭 행이 없습니다.\n"
-        f"  - 근접 후보: {cands}\n"
-        f"  - 매칭 안 된 카탈로그 행: {unmatched}\n"
-        "  → Excel 카탈로그에 행을 추가하고 PDF를 documents_dir(설정된 문서 폴더)에 복사했는지 확인하세요."
+
+    # Excel 카탈로그에 없는 경우: 가상 CatalogRow 동적 생성 (Virtual Catalog Row Fallback)
+    rel_path = str(Path(pdf_name).as_posix())
+    stem = Path(pdf_name).stem
+
+    meta_columns: dict[str, str] = {
+        "title": stem,
+        "theme": "일반",
+        "publisher": "사내문서",
+        "description": f"{stem} 매뉴얼/문서",
+        "keyword": "",
+        "scope": "",
+    }
+
+    # document_metadata.json이 존재하면 사전 추출된 고품질 메타데이터(요약/키워드 등) 주입
+    if config:
+        for candidate_dir in [config.output_dir.parent / "ragdata", config.output_dir]:
+            meta_path = candidate_dir / "document_metadata.json"
+            if meta_path.is_file():
+                try:
+                    data = json.loads(meta_path.read_text(encoding="utf-8"))
+                    doc_meta = data.get("documents", {}).get(rel_path) or data.get("documents", {}).get(stem)
+                    if doc_meta:
+                        if doc_meta.get("title"):
+                            meta_columns["title"] = doc_meta["title"]
+                        if doc_meta.get("publisher"):
+                            meta_columns["publisher"] = doc_meta["publisher"]
+                        if doc_meta.get("summary_lines"):
+                            meta_columns["description"] = " ".join(doc_meta["summary_lines"])
+                        elif doc_meta.get("summary"):
+                            meta_columns["description"] = doc_meta["summary"]
+                        if doc_meta.get("keywords"):
+                            kws = doc_meta["keywords"]
+                            meta_columns["keyword"] = ", ".join(kws) if isinstance(kws, list) else str(kws)
+                        if doc_meta.get("target_audience"):
+                            meta_columns["scope"] = str(doc_meta["target_audience"])
+                except Exception as e:
+                    logger.warning("[%s] document_metadata.json 참조 실패 (가상 행 생성 계속): %s", stem, e)
+                break
+
+    search_parts = [stem, meta_columns.get("theme", ""), meta_columns.get("publisher", ""), meta_columns.get("description", "")]
+    catalog_search_text = " ".join([p for p in search_parts if p])
+
+    logger.info("[%s] Excel 카탈로그 미존재 — 가상 카탈로그 행(Virtual Catalog Row) 동적 생성 적용", stem)
+    return CatalogRow(
+        row_id=f"virtual_{stem}",
+        sheet="가상업로드",
+        raw={"title": stem, "file_name": Path(pdf_name).name},
+        columns=meta_columns,
+        catalog_search_text=catalog_search_text,
+        matched_file_path=rel_path,
+        match_method="virtual",
+        match_score=100.0,
     )
 
 
@@ -220,7 +273,7 @@ def _add_one(config: Config, backend: Backend, rows: list[CatalogRow],
              prefix_map: dict[str, str], pdf_name: str, *,
              run_vlm: bool, force_parse: bool) -> dict[str, Any]:
     t0 = time.monotonic()
-    row = _find_target_row(rows, pdf_name)
+    row = _find_target_row(rows, pdf_name, config=config)
     rel_path = row.matched_file_path
     slug = doc_slug(rel_path)
     abs_pdf = config.documents_dir / rel_path
@@ -296,7 +349,7 @@ def _add_one(config: Config, backend: Backend, rows: list[CatalogRow],
 
 
 def add_documents(config: Config, backend: Backend, pdf_names: list[str], *,
-                  run_vlm: bool = True, force_parse: bool = False) -> dict[str, Any]:
+                  run_vlm: bool = False, force_parse: bool = False) -> dict[str, Any]:
     """PDF 1개 이상을 기존 인덱스에 증분 추가(또는 교체). 요약 dict 반환."""
     config.ensure_dirs()
     t0 = time.monotonic()
@@ -320,6 +373,9 @@ def add_documents(config: Config, backend: Backend, pdf_names: list[str], *,
                             note={"command": "add", "documents": [r["document_name"] for r in results]})
     (config.output_dir / "add_doc_report.json").write_text(
         json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
+    
+    # 핫리로드 보장을 위해 인메모리 캐시 무효화
+    invalidate_flat_cache()
     return summary
 
 
@@ -350,6 +406,10 @@ def remove_document(config: Config, backend: Backend, pdf_or_slug: str) -> dict[
     save_page_store(config, ids, [kept[i]["text"] for i in ids], [kept[i]["meta"] for i in ids])
 
     _refresh_ingest_summary(config, backend, note={"command": "remove", "doc_slug": slug})
+    
+    # 인메모리 캐시 무효화
+    invalidate_flat_cache()
+
     return {
         "command": "remove",
         "doc_slug": slug,
