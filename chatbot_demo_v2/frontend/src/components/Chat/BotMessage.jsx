@@ -7,7 +7,7 @@ function confLabel(c) {
   return map[c] || c;
 }
 
-export function BotMessage({ resp, isActive, onSelect, onOpenEvidence, onFeedback }) {
+export function BotMessage({ resp, isActive, onSelect, onOpenEvidence, onFeedback, isClient = false }) {
   const [feedbackState, setFeedbackState] = useState(null); // 'pos' | 'neg' | null
   const [feedbackSent, setFeedbackSent] = useState(false);
 
@@ -23,9 +23,9 @@ export function BotMessage({ resp, isActive, onSelect, onOpenEvidence, onFeedbac
 
   return (
     <div
-      className={`bubble-bot ${isActive ? 'active' : ''}`}
-      onClick={onSelect}
-      title="클릭하여 오른쪽에서 처리 파이프라인 및 상세 메타를 확인합니다"
+      className={`bubble-bot ${isActive ? 'active' : ''} ${isClient ? 'client-bubble' : ''}`}
+      onClick={isClient ? undefined : onSelect}
+      title={isClient ? undefined : "클릭하여 오른쪽에서 처리 파이프라인 및 상세 메타를 확인합니다"}
     >
       <AnswerRenderer
         text={resp.answer}
@@ -35,7 +35,7 @@ export function BotMessage({ resp, isActive, onSelect, onOpenEvidence, onFeedbac
       />
 
       {/* Composed original answer collapsible */}
-      {resp.composed && resp.original_answer && (
+      {resp.composed && resp.original_answer && !isClient && (
         <details className="orig-details" onClick={(e) => e.stopPropagation()}>
           <summary>원문 보기 (저장된 모범답변)</summary>
           <div className="orig-body">
@@ -51,20 +51,22 @@ export function BotMessage({ resp, isActive, onSelect, onOpenEvidence, onFeedbac
 
       {/* Message footer: Route, Confidence & Feedback */}
       <div className="msg-footer">
-        <div className="msg-route-tag">
-          {resp.route && (
-            <>
-              <span className="route-dot" />
-              <span>{resp.route}</span>
-            </>
-          )}
-          {resp.confidence && (
-            <span>· 신뢰도 {confLabel(resp.confidence)}</span>
-          )}
-          {resp.composed && (
-            <span className="mini-badge">정리됨</span>
-          )}
-        </div>
+        {!isClient && (
+          <div className="msg-route-tag">
+            {resp.route && (
+              <>
+                <span className="route-dot" />
+                <span>{resp.route}</span>
+              </>
+            )}
+            {resp.confidence && (
+              <span>· 신뢰도 {confLabel(resp.confidence)}</span>
+            )}
+            {resp.composed && (
+              <span className="mini-badge">정리됨</span>
+            )}
+          </div>
+        )}
 
         {resp.run_id && (
           <div className="feedback-container" onClick={(e) => e.stopPropagation()}>

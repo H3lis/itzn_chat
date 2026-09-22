@@ -132,4 +132,21 @@ def create_app(ctx: Optional[AppContext] = None) -> FastAPI:
             return FileResponse(str(adm))
         return JSONResponse({"detail": "admin 페이지 없음"}, status_code=404)
 
+    @app.get("/client")
+    @app.get("/client/{rest_of_path:path}")
+    def client_page(rest_of_path: str = ""):
+        react_index = frontend_dist / "index.html"
+        if react_index.is_file():
+            return FileResponse(
+                str(react_index),
+                headers={"Cache-Control": "no-cache, no-store, must-revalidate"},
+            )
+        idx = static_dir / "index.html"
+        if idx.is_file():
+            return FileResponse(
+                str(idx),
+                headers={"Cache-Control": "no-cache, no-store, must-revalidate"},
+            )
+        return JSONResponse({"detail": "client 페이지 없음"}, status_code=404)
+
     return app

@@ -68,11 +68,21 @@ export function AdminLayout({ onNavigate }) {
         <div className="topbar-actions" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <button
             className="btn btn-outline btn-sm"
-            onClick={() => onNavigate && onNavigate('/')}
+            onClick={() => onNavigate && onNavigate('/client')}
             style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}
+            title="인스펙터가 제외된 실제 런칭용 고객 상담 화면으로 이동"
           >
             <MessageSquare size={14} />
-            <span>대화 화면으로 이동</span>
+            <span>고객용 화면</span>
+          </button>
+
+          <button
+            className="btn btn-outline btn-sm"
+            onClick={() => onNavigate && onNavigate('/')}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}
+            title="답변 근거 및 RAG 분석 패널이 포함된 개발자(데모) 화면으로 이동"
+          >
+            <span>개발자(데모) 화면</span>
           </button>
 
           <div

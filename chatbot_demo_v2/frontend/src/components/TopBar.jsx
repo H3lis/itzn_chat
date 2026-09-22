@@ -1,5 +1,5 @@
 import React from 'react';
-import { School, Settings, Activity } from 'lucide-react';
+import { School, Settings, Activity, MessageCircle } from 'lucide-react';
 
 export function TopBar({ status, onNavigate, onToggleInspector, isMobileInspectorOpen }) {
   const isReady = status === 'ready';
@@ -12,6 +12,13 @@ export function TopBar({ status, onNavigate, onToggleInspector, isMobileInspecto
     }
   };
 
+  const handleClientClick = (e) => {
+    if (onNavigate) {
+      e.preventDefault();
+      onNavigate('/client');
+    }
+  };
+
   return (
     <header className="topbar">
       <div className="brand-section">
@@ -20,7 +27,7 @@ export function TopBar({ status, onNavigate, onToggleInspector, isMobileInspecto
         </div>
         <div className="brand-title">
           <span className="brand-title-text">학교 유무선 장애상담 챗봇</span>
-          <span className="tag-badge">데모</span>
+          <span className="tag-badge">개발·데모</span>
         </div>
       </div>
 
@@ -48,6 +55,19 @@ export function TopBar({ status, onNavigate, onToggleInspector, isMobileInspecto
           </button>
         )}
 
+        {/* 신규: 고객용(런칭용) 페이지 이동 버튼 */}
+        <a
+          href="/client"
+          onClick={handleClientClick}
+          className="client-link-btn"
+          title="인스펙터 없이 깔끔한 실제 런칭용 고객 상담 화면(/client)으로 이동합니다"
+        >
+          <MessageCircle size={15} />
+          <span className="client-btn-text-full">고객용 페이지</span>
+          <span className="client-btn-text-short">고객용</span>
+        </a>
+
+        {/* 관리자 페이지 이동 버튼 */}
         <a
           href="/admin"
           onClick={handleAdminClick}

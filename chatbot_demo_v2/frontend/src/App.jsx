@@ -4,6 +4,7 @@ import { ChatColumn } from './components/Chat/ChatColumn';
 import { InspectorColumn } from './components/Inspector/InspectorColumn';
 import { LightboxModal } from './components/LightboxModal';
 import { AdminLayout } from './components/Admin/AdminLayout';
+import { ClientLayout } from './components/ClientLayout';
 import { useHealth } from './hooks/useHealth';
 import { useChatStream } from './hooks/useChatStream';
 import { useRoute } from './hooks/useRoute';
@@ -82,6 +83,32 @@ export function App() {
     return (
       <ErrorBoundary>
         <AdminLayout onNavigate={navigate} />
+      </ErrorBoundary>
+    );
+  }
+
+  // /client 경로인 경우 실제 런칭용 고객 상담 화면(답변근거/인스펙터 제외) 렌더링
+  if (path.startsWith('/client')) {
+    return (
+      <ErrorBoundary>
+        <ClientLayout
+          status={status}
+          onNavigate={navigate}
+          messages={messages}
+          activeMsgId={activeMsgId}
+          setActiveMsgId={setActiveMsgId}
+          inFlight={inFlight}
+          busyText={busyText}
+          busySteps={busySteps}
+          elapsedSeconds={elapsedSeconds}
+          scenarioOptions={scenarioOptions}
+          scenarioInfo={scenarioInfo}
+          sendMessage={sendMessage}
+          sendAction={sendAction}
+          sendClarify={sendClarify}
+          resetSession={resetSession}
+          sendFeedback={sendFeedback}
+        />
       </ErrorBoundary>
     );
   }

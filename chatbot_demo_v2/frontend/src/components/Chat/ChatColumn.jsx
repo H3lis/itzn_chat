@@ -22,6 +22,7 @@ export function ChatColumn({
   onReset,
   onOpenEvidence,
   onFeedback,
+  isClient = false,
 }) {
   const messagesEndRef = useRef(null);
 
@@ -31,16 +32,24 @@ export function ChatColumn({
   }, [messages, inFlight, busySteps]);
 
   return (
-    <section className="chat-column">
+    <section className={`chat-column ${isClient ? 'client-mode' : ''}`}>
       {/* Header */}
       <div className="chat-header">
         <div>
-          <div className="chat-header-title">상담 대화</div>
-          {scenarioInfo && scenarioInfo.node_id && (
+          <div className="chat-header-title">
+            {isClient ? '실시간 장애상담' : '상담 대화'}
+          </div>
+          {isClient ? (
             <div className="chat-header-sub">
-              현재: {scenarioInfo.scenario_id || ''} / {scenarioInfo.node_id}
-              {scenarioInfo.completed ? ' (완료)' : ''}
+              {scenarioInfo?.completed ? '상담이 완료되었습니다. 추가 문의가 있으시면 메시지를 입력해 주세요.' : '네트워크 및 전산 장비 관련 증상을 편하게 질문해 주세요.'}
             </div>
+          ) : (
+            scenarioInfo && scenarioInfo.node_id && (
+              <div className="chat-header-sub">
+                현재: {scenarioInfo.scenario_id || ''} / {scenarioInfo.node_id}
+                {scenarioInfo.completed ? ' (완료)' : ''}
+              </div>
+            )
           )}
         </div>
         <button
@@ -86,6 +95,7 @@ export function ChatColumn({
                   onSelect={() => onSelectMsg(m.id)}
                   onOpenEvidence={onOpenEvidence}
                   onFeedback={onFeedback}
+                  isClient={isClient}
                 />
               </div>
             );
