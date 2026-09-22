@@ -7,7 +7,7 @@
 # 경로는 이 파일(chatbot_demo_v2/ragcore/rag3/config.yaml) 기준 상대경로.
 # catalog/documents 는 ingest(오프라인 색인) 전용 — 서빙 경로에서 미사용이므로 placeholder.
 catalog_excel_path: "./_unused_catalog.xlsx"
-documents_dir: "./_unused_docs"
+documents_dir: "../../raw_data/documents"
 catalog_sheet: "선정파일_Distribution_파일목록"
 
 # 파싱 캐시(페이지 텍스트/이미지/표 크롭)는 v2 ragdata 로 복사된 것을 사용.

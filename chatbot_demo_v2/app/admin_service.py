@@ -199,6 +199,7 @@ class DocumentManager:
         from ..ragcore.rag3.add_doc import add_documents, invalidate_flat_cache
 
         rag_config = load_config(str(self.settings.ragcore_config))
+        rag_config.documents_dir = self.docs_dir.resolve()
         rag_backend = get_backend(rag_config)
 
         # 단일 문서 추가/교체 실행
@@ -262,6 +263,7 @@ class DocumentManager:
             from ..ragcore.rag3.add_doc import remove_document, invalidate_flat_cache
 
             rag_config = load_config(str(self.settings.ragcore_config))
+            rag_config.documents_dir = self.docs_dir.resolve()
             rag_backend = get_backend(rag_config)
             remove_document(rag_config, rag_backend, slug)
             invalidate_flat_cache()
