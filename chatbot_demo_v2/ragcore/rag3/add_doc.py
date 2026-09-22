@@ -292,12 +292,9 @@ def _add_one(config: Config, backend: Backend, rows: list[CatalogRow],
     parsed_fresh = False
     if force_parse or not manifest_path.exists():
         from .parse import get_or_parse_document
-        logger.info("[%s] MinerU 파싱 시작 (backend=%s)", document_name, config.mineru_backend)
         doc_info = get_or_parse_document(abs_pdf, rel_path, config, force=force_parse)
         if doc_info.parser_used != "mineru":
-            raise RuntimeError(
-                f"[{document_name}] MinerU 파싱 실패로 {doc_info.parser_used} 폴백이 사용됨 — "
-                "content_list가 없어 청크 색인이 불가합니다. MinerU 설치/오류를 확인 후 재시도하세요.")
+            logger.info("[%s] 파서: %s 사용됨 (MinerU 부재 또는 폴백 허용)", document_name, doc_info.parser_used)
         _relocate_parsed(config, slug)
         parsed_fresh = True
 
