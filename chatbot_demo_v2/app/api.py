@@ -890,7 +890,15 @@ def admin_export_history_excel(
     )
 
     from datetime import datetime
-    filename = f"chat_history_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx"
+    if start_date and end_date:
+        filename = f"chat_history_{start_date.replace('-', '')}_{end_date.replace('-', '')}.xlsx"
+    elif start_date:
+        filename = f"chat_history_from_{start_date.replace('-', '')}.xlsx"
+    elif end_date:
+        filename = f"chat_history_until_{end_date.replace('-', '')}.xlsx"
+    else:
+        filename = f"chat_history_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx"
+
     headers = {
         "Content-Disposition": f'attachment; filename="{filename}"',
         "Access-Control-Expose-Headers": "Content-Disposition",

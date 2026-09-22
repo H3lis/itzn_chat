@@ -167,6 +167,19 @@ def test_export_history_excel(history_service):
     assert ws_pos.max_row == 2  # 헤더 1 + 데이터 1건
     assert "👍 만족" in ws_pos.cell(row=2, column=8).value
 
+    # 4. 날짜 필터링(start_date, end_date) 지정 내보내기 검증
+    from datetime import datetime
+    today_str = datetime.now().strftime("%Y-%m-%d")
+    buf_date = history_service.export_history_excel(start_date=today_str, end_date=today_str)
+    wb_date = openpyxl.load_workbook(buf_date)
+    ws_date = wb_date["대화상담이력"]
+    assert ws_date.max_row == 3  # 오늘 등록된 2건 모두 포함
+
+    # 미래 날짜 필터 시 0건 (헤더만 1행)
+    buf_future = history_service.export_history_excel(start_date="2099-01-01", end_date="2099-01-02")
+    wb_future = openpyxl.load_workbook(buf_future)
+    assert wb_future["대화상담이력"].max_row == 1
+
 
 def test_export_history_excel_api(tmp_path):
     from fastapi.testclient import TestClient
@@ -175,10 +188,16 @@ def test_export_history_excel_api(tmp_path):
     app = create_app()
     client = TestClient(app)
 
-    # API 호출
+    # API 기본 호출
     resp = client.get("/api/admin/history/export/excel?feedback=all")
     assert resp.status_code == 200
     assert "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" in resp.headers["content-type"]
     assert "attachment; filename=" in resp.headers["content-disposition"]
     assert len(resp.content) > 0
+
+    # API 날짜 필터링 호출 및 파일명 검증
+    resp_date = client.get("/api/admin/history/export/excel?start_date=2026-09-01&end_date=2026-09-22")
+    assert resp_date.status_code == 200
+    assert "chat_history_20260901_20260922.xlsx" in resp_date.headers["content-disposition"]
+
 

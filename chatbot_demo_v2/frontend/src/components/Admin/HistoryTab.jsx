@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { History, RefreshCw, ThumbsUp, ThumbsDown, ShieldCheck, Eye, Download } from 'lucide-react';
+import { History, RefreshCw, ThumbsUp, ThumbsDown, ShieldCheck, Eye, Download, Calendar, X } from 'lucide-react';
 
 const ROUTE_LABELS = {
   scenario: '시나리오',
@@ -33,6 +33,8 @@ export function HistoryTab({ onUpdateBadge }) {
   const [downloadingExcel, setDownloadingExcel] = useState(false);
 
   // 필터
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
   const [routeFilter, setRouteFilter] = useState('');
   const [feedbackFilter, setFeedbackFilter] = useState('');
   const [keyword, setKeyword] = useState('');
@@ -43,10 +45,42 @@ export function HistoryTab({ onUpdateBadge }) {
   // PII 검증 모달
   const [inspectItem, setInspectItem] = useState(null);
 
+  const setDatePreset = (preset) => {
+    const today = new Date();
+    const formatYmd = (d) => {
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    };
+    const todayStr = formatYmd(today);
+
+    if (preset === 'today') {
+      setStartDate(todayStr);
+      setEndDate(todayStr);
+    } else if (preset === '7days') {
+      const d = new Date();
+      d.setDate(d.getDate() - 7);
+      setStartDate(formatYmd(d));
+      setEndDate(todayStr);
+    } else if (preset === '30days') {
+      const d = new Date();
+      d.setDate(d.getDate() - 30);
+      setStartDate(formatYmd(d));
+      setEndDate(todayStr);
+    } else if (preset === 'all') {
+      setStartDate('');
+      setEndDate('');
+    }
+    setPage(1);
+  };
+
   const handleExportExcel = async () => {
     try {
       setDownloadingExcel(true);
       const params = new URLSearchParams();
+      if (startDate) params.append('start_date', startDate);
+      if (endDate) params.append('end_date', endDate);
       if (routeFilter) params.append('route', routeFilter);
       if (feedbackFilter) params.append('feedback', feedbackFilter);
       if (keyword) params.append('keyword', keyword);
@@ -106,6 +140,8 @@ export function HistoryTab({ onUpdateBadge }) {
         page: String(page),
         page_size: '20'
       });
+      if (startDate) params.append('start_date', startDate);
+      if (endDate) params.append('end_date', endDate);
       if (routeFilter) params.append('route', routeFilter);
       if (feedbackFilter) params.append('feedback', feedbackFilter);
       if (keyword) params.append('keyword', keyword);
@@ -123,7 +159,7 @@ export function HistoryTab({ onUpdateBadge }) {
     } finally {
       setLoading(false);
     }
-  }, [page, routeFilter, feedbackFilter, keyword]);
+  }, [page, routeFilter, feedbackFilter, keyword, startDate, endDate]);
 
   useEffect(() => {
     fetchAnalytics();
@@ -175,14 +211,76 @@ export function HistoryTab({ onUpdateBadge }) {
       </div>
 
       {/* 2. 필터 툴바 */}
-      <div className="faq-toolbar">
-        <div className="faq-filter-group">
+      <div className="faq-toolbar history-toolbar">
+        <div className="faq-filter-group history-filter-group">
+          {/* 날짜 범위 픽커 */}
+          <div className="history-date-picker">
+            <Calendar size={14} className="date-picker-icon" />
+            <input
+              type="date"
+              className="history-date-input"
+              value={startDate}
+              onChange={(e) => { setStartDate(e.target.value); setPage(1); }}
+              title="조회 시작일"
+            />
+            <span className="date-separator">~</span>
+            <input
+              type="date"
+              className="history-date-input"
+              value={endDate}
+              onChange={(e) => { setEndDate(e.target.value); setPage(1); }}
+              title="조회 종료일"
+            />
+            {(startDate || endDate) && (
+              <button
+                type="button"
+                className="btn-date-clear"
+                onClick={() => { setStartDate(''); setEndDate(''); setPage(1); }}
+                title="날짜 필터 초기화"
+              >
+                <X size={12} />
+              </button>
+            )}
+          </div>
+
+          {/* 날짜 빠른 프리셋 */}
+          <div className="history-date-presets">
+            <button
+              type="button"
+              className={`btn-preset ${!startDate && !endDate ? 'active' : ''}`}
+              onClick={() => setDatePreset('all')}
+            >
+              전체
+            </button>
+            <button
+              type="button"
+              className={`btn-preset ${startDate && startDate === endDate ? 'active' : ''}`}
+              onClick={() => setDatePreset('today')}
+            >
+              오늘
+            </button>
+            <button
+              type="button"
+              className="btn-preset"
+              onClick={() => setDatePreset('7days')}
+            >
+              7일
+            </button>
+            <button
+              type="button"
+              className="btn-preset"
+              onClick={() => setDatePreset('30days')}
+            >
+              30일
+            </button>
+          </div>
+
           <select
             className="faq-select"
             value={routeFilter}
             onChange={(e) => { setRouteFilter(e.target.value); setPage(1); }}
           >
-            <option value="">전체 라우팅 경로 (전체)</option>
+            <option value="">전체 라우팅 (전체)</option>
             <option value="scenario">시나리오 (Scenario)</option>
             <option value="faq">FAQ 유사도 매칭</option>
             <option value="rag">RAG 심층 검색</option>
@@ -221,7 +319,7 @@ export function HistoryTab({ onUpdateBadge }) {
             className="btn btn-excel btn-sm"
             onClick={handleExportExcel}
             disabled={downloadingExcel}
-            title="현재 필터 조건으로 엑셀(XLSX) 서식 다운로드"
+            title={startDate || endDate ? `${startDate || '처음'} ~ ${endDate || '현재'} 기간 엑셀 다운로드` : "현재 필터 조건으로 엑셀(XLSX) 서식 다운로드"}
             style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', fontWeight: 600 }}
           >
             {downloadingExcel ? (
