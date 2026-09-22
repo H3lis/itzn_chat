@@ -104,29 +104,32 @@ def test_document_metadata_api(client: TestClient):
     meta = meta_res.json()
     assert "title" in meta
     assert "summary" in meta
+    assert "summary_lines" in meta
+    assert len(meta["summary_lines"]) == 3, "summary_lines는 항상 3개의 요소를 가져야 합니다."
     assert "keywords" in meta
+    assert not any(k.startswith("#") for k in meta["keywords"]), "키워드는 '#' 접두어가 정규화되어 제거되어야 합니다."
+    assert "target_audience" in meta
     assert "target_scope" in meta
-    print(f"[PASS] 메타데이터 자동 추출 결과: 제목='{meta['title']}', 키워드={meta['keywords']}")
+    print(f"[PASS] 메타데이터 자동 추출 결과: 제목='{meta['title']}', 요약행={meta['summary_lines']}, 키워드={meta['keywords']}")
 
-    # 2. 메타데이터 수정 저장
+    # 2. 메타데이터 수정 저장 (summary_lines 및 target_audience 전송)
     new_title = f"{meta['title']} [관리자 검수]"
     put_payload = {
         "title": new_title,
-        "summary": "1. 제1원칙\n2. 제2원칙\n3. 제3원칙",
-        "keywords": ["테스트1", "테스트2", "검증완료"],
+        "summary_lines": ["1행 핵심 개요", "2행 운영 기준", "3행 장애 대응 수칙"],
+        "keywords": ["#테스트1", "테스트2", "#검증완료"],
         "publisher": "한국지능정보사회진흥원 (NIA)",
-        "target_scope": {
-            "roles": ["네트워크 관리자", "정보부장교사"],
-            "equipment": ["L3 스위치", "방화벽"],
-            "spaces": ["전산실", "행정실"]
-        }
+        "target_audience": "학교 정보부장 교사, 전산담당자",
     }
     put_res = client.put(f"/api/admin/documents/{sample_path}/metadata", json=put_payload)
     assert put_res.status_code == 200, put_res.text
     updated_meta = put_res.json()
     assert updated_meta["title"] == new_title
+    assert updated_meta["summary_lines"] == ["1행 핵심 개요", "2행 운영 기준", "3행 장애 대응 수칙"]
+    assert "1. 1행 핵심 개요" in updated_meta["summary"]
     assert "테스트1" in updated_meta["keywords"]
-    assert "전산실" in updated_meta["target_scope"]["spaces"]
+    assert not any(k.startswith("#") for k in updated_meta["keywords"])
+    assert updated_meta["target_audience"] == "학교 정보부장 교사, 전산담당자"
 
     # 3. 문서 목록에서 has_metadata 및 meta_title 반영 확인
     recheck_docs = client.get("/api/admin/documents").json()["documents"]
@@ -135,3 +138,13 @@ def test_document_metadata_api(client: TestClient):
     assert target_doc.get("has_metadata") is True
     assert target_doc.get("meta_title") == new_title
     print(f"[PASS] 문서 목록 연동 확인: has_metadata=True, meta_title='{target_doc.get('meta_title')}'")
+
+    # 4. 강제 재추출 API (POST /metadata/extract) 검증
+    extract_res = client.post(f"/api/admin/documents/{sample_path}/metadata/extract", json={"force": True})
+    assert extract_res.status_code == 200, extract_res.text
+    extracted = extract_res.json()
+    assert len(extracted["summary_lines"]) == 3
+    assert all(isinstance(l, str) for l in extracted["summary_lines"])
+    assert len(extracted["keywords"]) > 0
+    assert not any(k.startswith("#") for k in extracted["keywords"])
+    print(f"[PASS] 강제 재추출 완료: 요약행={extracted['summary_lines']}, 키워드={extracted['keywords']}")

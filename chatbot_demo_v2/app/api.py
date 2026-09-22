@@ -427,7 +427,7 @@ async def admin_upload_documents(
     request: Request,
     files: list[UploadFile] = File(...),
     subfolder: str = Form(""),
-    auto_index: bool = Form(True),
+    auto_index: bool = Form(False),
 ) -> dict:
     ctx = _ctx(request)
     saved_list = []

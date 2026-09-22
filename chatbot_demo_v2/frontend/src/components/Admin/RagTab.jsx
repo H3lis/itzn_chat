@@ -230,10 +230,19 @@ export function RagTab({ onUpdateBadge }) {
       const res = await fetch(`/api/admin/documents/${encodeURIComponent(docPath)}/metadata`);
       if (res.ok) {
         const data = await res.json();
+        let lines = ['', '', ''];
+        if (Array.isArray(data.summary_lines) && data.summary_lines.length > 0) {
+          lines = [...data.summary_lines];
+          while (lines.length < 3) lines.push('');
+        } else if (data.summary) {
+          lines = data.summary.split('\n').map(l => l.replace(/^[0-9]+[.)]\s*/, '').trim()).filter(Boolean);
+          while (lines.length < 3) lines.push('');
+        }
+
         setMetaForm({
           title: data.title || doc.name,
-          summary_lines: data.summary_lines && data.summary_lines.length === 3 ? data.summary_lines : ['', '', ''],
-          keywords: data.keywords || [],
+          summary_lines: lines.slice(0, 3),
+          keywords: (data.keywords || []).map(k => String(k).replace(/^#/, '')),
           publisher: data.publisher || '',
           target_audience: data.target_audience || ''
         });
@@ -258,10 +267,19 @@ export function RagTab({ onUpdateBadge }) {
       });
       if (res.ok) {
         const data = await res.json();
+        let lines = ['', '', ''];
+        if (Array.isArray(data.summary_lines) && data.summary_lines.length > 0) {
+          lines = [...data.summary_lines];
+          while (lines.length < 3) lines.push('');
+        } else if (data.summary) {
+          lines = data.summary.split('\n').map(l => l.replace(/^[0-9]+[.)]\s*/, '').trim()).filter(Boolean);
+          while (lines.length < 3) lines.push('');
+        }
+
         setMetaForm({
           title: data.title || metaItem.name,
-          summary_lines: data.summary_lines || ['', '', ''],
-          keywords: data.keywords || [],
+          summary_lines: lines.slice(0, 3),
+          keywords: (data.keywords || []).map(k => String(k).replace(/^#/, '')),
           publisher: data.publisher || '',
           target_audience: data.target_audience || ''
         });
@@ -832,10 +850,18 @@ export function RagTab({ onUpdateBadge }) {
                           onKeyDown={(e) => {
                             if (e.key === 'Enter') {
                               e.preventDefault();
-                              if (keywordInput.trim() && !metaForm.keywords.includes(keywordInput.trim())) {
-                                setMetaForm({ ...metaForm, keywords: [...metaForm.keywords, keywordInput.trim()] });
-                                setKeywordInput('');
+                              const cleanVal = keywordInput.trim().replace(/^#/, '');
+                              if (!cleanVal) return;
+                              if (metaForm.keywords.includes(cleanVal)) {
+                                alert('이미 추가된 키워드입니다.');
+                                return;
                               }
+                              if (metaForm.keywords.length >= 5) {
+                                alert('키워드는 최대 5개까지 등록할 수 있습니다.');
+                                return;
+                              }
+                              setMetaForm({ ...metaForm, keywords: [...metaForm.keywords, cleanVal] });
+                              setKeywordInput('');
                             }
                           }}
                         />
@@ -843,10 +869,18 @@ export function RagTab({ onUpdateBadge }) {
                           type="button"
                           className="btn btn-secondary btn-sm"
                           onClick={() => {
-                            if (keywordInput.trim() && !metaForm.keywords.includes(keywordInput.trim())) {
-                              setMetaForm({ ...metaForm, keywords: [...metaForm.keywords, keywordInput.trim()] });
-                              setKeywordInput('');
+                            const cleanVal = keywordInput.trim().replace(/^#/, '');
+                            if (!cleanVal) return;
+                            if (metaForm.keywords.includes(cleanVal)) {
+                              alert('이미 추가된 키워드입니다.');
+                              return;
                             }
+                            if (metaForm.keywords.length >= 5) {
+                              alert('키워드는 최대 5개까지 등록할 수 있습니다.');
+                              return;
+                            }
+                            setMetaForm({ ...metaForm, keywords: [...metaForm.keywords, cleanVal] });
+                            setKeywordInput('');
                           }}
                         >
                           추가

@@ -224,9 +224,11 @@ class DocMetadataItem(BaseModel):
     rel_path: Optional[str] = None
     title: str
     summary: str
+    summary_lines: list[str] = []
     keywords: list[str] = []
     publisher: Optional[str] = ""
     target_scope: DocMetadataScope = DocMetadataScope()
+    target_audience: Optional[str] = ""
     page_count: Optional[int] = None
     extracted_at: Optional[str] = None
     method: Optional[str] = "gemini_flash"
@@ -235,9 +237,11 @@ class DocMetadataItem(BaseModel):
 class DocMetadataUpdateRequest(BaseModel):
     title: Optional[str] = None
     summary: Optional[str] = None
+    summary_lines: Optional[list[str]] = None
     keywords: Optional[list[str]] = None
     publisher: Optional[str] = None
     target_scope: Optional[dict] = None
+    target_audience: Optional[str] = None
 
 
 class DocMetadataExtractRequest(BaseModel):

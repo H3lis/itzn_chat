@@ -64,15 +64,57 @@ class DocumentMetadataManager:
                 json.dump(data, f, ensure_ascii=False, indent=2)
             temp.replace(self.meta_file)
 
+    @staticmethod
+    def _split_summary_to_lines(summary: str) -> list[str]:
+        """줄바꿈 또는 번호 매김된 요약 텍스트를 3개의 깔끔한 행 리스트로 분할."""
+        if not summary:
+            return ["", "", ""]
+        raw_lines = [line.strip() for line in summary.split("\n") if line.strip()]
+        lines = []
+        for line in raw_lines:
+            # 1. 2. 3. 등 접두 번호 제거하여 입력 폼에 깔끔하게 제공
+            cleaned = re.sub(r"^[0-9]+[.)]\s*", "", line).strip()
+            if cleaned:
+                lines.append(cleaned)
+        while len(lines) < 3:
+            lines.append("")
+        return lines[:3]
+
+    @classmethod
+    def _enrich_metadata_dict(cls, data: dict[str, Any]) -> dict[str, Any]:
+        """API 응답 및 프론트엔드 연동을 위해 summary_lines, target_audience, 키워드 정규화 보강."""
+        enriched = dict(data)
+        summary = enriched.get("summary", "")
+        enriched["summary_lines"] = cls._split_summary_to_lines(summary)
+
+        # 키워드 해시태그(#) 일원화 정규화 (UI 렌더링 시 중복 # 방지)
+        raw_kw = enriched.get("keywords") or []
+        enriched["keywords"] = [k.lstrip("#").strip() for k in raw_kw if k and k.lstrip("#").strip()][:5]
+
+        # target_audience 보강
+        if not enriched.get("target_audience"):
+            scope = enriched.get("target_scope") or {}
+            roles = scope.get("roles") if isinstance(scope, dict) else []
+            if roles and isinstance(roles, list):
+                enriched["target_audience"] = ", ".join(roles)
+            else:
+                enriched["target_audience"] = ""
+
+        return enriched
+
     def get_metadata(self, doc_rel_path: str) -> Optional[dict[str, Any]]:
         """문서 상대경로에 매핑된 메타데이터 반환."""
         slug = doc_slug(doc_rel_path)
         catalog = self._read_catalog()
-        return catalog.get("documents", {}).get(slug)
+        doc = catalog.get("documents", {}).get(slug)
+        if not doc:
+            return None
+        return self._enrich_metadata_dict(doc)
 
     def list_all_metadata(self) -> dict[str, Any]:
         """모든 문서의 메타데이터 맵 반환."""
-        return self._read_catalog().get("documents", {})
+        docs = self._read_catalog().get("documents", {})
+        return {k: self._enrich_metadata_dict(v) for k, v in docs.items()}
 
     def update_metadata(self, doc_rel_path: str, payload: dict[str, Any]) -> dict[str, Any]:
         """관리자가 직접 수정한 메타데이터 반영."""
@@ -87,17 +129,36 @@ class DocumentMetadataManager:
 
         if "title" in payload and payload["title"]:
             current["title"] = payload["title"].strip()
-        if "summary" in payload and payload["summary"]:
+
+        # summary_lines 또는 summary 처리
+        if "summary_lines" in payload and isinstance(payload["summary_lines"], list) and any(payload["summary_lines"]):
+            lines = [l.strip() for l in payload["summary_lines"] if l.strip()]
+            current["summary"] = "\n".join(f"{i+1}. {line}" for i, line in enumerate(lines))
+        elif "summary" in payload and payload["summary"]:
             current["summary"] = payload["summary"].strip()
+
         if "keywords" in payload:
             kw = payload["keywords"]
             if isinstance(kw, str):
-                current["keywords"] = [k.strip() for k in kw.replace(",", " ").split() if k.strip()]
+                raw_list = [k.strip() for k in kw.replace(",", " ").split() if k.strip()]
             elif isinstance(kw, list):
-                current["keywords"] = kw
+                raw_list = kw
+            else:
+                raw_list = []
+            current["keywords"] = [k.lstrip("#").strip() for k in raw_list if k and k.lstrip("#").strip()][:5]
+
         if "publisher" in payload:
             current["publisher"] = (payload["publisher"] or "").strip()
-        if "target_scope" in payload and isinstance(payload["target_scope"], dict):
+
+        if "target_audience" in payload and payload["target_audience"]:
+            target_aud = payload["target_audience"].strip()
+            current["target_audience"] = target_aud
+            scope = current.get("target_scope") or {}
+            if not isinstance(scope, dict):
+                scope = {}
+            scope["roles"] = [r.strip() for r in target_aud.split(",") if r.strip()]
+            current["target_scope"] = scope
+        elif "target_scope" in payload and isinstance(payload["target_scope"], dict):
             current["target_scope"] = payload["target_scope"]
 
         current["updated_at"] = datetime.now().isoformat()
@@ -108,7 +169,7 @@ class DocumentMetadataManager:
         self._write_catalog(catalog)
 
         logger.info("문서 메타데이터 수동 저장 완료 [%s]", doc_rel_path)
-        return current
+        return self._enrich_metadata_dict(current)
 
     def extract_metadata(self, doc_rel_path: str, force: bool = False) -> dict[str, Any]:
         """PDF 문서의 앞부분 텍스트를 추출하고 Gemini LLM을 통해 4대 메타데이터 생성."""
@@ -117,7 +178,7 @@ class DocumentMetadataManager:
         existing = catalog.get("documents", {}).get(slug)
 
         if existing and not force:
-            return existing
+            return self._enrich_metadata_dict(existing)
 
         doc_file = self.docs_dir / doc_rel_path
         if not doc_file.is_file():
@@ -148,7 +209,7 @@ class DocumentMetadataManager:
         self._write_catalog(catalog)
 
         logger.info("문서 메타데이터 자동 추출 및 저장 완료 [%s] (method=%s)", doc_file.name, meta_result.get("method"))
-        return meta_result
+        return self._enrich_metadata_dict(meta_result)
 
     # 호환성 별칭
     extract_and_save = extract_metadata

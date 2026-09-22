@@ -244,7 +244,19 @@ class DocumentManager:
         if not target.is_file():
             return False
 
-        target.unlink()
+        # Windows 환경 파일 핸들 해제 대기 및 삭제
+        import gc, time
+        deleted = False
+        for _ in range(5):
+            try:
+                target.unlink()
+                deleted = True
+                break
+            except PermissionError:
+                gc.collect()
+                time.sleep(0.05)
+        if not deleted:
+            target.unlink()
 
         # 파싱 캐시 정리
         slug = doc_slug(clean_rel)
