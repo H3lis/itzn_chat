@@ -63,8 +63,12 @@ def test_get_admin_settings(tmp_path: Path):
     assert data["langsmith_api_key_set"] is True
 
 
-def test_update_admin_settings_hot_reload(tmp_path: Path):
+def test_update_admin_settings_hot_reload(tmp_path: Path, monkeypatch):
     client, settings, ctx = _build_test_client(tmp_path)
+
+    mock_env = tmp_path / ".env"
+    mock_env.write_text("CHATBOT_MODEL=gemini-2.5-flash\n", encoding="utf-8")
+    monkeypatch.setattr("chatbot_demo_v2.app.api.ENV_FILE_PATH", mock_env)
 
     update_payload = {
         "rag_backend": "ollama",

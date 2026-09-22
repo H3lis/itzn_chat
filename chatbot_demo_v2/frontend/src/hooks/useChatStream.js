@@ -264,21 +264,24 @@ export function useChatStream() {
 
   // Reset entire session
   const resetSession = useCallback(async () => {
-    if (sessionId) {
-      try {
-        await fetch('/api/reset', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ session_id: sessionId }),
-        });
-      } catch (_) {}
-    }
+    // 1. UI 메시지 및 세션 상태를 지체 없이 즉각 초기화 (fetch 지연 레이스 방지)
     setMessages([]);
     setActiveMsgId(null);
     try {
       sessionStorage.removeItem(MESSAGES_KEY);
       sessionStorage.removeItem(SESSION_KEY);
     } catch (_) {}
+
+    const oldSid = sessionId;
+    if (oldSid) {
+      try {
+        await fetch('/api/reset', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ session_id: oldSid }),
+        });
+      } catch (_) {}
+    }
     loadRootScenarios();
   }, [sessionId, loadRootScenarios]);
 

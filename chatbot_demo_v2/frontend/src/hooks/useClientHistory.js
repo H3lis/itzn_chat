@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 
 const CLIENT_HISTORY_STORAGE_KEY = 'chatbot_client_sessions_v1';
 
@@ -25,6 +25,9 @@ export function useClientHistory({
     return sessionId || 'session_' + Date.now();
   });
 
+  // 새 세션 시작 및 세션 전환 시 이전 대화 내용이 복제되지 않도록 차단하는 가드 플래그
+  const isResettingRef = useRef(false);
+
   // 세션 목록을 localStorage에 동기화
   const saveSessionsToStorage = useCallback((list) => {
     setSessions(list);
@@ -37,11 +40,22 @@ export function useClientHistory({
 
   // 메시지가 갱신될 때마다 현재 세션의 히스토리 자동 저장
   useEffect(() => {
-    if (!messages || messages.length === 0) return;
+    // 1. 메시지가 비어있거나 초기화 진행 중이면 세션 저장 건너뜀
+    if (!messages || messages.length === 0) {
+      isResettingRef.current = false;
+      return;
+    }
 
-    // 첫 번째 사용자 메시지를 세션 제목으로 사용
+    if (isResettingRef.current) {
+      isResettingRef.current = false;
+      return;
+    }
+
+    // 2. 사용자 질의가 1개도 없는 빈 상태/초기 시스템 메시지 등은 히스토리에 적재하지 않음
     const firstUserMsg = messages.find((m) => m.type === 'user');
-    const title = firstUserMsg ? firstUserMsg.text.slice(0, 32) : '새로운 상담';
+    if (!firstUserMsg) return;
+
+    const title = firstUserMsg.text.slice(0, 32);
 
     setSessions((prevSessions) => {
       const now = new Date();
@@ -82,19 +96,30 @@ export function useClientHistory({
     });
   }, [messages, currentSessionId]);
 
-  // 새 상담 시작
+  // 새 상담 시작 (처음으로 버튼)
   const startNewChat = useCallback(() => {
+    // 1. 즉시 리셋 플래그를 세워 이전 메시지가 새 세션으로 복제되는 것을 원천 차단
+    isResettingRef.current = true;
+    
+    // 2. 화면 메시지 즉각 동기 초기화
+    if (setMessages) setMessages([]);
+
+    // 3. 새 세션 ID 생성 및 등록
     const newSid = 'session_' + Date.now();
     setCurrentSessionId(newSid);
     if (updateSession) updateSession(newSid);
+
+    // 4. 백엔드 세션 초기화 비동기 실행
     if (resetSession) resetSession();
-  }, [updateSession, resetSession]);
+  }, [setMessages, updateSession, resetSession]);
 
   // 과거 세션 불러오기
   const selectSession = useCallback((targetSid) => {
     const target = sessions.find((s) => s.id === targetSid);
     if (!target) return;
 
+    // 세션 전환 중 기존 메시지와의 교차 오염 차단
+    isResettingRef.current = true;
     setCurrentSessionId(target.id);
     if (updateSession) updateSession(target.id);
     if (setMessages) setMessages(target.messages || []);

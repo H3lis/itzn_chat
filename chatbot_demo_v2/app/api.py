@@ -313,26 +313,35 @@ def chat_stream(request: Request, body: ChatRequest):
                         yield _sse("node", {"node": node_name})
 
             if interrupt_payload is not None:
+                _safe_record_history(ctx, session_id, run_id, body, {
+                    "route": "clarify", "route_reason": "모호 질의 되묻기",
+                    "final_answer": "어떤 상황인지 확인이 필요해요 (후보 제시)"
+                })
                 yield _sse("clarify", {
                     "session_id": session_id,
                     "run_id": run_id,
                     "candidates": interrupt_payload.get("candidates") or [],
                 })
-                _safe_record_history(ctx, session_id, run_id, body, {
-                    "route": "clarify", "route_reason": "모호 질의 되묻기",
-                    "final_answer": "어떤 상황인지 확인이 필요해요 (후보 제시)"
-                })
                 return
 
             result = ctx.graph.get_state(config).values
-            yield _sse("final", _shape_response(session_id, run_id, result).model_dump())
             _safe_record_history(ctx, session_id, run_id, body, result)
+            yield _sse("final", _shape_response(session_id, run_id, result).model_dump())
         except (RagBusyError, RagUnavailableError) as exc:
             status = 429 if isinstance(exc, RagBusyError) else 503
             detail = ("이미 다른 질문을 처리 중입니다. 잠시 후 다시 시도해 주세요."
                       if status == 429 else "RAG 엔진을 사용할 수 없습니다.")
+            _safe_record_history(ctx, session_id, run_id, body, {
+                "route": "busy" if status == 429 else "unavailable",
+                "final_answer": detail,
+            })
             yield _sse("error", {"detail": detail, "status": status})
-        except Exception:  # noqa: BLE001 - 내부 정보 노출 금지
+        except Exception as exc:  # noqa: BLE001 - 내부 정보 노출 금지
+            logger.error("대화 스트리밍 처리 중 예외 발생: %s", exc, exc_info=True)
+            _safe_record_history(ctx, session_id, run_id, body, {
+                "route": "error",
+                "final_answer": "처리 중 오류가 발생했습니다.",
+            })
             yield _sse("error", {"detail": "처리 중 오류가 발생했습니다.", "status": 500})
 
     return StreamingResponse(
@@ -598,11 +607,14 @@ def admin_stats(request: Request) -> dict:
     return stats
 
 
+from ..config.settings import PKG_ROOT
+
+ENV_FILE_PATH = PKG_ROOT / ".env"
+
+
 def _update_env_file(key: str, val: str) -> None:
     """chatbot_demo_v2/.env 파일 내 환경변수 값을 업데이트하거나 추가한다."""
-    from ..config.settings import PKG_ROOT
-
-    env_path = PKG_ROOT / ".env"
+    env_path = ENV_FILE_PATH
     if not env_path.is_file():
         return
     try:
