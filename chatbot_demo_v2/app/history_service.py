@@ -268,6 +268,129 @@ class HistoryService:
             "items": items,
         }
 
+    def search_sessions(
+        self,
+        *,
+        start_date: Optional[str] = None,
+        end_date: Optional[str] = None,
+        route: Optional[str] = None,
+        feedback: Optional[str] = None,
+        keyword: Optional[str] = None,
+        page: int = 1,
+        page_size: int = 20,
+    ) -> dict[str, Any]:
+        """세션 단위 다차원 필터링 및 페이징 검색 (고객 화면형 대화 뷰 지원)."""
+        where_clauses: list[str] = []
+        params: list[Any] = []
+
+        if start_date:
+            where_clauses.append("created_at >= ?")
+            params.append(f"{start_date} 00:00:00")
+        if end_date:
+            where_clauses.append("created_at <= ?")
+            params.append(f"{end_date} 23:59:59")
+        if route and route != "all":
+            where_clauses.append("route = ?")
+            params.append(route)
+        if feedback and feedback != "all":
+            where_clauses.append("feedback = ?")
+            params.append(feedback.upper())
+        if keyword:
+            kw = f"%{keyword.strip()}%"
+            where_clauses.append("(masked_question LIKE ? OR final_answer LIKE ? OR session_id LIKE ?)")
+            params.extend([kw, kw, kw])
+
+        where_sql = ("WHERE " + " AND ".join(where_clauses)) if where_clauses else ""
+
+        with self._lock, self._get_conn() as conn:
+            # 전체 세션 개수
+            count_cur = conn.execute(
+                f"SELECT COUNT(DISTINCT session_id) as total_sessions FROM chat_history {where_sql}",
+                params
+            )
+            total_sessions = count_cur.fetchone()["total_sessions"] or 0
+
+            # 페이징 조회
+            offset = max(0, (page - 1) * page_size)
+            query_sql = f"""
+                WITH filtered AS (
+                    SELECT id, session_id, created_at, masked_question, final_answer, route, feedback, pii_types
+                    FROM chat_history
+                    {where_sql}
+                ),
+                session_agg AS (
+                    SELECT 
+                        session_id,
+                        COUNT(*) as turn_count,
+                        MIN(created_at) as started_at,
+                        MAX(created_at) as last_activity_at,
+                        MIN(id) as first_id,
+                        MAX(id) as last_id,
+                        GROUP_CONCAT(DISTINCT route) as routes_str,
+                        GROUP_CONCAT(DISTINCT feedback) as feedbacks_str,
+                        MAX(CASE WHEN pii_types != '[]' AND pii_types IS NOT NULL THEN 1 ELSE 0 END) as has_pii
+                    FROM filtered
+                    GROUP BY session_id
+                )
+                SELECT 
+                    sa.session_id,
+                    sa.turn_count,
+                    sa.started_at,
+                    sa.last_activity_at,
+                    sa.routes_str,
+                    sa.feedbacks_str,
+                    sa.has_pii,
+                    first_row.masked_question as title,
+                    last_row.masked_question as latest_question,
+                    last_row.final_answer as latest_answer,
+                    last_row.route as latest_route
+                FROM session_agg sa
+                LEFT JOIN chat_history first_row ON first_row.id = sa.first_id
+                LEFT JOIN chat_history last_row ON last_row.id = sa.last_id
+                ORDER BY sa.last_id DESC
+                LIMIT ? OFFSET ?
+            """
+            item_cur = conn.execute(query_sql, params + [page_size, offset])
+            sessions = []
+            for row in item_cur.fetchall():
+                d = dict(row)
+                d["routes"] = [x for x in (d.pop("routes_str") or "").split(",") if x]
+                d["feedbacks"] = [x for x in (d.pop("feedbacks_str") or "").split(",") if x]
+                d["has_pii"] = bool(d.get("has_pii"))
+                sessions.append(d)
+
+        return {
+            "total": total_sessions,
+            "page": page,
+            "page_size": page_size,
+            "total_pages": max(1, (total_sessions + page_size - 1) // page_size),
+            "sessions": sessions,
+        }
+
+    def get_session_turns(self, session_id: str) -> list[dict[str, Any]]:
+        """특정 세션의 모든 대화 턴을 시간순(id ASC)으로 일괄 조회."""
+        with self._lock, self._get_conn() as conn:
+            cur = conn.execute(
+                """
+                SELECT id, session_id, run_id, created_at, masked_question, final_answer,
+                       route, route_reason, latency_s, confidence, feedback, feedback_reason,
+                       feedback_at, pii_types
+                FROM chat_history
+                WHERE session_id = ?
+                ORDER BY id ASC
+                """,
+                (session_id,)
+            )
+            turns = []
+            for row in cur.fetchall():
+                d = dict(row)
+                try:
+                    d["pii_types"] = json.loads(d.get("pii_types") or "[]")
+                except Exception:
+                    d["pii_types"] = []
+                turns.append(d)
+            return turns
+
     def get_analytics_summary(self, days: int = 30) -> dict[str, Any]:
         """만족도 통계, 처리 경로별 통계 및 부정 피드백 목록 집계."""
         cutoff = (datetime.now(KST) - timedelta(days=days)).strftime("%Y-%m-%d 00:00:00")

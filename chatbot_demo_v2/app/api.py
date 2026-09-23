@@ -921,6 +921,42 @@ def admin_get_history(
     )
 
 
+@router.get("/api/admin/history/sessions")
+def admin_get_history_sessions(
+    request: Request,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+    route: Optional[str] = None,
+    feedback: Optional[str] = None,
+    keyword: Optional[str] = None,
+    page: int = 1,
+    page_size: int = 20,
+) -> dict:
+    """세션 단위 대화 이력 다차원 필터링 및 페이징 검색 (고객 화면형 대화 뷰 지원)."""
+    ctx = _ctx(request)
+    if not ctx.history_service:
+        return {"total": 0, "page": 1, "page_size": page_size, "total_pages": 1, "sessions": []}
+    return ctx.history_service.search_sessions(
+        start_date=start_date,
+        end_date=end_date,
+        route=route,
+        feedback=feedback,
+        keyword=keyword,
+        page=page,
+        page_size=page_size,
+    )
+
+
+@router.get("/api/admin/history/sessions/{session_id}")
+def admin_get_history_session_turns(request: Request, session_id: str) -> dict:
+    """특정 세션의 모든 대화 턴(질문/답변)을 시간순으로 일괄 조회."""
+    ctx = _ctx(request)
+    if not ctx.history_service:
+        raise HTTPException(status_code=503, detail="이력 서비스가 초기화되지 않았습니다.")
+    turns = ctx.history_service.get_session_turns(session_id)
+    return {"session_id": session_id, "turns": turns, "total_turns": len(turns)}
+
+
 @router.get("/api/admin/history/export/excel")
 def admin_export_history_excel(
     request: Request,
