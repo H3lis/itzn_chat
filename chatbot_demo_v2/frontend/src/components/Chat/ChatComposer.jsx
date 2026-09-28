@@ -4,6 +4,7 @@ import { Send } from 'lucide-react';
 export function ChatComposer({ inFlight, onSend }) {
   const [text, setText] = useState('');
   const [isComposing, setIsComposing] = useState(false);
+  const hasText = Boolean(text.trim());
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -27,7 +28,7 @@ export function ChatComposer({ inFlight, onSend }) {
       <input
         type="text"
         className="composer-input"
-        placeholder="궁금한 내용을 입력하여 주십시오"
+        placeholder="궁금한 내용을 입력하세요..."
         value={text}
         disabled={inFlight}
         onChange={(e) => setText(e.target.value)}
@@ -38,8 +39,8 @@ export function ChatComposer({ inFlight, onSend }) {
       />
       <button
         type="submit"
-        className="composer-send-btn"
-        disabled={inFlight || !text.trim()}
+        className={`composer-send-btn ${hasText ? 'active' : ''}`}
+        disabled={inFlight || !hasText}
         title="전송"
         aria-label="전송"
       >
