@@ -8,7 +8,7 @@ export function ScenarioStrip({ options, inFlight, onSelectOption }) {
     <div className="scenario-strip">
       <div className="scenario-chips-wrapper">
         {options.map((opt, idx) => {
-          const isRestart = opt.option_id === '__restart__';
+          const isRestart = opt.option_id === '__restart__' || opt.label?.trim() === '처음으로';
           return (
             <button
               key={idx}

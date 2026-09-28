@@ -410,9 +410,9 @@ function renderScenarioOptions(options, scenario) {
     prompt.textContent = "";
   }
   (options || []).forEach((o) => {
-    const isRestart = o.option_id === "__restart__";
+    const isRestart = o.option_id === "__restart__" || o.label === "처음으로";
     const b = el("button", "chip" + (isRestart ? " restart" : ""), o.label);
-    b.addEventListener("click", () => sendAction(o));
+    b.addEventListener("click", () => (isRestart ? resetSession() : sendAction(o)));
     box.appendChild(b);
   });
 }

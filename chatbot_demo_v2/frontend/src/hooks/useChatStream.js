@@ -212,9 +212,45 @@ export function useChatStream() {
     }
   }, [inFlight, sessionId, startBusy, executeChatStream, stopBusy, handleError]);
 
+  // Reset entire session
+  const resetSession = useCallback(async () => {
+    // 1. UI 메시지 및 세션 상태를 지체 없이 즉각 초기화 (fetch 지연 레이스 방지)
+    setMessages([]);
+    setActiveMsgId(null);
+    try {
+      sessionStorage.removeItem(MESSAGES_KEY);
+      sessionStorage.removeItem(SESSION_KEY);
+    } catch (_) {}
+
+    const oldSid = sessionId;
+    const newSid = 'session_' + Date.now();
+    setSessionId(newSid);
+    try {
+      sessionStorage.setItem(SESSION_KEY, newSid);
+    } catch (_) {}
+
+    if (oldSid) {
+      try {
+        await fetch('/api/reset', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ session_id: oldSid }),
+        });
+      } catch (_) {}
+    }
+    loadRootScenarios();
+  }, [sessionId, loadRootScenarios]);
+
   // Send scenario action chip
   const sendAction = useCallback(async (option) => {
     if (inFlight) return;
+
+    // "처음으로" 또는 __restart__ 옵션 선택 시 세션 초기화(리셋) 처리
+    if (option?.option_id === '__restart__' || option?.label?.trim() === '처음으로') {
+      await resetSession();
+      return;
+    }
+
     const userMsgId = 'user_act_' + Date.now();
     setMessages((prev) => [...prev, { id: userMsgId, type: 'user', text: '▶ ' + option.label }]);
     startBusy('시나리오 이동 중…');
@@ -235,7 +271,7 @@ export function useChatStream() {
     } finally {
       stopBusy();
     }
-  }, [inFlight, sessionId, startBusy, executeChatStream, stopBusy, handleError]);
+  }, [inFlight, sessionId, startBusy, executeChatStream, stopBusy, handleError, resetSession]);
 
   // Send clarify selection
   const sendClarify = useCallback(async (choice, label, clarifyMsgId) => {
@@ -261,29 +297,6 @@ export function useChatStream() {
       stopBusy();
     }
   }, [inFlight, sessionId, startBusy, executeChatStream, stopBusy, handleError]);
-
-  // Reset entire session
-  const resetSession = useCallback(async () => {
-    // 1. UI 메시지 및 세션 상태를 지체 없이 즉각 초기화 (fetch 지연 레이스 방지)
-    setMessages([]);
-    setActiveMsgId(null);
-    try {
-      sessionStorage.removeItem(MESSAGES_KEY);
-      sessionStorage.removeItem(SESSION_KEY);
-    } catch (_) {}
-
-    const oldSid = sessionId;
-    if (oldSid) {
-      try {
-        await fetch('/api/reset', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ session_id: oldSid }),
-        });
-      } catch (_) {}
-    }
-    loadRootScenarios();
-  }, [sessionId, loadRootScenarios]);
 
   // Submit feedback
   const sendFeedback = useCallback(async (runId, score) => {

@@ -95,6 +95,15 @@ export function App() {
     }
   };
 
+  // 시나리오 칩 중 '처음으로' 선택 시 세션 초기화
+  const handleSelectOption = (opt) => {
+    if (opt?.option_id === '__restart__' || opt?.label?.trim() === '처음으로') {
+      resetSession();
+      return;
+    }
+    sendAction(opt);
+  };
+
   // /admin 경로인 경우 관리자 콘솔 전면 렌더링
   if (path.startsWith('/admin')) {
     return (
@@ -157,7 +166,7 @@ export function App() {
           scenarioOptions={scenarioOptions}
           scenarioInfo={scenarioInfo}
           onSend={sendMessage}
-          onSelectOption={sendAction}
+          onSelectOption={handleSelectOption}
           onSelectClarify={sendClarify}
           onReset={resetSession}
           onOpenEvidence={handleOpenEvidence}

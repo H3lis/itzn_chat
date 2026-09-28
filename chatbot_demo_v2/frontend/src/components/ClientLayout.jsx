@@ -76,6 +76,15 @@ export function ClientLayout({
     resetSession,
   });
 
+  // 시나리오 칩 중 '처음으로' 선택 시 고객 히스토리 분리 및 새 상담 시작
+  const handleSelectOption = (opt) => {
+    if (opt?.option_id === '__restart__' || opt?.label?.trim() === '처음으로') {
+      startNewChat();
+      return;
+    }
+    sendAction(opt);
+  };
+
   return (
     <div className="app-container client-app-container">
       {/* 1. 고객용 글로벌 상단 헤더 */}
@@ -247,7 +256,7 @@ export function ClientLayout({
               scenarioOptions={scenarioOptions}
               scenarioInfo={scenarioInfo}
               onSend={sendMessage}
-              onSelectOption={sendAction}
+              onSelectOption={handleSelectOption}
               onSelectClarify={sendClarify}
               onReset={startNewChat}
               onOpenEvidence={handleOpenEvidence}

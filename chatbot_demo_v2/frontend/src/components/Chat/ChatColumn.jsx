@@ -31,6 +31,19 @@ export function ChatColumn({
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, inFlight, busySteps]);
 
+  // 시나리오 칩 중 '처음으로'(__restart__) 선택 시 세션 초기화(onReset) 트리거
+  const handleOptionClick = (opt) => {
+    if (opt?.option_id === '__restart__' || opt?.label?.trim() === '처음으로') {
+      if (onReset) {
+        onReset();
+        return;
+      }
+    }
+    if (onSelectOption) {
+      onSelectOption(opt);
+    }
+  };
+
   return (
     <section className={`chat-column ${isClient ? 'client-mode' : ''}`}>
       {/* Header */}
@@ -142,7 +155,7 @@ export function ChatColumn({
       <ScenarioStrip
         options={scenarioOptions}
         inFlight={inFlight}
-        onSelectOption={onSelectOption}
+        onSelectOption={handleOptionClick}
       />
 
       {/* Chat Composer */}
