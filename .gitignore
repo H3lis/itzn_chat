@@ -1,6 +1,7 @@
 # --- 비밀키 / 환경 ---
 .env
 *.key
+*.bak*
 
 # --- Python ---
 __pycache__/
