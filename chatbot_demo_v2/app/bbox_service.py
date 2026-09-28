@@ -125,35 +125,9 @@ class BboxService:
             ph = float(page.rect.height) or 1.0
 
             # -----------------------------------------------------------------
-            # 1. 표(Table) 청크인 경우: 표 전체 영역 Bounding Box 탐색
+            # 1. 텍스트 청크 정밀 문장/구문 검색 (일반 텍스트 PDF 최우선)
             # -----------------------------------------------------------------
-            if block_type == "table":
-                try:
-                    tables = page.find_tables()
-                    if tables.tables:
-                        # 페이지 내 가장 큰 표 또는 첫 번째 표
-                        t = max(tables.tables, key=lambda tb: (tb.bbox[2] - tb.bbox[0]) * (tb.bbox[3] - tb.bbox[1]))
-                        bx0, by0, bx1, by1 = t.bbox
-                        # 상하좌우 4px 패딩 (안전 정규화)
-                        norm_bbox = [
-                            max(0.0, round((bx0 - 4) / pw, 4)),
-                            max(0.0, round((by0 - 4) / ph, 4)),
-                            min(1.0, round((bx1 + 4) / pw, 4)),
-                            min(1.0, round((by1 + 4) / ph, 4)),
-                        ]
-                        highlights.append({
-                            "bbox": norm_bbox,
-                            "type": "table",
-                            "text": "(표 데이터 영역)",
-                        })
-                except Exception as te:
-                    logger.debug("find_tables 시도 예외: %s", te)
-
-            # -----------------------------------------------------------------
-            # 2. 텍스트 청크 또는 표 탐색 실패 시: 문장/구문 정밀 탐색
-            # -----------------------------------------------------------------
-            if not highlights and chunk_text:
-                # 불필요한 마크다운/HTML 태그 제거
+            if chunk_text:
                 clean_text = re.sub(r"<[^>]+>", " ", chunk_text)
                 clean_text = re.sub(r"\||\-{3,}", " ", clean_text)
                 lines = [l.strip() for l in clean_text.splitlines() if len(l.strip()) >= 8]
@@ -163,7 +137,6 @@ class BboxService:
                     if len(found_rects) >= max_highlights:
                         break
 
-                    # HTML 엔티티 제거 및 불용 부호 정리
                     line_clean = re.sub(r"&[a-z]+;", " ", line).strip()
                     if not line_clean:
                         continue
@@ -185,14 +158,12 @@ class BboxService:
                             rects = page.search_for(two_words)
 
                     for r in rects:
-                        # 상하좌우 2px 패딩
                         norm_bbox = [
                             max(0.0, round((r.x0 - 2) / pw, 4)),
                             max(0.0, round((r.y0 - 2) / ph, 4)),
                             min(1.0, round((r.x1 + 2) / pw, 4)),
                             min(1.0, round((r.y1 + 2) / ph, 4)),
                         ]
-                        # 중복 영역 제외 (IoU 체크)
                         if not any(self._is_overlap(norm_bbox, h["bbox"]) for h in highlights):
                             highlights.append({
                                 "bbox": norm_bbox,
@@ -202,6 +173,78 @@ class BboxService:
                             found_rects.append(r)
                             if len(highlights) >= max_highlights:
                                 break
+
+            # -----------------------------------------------------------------
+            # 2. 숫자/금액/속도 토큰 정밀 검색 (CMap 결함 PDF 및 표 수치 보완)
+            # -----------------------------------------------------------------
+            if len(highlights) < max_highlights and chunk_text:
+                # 숫자, 금액, 단위 포함 토큰 추출 (예: 3,311,900, 1G, 40Gbps, 2,800,000)
+                num_tokens = re.findall(
+                    r"\b[0-9]+(?:,[0-9]{3})*(?:\.[0-9]+)?(?:\s*(?:[GgMmKk]bps|[GMKgmk]|원|%|호|조))?\b",
+                    chunk_text,
+                )
+                # 길이 긴 유의미한 토큰 우선 (예: 3,311,900 > 1G)
+                sorted_tokens = sorted(set(t.strip() for t in num_tokens if len(t.strip()) >= 2), key=len, reverse=True)
+                for token in sorted_tokens[:6]:
+                    if len(highlights) >= max_highlights:
+                        break
+                    rects = page.search_for(token)
+                    for r in rects:
+                        norm_bbox = [
+                            max(0.0, round((r.x0 - 2) / pw, 4)),
+                            max(0.0, round((r.y0 - 2) / ph, 4)),
+                            min(1.0, round((r.x1 + 2) / pw, 4)),
+                            min(1.0, round((r.y1 + 2) / ph, 4)),
+                        ]
+                        if not any(self._is_overlap(norm_bbox, h["bbox"]) for h in highlights):
+                            highlights.append({
+                                "bbox": norm_bbox,
+                                "type": "text",
+                                "text": token,
+                            })
+                            if len(highlights) >= max_highlights:
+                                break
+
+            # -----------------------------------------------------------------
+            # 3. 표(Table) 영역 감지 폴백 (block_type이 table이거나 표가 있는 경우)
+            # -----------------------------------------------------------------
+            try:
+                tables = page.find_tables()
+                if tables.tables:
+                    # 매칭된 하이라이트가 없거나, 또는 블록 타입이 table이거나 청크에 표 구분자가 있는 경우
+                    has_table_clue = block_type == "table" or "|" in chunk_text or not highlights
+                    if has_table_clue and not any(h["type"] == "table" for h in highlights):
+                        # 페이지 내 가장 큰 표 또는 하이라이트 숫자를 포함하는 표 선정
+                        best_table = None
+                        if highlights:
+                            # 기존 하이라이트 좌표를 포함하는 표 탐색
+                            for t in tables.tables:
+                                tx0, ty0, tx1, ty1 = t.bbox
+                                for h in highlights:
+                                    hx0, hy0 = h["bbox"][0] * pw, h["bbox"][1] * ph
+                                    if tx0 <= hx0 <= tx1 and ty0 <= hy0 <= ty1:
+                                        best_table = t
+                                        break
+                                if best_table:
+                                    break
+                        if not best_table:
+                            best_table = max(tables.tables, key=lambda tb: (tb.bbox[2] - tb.bbox[0]) * (tb.bbox[3] - tb.bbox[1]))
+
+                        if best_table:
+                            bx0, by0, bx1, by1 = best_table.bbox
+                            table_bbox = [
+                                max(0.0, round((bx0 - 4) / pw, 4)),
+                                max(0.0, round((by0 - 4) / ph, 4)),
+                                min(1.0, round((bx1 + 4) / pw, 4)),
+                                min(1.0, round((by1 + 4) / ph, 4)),
+                            ]
+                            highlights.insert(0, {
+                                "bbox": table_bbox,
+                                "type": "table",
+                                "text": "(표 데이터 영역)",
+                            })
+            except Exception as te:
+                logger.debug("find_tables 시도 예외: %s", te)
 
         except Exception as e:
             logger.warning("BboxService 하이라이트 추출 실패 [%s p%d]: %s", doc_slug, page_number, e)

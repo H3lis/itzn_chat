@@ -37,10 +37,28 @@ export function ClientLayout({
   resetSession,
   sendFeedback,
 }) {
-  const [lightboxUrl, setLightboxUrl] = useState(null);
+  const [lightboxData, setLightboxData] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const isReady = status === 'ready';
   const isError = status === 'error';
+
+  const handleOpenEvidence = (target, highlights = [], pageNumber = null, docName = '') => {
+    if (typeof target === 'object' && target !== null) {
+      setLightboxData({
+        url: target.imageUrl || target.image_url || target.url,
+        highlights: target.highlights || [],
+        pageNumber: target.pageNumber || target.page_number,
+        docName: target.documentName || target.document_name || target.docName || '',
+      });
+    } else {
+      setLightboxData({
+        url: target,
+        highlights: highlights || [],
+        pageNumber: pageNumber,
+        docName: docName,
+      });
+    }
+  };
 
   // 사용자 대화 히스토리 훅 연동
   const {
@@ -232,7 +250,7 @@ export function ClientLayout({
               onSelectOption={sendAction}
               onSelectClarify={sendClarify}
               onReset={startNewChat}
-              onOpenEvidence={(url) => setLightboxUrl(url)}
+              onOpenEvidence={handleOpenEvidence}
               onFeedback={sendFeedback}
               isClient={true}
             />
@@ -240,10 +258,10 @@ export function ClientLayout({
         </main>
       </div>
 
-      {/* 3. 매뉴얼/증빙 이미지 라이트박스 모달 */}
+      {/* 3. 매뉴얼/증빙 이미지 라이트박스 모달 (정답 영역 형광펜 오버레이) */}
       <LightboxModal
-        imageUrl={lightboxUrl}
-        onClose={() => setLightboxUrl(null)}
+        data={lightboxData}
+        onClose={() => setLightboxData(null)}
       />
     </div>
   );

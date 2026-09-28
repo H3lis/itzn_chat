@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { ThumbsUp, ThumbsDown, CheckCircle2 } from 'lucide-react';
+import React, { useState, useMemo } from 'react';
+import { ThumbsUp, ThumbsDown, CheckCircle2, Sparkles, FileText } from 'lucide-react';
 import { AnswerRenderer } from './AnswerRenderer';
 
 function confLabel(c) {
@@ -10,6 +10,23 @@ function confLabel(c) {
 export function BotMessage({ resp, isActive, onSelect, onOpenEvidence, onFeedback, isClient = false }) {
   const [feedbackState, setFeedbackState] = useState(null); // 'pos' | 'neg' | null
   const [feedbackSent, setFeedbackSent] = useState(false);
+
+  // 유효한 근거 문서(이미지 URL 보유) 중복 제거 목록
+  const validEvidence = useMemo(() => {
+    const list = [...(resp?.evidence || []), ...(resp?.faq_evidence || [])];
+    const seen = new Set();
+    const res = [];
+    for (const item of list) {
+      if (item && item.image_url) {
+        const key = `${item.page_number}_${item.image_url}`;
+        if (!seen.has(key)) {
+          seen.add(key);
+          res.push(item);
+        }
+      }
+    }
+    return res;
+  }, [resp?.evidence, resp?.faq_evidence]);
 
   const handleFeedback = async (score) => {
     if (feedbackSent || !resp.run_id) return;
@@ -33,6 +50,39 @@ export function BotMessage({ resp, isActive, onSelect, onOpenEvidence, onFeedbac
         faqEvidence={resp.faq_evidence}
         onOpenEvidence={onOpenEvidence}
       />
+
+      {/* 근거 문서 및 형광펜 바로가기 액션 바 */}
+      {validEvidence.length > 0 && (
+        <div className="evidence-quick-bar" onClick={(e) => e.stopPropagation()}>
+          <div className="evidence-bar-label">
+            <FileText size={12} className="label-icon" />
+            <span>근거 자료:</span>
+          </div>
+          <div className="evidence-chip-list">
+            {validEvidence.map((ev, idx) => {
+              const hasHl = ev.highlights && ev.highlights.length > 0;
+              const pageStr = ev.page_number ? `p.${ev.page_number}` : '문서';
+              const docShort = ev.document_name
+                ? ev.document_name.replace(/\.[^/.]+$/, '').slice(0, 18)
+                : '근거문서';
+              return (
+                <button
+                  key={idx}
+                  type="button"
+                  className={`btn-evidence-action ${hasHl ? 'has-hl-pulse' : ''}`}
+                  onClick={() => onOpenEvidence?.(ev)}
+                  title={`${ev.document_name || '근거 문서'} ${pageStr} 원본 열기${hasHl ? ' (정답 영역 형광펜 표시)' : ''}`}
+                >
+                  {hasHl ? <Sparkles size={13} className="chip-sparkle-gold" /> : <FileText size={12} />}
+                  <span className="chip-page-bold">{pageStr}</span>
+                  <span className="chip-doc-title">{docShort}</span>
+                  {hasHl && <span className="chip-hl-badge">✨ 형광펜</span>}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {/* Composed original answer collapsible */}
       {resp.composed && resp.original_answer && !isClient && (

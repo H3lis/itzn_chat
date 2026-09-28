@@ -1672,6 +1672,112 @@ body {
   box-shadow: 0 0 6px #eab308;
 }
 
+/* 답변 하단 근거 문서 & 형광펜 바로가기 액션 바 */
+.evidence-quick-bar {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.09);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.evidence-bar-label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #94a3b8;
+  user-select: none;
+}
+
+.evidence-bar-label .label-icon {
+  color: #38bdf8;
+}
+
+.evidence-chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.btn-evidence-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 6px;
+  background: rgba(30, 41, 59, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #e2e8f0;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+}
+
+.btn-evidence-action:hover {
+  background: rgba(51, 65, 85, 0.9);
+  border-color: #38bdf8;
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+.btn-evidence-action.has-hl-pulse {
+  background: linear-gradient(135deg, rgba(234, 179, 8, 0.12) 0%, rgba(30, 41, 59, 0.85) 100%);
+  border-color: rgba(234, 179, 8, 0.45);
+  box-shadow: 0 0 10px rgba(234, 179, 8, 0.12);
+}
+
+.btn-evidence-action.has-hl-pulse:hover {
+  background: linear-gradient(135deg, rgba(234, 179, 8, 0.22) 0%, rgba(51, 65, 85, 0.95) 100%);
+  border-color: #facc15;
+  box-shadow: 0 4px 14px rgba(234, 179, 8, 0.28);
+}
+
+.btn-evidence-action .chip-sparkle-gold {
+  color: #facc15;
+  animation: pulseGold 2s infinite ease-in-out;
+}
+
+.btn-evidence-action .chip-page-bold {
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.btn-evidence-action .chip-doc-title {
+  color: #cbd5e1;
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.btn-evidence-action .chip-hl-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: #eab308;
+  color: #0f172a;
+  letter-spacing: -0.2px;
+}
+
+@keyframes pulseGold {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 1;
+    filter: drop-shadow(0 0 4px #facc15);
+  }
+}
+
 /* 인스펙터 썸네일 형광펜 배지 */
 .evidence-thumb-container {
   position: relative;
