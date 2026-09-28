@@ -17,6 +17,7 @@ from .config import Config
 from .flat_index import get_flat_chunk_index
 from .index import HybridIndex, get_index
 from .models import Backend
+from .metadata_matcher import get_metadata_matcher
 from .page_store import fetch_pages
 from .rerank import get_reranker
 
@@ -88,18 +89,41 @@ def _run_retrieval_reranked(question: str, config: Config, backend: Backend) -> 
     reranker = get_reranker(config)
     hits = reranker.rank(question, [_rerank_text(c.text, config) for c in cands])
     metrics.record_rerank()
-    top_score = hits[0].score if hits else float("-inf")
+
+    matcher = get_metadata_matcher(config)
+    boosted_items = []
+    for h in hits:
+        c = cands[h.index]
+        slug = c.metadata.get("doc_slug", "")
+        boost_res = matcher.compute_boost(question, slug, h.score)
+        final_score = round(h.score + boost_res.boost_score, 4)
+        boosted_items.append({
+            "hit": h,
+            "cand": c,
+            "raw_score": round(h.score, 4),
+            "boost_score": round(boost_res.boost_score, 4),
+            "boost_reason": boost_res.reason,
+            "final_score": final_score,
+        })
+
+    # 부스팅 적용 점수 기준 재정렬
+    boosted_items.sort(key=lambda x: -x["final_score"])
+    top_score = boosted_items[0]["final_score"] if boosted_items else float("-inf")
+    raw_top = boosted_items[0]["raw_score"] if boosted_items else float("-inf")
 
     cand_dump = [
-        {"chunk_id": cands[h.index].metadata.get("chunk_id"),
-         "doc_slug": cands[h.index].metadata.get("doc_slug"),
-         "page_number": cands[h.index].metadata.get("page_number"),
-         "block_type": cands[h.index].metadata.get("block_type"),
-         "rerank_score": round(h.score, 4)}
-        for h in hits[: config.retrieve_candidates]
+        {"chunk_id": it["cand"].metadata.get("chunk_id"),
+         "doc_slug": it["cand"].metadata.get("doc_slug"),
+         "page_number": it["cand"].metadata.get("page_number"),
+         "block_type": it["cand"].metadata.get("block_type"),
+         "rerank_score": it["raw_score"],
+         "metadata_boost": it["boost_score"],
+         "boost_reason": it["boost_reason"],
+         "final_score": it["final_score"]}
+        for it in boosted_items[: config.retrieve_candidates]
     ]
 
-    if top_score < config.rerank_score_floor:
+    if max(top_score, raw_top) < config.rerank_score_floor:
         return RetrievalResult(
             question, [], [], answer_path="none",
             route_reason=f"리랭크 최고점수 {top_score:.3f} < floor {config.rerank_score_floor} -> 무관/근거없음",
@@ -108,15 +132,25 @@ def _run_retrieval_reranked(question: str, config: Config, backend: Backend) -> 
 
     # small-to-big: 청크를 페이지로 집계. 페이지 점수는 _agg_page_score(max 또는 sum_topk).
     page_best: dict[tuple, dict] = {}
-    for h in hits:
-        c = cands[h.index]
+    for it in boosted_items:
+        c = it["cand"]
         m = c.metadata
         key = (m.get("doc_slug"), m.get("page_number"))
         if key not in page_best:
-            page_best[key] = {"scores": [h.score], "meta": m, "chunks": [c]}
+            page_best[key] = {
+                "scores": [it["final_score"]],
+                "meta": m,
+                "chunks": [c],
+                "metadata_boost": it["boost_score"],
+                "boost_reason": it["boost_reason"],
+            }
         else:
-            page_best[key]["scores"].append(h.score)
+            page_best[key]["scores"].append(it["final_score"])
             page_best[key]["chunks"].append(c)
+            if it["boost_score"] > page_best[key]["metadata_boost"]:
+                page_best[key]["metadata_boost"] = it["boost_score"]
+                page_best[key]["boost_reason"] = it["boost_reason"]
+
     for p in page_best.values():
         p["score"] = _agg_page_score(p["scores"], config)
     ordered = sorted(page_best.values(), key=lambda p: -p["score"])[: config.final_pages]
@@ -180,6 +214,8 @@ def _run_retrieval_reranked(question: str, config: Config, backend: Backend) -> 
             "page_image_path": pm.get("page_image_path", ""),
             "text": id2text.get(pid, ""),
             "matched_chunks": [c.metadata.get("chunk_id") for c in p["chunks"][:3]],
+            "metadata_boost": round(float(p.get("metadata_boost", 0.0)), 4),
+            "boost_reason": p.get("boost_reason", ""),
         })
 
     # 페이지에서 문서 집합 도출(게이트 대체 — doc_hit 평가/근거표시용)

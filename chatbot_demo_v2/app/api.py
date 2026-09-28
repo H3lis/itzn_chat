@@ -609,7 +609,13 @@ ENV_FILE_PATH = PKG_ROOT / ".env"
 
 def _update_env_file(key: str, val: str) -> None:
     """chatbot_demo_v2/.env 파일 내 환경변수 값을 업데이트하거나 추가한다."""
-    env_path = ENV_FILE_PATH
+    from ..config.settings import PKG_ROOT
+    default_env = Path(__file__).resolve().parents[1] / ".env"
+    explicit_env = globals().get("ENV_FILE_PATH")
+    if explicit_env is not None and Path(explicit_env) != default_env:
+        env_path = Path(explicit_env)
+    else:
+        env_path = PKG_ROOT / ".env"
     if not env_path.is_file():
         return
     try:

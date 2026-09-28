@@ -86,6 +86,8 @@ class Config:
     page_score_agg: str = "max"
     page_score_topk: int = 3
     page_score_decay: float = 0.5
+    #: 메타데이터(target_scope: 공간/장비/역할, keywords) 기반 질의 일치도 랭킹 부스팅
+    enable_metadata_boosting: bool = True
     # === Phase 2: 검증 + 롤백 ===
     enable_verify: bool = True
     enable_rollback: bool = True

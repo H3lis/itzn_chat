@@ -16,7 +16,13 @@ export function AnswerRenderer({ text, evidence = [], faqEvidence = [], onOpenEv
     const map = {};
     [...(evidence || []), ...(faqEvidence || [])].forEach((e) => {
       if (e && e.page_number != null && e.image_url) {
-        map[Number(e.page_number)] = e.image_url;
+        map[Number(e.page_number)] = {
+          url: e.image_url,
+          imageUrl: e.image_url,
+          highlights: e.highlights || [],
+          pageNumber: Number(e.page_number),
+          docName: e.document_name || '',
+        };
       }
     });
     return map;
@@ -45,21 +51,23 @@ export function AnswerRenderer({ text, evidence = [], faqEvidence = [], onOpenEv
         );
       } else if (token.startsWith('[p') && token.endsWith(']')) {
         const pageNum = parseInt(token.slice(2, -1), 10);
-        const imgUrl = evidenceByPage[pageNum];
-        if (imgUrl) {
+        const evItem = evidenceByPage[pageNum];
+        if (evItem) {
+          const hasHighlights = evItem.highlights && evItem.highlights.length > 0;
           parts.push(
             <button
               key={`cite-${match.index}`}
               type="button"
-              className="cite-chip"
-              title={`근거 이미지 p${pageNum} 확인`}
+              className={`cite-chip ${hasHighlights ? 'has-highlights' : ''}`}
+              title={`근거 이미지 p${pageNum} 확인${hasHighlights ? ' (정답 형광펜 표시)' : ''}`}
               onClick={(e) => {
                 e.stopPropagation();
-                onOpenEvidence?.(imgUrl);
+                onOpenEvidence?.(evItem);
               }}
             >
               <FileText size={11} />
-              p{pageNum}
+              <span>p{pageNum}</span>
+              {hasHighlights && <span className="cite-highlight-dot" title="정답 형광펜 포함" />}
             </button>
           );
         }

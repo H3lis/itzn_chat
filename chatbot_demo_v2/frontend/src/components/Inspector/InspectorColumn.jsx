@@ -242,6 +242,18 @@ export function InspectorColumn({
                         <div className="kv-val">{resp.source_meta.metrics.timings_seconds.answer}초</div>
                       </>
                     )}
+                    {resp.source_meta.selected_pages?.some(p => p.metadata_boost > 0) && (
+                      <>
+                        <div className="kv-key">메타 부스팅</div>
+                        <div className="kv-val meta-boost-val">
+                          {resp.source_meta.selected_pages.filter(p => p.metadata_boost > 0).map((p, idx) => (
+                            <span key={idx} className="meta-boost-chip">
+                              {p.boost_reason || `+${p.metadata_boost}`}
+                            </span>
+                          ))}
+                        </div>
+                      </>
+                    )}
                   </>
                 )}
 
@@ -311,24 +323,34 @@ export function InspectorColumn({
                   <span>근거 이미지 ({evis.length}건)</span>
                 </div>
                 <div className="evidence-grid">
-                  {evis.map((e, idx) => (
-                    <div
-                      key={idx}
-                      className="evidence-card"
-                      onClick={() => onOpenEvidence(e.image_url)}
-                      title="클릭하여 확대 보기"
-                    >
-                      <img
-                        src={e.image_url}
-                        alt={`근거 p${e.page_number}`}
-                        className="evidence-thumb"
-                        loading="lazy"
-                      />
-                      <div className="evidence-caption">
-                        {(e.document_name || '') + ' p' + (e.page_number ?? '?')}
+                  {evis.map((e, idx) => {
+                    const hasHighlights = Array.isArray(e.highlights) && e.highlights.length > 0;
+                    return (
+                      <div
+                        key={idx}
+                        className="evidence-card"
+                        onClick={() => onOpenEvidence(e.image_url, e.highlights, e.page_number, e.document_name)}
+                        title={`클릭하여 확대 보기${hasHighlights ? ' (정답 영역 형광펜 표시)' : ''}`}
+                      >
+                        <div className="evidence-thumb-container">
+                          <img
+                            src={e.image_url}
+                            alt={`근거 p${e.page_number}`}
+                            className="evidence-thumb"
+                            loading="lazy"
+                          />
+                          {hasHighlights && (
+                            <span className="thumb-highlight-badge">
+                              ✨ 형광펜 {e.highlights.length}
+                            </span>
+                          )}
+                        </div>
+                        <div className="evidence-caption">
+                          {(e.document_name || '') + ' p' + (e.page_number ?? '?')}
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             )}

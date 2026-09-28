@@ -96,8 +96,10 @@ class Settings:
     grader_enabled: bool
     robustness_tool_enabled: bool
 
-    # RAG 결과 캐시
+    # RAG 결과 캐시 및 부스팅/형광펜
     rag_cache_ttl_s: int
+    metadata_boosting_enabled: bool
+    evidence_highlights_enabled: bool
 
     # 웹검색 (마지막 보루 — 내부 자료로 못 답한 '범위 안' 질문만)
     web_search_enabled: bool
@@ -224,6 +226,8 @@ def load_settings(env: Mapping[str, str] | None = None) -> Settings:
         grader_enabled=_get_bool(env, "GRADER_ENABLED", True),
         robustness_tool_enabled=_get_bool(env, "ROBUSTNESS_TOOL_ENABLED", "pytest" not in sys.modules),
         rag_cache_ttl_s=_get_int(env, "RAG_CACHE_TTL_S", 3600),
+        metadata_boosting_enabled=_get_bool(env, "ENABLE_METADATA_BOOSTING", True),
+        evidence_highlights_enabled=_get_bool(env, "ENABLE_EVIDENCE_HIGHLIGHTS", True),
         web_search_enabled=_get_bool(env, "WEB_SEARCH_ENABLED", False),
         web_search_scope=_get(env, "WEB_SEARCH_SCOPE", "in_domain_unresolved"),
         web_search_provider=_get(env, "WEB_SEARCH_PROVIDER", "gemini_grounding"),

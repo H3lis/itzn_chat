@@ -66,7 +66,7 @@ export function App() {
     sendFeedback,
   } = useChatStream();
 
-  const [lightboxUrl, setLightboxUrl] = useState(null);
+  const [lightboxData, setLightboxData] = useState(null);
   const [isMobileInspectorOpen, setIsMobileInspectorOpen] = useState(false);
 
   // 모바일에서 메시지 선택 시 인스펙터 자동 열기 지원
@@ -77,8 +77,22 @@ export function App() {
     }
   };
 
-  const handleOpenEvidence = (url) => {
-    setLightboxUrl(url);
+  const handleOpenEvidence = (target, highlights = [], pageNumber = null, docName = '') => {
+    if (typeof target === 'object' && target !== null) {
+      setLightboxData({
+        url: target.imageUrl || target.image_url || target.url,
+        highlights: target.highlights || [],
+        pageNumber: target.pageNumber || target.page_number,
+        docName: target.documentName || target.document_name || target.docName || '',
+      });
+    } else {
+      setLightboxData({
+        url: target,
+        highlights: highlights || [],
+        pageNumber: pageNumber,
+        docName: docName,
+      });
+    }
   };
 
   // /admin 경로인 경우 관리자 콘솔 전면 렌더링
@@ -172,10 +186,10 @@ export function App() {
         />
       )}
 
-      {/* 3. 근거 원본 이미지 모달 라이트박스 */}
+      {/* 3. 근거 원본 이미지 모달 라이트박스 (정답 영역 형광펜 오버레이 지원) */}
       <LightboxModal
-        imageUrl={lightboxUrl}
-        onClose={() => setLightboxUrl(null)}
+        data={lightboxData}
+        onClose={() => setLightboxData(null)}
       />
     </div>
   );

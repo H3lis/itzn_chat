@@ -147,6 +147,27 @@ def normalize_rag_result(
         item = dict(ev)
         item["_run_id"] = run_id
         urls = copy_evidence(item, rank)
+
+        highlights = []
+        if os.environ.get("ENABLE_EVIDENCE_HIGHLIGHTS", "true").strip().lower() in ("true", "1", "yes"):
+            try:
+                from ..app.bbox_service import get_bbox_service
+                from ..ragcore.rag3.utils import doc_slug as calc_slug
+                doc_name = ev.get("document_name") or ""
+                slug = ev.get("doc_slug") or calc_slug(doc_name)
+                page_num = int(ev.get("page_number") or 0)
+                chunk_txt = ev.get("text") or ev.get("table_markdown") or ""
+                b_type = "table" if ev.get("has_table") else "text"
+                if slug and page_num > 0:
+                    highlights = get_bbox_service().extract_highlights(
+                        doc_slug=slug,
+                        page_number=page_num,
+                        chunk_text=chunk_txt,
+                        block_type=b_type,
+                    )
+            except Exception:
+                highlights = []
+
         evidence_out.append(
             {
                 "rank": rank,
@@ -154,6 +175,7 @@ def normalize_rag_result(
                 "page_number": ev.get("page_number"),
                 "image_url": urls.get("image_url"),
                 "table_url": urls.get("table_url"),
+                "highlights": highlights,
             }
         )
 
