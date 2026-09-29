@@ -69,6 +69,8 @@ export function ScenarioTab({ onUpdateBadge }) {
   const [nodeForm, setNodeForm] = useState({
     node_id: '',
     scenario_id: '',
+    parentNodeId: null,
+    parentOptionLabel: '',
     type: 'question',
     text: '',
     options: [],
@@ -181,28 +183,35 @@ export function ScenarioTab({ onUpdateBadge }) {
     setNodeForm({
       node_id: '',
       scenario_id: selectedNode?.scenario_id || 'general',
+      parentNodeId: null,
+      parentOptionLabel: '',
       type: 'question',
       text: '',
-      options: [{ label: '', next_node: '' }],
+      options: [{ label: '', next_node: '', next_node_id: '' }],
       answer_text: ''
     });
     setModalOpen(true);
   };
 
-  // 하위 자식 노드 추가 모달
+  // 하위 자식 노드 추가 모달 (고유 ID 자동 생성 및 부모 노드 바인딩)
   const handleOpenCreateChild = (parentNode) => {
     if (!parentNode) {
       handleOpenCreate();
       return;
     }
     const parentId = parentNode.node_id || parentNode.id || 'node';
+    const randomSuffix = Math.random().toString(36).substring(2, 6);
+    const childId = `${parentId}.step_${randomSuffix}`;
+
     setModalMode('create');
     setNodeForm({
-      node_id: `${parentId}.step`,
+      node_id: childId,
       scenario_id: parentNode.scenario_id || 'general',
+      parentNodeId: parentId,
+      parentOptionLabel: '상세 점검 진행',
       type: 'question',
       text: '',
-      options: [{ label: '', next_node: '' }],
+      options: [{ label: '다음 단계', next_node: '', next_node_id: '' }],
       answer_text: ''
     });
     setModalOpen(true);
@@ -215,6 +224,8 @@ export function ScenarioTab({ onUpdateBadge }) {
     setNodeForm({
       node_id: node.node_id || node.id,
       scenario_id: node.scenario_id || '',
+      parentNodeId: null,
+      parentOptionLabel: '',
       type: node.type || 'question',
       text: node.text || '',
       options: node.options ? node.options.map(o => ({ ...o })) : [],
@@ -303,6 +314,29 @@ export function ScenarioTab({ onUpdateBadge }) {
         ...prev,
         [cleanId]: updatedNode
       };
+
+      // ★ 부모 노드가 지정된 경우: 부모 노드의 options에 신규 자식 노드로 연결되는 선택지 자동 추가 및 선 연결
+      if (nodeForm.parentNodeId && nextMap[nodeForm.parentNodeId]) {
+        const parent = nextMap[nodeForm.parentNodeId];
+        const optLabel = (nodeForm.parentOptionLabel || '다음 단계').trim();
+        const optId = `opt_${cleanId.replace(/[^a-zA-Z0-9_]/g, '_')}`;
+
+        const nextParentOptions = [
+          ...(parent.options || []),
+          {
+            option_id: optId,
+            label: optLabel,
+            next_node: cleanId,
+            next_node_id: cleanId
+          }
+        ];
+
+        nextMap[nodeForm.parentNodeId] = {
+          ...parent,
+          options: nextParentOptions
+        };
+      }
+
       validateDraft(nextMap);
       return nextMap;
     });
@@ -310,6 +344,13 @@ export function ScenarioTab({ onUpdateBadge }) {
     setIsDirty(true);
     setSelectedNodeId(cleanId);
     setModalOpen(false);
+
+    alert(modalMode === 'create'
+      ? (nodeForm.parentNodeId
+          ? `🎉 하위 노드 [${cleanId}]가 추가되고 부모 노드 [${nodeForm.parentNodeId}]와 선으로 자동 연결되었습니다!\n캔버스에서 확인 후 상단의 [최종 저장]을 눌러주세요.`
+          : `🎉 신규 노드 [${cleanId}]가 캔버스에 추가되었습니다.\n선으로 연결한 후 상단의 [최종 저장]을 눌러주세요.`)
+      : `✓ 노드 [${cleanId}] 내용이 수정되었습니다.\n완료 후 상단의 [최종 저장]을 눌러주세요.`
+    );
   };
 
   // ★ 1. 노드 간 연결 핸들러 (선 잇기 Port-to-Port Snap)
@@ -914,11 +955,38 @@ export function ScenarioTab({ onUpdateBadge }) {
         <div className="modal-backdrop active" onClick={() => setModalOpen(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '600px' }}>
             <div className="modal-header">
-              <h3>{modalMode === 'create' ? '새 시나리오 노드 등록' : `노드 수정 (${nodeForm.node_id})`}</h3>
+              <h3>{modalMode === 'create' ? (nodeForm.parentNodeId ? `하위 노드 추가 ([${nodeForm.parentNodeId}]에 연결)` : '새 시나리오 노드 등록') : `노드 수정 (${nodeForm.node_id})`}</h3>
               <button className="btn-close" onClick={() => setModalOpen(false)}>×</button>
             </div>
             <form onSubmit={handleSubmitNode}>
               <div className="modal-body" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                {nodeForm.parentNodeId && (
+                  <div style={{
+                    background: 'rgba(37, 99, 235, 0.05)',
+                    border: '1px solid rgba(37, 99, 235, 0.2)',
+                    borderRadius: '8px',
+                    padding: '0.75rem 0.85rem',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '0.5rem'
+                  }}>
+                    <div style={{ fontSize: '0.8rem', color: 'var(--primary)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                      <GitFork size={14} />
+                      <span>부모 노드 <code>{nodeForm.parentNodeId}</code>의 하위 단계로 자동 연결됩니다.</span>
+                    </div>
+                    <div className="form-group" style={{ margin: 0 }}>
+                      <label className="form-label" style={{ fontSize: '0.74rem', marginBottom: '0.2rem' }}>부모 노드에 노출될 선택지 버튼 명칭</label>
+                      <input
+                        type="text"
+                        className="form-input"
+                        value={nodeForm.parentOptionLabel}
+                        onChange={(e) => setNodeForm({ ...nodeForm, parentOptionLabel: e.target.value })}
+                        placeholder="예: 상세 점검 진행, 네 맞아요"
+                        required
+                      />
+                    </div>
+                  </div>
+                )}
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                   <div className="form-group">
                     <label className="form-label">노드 식별자 (ID)</label>
