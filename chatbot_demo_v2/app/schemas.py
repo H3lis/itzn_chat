@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from typing import Any, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 
 class ScenarioAction(BaseModel):
@@ -172,9 +172,22 @@ class DocRenameRequest(BaseModel):
 
 # ---------- 관리자 시나리오 트리 스키마 ----------
 class ScenarioOptionItem(BaseModel):
-    option_id: str
+    option_id: Optional[str] = None
     label: str
-    next_node_id: str
+    next_node_id: Optional[str] = None
+    next_node: Optional[str] = None
+
+    @model_validator(mode="before")
+    @classmethod
+    def normalize_option_fields(cls, data: Any) -> Any:
+        if isinstance(data, dict):
+            nxt = data.get("next_node_id") or data.get("next_node") or ""
+            data["next_node_id"] = nxt
+            data["next_node"] = nxt
+            if not data.get("option_id"):
+                import uuid
+                data["option_id"] = f"opt_{uuid.uuid4().hex[:6]}"
+        return data
 
 
 class ScenarioNodeSaveRequest(BaseModel):

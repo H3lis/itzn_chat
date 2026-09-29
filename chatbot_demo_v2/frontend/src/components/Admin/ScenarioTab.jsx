@@ -5,6 +5,30 @@ import {
 } from 'lucide-react';
 import { ScenarioVisualTree } from './ScenarioVisualTree';
 
+/**
+ * FastAPI 및 백엔드 JSON 에러(배열/객체/문자열)를 사람이 읽기 쉬운 한국어로 포맷팅
+ */
+export function formatApiError(err) {
+  if (!err) return '오류가 발생했습니다.';
+  if (typeof err.detail === 'string') return err.detail;
+  if (Array.isArray(err.detail)) {
+    return err.detail.map((d) => {
+      if (typeof d === 'string') return d;
+      if (typeof d === 'object' && d !== null) {
+        const loc = Array.isArray(d.loc) ? d.loc.filter((x) => x !== 'body').join('.') : '';
+        const fieldStr = loc ? `[${loc}] ` : '';
+        return `${fieldStr}${d.msg || JSON.stringify(d)}`;
+      }
+      return String(d);
+    }).join('\n• ');
+  }
+  if (typeof err.detail === 'object' && err.detail !== null) {
+    return JSON.stringify(err.detail, null, 2);
+  }
+  if (err.message) return err.message;
+  return String(err);
+}
+
 export function ScenarioTab({ onUpdateBadge }) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -214,7 +238,7 @@ export function ScenarioTab({ onUpdateBadge }) {
         fetchTree();
       } else {
         const err = await res.json();
-        alert(`삭제 실패: ${err.detail || '오류 발생'}`);
+        alert(`삭제 실패:\n• ${formatApiError(err)}`);
       }
     } catch (e) {
       alert(`삭제 통신 오류: ${e.message}`);
@@ -240,7 +264,14 @@ export function ScenarioTab({ onUpdateBadge }) {
         scenario_id: nodeForm.scenario_id.trim() || undefined,
         type: nodeForm.type,
         text: nodeForm.text,
-        options: nodeForm.options.filter(o => o.label && o.label.trim()),
+        options: (nodeForm.options || [])
+          .filter((o) => o.label && o.label.trim())
+          .map((o, idx) => ({
+            option_id: o.option_id || `opt_${idx + 1}`,
+            label: o.label.trim(),
+            next_node_id: (o.next_node_id || o.next_node || '').trim(),
+            next_node: (o.next_node_id || o.next_node || '').trim()
+          })),
         answer_text: nodeForm.type === 'terminal' ? nodeForm.answer_text : undefined
       };
 
@@ -256,7 +287,7 @@ export function ScenarioTab({ onUpdateBadge }) {
         fetchTree();
       } else {
         const err = await res.json();
-        alert(`저장 실패: ${err.detail || '오류 발생'}`);
+        alert(`저장 실패:\n• ${formatApiError(err)}`);
       }
     } catch (e) {
       alert(`통신 오류: ${e.message}`);
@@ -439,7 +470,7 @@ export function ScenarioTab({ onUpdateBadge }) {
         fetchTree();
       } else {
         const err = await res.json();
-        alert(`저장 실패: ${err.detail || '오류가 발생했습니다.'}`);
+        alert(`저장 실패:\n• ${formatApiError(err)}`);
       }
     } catch (e) {
       alert(`저장 통신 실패: ${e.message}`);

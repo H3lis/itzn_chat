@@ -173,14 +173,21 @@ class ScenarioManager:
         node_type = payload.get("type", "question")
         scenario_id = (payload.get("scenario_id") or node_id.split(".")[0]).strip()
         text = (payload.get("text") or "").strip()
-        options = payload.get("options", [])
+        raw_options = payload.get("options", [])
+        clean_options = []
+        for idx, o in enumerate(raw_options):
+            if isinstance(o, dict):
+                oid = (o.get("option_id") or f"opt_{idx + 1}").strip()
+                lbl = (o.get("label") or f"선택지 {idx + 1}").strip()
+                nxt = (o.get("next_node_id") or o.get("next_node") or "").strip()
+                clean_options.append({"option_id": oid, "label": lbl, "next_node_id": nxt})
 
         new_node: dict[str, Any] = {
             "node_id": node_id,
             "scenario_id": scenario_id,
             "type": node_type,
             "text": text,
-            "options": options,
+            "options": clean_options,
         }
 
         if node_type == "terminal":
@@ -276,8 +283,10 @@ class ScenarioManager:
                     errors.append(f"노드 '{nid}'에 중복된 option_id '{oid}'가 있습니다.")
                 seen_opt.add(oid)
 
-                if nxt not in nodes:
-                    errors.append(f"노드 '{nid}'의 버튼 '{opt.get('label')}'가 미존재 노드 '{nxt}'를 가리킵니다.")
+                if not nxt:
+                    errors.append(f"노드 [{nid}]의 선택지 \"{opt.get('label')}\"에 연결된 대상 노드가 없습니다.")
+                elif nxt not in nodes:
+                    errors.append(f"노드 [{nid}]의 선택지 \"{opt.get('label')}\"가 미존재 노드 '{nxt}'를 가리킵니다.")
 
         # 3. 도달 가능성(고립 노드) 분석 (BFS 탐색)
         reachable: set[str] = set()
