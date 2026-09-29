@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   FileText, UploadCloud, RefreshCw, Trash2, Edit3, Sparkles, Play, Terminal, Copy,
-  Clock, Database, Zap, Loader2
+  Clock, Zap, Loader2
 } from 'lucide-react';
 
 export function RagTab({ onUpdateBadge }) {
@@ -413,7 +413,7 @@ export function RagTab({ onUpdateBadge }) {
       </div>
 
       {/* 1. RAG 상단 통계 대시보드 */}
-      <div className="rag-stat-cards" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem', marginBottom: '1.5rem' }}>
+      <div className="rag-stat-cards" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1rem', marginBottom: '1.5rem' }}>
         <div className="stat-card" style={{ background: 'var(--bg-card)', padding: '1.25rem', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-muted)', fontSize: '0.85rem' }}>
             <FileText size={16} /> <span>전체 관리 문서</span>
@@ -423,18 +423,6 @@ export function RagTab({ onUpdateBadge }) {
           </div>
           <div style={{ fontSize: '0.8rem', color: 'var(--text-sub)', marginTop: '0.25rem' }}>
             총 원본 크기: {stats.raw_size_formatted || (stats.raw_size_mb ? `${stats.raw_size_mb} MB` : '-')}
-          </div>
-        </div>
-
-        <div className="stat-card" style={{ background: 'var(--bg-card)', padding: '1.25rem', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-muted)', fontSize: '0.85rem' }}>
-            <Database size={16} /> <span>임베딩 백엔드</span>
-          </div>
-          <div style={{ fontSize: '1.5rem', fontWeight: 700, marginTop: '0.5rem', color: '#a78bfa' }}>
-            {stats.backend}
-          </div>
-          <div style={{ fontSize: '0.8rem', color: 'var(--text-sub)', marginTop: '0.25rem' }}>
-            EmbeddingGemma (fp16)
           </div>
         </div>
 
