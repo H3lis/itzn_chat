@@ -77,17 +77,17 @@ function detectNodeFlow(nodeId = '') {
 }
 
 /**
- * 부모 중심 서브트리 자동 레이아웃 알고리즘
- * 1. 루트부터 트리 구조 그래프 구축
- * 2. 리프 노드를 순서대로 세로 배치하고, 부모 노드는 자식 노드들의 Y 중앙값에 배치
- * 3. 선 교차(Cross)를 원천 차단하여 수평으로 미려하게 뻗는 트리 형성
+ * 사이클(순환 참조) 완전 방어 부모 중심 서브트리 레이아웃
+ * 1. BFS 큐 방식으로 순방향 트리 엣지만 추출 (answer -> root 등 역방향 백링크 자동 배제)
+ * 2. 깊이(Depth) 및 서브트리 배치로 선 교차를 원천 차단
+ * 3. RangeError: Maximum call stack size exceeded 완전 방어
  */
 function computeSubtreeLayout(nodes, rootId, activeFlow = 'ALL', collapsedSet = new Set()) {
   if (!nodes || Object.keys(nodes).length === 0) return {};
 
   const actualRoot = rootId && nodes[rootId] ? rootId : Object.keys(nodes)[0];
 
-  // 1. 활성 플로우에 포함될 노드 식별
+  // 1. 활성 플로우 대상 노드 필터링
   const targetNodeIds = new Set();
   if (activeFlow === 'ALL') {
     Object.keys(nodes).forEach((id) => targetNodeIds.add(id));
@@ -100,90 +100,98 @@ function computeSubtreeLayout(nodes, rootId, activeFlow = 'ALL', collapsedSet = 
     });
   }
 
-  // 2. 인접 리스트 (부모 -> 자식) 구축 (단, collapsed 노드의 자식은 생략)
-  const childrenMap = {};
-  const parentMap = {};
+  // 2. BFS 탐색을 통한 비순환 트리 엣지 및 레벨(Depth) 계산 (반복문 방식)
+  const treeChildren = {};
+  const depths = {};
   for (const nid of targetNodeIds) {
-    childrenMap[nid] = [];
+    treeChildren[nid] = [];
   }
 
-  for (const nid of targetNodeIds) {
-    if (collapsedSet.has(nid)) continue; // 접힌 노드는 하위 전개 제외
-    const node = nodes[nid];
+  const bfsQueue = [actualRoot];
+  const bfsVisited = new Set([actualRoot]);
+  depths[actualRoot] = 0;
+
+  while (bfsQueue.length > 0) {
+    const currId = bfsQueue.shift();
+    const currDepth = depths[currId] || 0;
+    const node = nodes[currId];
     if (!node) continue;
+
+    // 접힌 노드는 하위 자식 탐색 중단
+    if (collapsedSet.has(currId)) continue;
+
     const options = node.options || [];
     for (const opt of options) {
       const nextId = opt.next_node_id || opt.next_node;
-      if (nextId && targetNodeIds.has(nextId) && nextId !== nid) {
-        if (!childrenMap[nid].includes(nextId)) {
-          childrenMap[nid].push(nextId);
-        }
-        parentMap[nextId] = nid;
+      // 역방향 루프(-> root) 및 이미 방문한 노드는 트리 자식에서 제외 (사이클 차단)
+      if (
+        nextId &&
+        targetNodeIds.has(nextId) &&
+        nextId !== actualRoot &&
+        !bfsVisited.has(nextId)
+      ) {
+        bfsVisited.add(nextId);
+        depths[nextId] = currDepth + 1;
+        treeChildren[currId].push(nextId);
+        bfsQueue.push(nextId);
       }
     }
   }
 
-  // 3. 서브트리별 리프 노드 누적 Y 계산 (DFS 기반 배치)
+  // 고립된 노드 깊이 부여
+  let maxFoundDepth = Math.max(0, ...Object.values(depths));
+  for (const nid of targetNodeIds) {
+    if (depths[nid] === undefined) {
+      maxFoundDepth += 1;
+      depths[nid] = maxFoundDepth;
+    }
+  }
+
+  // 3. 서브트리 리프 노드부터 Y 배치 및 부모 세로 중앙 정렬
   const positions = {};
   let currentY = 60;
   const startX = 60;
 
-  // depth 계산
-  const depths = {};
-  function calcDepths(currId, currDepth) {
-    depths[currId] = Math.max(depths[currId] || 0, currDepth);
-    const children = childrenMap[currId] || [];
-    for (const childId of children) {
-      calcDepths(childId, currDepth + 1);
+  const layoutVisited = new Set();
+  function placeNodeSubtree(currId) {
+    if (layoutVisited.has(currId)) {
+      return positions[currId]?.y || currentY;
     }
-  }
-  calcDepths(actualRoot, 0);
+    layoutVisited.add(currId);
 
-  // 미방문 고립 노드 깊이 부여
-  for (const nid of targetNodeIds) {
-    if (depths[nid] === undefined) depths[nid] = 1;
-  }
-
-  // DFS로 리프 노드부터 Y 배치 및 부모 중앙 정렬
-  const visited = new Set();
-  function layoutDfs(currId) {
-    visited.add(currId);
-    const children = (childrenMap[currId] || []).filter((cid) => !visited.has(cid));
+    const children = (treeChildren[currId] || []).filter((cid) => !layoutVisited.has(cid));
 
     if (children.length === 0) {
-      // 리프 노드: 새로운 세로 줄에 단독 배치
       const y = currentY;
       currentY += NODE_APPROX_HEIGHT + VERTICAL_GAP;
       positions[currId] = {
-        x: startX + depths[currId] * (NODE_WIDTH + HORIZONTAL_GAP),
+        x: startX + (depths[currId] || 0) * (NODE_WIDTH + HORIZONTAL_GAP),
         y
       };
       return y;
     }
 
-    // 자식 노드들 먼저 재귀 레이아웃
     const childYs = [];
     for (const childId of children) {
-      const cy = layoutDfs(childId);
+      const cy = placeNodeSubtree(childId);
       childYs.push(cy);
     }
 
-    // 부모 노드의 Y는 자식들의 평균(중앙)
     const minY = Math.min(...childYs);
     const maxY = Math.max(...childYs);
     const midY = Math.round((minY + maxY) / 2);
 
     positions[currId] = {
-      x: startX + depths[currId] * (NODE_WIDTH + HORIZONTAL_GAP),
+      x: startX + (depths[currId] || 0) * (NODE_WIDTH + HORIZONTAL_GAP),
       y: midY
     };
 
     return midY;
   }
 
-  layoutDfs(actualRoot);
+  placeNodeSubtree(actualRoot);
 
-  // 고립된 노드들 추가 배치
+  // 미배치 고립 노드 추가 정렬
   for (const nid of targetNodeIds) {
     if (!positions[nid]) {
       positions[nid] = {
@@ -211,7 +219,7 @@ export function ScenarioVisualTree({
   // 1. 활성 플로우 필터 (ALL | internet_down | internet_slow | my_pc | wifi | tablet_nms)
   const [activeFlow, setActiveFlow] = useState('ALL');
 
-  // 2. 접기/펼치기 상태 Set (collapsedNodeIds)
+  // 2. 접기/펼치기 상태 Set
   const [collapsedNodes, setCollapsedNodes] = useState(new Set());
 
   // 3. 카드 상세 모드 토글 (compact vs detailed)
@@ -234,24 +242,28 @@ export function ScenarioVisualTree({
   // 7. 호버 중인 노드
   const [hoveredNodeId, setHoveredNodeId] = useState(null);
 
-  // 자동 레이아웃 재계산
+  // 자동 레이아웃 계산 함수
   const triggerAutoLayout = useCallback(
     (flow = activeFlow, collapsed = collapsedNodes) => {
-      const calculated = computeSubtreeLayout(nodes, rootId, flow, collapsed);
-      setNodePositions(calculated);
-      setZoom(flow === 'ALL' ? 0.75 : 0.95);
-      setPan({ x: 80, y: 60 });
+      try {
+        const calculated = computeSubtreeLayout(nodes, rootId, flow, collapsed);
+        setNodePositions(calculated);
+        setZoom(flow === 'ALL' ? 0.75 : 0.95);
+        setPan({ x: 80, y: 60 });
+      } catch (err) {
+        console.error('Layout computation error:', err);
+      }
     },
     [nodes, rootId, activeFlow, collapsedNodes]
   );
 
-  // 초기 로드 또는 플로우 변경 시 자동 정렬
+  // 초기 로드 또는 플로우/노드 변경 시 자동 정렬
   useEffect(() => {
     if (!nodes || Object.keys(nodes).length === 0) return;
     triggerAutoLayout(activeFlow, collapsedNodes);
   }, [nodes, rootId, activeFlow, triggerAutoLayout]);
 
-  // 플로우 변경 핸들러
+  // 플로우 선택 핸들러
   const handleSelectFlow = (flowKey) => {
     setActiveFlow(flowKey);
     triggerAutoLayout(flowKey, collapsedNodes);
@@ -272,7 +284,7 @@ export function ScenarioVisualTree({
     });
   };
 
-  // 특정 노드로 스무스 포커스 이동
+  // 특정 노드로 스무스 뷰포트 이동
   const focusOnNode = useCallback(
     (targetId) => {
       const pos = nodePositions[targetId];
@@ -302,7 +314,7 @@ export function ScenarioVisualTree({
     });
   }, [searchQuery, nodes]);
 
-  // 경로 포커스 하이라이트 계산: 선택되거나 호버된 노드와 연결된 직계 부모, 자식 경로
+  // 활성 경로 포커스 하이라이트 (선택되거나 호버된 노드의 직계 부모/자식 경로)
   const activeFocusId = selectedNodeId || hoveredNodeId;
   const { pathNodeIds, pathEdgeIds } = useMemo(() => {
     if (!activeFocusId || !nodes) {
@@ -312,7 +324,7 @@ export function ScenarioVisualTree({
     const pNodes = new Set([activeFocusId]);
     const pEdges = new Set();
 
-    // 1. 자식 및 출구 엣지 추적
+    // 1. 자식 및 출구 엣지
     const curr = nodes[activeFocusId];
     if (curr) {
       (curr.options || []).forEach((opt, idx) => {
@@ -324,7 +336,7 @@ export function ScenarioVisualTree({
       });
     }
 
-    // 2. 부모 및 입구 엣지 추적
+    // 2. 부모 및 입구 엣지
     for (const [pId, pNode] of Object.entries(nodes)) {
       (pNode.options || []).forEach((opt, idx) => {
         const nextId = opt.next_node_id || opt.next_node;
@@ -338,19 +350,25 @@ export function ScenarioVisualTree({
     return { pathNodeIds: pNodes, pathEdgeIds: pEdges };
   }, [activeFocusId, nodes]);
 
-  // 엣지(연결선) 계산
+  // 엣지(연결선) 계산 (단말 노드의 -> root 백링크는 화면 거미줄 방지를 위해 순방향 엣지만 연결)
   const visibleEdges = useMemo(() => {
     if (!nodes) return [];
     const list = [];
 
     for (const [sourceId, node] of Object.entries(nodes)) {
       if (!nodePositions[sourceId]) continue;
-      if (collapsedNodes.has(sourceId)) continue; // 접힌 부모의 선은 숨김
+      if (collapsedNodes.has(sourceId)) continue;
 
       const options = node.options || [];
       options.forEach((opt, optIndex) => {
         const targetId = opt.next_node_id || opt.next_node;
-        if (targetId && nodes[targetId] && nodePositions[targetId]) {
+        // targetId가 존재하고 노드 맵에 있으며, 화면 거미줄 방지를 위해 단말 노드의 '-> root' 역방향 링크는 SVG 선에서 제외
+        if (
+          targetId &&
+          nodes[targetId] &&
+          nodePositions[targetId] &&
+          !(sourceId !== rootId && targetId === rootId)
+        ) {
           list.push({
             id: `${sourceId}-${optIndex}->${targetId}`,
             sourceId,
@@ -363,9 +381,9 @@ export function ScenarioVisualTree({
       });
     }
     return list;
-  }, [nodes, nodePositions, collapsedNodes]);
+  }, [nodes, nodePositions, collapsedNodes, rootId]);
 
-  // 줌 인/아웃 핸들러
+  // 줌 인/아웃
   const handleZoomIn = () => setZoom((z) => Math.min(2.0, Number((z + 0.15).toFixed(2))));
   const handleZoomOut = () => setZoom((z) => Math.max(0.35, Number((z - 0.15).toFixed(2))));
   const handleZoomReset = () => {
@@ -373,14 +391,14 @@ export function ScenarioVisualTree({
     setPan({ x: 80, y: 60 });
   };
 
-  // 휠 이벤트 (줌 인/아웃)
+  // 마우스 휠
   const handleWheel = (e) => {
     e.preventDefault();
     const delta = e.deltaY < 0 ? 0.08 : -0.08;
     setZoom((z) => Math.min(2.2, Math.max(0.3, Number((z + delta).toFixed(2)))));
   };
 
-  // 캔버스 패닝 시작
+  // 캔버스 마우스 다운 (패닝 시작)
   const handleCanvasMouseDown = (e) => {
     if (
       e.target.closest('.scenario-node-card') ||
@@ -390,7 +408,7 @@ export function ScenarioVisualTree({
     ) {
       return;
     }
-    onSelectNode(null); // 빈 캔버스 클릭 시 선택 해제
+    onSelectNode(null);
     setIsPanning(true);
     panStartRef.current = {
       mouseX: e.clientX,
@@ -417,7 +435,7 @@ export function ScenarioVisualTree({
     };
   };
 
-  // 마우스 이동 (패닝 or 노드 드래그)
+  // 마우스 이동
   const handleMouseMove = (e) => {
     if (draggingNodeId) {
       const dx = (e.clientX - dragStartRef.current.mouseX) / zoom;
@@ -445,7 +463,7 @@ export function ScenarioVisualTree({
     setDraggingNodeId(null);
   };
 
-  // 미니맵 좌표 계산을 위한 전체 바운딩 박스
+  // 미니맵 바운딩 박스
   const bounds = useMemo(() => {
     const coords = Object.values(nodePositions);
     if (coords.length === 0) return { minX: 0, maxX: 1200, minY: 0, maxY: 800 };
@@ -480,7 +498,7 @@ export function ScenarioVisualTree({
         boxShadow: 'inset 0 2px 6px rgba(0, 0, 0, 0.02)'
       }}
     >
-      {/* 1. 상단 플로우 필터 탭 바 (주제별 서브트리 집중 모드) */}
+      {/* 1. 상단 플로우 필터 탭 바 */}
       <div
         className="canvas-filter-bar"
         style={{
@@ -587,7 +605,7 @@ export function ScenarioVisualTree({
           boxShadow: '0 4px 16px rgba(0, 0, 0, 0.06)'
         }}
       >
-        {/* 노드 검색 입력창 */}
+        {/* 노드 빠른 검색창 */}
         <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
           <Search size={13} style={{ position: 'absolute', left: '8px', color: 'var(--text-muted)' }} />
           <input
@@ -691,7 +709,7 @@ export function ScenarioVisualTree({
         </button>
       </div>
 
-      {/* 3. 플로팅 줌 컨트롤 바 (하단 좌측) */}
+      {/* 3. 플로팅 줌 컨트롤 바 */}
       <div
         className="canvas-controls"
         style={{
@@ -733,7 +751,7 @@ export function ScenarioVisualTree({
         </button>
       </div>
 
-      {/* 4. 미니맵 (하단 우측 네비게이터) */}
+      {/* 4. 미니맵 네비게이터 */}
       <div
         className="scenario-minimap"
         style={{
@@ -773,7 +791,6 @@ export function ScenarioVisualTree({
         }}
       >
         <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-          {/* 미니맵 안의 축소 노드들 */}
           {Object.entries(nodePositions).map(([nid, pos]) => {
             const totalW = bounds.maxX - bounds.minX || 1200;
             const totalH = bounds.maxY - bounds.minY || 800;
@@ -797,7 +814,6 @@ export function ScenarioVisualTree({
               />
             );
           })}
-          {/* 미니맵 뷰포트 사각형 인디케이터 */}
           {containerRef.current && (
             <div
               style={{
@@ -816,7 +832,7 @@ export function ScenarioVisualTree({
         </div>
       </div>
 
-      {/* 5. 캔버스 본체: SVG 엣지 커넥터 레이어 + 노드 HTML 레이어 */}
+      {/* 5. 캔버스 월드 */}
       <div
         className="canvas-world"
         style={{
@@ -841,15 +857,12 @@ export function ScenarioVisualTree({
           }}
         >
           <defs>
-            {/* 일반 화살표 마커 */}
             <marker id="arrow-default" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
               <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#94a3b8" />
             </marker>
-            {/* 하이라이트 화살표 마커 */}
             <marker id="arrow-active" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
               <path d="M 0 1 L 9 5 L 0 9 z" fill="#2563eb" />
             </marker>
-            {/* 네온 글로우 필터 */}
             <filter id="edge-glow" x="-20%" y="-20%" width="140%" height="140%">
               <feDropShadow dx="0" dy="0" stdDeviation="3" floodColor="#2563eb" floodOpacity="0.5" />
             </filter>
@@ -860,7 +873,6 @@ export function ScenarioVisualTree({
             const targetPos = nodePositions[edge.targetId];
             if (!sourcePos || !targetPos) return null;
 
-            // 출발점: 소스 노드 카드의 우측 중앙 (옵션 분기 위치)
             const optionVerticalOffset = isCompact ? 75 : 85;
             const startX = sourcePos.x + NODE_WIDTH;
             const startY =
@@ -869,11 +881,9 @@ export function ScenarioVisualTree({
               (edge.optIndex * 24) -
               ((edge.totalOptions - 1) * 12);
 
-            // 도착점: 타겟 노드 카드의 좌측 중앙 포트
             const endX = targetPos.x;
             const endY = targetPos.y + (isCompact ? 45 : 55);
 
-            // 3차 베지에(Cubic Bezier) 곡선 제어점 계산
             const deltaX = Math.abs(endX - startX) * 0.55;
             const cp1X = startX + Math.max(deltaX, 70);
             const cp1Y = startY;
@@ -882,15 +892,12 @@ export function ScenarioVisualTree({
 
             const pathD = `M ${startX} ${startY} C ${cp1X} ${cp1Y}, ${cp2X} ${cp2Y}, ${endX} ${endY}`;
 
-            // 경로 포커스 하이라이트 여부
             const isHighlighted = pathEdgeIds ? pathEdgeIds.has(edge.id) : false;
             const isDimmed = pathEdgeIds !== null && !isHighlighted;
 
             return (
               <g key={edge.id} opacity={isDimmed ? 0.15 : 1} style={{ transition: 'opacity 0.2s ease' }}>
-                {/* 외곽 보조 클릭/호버 감지용 투명 굵은 패스 */}
                 <path d={pathD} fill="none" stroke="transparent" strokeWidth="14" />
-                {/* 메인 커넥터 선 */}
                 <path
                   d={pathD}
                   fill="none"
@@ -915,13 +922,14 @@ export function ScenarioVisualTree({
           const isSelected = nid === selectedNodeId;
           const isDragging = nid === draggingNodeId;
           const isCollapsed = collapsedNodes.has(nid);
-          const hasChildren = (node.options || []).some((o) => o.next_node_id || o.next_node);
+          const hasChildren = (node.options || []).some((o) => {
+            const target = o.next_node_id || o.next_node;
+            return target && target !== rootId;
+          });
 
-          // 경로 포커스 여부
           const isHighlighted = pathNodeIds ? pathNodeIds.has(nid) : false;
           const isDimmed = pathNodeIds !== null && !isHighlighted;
 
-          // 노드 플로우 테마
           const flowKey = detectNodeFlow(nid);
           const theme = FLOW_THEMES[flowKey] || FLOW_THEMES.default;
 
@@ -975,7 +983,7 @@ export function ScenarioVisualTree({
                 />
               )}
 
-              {/* 카드 상단 헤더 띠 */}
+              {/* 카드 상단 헤더 */}
               <div
                 style={{
                   display: 'flex',
@@ -1023,7 +1031,6 @@ export function ScenarioVisualTree({
                   </span>
                 </div>
 
-                {/* 액션 버튼 그룹 (수정, 자식추가, 접기토글) */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.2rem', flexShrink: 0 }}>
                   {hasChildren && (
                     <button
@@ -1083,7 +1090,7 @@ export function ScenarioVisualTree({
                 </div>
               </div>
 
-              {/* 카드 본문: 질문/답변 텍스트 */}
+              {/* 카드 본문: 질문/답변 */}
               <div style={{ padding: '0.75rem 0.85rem' }}>
                 <div
                   style={{
@@ -1129,7 +1136,7 @@ export function ScenarioVisualTree({
                   </div>
                 )}
 
-                {/* 선택지 분기 버튼 목록 (우측 포트 제공) */}
+                {/* 선택지 분기 버튼 목록 */}
                 {node.options && node.options.length > 0 && !isCollapsed && (
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem', marginTop: '0.4rem' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -1162,6 +1169,7 @@ export function ScenarioVisualTree({
                     {node.options.map((opt, optIndex) => {
                       const nextId = opt.next_node_id || opt.next_node;
                       const hasNext = Boolean(nextId && nodes[nextId]);
+                      const isReturnToRoot = nextId === rootId;
 
                       return (
                         <div
@@ -1178,10 +1186,10 @@ export function ScenarioVisualTree({
                             justifyContent: 'space-between',
                             padding: '0.32rem 0.55rem',
                             borderRadius: '6px',
-                            background: hasNext ? '#f1f5f9' : '#fff1f2',
-                            border: `1px solid ${hasNext ? '#e2e8f0' : '#fecdd3'}`,
+                            background: isReturnToRoot ? '#f8fafc' : hasNext ? '#f1f5f9' : '#fff1f2',
+                            border: `1px solid ${isReturnToRoot ? '#cbd5e1' : hasNext ? '#e2e8f0' : '#fecdd3'}`,
                             fontSize: '0.76rem',
-                            color: hasNext ? 'var(--text-main)' : 'var(--rose)',
+                            color: isReturnToRoot ? 'var(--text-muted)' : hasNext ? 'var(--text-main)' : 'var(--rose)',
                             cursor: hasNext ? 'pointer' : 'default',
                             transition: 'all 0.15s ease'
                           }}
@@ -1193,8 +1201,8 @@ export function ScenarioVisualTree({
                           }}
                           onMouseLeave={(e) => {
                             if (hasNext) {
-                              e.currentTarget.style.background = '#f1f5f9';
-                              e.currentTarget.style.borderColor = '#e2e8f0';
+                              e.currentTarget.style.background = isReturnToRoot ? '#f8fafc' : '#f1f5f9';
+                              e.currentTarget.style.borderColor = isReturnToRoot ? '#cbd5e1' : '#e2e8f0';
                             }
                           }}
                         >
@@ -1219,10 +1227,12 @@ export function ScenarioVisualTree({
                               fontFamily: 'var(--font-mono)',
                               fontSize: '0.68rem',
                               fontWeight: 700,
-                              color: hasNext ? 'var(--primary)' : 'var(--rose)'
+                              color: isReturnToRoot ? 'var(--text-muted)' : hasNext ? 'var(--primary)' : 'var(--rose)'
                             }}
                           >
-                            {hasNext ? (
+                            {isReturnToRoot ? (
+                              '↩ 처음으로'
+                            ) : hasNext ? (
                               <>
                                 <ArrowRight size={10} />
                                 {nextId.split('.').pop()}
@@ -1232,8 +1242,8 @@ export function ScenarioVisualTree({
                             )}
                           </span>
 
-                          {/* 옵션 분기 우측 포트 점 */}
-                          {hasNext && (
+                          {/* 옵션 분기 우측 포트 점 (root 복귀가 아닐 때만 렌더링) */}
+                          {hasNext && !isReturnToRoot && (
                             <div
                               style={{
                                 position: 'absolute',
