@@ -218,9 +218,9 @@ export function ScenarioVisualTree({
   // 4. 검색어 필터
   const [searchQuery, setSearchQuery] = useState('');
 
-  // 5. 캔버스 Pan & Zoom 상태 (커서 기준 부드러운 줌)
-  const [zoom, setZoom] = useState(0.85);
-  const [pan, setPan] = useState({ x: 80, y: 50 });
+  // 5. 캔버스 Pan & Zoom 상태 (기본 100% 뷰, 사용자가 맞춘 줌 유지!)
+  const [zoom, setZoom] = useState(1.0);
+  const [pan, setPan] = useState({ x: 80, y: 60 });
   const [isPanning, setIsPanning] = useState(false);
   const panStartRef = useRef({ mouseX: 0, mouseY: 0, initialPanX: 0, initialPanY: 0 });
 
@@ -232,22 +232,39 @@ export function ScenarioVisualTree({
   // 7. 호버 중인 노드
   const [hoveredNodeId, setHoveredNodeId] = useState(null);
 
-  // 8. 애니메이션 트랜지션 활성화 여부 (버튼 조작 시만 true, 드래그/패닝 시 false)
+  // 8. 캔버스 월드 애니메이션 활성화 (버튼 클릭 시만 부드럽게 이동)
   const [animateWorld, setAnimateWorld] = useState(false);
+
+  // 최초 초기화 완료 여부 플래그 (최초 1회만 레이아웃과 뷰포트 초기화)
+  const initialLayoutDoneRef = useRef(false);
 
   // RAF 스케줄러 ref
   const rafRef = useRef(null);
 
-  // 자동 레이아웃 계산 함수
-  const triggerAutoLayout = useCallback(
-    (flow = activeFlow, collapsed = collapsedNodes) => {
+  // 레이아웃 계산 함수 (resetViewport: 사용자가 명시적으로 정렬 버튼/탭을 눌렀을 때만 true)
+  const applyLayout = useCallback(
+    (flow = activeFlow, collapsed = collapsedNodes, resetViewport = false) => {
       try {
         const calculated = computeSubtreeLayout(nodes, rootId, flow, collapsed);
-        setNodePositions(calculated);
-        setAnimateWorld(true);
-        setZoom(flow === 'ALL' ? 0.78 : 0.95);
-        setPan({ x: 80, y: 60 });
-        setTimeout(() => setAnimateWorld(false), 300);
+        setNodePositions((prev) => {
+          // 기존 위치가 있고 resetViewport가 아니면 기존 위치 유지, 신규 노드만 자동 배치
+          if (!resetViewport && Object.keys(prev).length > 0) {
+            const merged = { ...calculated };
+            for (const [k, p] of Object.entries(prev)) {
+              if (calculated[k]) merged[k] = p;
+            }
+            return merged;
+          }
+          return calculated;
+        });
+
+        // 사용자가 명시적으로 초기화를 원할 때만 줌/팬 리셋
+        if (resetViewport) {
+          setAnimateWorld(true);
+          setZoom(1.0);
+          setPan({ x: 80, y: 60 });
+          setTimeout(() => setAnimateWorld(false), 250);
+        }
       } catch (err) {
         console.error('Layout computation error:', err);
       }
@@ -255,16 +272,27 @@ export function ScenarioVisualTree({
     [nodes, rootId, activeFlow, collapsedNodes]
   );
 
-  // 초기 로드 시 자동 정렬
+  // 초기 1회 로드 시에만 기본 위치 계산 (이후 노드 선택이나 클릭 시 줌 리셋 절대 없음!)
   useEffect(() => {
     if (!nodes || Object.keys(nodes).length === 0) return;
-    triggerAutoLayout(activeFlow, collapsedNodes);
-  }, [nodes, rootId, activeFlow, triggerAutoLayout]);
+    if (!initialLayoutDoneRef.current) {
+      applyLayout(activeFlow, collapsedNodes, true);
+      initialLayoutDoneRef.current = true;
+    } else {
+      // 데이터가 갱신되어도 사용자의 현재 줌과 팬, 드래그한 위치는 100% 보존
+      applyLayout(activeFlow, collapsedNodes, false);
+    }
+  }, [nodes, rootId, activeFlow, collapsedNodes, applyLayout]);
 
-  // 플로우 선택 핸들러
+  // 플로우 선택 핸들러 (사용자가 탭을 바꿨을 때는 해당 플로우로 시점 맞춤)
   const handleSelectFlow = (flowKey) => {
     setActiveFlow(flowKey);
-    triggerAutoLayout(flowKey, collapsedNodes);
+    applyLayout(flowKey, collapsedNodes, true);
+  };
+
+  // 자동 정렬 버튼 핸들러 (사용자가 직접 정렬을 요청했을 때)
+  const handleManualAutoLayout = () => {
+    applyLayout(activeFlow, collapsedNodes, true);
   };
 
   // 노드 접기/펼치기 토글
@@ -277,12 +305,12 @@ export function ScenarioVisualTree({
       } else {
         next.add(nodeId);
       }
-      triggerAutoLayout(activeFlow, next);
+      applyLayout(activeFlow, next, false);
       return next;
     });
   };
 
-  // 특정 노드로 스무스 뷰포트 이동
+  // 특정 노드로 스무스 뷰포트 이동 (줌 배율은 그대로 유지하고 팬만 이동)
   const focusOnNode = useCallback(
     (targetId) => {
       const pos = nodePositions[targetId];
@@ -297,7 +325,7 @@ export function ScenarioVisualTree({
 
       setAnimateWorld(true);
       setPan({ x: targetX, y: targetY });
-      setTimeout(() => setAnimateWorld(false), 300);
+      setTimeout(() => setAnimateWorld(false), 250);
     },
     [nodePositions, onSelectNode, zoom]
   );
@@ -348,7 +376,7 @@ export function ScenarioVisualTree({
     return { pathNodeIds: pNodes, pathEdgeIds: pEdges };
   }, [activeFocusId, nodes]);
 
-  // 엣지(연결선) 계산
+  // 엣지(연결선) 계산 (화면 거미줄 방지를 위해 -> root 역방향 선은 SVG 엣지에서 제외)
   const visibleEdges = useMemo(() => {
     if (!nodes) return [];
     const list = [];
@@ -380,7 +408,7 @@ export function ScenarioVisualTree({
     return list;
   }, [nodes, nodePositions, collapsedNodes, rootId]);
 
-  // 줌 인/아웃 버튼 핸들러
+  // 줌 버튼 핸들러
   const handleZoomIn = () => {
     setAnimateWorld(true);
     setZoom((z) => Math.min(2.0, Number((z + 0.15).toFixed(2))));
@@ -399,8 +427,7 @@ export function ScenarioVisualTree({
   };
 
   /**
-   * ★ 피그마/미로 스타일 마우스 커서 중심 스마트 줌 (Zoom-to-Pointer)
-   * 마우스가 가리키고 있는 바로 그 노드/지점을 기준으로 화면이 확대/축소됩니다.
+   * 마우스 커서 중심 스마트 줌 (Zoom-to-Pointer)
    */
   const handleWheel = useCallback(
     (e) => {
@@ -416,7 +443,6 @@ export function ScenarioVisualTree({
 
       if (newZoom === zoom) return;
 
-      // 마우스 포인터의 월드 좌표가 줌 전후로 동일한 스크린 좌표에 머물도록 pan 보정
       const newPanX = mouseX - (mouseX - pan.x) * (newZoom / zoom);
       const newPanY = mouseY - (mouseY - pan.y) * (newZoom / zoom);
 
@@ -446,7 +472,7 @@ export function ScenarioVisualTree({
     };
   };
 
-  // 노드 드래그 시작
+  // 노드 드래그 시작 (줌이나 팬 리셋 절대 없이 오직 해당 노드만 선택 및 드래그 시작)
   const handleNodeMouseDown = (e, nid) => {
     e.stopPropagation();
     if (e.target.closest('button') || e.target.closest('.option-link-pill')) {
@@ -464,8 +490,7 @@ export function ScenarioVisualTree({
   };
 
   /**
-   * ★ 글로벌 윈도우 이벤트 리스너 & requestAnimationFrame (RAF) 60fps 추적
-   * 마우스가 캔버스 밖으로 나가더라도 드래그/패닝이 끊김 없이 손끝에 완벽 밀착됩니다.
+   * 글로벌 윈도우 마우스 리스너 & RAF 60fps 부드러운 드래그
    */
   useEffect(() => {
     if (!isPanning && !draggingNodeId) return;
@@ -741,7 +766,7 @@ export function ScenarioVisualTree({
 
         <button
           className="canvas-control-btn btn btn-ghost btn-sm"
-          onClick={() => triggerAutoLayout(activeFlow, collapsedNodes)}
+          onClick={handleManualAutoLayout}
           title="부모-자식 서브트리 레이아웃으로 완벽 자동 재정렬"
           style={{ padding: '0.35rem 0.55rem', fontSize: '0.78rem', color: 'var(--primary)', fontWeight: 600 }}
         >
@@ -1005,7 +1030,6 @@ export function ScenarioVisualTree({
                   : '0 3px 10px rgba(0, 0, 0, 0.05)',
                 cursor: isDragging ? 'grabbing' : 'grab',
                 opacity: isDimmed ? 0.22 : 1,
-                // 드래그 중일 때는 scale/transition을 제거하여 손끝과 1:1 완벽 일치 보장
                 transform: 'none',
                 transition: isDragging ? 'none' : 'box-shadow 0.15s, border-color 0.15s, opacity 0.15s',
                 zIndex: isDragging ? 50 : isSelected ? 20 : isHighlighted ? 15 : 10,

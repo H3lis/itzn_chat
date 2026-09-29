@@ -44,17 +44,14 @@ export function ScenarioTab({ onUpdateBadge }) {
         const json = await res.json();
         setData(json);
         if (badgeRef.current) badgeRef.current(json.total_nodes || 0);
-        // 기본 선택 노드가 없으면 root 선택
-        if (!selectedNodeId && json.root_node_id) {
-          setSelectedNodeId(json.root_node_id);
-        }
+        setSelectedNodeId((prev) => prev || json.root_node_id || null);
       }
     } catch (e) {
       console.error('시나리오 트리 로드 실패:', e);
     } finally {
       setLoading(false);
     }
-  }, [selectedNodeId]);
+  }, []);
 
   useEffect(() => {
     fetchTree();
