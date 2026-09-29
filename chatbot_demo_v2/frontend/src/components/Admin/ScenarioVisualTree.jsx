@@ -376,37 +376,63 @@ export function ScenarioVisualTree({
     return { pathNodeIds: pNodes, pathEdgeIds: pEdges };
   }, [activeFocusId, nodes]);
 
-  // 엣지(연결선) 계산 (화면 거미줄 방지를 위해 -> root 역방향 선은 SVG 엣지에서 제외)
+  // 엣지(연결선) 계산: 그래프 왼쪽에 의미없는 선(역방향 백링크 19개 등) 완전 차단
   const visibleEdges = useMemo(() => {
     if (!nodes) return [];
     const list = [];
+    const actualRootId = rootId || 'root';
+    const activeNodeIdSet = new Set(Object.keys(nodePositions));
 
     for (const [sourceId, node] of Object.entries(nodes)) {
-      if (!nodePositions[sourceId]) continue;
+      if (!activeNodeIdSet.has(sourceId)) continue;
       if (collapsedNodes.has(sourceId)) continue;
+
+      const sPos = nodePositions[sourceId];
+      if (!sPos) continue;
 
       const options = node.options || [];
       options.forEach((opt, optIndex) => {
         const targetId = opt.next_node_id || opt.next_node;
-        if (
-          targetId &&
-          nodes[targetId] &&
-          nodePositions[targetId] &&
-          !(sourceId !== rootId && targetId === rootId)
-        ) {
-          list.push({
-            id: `${sourceId}-${optIndex}->${targetId}`,
-            sourceId,
-            targetId,
-            label: opt.label || '',
-            optIndex,
-            totalOptions: options.length
-          });
+
+        // 1. 타겟이 없거나, 루트('root')로 향하는 모든 역방향 백링크는 SVG 선에서 100% 제외
+        // (단말 답변 노드에서 화면 왼쪽 root로 날아가는 19개의 의미없는 선 제거)
+        if (!targetId || targetId === 'root' || targetId === actualRootId) {
+          return;
         }
+
+        // 2. 타겟 노드가 현재 활성 노드 집합에 없으면 제외
+        if (!activeNodeIdSet.has(targetId) || !nodes[targetId]) {
+          return;
+        }
+
+        const tPos = nodePositions[targetId];
+        if (!tPos) return;
+
+        // 3. 역방향 선(왼쪽으로 거꾸로 뻗는 선) 제외: 트리는 항상 좌->우 순방향이어야 함
+        if (tPos.x <= sPos.x) {
+          return;
+        }
+
+        // 4. 특정 플로우 선택 시, 다른 플로우로 나가는 선 제외
+        if (activeFlow !== 'ALL') {
+          const targetFlow = detectNodeFlow(targetId);
+          if (targetFlow !== activeFlow) {
+            return;
+          }
+        }
+
+        list.push({
+          id: `${sourceId}-${optIndex}->${targetId}`,
+          sourceId,
+          targetId,
+          label: opt.label || '',
+          optIndex,
+          totalOptions: options.length
+        });
       });
     }
     return list;
-  }, [nodes, nodePositions, collapsedNodes, rootId]);
+  }, [nodes, nodePositions, collapsedNodes, rootId, activeFlow]);
 
   // 줌 버튼 핸들러
   const handleZoomIn = () => {
@@ -941,6 +967,11 @@ export function ScenarioVisualTree({
             const sourcePos = nodePositions[edge.sourceId];
             const targetPos = nodePositions[edge.targetId];
             if (!sourcePos || !targetPos) return null;
+            if (typeof sourcePos.x !== 'number' || typeof targetPos.x !== 'number') return null;
+            if (typeof sourcePos.y !== 'number' || typeof targetPos.y !== 'number') return null;
+
+            // 순방향 트리만 허용: 타겟의 X 좌표가 소스의 X 좌표보다 작거나 같으면 렌더링하지 않음
+            if (targetPos.x <= sourcePos.x) return null;
 
             const optionVerticalOffset = isCompact ? 75 : 85;
             const startX = sourcePos.x + NODE_WIDTH;
@@ -986,14 +1017,15 @@ export function ScenarioVisualTree({
           const node = nodes[nid];
           if (!node) return null;
 
-          const isRoot = nid === rootId;
+          const actualRootId = rootId || 'root';
+          const isRoot = nid === actualRootId || nid === 'root';
           const isTerminal = node.type === 'terminal' || (!node.options || node.options.length === 0);
           const isSelected = nid === selectedNodeId;
           const isDragging = nid === draggingNodeId;
           const isCollapsed = collapsedNodes.has(nid);
           const hasChildren = (node.options || []).some((o) => {
             const target = o.next_node_id || o.next_node;
-            return target && target !== rootId;
+            return target && target !== actualRootId && target !== 'root';
           });
 
           const isHighlighted = pathNodeIds ? pathNodeIds.has(nid) : false;
