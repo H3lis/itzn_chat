@@ -66,6 +66,8 @@ def test_admin_list_and_upload_and_delete(tmp_path: Path):
     assert data["count"] == 1
     assert data["documents"][0]["name"] == "test_doc_1.pdf"
     assert data["documents"][0]["is_pdf"] is True
+    assert "is_indexed" in data["documents"][0]
+    assert data["documents"][0]["is_indexed"] is False
 
     # 2. Upload new PDF
     file_content = b"%PDF-1.5 fake guide content"

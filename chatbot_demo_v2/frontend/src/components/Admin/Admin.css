@@ -1517,6 +1517,40 @@
   background: #f8fafc;
 }
 
+/* 미색인 문서 행 강조 (노란색/앰버 테두리) */
+.faq-table tr.row-unindexed td {
+  border-top: 1.5px solid #f59e0b !important;
+  border-bottom: 1.5px solid #f59e0b !important;
+  background-color: rgba(245, 158, 11, 0.04);
+}
+
+.faq-table tr.row-unindexed td:first-child {
+  border-left: 1.5px solid #f59e0b !important;
+}
+
+.faq-table tr.row-unindexed td:last-child {
+  border-right: 1.5px solid #f59e0b !important;
+}
+
+.faq-table tr.row-unindexed:hover td {
+  background-color: rgba(245, 158, 11, 0.08) !important;
+}
+
+/* 미색인 안내 뱃지 */
+.badge-unindexed {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.12rem 0.5rem;
+  border-radius: 4px;
+  background: #fef3c7;
+  color: #b45309;
+  border: 1px solid #f59e0b;
+  vertical-align: middle;
+}
+
 .faq-id-badge {
   font-family: var(--font-mono);
   font-size: 0.75rem;

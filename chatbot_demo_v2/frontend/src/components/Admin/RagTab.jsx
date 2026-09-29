@@ -547,12 +547,24 @@ export function RagTab({ onUpdateBadge }) {
                 <td colSpan={4} className="text-center muted" style={{ padding: '2rem' }}>등록된 문서가 없습니다.</td>
               </tr>
             ) : (
-              filteredDocs.map((doc) => (
-                <tr key={doc.rel_path || doc.name}>
-                  <td>
-                    <div style={{ fontWeight: 600, color: 'var(--text-main)' }}>{doc.name}</div>
-                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{doc.rel_path}</div>
-                  </td>
+              filteredDocs.map((doc) => {
+                const isUnindexed = doc.is_indexed === false;
+                return (
+                  <tr
+                    key={doc.rel_path || doc.name}
+                    className={isUnindexed ? 'row-unindexed' : ''}
+                  >
+                    <td>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flexWrap: 'wrap' }}>
+                        <span style={{ fontWeight: 600, color: 'var(--text-main)' }}>{doc.name}</span>
+                        {isUnindexed && (
+                          <span className="badge-unindexed" title="색인이 완료되지 않아 검색에 아직 반영되지 않은 문서입니다.">
+                            미색인
+                          </span>
+                        )}
+                      </div>
+                      <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{doc.rel_path}</div>
+                    </td>
                   <td>
                     <span style={{ fontSize: '0.85rem' }}>
                       {((doc.size_bytes || 0) / (1024 * 1024)).toFixed(2)} MB
@@ -635,7 +647,8 @@ export function RagTab({ onUpdateBadge }) {
                     </div>
                   </td>
                 </tr>
-              ))
+              );
+            })
             )}
           </tbody>
         </table>

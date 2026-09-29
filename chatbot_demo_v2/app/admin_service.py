@@ -54,11 +54,71 @@ class DocumentManager:
         self.docs_dir.mkdir(parents=True, exist_ok=True)
         self.parsed_dir = Path(settings.ragdata_dir) / "source_parsed"
 
+    def _get_indexed_signatures(self) -> tuple[set[str], set[str], set[str]]:
+        """활성 인덱스(page_store.json 및 flat_chunk docs.json)에서 색인된 문서의 식별자(name, rel_path, slug) 집합 반환."""
+        indexed_names: set[str] = set()
+        indexed_paths: set[str] = set()
+        indexed_slugs: set[str] = set()
+
+        index_dir = Path(self.settings.ragdata_dir) / "index"
+        if not index_dir.is_dir():
+            return indexed_names, indexed_paths, indexed_slugs
+
+        # 1. page_store.json 분석
+        page_store = index_dir / "page_store.json"
+        if page_store.is_file():
+            try:
+                pdata = json.loads(page_store.read_text(encoding="utf-8"))
+                for k, v in pdata.items():
+                    if "_p" in k:
+                        indexed_slugs.add(k.rsplit("_p", 1)[0])
+                    if isinstance(v, dict):
+                        m = v.get("meta") or {}
+                        doc_name = m.get("document_name")
+                        if doc_name:
+                            indexed_names.add(doc_name)
+                        fp = m.get("file_path")
+                        if fp:
+                            clean_fp = fp.replace("\\\\", "/").replace("\\", "/").lstrip("/")
+                            indexed_paths.add(clean_fp)
+                            indexed_names.add(Path(clean_fp).name)
+                        slug_in_meta = m.get("doc_slug")
+                        if slug_in_meta:
+                            indexed_slugs.add(slug_in_meta)
+            except Exception as e:
+                logger.debug("page_store.json 색인 정보 로드 실패: %s", e)
+
+        # 2. flat_chunk/*/docs.json 또는 chunks.json 분석
+        for f in index_dir.glob("flat_chunk/*/docs.json"):
+            try:
+                ddata = json.loads(f.read_text(encoding="utf-8"))
+                if isinstance(ddata, dict):
+                    for k in ddata.keys():
+                        if "_p" in k:
+                            indexed_slugs.add(k.rsplit("_p", 1)[0])
+                elif isinstance(ddata, list):
+                    for item in ddata:
+                        if isinstance(item, dict):
+                            if item.get("doc_slug"):
+                                indexed_slugs.add(item["doc_slug"])
+                            if item.get("doc_name"):
+                                indexed_names.add(item["doc_name"])
+                            if item.get("source_path"):
+                                sp = item["source_path"].replace("\\", "/").lstrip("/")
+                                indexed_paths.add(sp)
+                                indexed_names.add(Path(sp).name)
+            except Exception as e:
+                logger.debug("flat_chunk docs.json 색인 정보 로드 실패: %s", e)
+
+        return indexed_names, indexed_paths, indexed_slugs
+
     def list_documents(self) -> list[dict[str, Any]]:
         """문서 폴더 내 모든 파일 목록 및 메타데이터 반환."""
         items: list[dict[str, Any]] = []
         if not self.docs_dir.exists():
             return items
+
+        indexed_names, indexed_paths, indexed_slugs = self._get_indexed_signatures()
 
         for p in sorted(self.docs_dir.rglob("*")):
             if not p.is_file():
@@ -73,6 +133,7 @@ class DocumentManager:
             mod_time = datetime.fromtimestamp(stat.st_mtime).strftime("%Y-%m-%d %H:%M:%S")
 
             slug = doc_slug(rel_path)
+            name_slug = doc_slug(p.name)
             manifest_path = self.parsed_dir / slug / "manifest.json"
             page_count = None
             is_parsed = False
@@ -87,6 +148,12 @@ class DocumentManager:
 
             ext = p.suffix.lower()
             is_pdf = ext == ".pdf"
+            is_indexed = (
+                (p.name in indexed_names)
+                or (rel_path in indexed_paths)
+                or (slug in indexed_slugs)
+                or (name_slug in indexed_slugs)
+            )
 
             items.append({
                 "name": p.name,
@@ -99,6 +166,7 @@ class DocumentManager:
                 "extension": ext.lstrip("."),
                 "doc_slug": slug,
                 "is_parsed": is_parsed,
+                "is_indexed": is_indexed,
                 "page_count": page_count,
             })
         return items
