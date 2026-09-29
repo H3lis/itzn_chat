@@ -75,6 +75,7 @@ class FaqManager:
 
         return {
             "total_count": len(entries),
+            "total": len(entries),
             "per_sheet": data.get("per_sheet", {}),
             "sheets": sheets,
             "fault_types": fault_types,

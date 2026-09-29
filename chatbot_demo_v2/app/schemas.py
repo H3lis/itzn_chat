@@ -156,10 +156,12 @@ class FaqListResponse(BaseModel):
 
 class FaqStatsResponse(BaseModel):
     total_count: int
+    total: Optional[int] = None
     per_sheet: dict[str, int]
     sheets: list[str]
     fault_types: list[str]
     last_modified: Optional[str] = None
+
 
 
 # ---------- 관리자 RAG 문서 Rename 스키마 ----------

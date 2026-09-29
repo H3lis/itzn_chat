@@ -1278,10 +1278,19 @@
   font-size: 0.82rem;
   font-weight: 600;
   color: var(--text-muted);
-  padding: 0.3rem 0.7rem;
+  padding: 0.35rem 0.75rem;
   background: #ffffff;
   border-radius: 9999px;
   border: 1px solid #e2e8f0;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.15s ease;
+}
+
+.faq-stat-pill:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  transform: translateY(-1px);
 }
 
 .faq-stat-pill .val {
@@ -1297,6 +1306,32 @@
 
 .faq-stat-pill.primary .val {
   color: #1d4ed8;
+}
+
+.faq-stat-pill.primary:hover {
+  background: #dbeafe;
+  border-color: #93c5fd;
+}
+
+.faq-stat-pill.active {
+  background: #2563eb;
+  border-color: #1d4ed8;
+  color: #ffffff;
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.25);
+}
+
+.faq-stat-pill.active .val {
+  color: #ffffff;
+}
+
+.faq-stat-pill.primary.active {
+  background: #1d4ed8;
+  border-color: #1e40af;
+  color: #ffffff;
+}
+
+.faq-stat-pill.primary.active .val {
+  color: #ffffff;
 }
 
 .faq-toolbar {

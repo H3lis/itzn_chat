@@ -2,7 +2,13 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Plus, RefreshCw, Edit2, Trash2, HelpCircle } from 'lucide-react';
 
 export function FaqTab({ onUpdateBadge }) {
-  const [stats, setStats] = useState({ total: 0, sheets: {}, fault_types: [] });
+  const [stats, setStats] = useState({
+    total_count: 0,
+    total: 0,
+    per_sheet: {},
+    sheets: [],
+    fault_types: []
+  });
   const [faqs, setFaqs] = useState([]);
   const [loading, setLoading] = useState(false);
   const [sheetFilter, setSheetFilter] = useState('');
@@ -37,8 +43,19 @@ export function FaqTab({ onUpdateBadge }) {
       const res = await fetch('/api/admin/faq/stats');
       if (res.ok) {
         const data = await res.json();
-        setStats(data);
-        if (badgeRef.current) badgeRef.current(data.total);
+        const total = data.total_count ?? data.total ?? 0;
+        const perSheet = data.per_sheet || {};
+        const sheetsList = Array.isArray(data.sheets) && data.sheets.length > 0
+          ? data.sheets
+          : Object.keys(perSheet);
+        setStats({
+          total_count: total,
+          total: total,
+          per_sheet: perSheet,
+          sheets: sheetsList,
+          fault_types: Array.isArray(data.fault_types) ? data.fault_types : []
+        });
+        if (badgeRef.current) badgeRef.current(total);
       }
     } catch (e) {
       console.error('FAQ 통계 로드 실패:', e);
@@ -84,8 +101,8 @@ export function FaqTab({ onUpdateBadge }) {
     setModalMode('create');
     setEditingItem(null);
     setFormData({
-      sheet: Object.keys(stats.sheets)[0] || '유선네트워크',
-      fault_type: stats.fault_types[0] || '일반상담',
+      sheet: (stats.sheets && stats.sheets[0]) || Object.keys(stats.per_sheet || {})[0] || '스쿨넷',
+      fault_type: (stats.fault_types && stats.fault_types[0]) || '일반상담',
       question: '',
       q_norm: '',
       answer: '',
@@ -206,17 +223,29 @@ export function FaqTab({ onUpdateBadge }) {
 
       {/* FAQ 통계 요약 배지 바 */}
       <div className="faq-stats-bar">
-        <div className="faq-stat-pill primary">
+        <div
+          className={`faq-stat-pill primary ${sheetFilter === '' ? 'active' : ''}`}
+          onClick={() => { setSheetFilter(''); setPage(1); }}
+          title="클릭 시 전체 시트 보기"
+        >
           <span>등록 FAQ:</span>
-          <span className="val">{stats.total} 건</span>
+          <span className="val">{stats.total_count ?? stats.total ?? 0}건</span>
         </div>
         <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-          {Object.entries(stats.sheets).map(([sName, count]) => (
-            <div key={sName} className="faq-stat-pill">
-              <span>{sName}:</span>
-              <span className="val">{count}건</span>
-            </div>
-          ))}
+          {Object.entries(stats.per_sheet || {}).map(([sName, count]) => {
+            const isSelected = sheetFilter === sName;
+            return (
+              <div
+                key={sName}
+                className={`faq-stat-pill ${isSelected ? 'active' : ''}`}
+                onClick={() => { setSheetFilter(isSelected ? '' : sName); setPage(1); }}
+                title={`클릭 시 '${sName}' 시트 필터 적용`}
+              >
+                <span>{sName}</span>
+                <span className="val">{count}건</span>
+              </div>
+            );
+          })}
         </div>
       </div>
 
@@ -229,7 +258,10 @@ export function FaqTab({ onUpdateBadge }) {
             onChange={(e) => { setSheetFilter(e.target.value); setPage(1); }}
           >
             <option value="">전체 시트 (전체)</option>
-            {Object.keys(stats.sheets).map((s) => (
+            {(stats.sheets && stats.sheets.length > 0
+              ? stats.sheets
+              : Object.keys(stats.per_sheet || {})
+            ).map((s) => (
               <option key={s} value={s}>{s}</option>
             ))}
           </select>
@@ -240,7 +272,7 @@ export function FaqTab({ onUpdateBadge }) {
             onChange={(e) => { setFaultFilter(e.target.value); setPage(1); }}
           >
             <option value="">전체 장애유형 (전체)</option>
-            {stats.fault_types.map((f) => (
+            {(stats.fault_types || []).map((f) => (
               <option key={f} value={f}>{f}</option>
             ))}
           </select>
