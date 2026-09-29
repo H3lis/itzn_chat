@@ -1176,6 +1176,89 @@
 }
 
 /* ==================== FAQ 관리 스타일 ==================== */
+.admin-page-header {
+  margin-bottom: 1.25rem;
+  padding: 1.25rem 1.5rem;
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.admin-page-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.45rem;
+}
+
+.admin-page-title {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.admin-page-desc {
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+  margin: 0 0 1rem 0;
+  word-break: keep-all;
+}
+
+.faq-guide-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 0.85rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid #f1f5f9;
+}
+
+.faq-guide-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.8rem 1rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.6rem;
+  transition: all 0.2s ease;
+}
+
+.faq-guide-card:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  transform: translateY(-1px);
+}
+
+.faq-guide-icon {
+  font-size: 1.25rem;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.faq-guide-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.faq-guide-content strong {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.faq-guide-content span {
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--text-muted);
+  word-break: keep-all;
+}
+
 .faq-stats-bar {
   display: flex;
   flex-wrap: wrap;

@@ -137,7 +137,7 @@ export function AdminLayout({ onNavigate }) {
             className={`nav-tab-btn ${activeTab === 'faq' ? 'active' : ''}`}
             onClick={() => setActiveTab('faq')}
           >
-            <span>💬 FAQ 관리 (CRUD)</span>
+            <span>💬 FAQ관리</span>
             <span className="tab-badge">{badges.faq}</span>
           </button>
 

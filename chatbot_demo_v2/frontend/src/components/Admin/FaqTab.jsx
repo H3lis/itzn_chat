@@ -169,6 +169,41 @@ export function FaqTab({ onUpdateBadge }) {
 
   return (
     <div className="tab-pane active" id="tab-faq">
+      {/* FAQ 탭 헤더 및 기능/사용법 안내 */}
+      <div className="admin-page-header">
+        <div className="admin-page-header-top">
+          <h2 className="admin-page-title">FAQ관리</h2>
+        </div>
+        <p className="admin-page-desc">
+          자주 묻는 질문(FAQ) 데이터베이스를 조회·추가·수정·삭제(CRUD)하여 관리하는 공간입니다.
+          등록된 모범 질답은 사용자의 자연어 질문과 시맨틱(의미 유사도)으로 자동 매칭되어, AI 추론 지연이나 환각 없이 원문 그대로 즉시 정확한 안내를 제공합니다.
+        </p>
+
+        <div className="faq-guide-cards">
+          <div className="faq-guide-card">
+            <span className="faq-guide-icon">🔍</span>
+            <div className="faq-guide-content">
+              <strong>조회 및 실시간 검색</strong>
+              <span>상단의 시트 분류(유선/무선/나이스 등)와 장애유형 필터, 키워드 검색창을 통해 원하는 질답을 빠르게 찾을 수 있습니다.</span>
+            </div>
+          </div>
+          <div className="faq-guide-card">
+            <span className="faq-guide-icon">➕</span>
+            <div className="faq-guide-content">
+              <strong>신규 FAQ 등록</strong>
+              <span>우측 '+ 신규 FAQ 등록' 버튼을 눌러 시트 분류, 장애 유형, 대표 질문 및 정답 내용을 손쉽게 시스템에 추가합니다.</span>
+            </div>
+          </div>
+          <div className="faq-guide-card">
+            <span className="faq-guide-icon">✏️</span>
+            <div className="faq-guide-content">
+              <strong>수정 및 삭제</strong>
+              <span>각 행 우측의 연필(수정) 아이콘으로 내용을 최신화하고, 휴지통(삭제) 아이콘으로 더 이상 쓰이지 않는 질답을 정리합니다.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* FAQ 통계 요약 배지 바 */}
       <div className="faq-stats-bar">
         <div className="faq-stat-pill primary">
