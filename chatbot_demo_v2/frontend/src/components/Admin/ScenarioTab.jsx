@@ -223,77 +223,93 @@ export function ScenarioTab({ onUpdateBadge }) {
     setModalOpen(true);
   };
 
-  // 노드 삭제
-  const handleDeleteNode = async (nodeId) => {
-    if (!window.confirm(`시나리오 노드 [${nodeId}]을(를) 삭제하시겠습니까?\n하위 연결 노드 링크가 깨질 수 있습니다.`)) {
+  // 노드 삭제 (캔버스 드래프트 완전 동기화)
+  const handleDeleteNode = (nodeId) => {
+    if (nodeId === rootId) {
+      alert('루트 노드(시작점)는 삭제할 수 없습니다.');
       return;
     }
-    try {
-      const res = await fetch(`/api/admin/scenarios/nodes/${encodeURIComponent(nodeId)}`, {
-        method: 'DELETE'
-      });
-      if (res.ok) {
-        alert('노드가 삭제되었습니다.');
-        if (selectedNodeId === nodeId) setSelectedNodeId(null);
-        fetchTree();
-      } else {
-        const err = await res.json();
-        alert(`삭제 실패:\n• ${formatApiError(err)}`);
-      }
-    } catch (e) {
-      alert(`삭제 통신 오류: ${e.message}`);
+    if (!window.confirm(`시나리오 노드 [${nodeId}]을(를) 삭제하시겠습니까?\n이 노드로 연결된 분기 선들도 함께 정리됩니다.`)) {
+      return;
     }
+
+    setDraftNodes((prev) => {
+      const nextMap = { ...prev };
+      delete nextMap[nodeId];
+
+      // 이 노드를 가리키던 다른 노드들의 연결 선(next_node_id) 자동 해제
+      Object.keys(nextMap).forEach((nid) => {
+        const n = nextMap[nid];
+        if (n.options && Array.isArray(n.options)) {
+          nextMap[nid] = {
+            ...n,
+            options: n.options.map((opt) => {
+              if (opt.next_node_id === nodeId || opt.next_node === nodeId) {
+                return { ...opt, next_node_id: '', next_node: '' };
+              }
+              return opt;
+            })
+          };
+        }
+      });
+
+      validateDraft(nextMap);
+      return nextMap;
+    });
+
+    setIsDirty(true);
+    if (selectedNodeId === nodeId) setSelectedNodeId(null);
   };
 
-  // 노드 저장 제출
-  const handleSubmitNode = async (e) => {
+  // 노드 저장 제출 (캔버스 드래프트 완전 동기화)
+  const handleSubmitNode = (e) => {
     e.preventDefault();
-    if (!nodeForm.node_id.trim() || !nodeForm.text.trim()) {
+    const cleanId = nodeForm.node_id.trim();
+    const cleanText = nodeForm.text.trim();
+    if (!cleanId || !cleanText) {
       alert('노드 ID와 안내 텍스트는 필수입니다.');
       return;
     }
-    setSubmitting(true);
-    try {
-      const url = modalMode === 'create'
-        ? '/api/admin/scenarios/nodes'
-        : `/api/admin/scenarios/nodes/${encodeURIComponent(nodeForm.node_id)}`;
-      const method = modalMode === 'create' ? 'POST' : 'PUT';
 
-      const payload = {
-        node_id: nodeForm.node_id.trim(),
-        scenario_id: nodeForm.scenario_id.trim() || undefined,
-        type: nodeForm.type,
-        text: nodeForm.text,
-        options: (nodeForm.options || [])
-          .filter((o) => o.label && o.label.trim())
-          .map((o, idx) => ({
-            option_id: o.option_id || `opt_${idx + 1}`,
-            label: o.label.trim(),
-            next_node_id: (o.next_node_id || o.next_node || '').trim(),
-            next_node: (o.next_node_id || o.next_node || '').trim()
-          })),
-        answer_text: nodeForm.type === 'terminal' ? nodeForm.answer_text : undefined
-      };
-
-      const res = await fetch(url, {
-        method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      if (res.ok) {
-        alert(modalMode === 'create' ? '신규 시나리오 노드가 추가되었습니다.' : '시나리오 노드가 수정되었습니다.');
-        setModalOpen(false);
-        setSelectedNodeId(nodeForm.node_id);
-        fetchTree();
-      } else {
-        const err = await res.json();
-        alert(`저장 실패:\n• ${formatApiError(err)}`);
+    // 신규 노드 등록(create) 시 중복 ID 사전 검사
+    if (modalMode === 'create') {
+      if (draftNodes[cleanId] || (data?.nodes && data.nodes[cleanId])) {
+        alert(`이미 동일한 노드 ID '${cleanId}'가 시나리오 트리에 존재합니다.\n다른 고유한 ID를 입력해주세요.`);
+        return;
       }
-    } catch (e) {
-      alert(`통신 오류: ${e.message}`);
-    } finally {
-      setSubmitting(false);
     }
+
+    const cleanOptions = (nodeForm.options || [])
+      .filter((o) => o.label && o.label.trim())
+      .map((o, idx) => ({
+        option_id: o.option_id || `opt_${idx + 1}`,
+        label: o.label.trim(),
+        next_node_id: (o.next_node_id || o.next_node || '').trim(),
+        next_node: (o.next_node_id || o.next_node || '').trim()
+      }));
+
+    const updatedNode = {
+      node_id: cleanId,
+      scenario_id: nodeForm.scenario_id.trim() || cleanId.split('.')[0] || 'general',
+      type: nodeForm.type,
+      text: cleanText,
+      options: cleanOptions,
+      answer_text: nodeForm.type === 'terminal' ? (nodeForm.answer_text || '').trim() : undefined,
+      answer: nodeForm.type === 'terminal' ? { text: (nodeForm.answer_text || '').trim() } : undefined
+    };
+
+    setDraftNodes((prev) => {
+      const nextMap = {
+        ...prev,
+        [cleanId]: updatedNode
+      };
+      validateDraft(nextMap);
+      return nextMap;
+    });
+
+    setIsDirty(true);
+    setSelectedNodeId(cleanId);
+    setModalOpen(false);
   };
 
   // ★ 1. 노드 간 연결 핸들러 (선 잇기 Port-to-Port Snap)

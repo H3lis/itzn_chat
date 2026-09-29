@@ -789,11 +789,17 @@ def admin_get_scenario_node(request: Request, node_id: str) -> dict:
 
 @router.post("/api/admin/scenarios/nodes")
 def admin_create_scenario_node(request: Request, body: ScenarioNodeCreateRequest) -> dict:
-    """새로운 시나리오 노드 추가 및 챗봇 런타임 핫리로드."""
+    """새로운 시나리오 노드 추가 및 챗봇 런타임 핫리로드 (실패 시 원자적 자동 롤백)."""
     ctx = _ctx(request)
+    backup_data = ctx.scenario_manager._read_data()
     try:
         created = ctx.scenario_manager.create_node(body.model_dump(exclude_unset=True))
-        ctx.scenario_manager.reload_runtime(ctx)
+        try:
+            ctx.scenario_manager.reload_runtime(ctx)
+        except Exception as re:
+            ctx.scenario_manager._write_data(backup_data)
+            logger.error("런타임 핫리로드 실패로 신규 노드 생성 자동 롤백: %s", re)
+            raise ValueError(f"시나리오 런타임 검증/반영 실패 (자동 롤백됨): {re}")
         return created
     except ValueError as ve:
         raise HTTPException(status_code=400, detail=str(ve))
@@ -804,11 +810,17 @@ def admin_create_scenario_node(request: Request, body: ScenarioNodeCreateRequest
 
 @router.put("/api/admin/scenarios/nodes/{node_id:path}")
 def admin_update_scenario_node(request: Request, node_id: str, body: ScenarioNodeSaveRequest) -> dict:
-    """시나리오 노드 수정 및 챗봇 런타임 핫리로드."""
+    """시나리오 노드 수정 및 챗봇 런타임 핫리로드 (실패 시 원자적 자동 롤백)."""
     ctx = _ctx(request)
+    backup_data = ctx.scenario_manager._read_data()
     try:
         updated = ctx.scenario_manager.save_node(node_id, body.model_dump(exclude_unset=True))
-        ctx.scenario_manager.reload_runtime(ctx)
+        try:
+            ctx.scenario_manager.reload_runtime(ctx)
+        except Exception as re:
+            ctx.scenario_manager._write_data(backup_data)
+            logger.error("런타임 핫리로드 실패로 노드 수정 자동 롤백: %s", re)
+            raise ValueError(f"시나리오 런타임 검증/반영 실패 (자동 롤백됨): {re}")
         return updated
     except ValueError as ve:
         raise HTTPException(status_code=400, detail=str(ve))
@@ -819,13 +831,19 @@ def admin_update_scenario_node(request: Request, node_id: str, body: ScenarioNod
 
 @router.delete("/api/admin/scenarios/nodes/{node_id:path}")
 def admin_delete_scenario_node(request: Request, node_id: str) -> dict:
-    """시나리오 노드 삭제 및 챗봇 런타임 핫리로드."""
+    """시나리오 노드 삭제 및 챗봇 런타임 핫리로드 (실패 시 원자적 자동 롤백)."""
     ctx = _ctx(request)
+    backup_data = ctx.scenario_manager._read_data()
     try:
         ok = ctx.scenario_manager.delete_node(node_id)
         if not ok:
             raise HTTPException(status_code=404, detail=f"삭제할 노드 '{node_id}'를 찾을 수 없습니다.")
-        ctx.scenario_manager.reload_runtime(ctx)
+        try:
+            ctx.scenario_manager.reload_runtime(ctx)
+        except Exception as re:
+            ctx.scenario_manager._write_data(backup_data)
+            logger.error("런타임 핫리로드 실패로 노드 삭제 자동 롤백: %s", re)
+            raise ValueError(f"시나리오 런타임 검증/반영 실패 (자동 롤백됨): {re}")
         return {"deleted": True, "node_id": node_id}
     except ValueError as ve:
         raise HTTPException(status_code=400, detail=str(ve))
