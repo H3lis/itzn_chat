@@ -255,16 +255,15 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!res.ok) return;
       const data = await res.json();
 
-      faqStatTotal.textContent = `${data.total_count}건`;
+      faqStatTotal.textContent = `총 ${data.total_count}건`;
       tabBadgeFaq.textContent = `${data.total_count}`;
 
-      // 시트별 건수 배지 렌더링
+      // 시트별 배지 렌더링 (건 제외)
       const perSheet = data.per_sheet || {};
-      faqStatSheets.innerHTML = Object.entries(perSheet)
-        .map(([sheet, count]) => `
-          <div class="faq-stat-pill">
+      faqStatSheets.innerHTML = Object.keys(perSheet)
+        .map(sheet => `
+          <div class="faq-stat-pill" onclick="filterBySheet('${escapeHtml(sheet)}')" style="cursor: pointer;">
             <span class="sheet-badge ${sheet}">${escapeHtml(sheet)}</span>
-            <span class="val">${count}건</span>
           </div>
         `)
         .join("");
@@ -274,13 +273,13 @@ document.addEventListener("DOMContentLoaded", () => {
       const sheets = data.sheets || [];
       faqFormSheet.innerHTML = sheets.map(s => `<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join("") + `<option value="기타">기타</option>`;
 
-      faqSheetFilter.innerHTML = `<option value="">전체 시트 (전체)</option>` +
+      faqSheetFilter.innerHTML = `<option value="">장애 구분 (전체)</option>` +
         sheets.map(s => `<option value="${escapeHtml(s)}"${s === currentSheet ? " selected" : ""}>${escapeHtml(s)}</option>`).join("");
 
       // 장애유형 필터 옵션 채우기
       const currentFault = faqFaultFilter.value;
       const faultTypes = data.fault_types || [];
-      faqFaultFilter.innerHTML = `<option value="">전체 장애유형 (전체)</option>` +
+      faqFaultFilter.innerHTML = `<option value="">장애유형 (전체)</option>` +
         faultTypes.map(f => `<option value="${escapeHtml(f)}"${f === currentFault ? " selected" : ""}>${escapeHtml(f)}</option>`).join("");
 
     } catch (err) {

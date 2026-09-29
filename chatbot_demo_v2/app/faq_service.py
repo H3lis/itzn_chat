@@ -96,7 +96,14 @@ class FaqManager:
 
         # 1. 시트 필터
         if sheet and sheet.strip():
-            entries = [e for e in entries if e.get("sheet") == sheet.strip()]
+            target_sheet = sheet.strip()
+            # 숫자 인덱스("0", "1", "2" 등)로 전달되더라도 순번 시트명으로 자동 매핑
+            if target_sheet.isdigit():
+                sheets_list = list(data.get("per_sheet", {}).keys())
+                idx = int(target_sheet)
+                if 0 <= idx < len(sheets_list):
+                    target_sheet = sheets_list[idx]
+            entries = [e for e in entries if e.get("sheet") == target_sheet]
 
         # 2. 장애유형 필터
         if fault_type and fault_type.strip():

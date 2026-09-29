@@ -226,23 +226,25 @@ export function FaqTab({ onUpdateBadge }) {
         <div
           className={`faq-stat-pill primary ${sheetFilter === '' ? 'active' : ''}`}
           onClick={() => { setSheetFilter(''); setPage(1); }}
-          title="클릭 시 전체 시트 보기"
+          title="클릭 시 전체 보기"
         >
-          <span>등록 FAQ:</span>
-          <span className="val">{stats.total_count ?? stats.total ?? 0}건</span>
+          <span>등록된 FAQ :</span>
+          <span className="val">총 {stats.total_count ?? stats.total ?? 0}건</span>
         </div>
         <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-          {Object.entries(stats.per_sheet || {}).map(([sName, count]) => {
+          {(stats.sheets && stats.sheets.length > 0
+            ? stats.sheets
+            : Object.keys(stats.per_sheet || {})
+          ).map((sName) => {
             const isSelected = sheetFilter === sName;
             return (
               <div
                 key={sName}
                 className={`faq-stat-pill ${isSelected ? 'active' : ''}`}
                 onClick={() => { setSheetFilter(isSelected ? '' : sName); setPage(1); }}
-                title={`클릭 시 '${sName}' 시트 필터 적용`}
+                title={`클릭 시 '${sName}' 필터 적용`}
               >
                 <span>{sName}</span>
-                <span className="val">{count}건</span>
               </div>
             );
           })}
@@ -257,7 +259,7 @@ export function FaqTab({ onUpdateBadge }) {
             value={sheetFilter}
             onChange={(e) => { setSheetFilter(e.target.value); setPage(1); }}
           >
-            <option value="">전체 시트 (전체)</option>
+            <option value="">장애 구분 (전체)</option>
             {(stats.sheets && stats.sheets.length > 0
               ? stats.sheets
               : Object.keys(stats.per_sheet || {})
@@ -271,7 +273,7 @@ export function FaqTab({ onUpdateBadge }) {
             value={faultFilter}
             onChange={(e) => { setFaultFilter(e.target.value); setPage(1); }}
           >
-            <option value="">전체 장애유형 (전체)</option>
+            <option value="">장애유형 (전체)</option>
             {(stats.fault_types || []).map((f) => (
               <option key={f} value={f}>{f}</option>
             ))}
@@ -311,8 +313,8 @@ export function FaqTab({ onUpdateBadge }) {
               <th style={{ width: '100px' }}>ID</th>
               <th style={{ width: '110px' }}>분류(시트)</th>
               <th style={{ width: '130px' }}>장애 유형</th>
-              <th>질문 및 정규화 질의</th>
-              <th>답변 요약</th>
+              <th>질문</th>
+              <th>답변</th>
               <th style={{ width: '130px', textAlign: 'center' }}>관리</th>
             </tr>
           </thead>

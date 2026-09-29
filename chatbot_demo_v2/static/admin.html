@@ -66,8 +66,8 @@
       <!-- FAQ 통계 요약 배지 바 -->
       <div class="faq-stats-bar" id="faq-stats-bar">
         <div class="faq-stat-pill primary">
-          <span>등록 FAQ:</span>
-          <span class="val" id="faq-stat-total">- 건</span>
+          <span>등록된 FAQ :</span>
+          <span class="val" id="faq-stat-total">총 -건</span>
         </div>
         <div id="faq-stat-sheets" style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
           <!-- 시트별 건수 배지가 JS로 동적 렌더링됨 -->
@@ -77,11 +77,11 @@
       <!-- FAQ 조작 및 필터 툴바 -->
       <div class="faq-toolbar">
         <div class="faq-filter-group">
-          <select id="faq-sheet-filter" class="faq-select" title="시트(분류) 선택">
-            <option value="">전체 시트 (전체)</option>
+          <select id="faq-sheet-filter" class="faq-select" title="장애 구분(시트) 선택">
+            <option value="">장애 구분 (전체)</option>
           </select>
           <select id="faq-fault-filter" class="faq-select" title="장애유형 선택">
-            <option value="">전체 장애유형 (전체)</option>
+            <option value="">장애유형 (전체)</option>
           </select>
           <input type="text" id="faq-search-input" class="faq-search-input" placeholder="질문, 답변, ID 검색…" />
           <button id="btn-refresh-faq" class="btn btn-secondary btn-sm" title="새로고침">🔄 새로고침</button>
@@ -101,8 +101,8 @@
               <th style="width: 100px;">ID</th>
               <th style="width: 110px;">분류(시트)</th>
               <th style="width: 130px;">장애 유형</th>
-              <th>질문 및 정규화 질의</th>
-              <th>답변 요약</th>
+              <th>질문</th>
+              <th>답변</th>
               <th style="width: 130px; text-align: center;">관리</th>
             </tr>
           </thead>
