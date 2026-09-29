@@ -107,7 +107,7 @@ export function ClientLayout({
 
           <div className="brand-title">
             <span className="brand-title-text client-title-prominent">
-              학교 유무선 장애상담 지원센터
+              학교 유무선 장애상담 스쿨넷봇
             </span>
             {/* 사용자 요청에 따라 '정식 서비스' 뱃지는 완전히 제거됨 */}
           </div>
