@@ -181,15 +181,14 @@ def evaluate_split(
                 domain_stats[domain]["correct"] += 1
             else:
                 fn += 1
-                if len(fn_cases) < 20:
-                    fn_cases.append({
-                        "id": item_id,
-                        "file": rel_path,
-                        "text": text,
-                        "expected_pi": gt_pi,
-                        "masked_text": res.masked_text,
-                        "meta": meta,
-                    })
+                fn_cases.append({
+                    "id": item_id,
+                    "file": rel_path,
+                    "text": text,
+                    "expected_pi": gt_pi,
+                    "masked_text": res.masked_text,
+                    "meta": meta,
+                })
         else:
             # NEG 평가 (오탐 방지)
             if not has_masked:
@@ -197,15 +196,14 @@ def evaluate_split(
                 domain_stats[domain]["correct"] += 1
             else:
                 fp += 1
-                if len(fp_cases) < 20:
-                    fp_cases.append({
-                        "id": item_id,
-                        "file": rel_path,
-                        "text": text,
-                        "masked_text": res.masked_text,
-                        "detected_types": res.detected_types,
-                        "meta": meta,
-                    })
+                fp_cases.append({
+                    "id": item_id,
+                    "file": rel_path,
+                    "text": text,
+                    "masked_text": res.masked_text,
+                    "detected_types": res.detected_types,
+                    "meta": meta,
+                })
 
         if (idx + 1) % 500 == 0 or (idx + 1) == len(target_rel_paths):
             elapsed = time.time() - t0

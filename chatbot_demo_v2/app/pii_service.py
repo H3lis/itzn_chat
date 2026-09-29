@@ -82,6 +82,20 @@ def _has_phone_context(text: str, start_idx: int, end_idx: int) -> bool:
     return False
 
 
+def _is_order_tracking_context(text: str, start_idx: int, end_idx: int) -> bool:
+    """송장번호, 주문번호, 관리번호, 추적번호 등 이커머스/물류/시스템 코드 문맥인지 판별 (전화번호 오탐 방지)."""
+    window_start = max(0, start_idx - 35)
+    window_end = min(len(text), end_idx + 35)
+    surrounding = text[window_start:window_end]
+    tracking_keywords = (
+        "송장", "운송장", "주문번호", "주문 번호", "추적번호", "추적 번호",
+        "관리번호", "관리 번호", "계약번호", "계약 번호", "접수번호", "접수 번호",
+        "상품코드", "상품 코드", "모델번호", "모델 번호", "일련번호", "일련 번호",
+        "학번", "사번", "인증번호", "인증 번호", "승인번호", "승인 번호", "코드", "KTX"
+    )
+    return any(k in surrounding for k in tracking_keywords)
+
+
 # 1) 전체 전화번호: 휴대전화(010, 011...), 유선전화(02, 031...), 인터넷전화(070), 안심번호(050x)
 # 대시 유무/공백/점 및 한국어 조사(로, 입니다 등)가 붙어 있어도 유연 탐지 (대시 없는 연속 숫자 9~12자리 포함)
 _PHONE_PATTERN = re.compile(
@@ -94,17 +108,47 @@ _PHONE_8DIGIT_PATTERN = re.compile(
     r"(?<![A-Za-z0-9])([1-9]\d{2,3})[-.\s]?(\d{4})(?!\d)"
 )
 
-# IPv4 주소 (192.168.1.50 -> 192.168.*.*, 앞자리 0이 포함된 121.255.17.03 등 유연 지원)
+# IPv4 주소 (192.168.1.50 -> 192.168.*.*, 한글 조사가 붙은 211.33.55.88이니 등 유연 지원)
 _OCTET = r"(?:25[0-5]|2[0-4]\d|1\d{2}|0\d{2}|\d{1,2})"
 _IPV4_PATTERN = re.compile(
-    rf"\b({_OCTET})\.({_OCTET})\.({_OCTET})\.({_OCTET})\b"
+    rf"(?<![0-9])({_OCTET})\.({_OCTET})\.({_OCTET})\.({_OCTET})(?![0-9])"
 )
 
-# 주민등록번호 (앞 6자리 - 뒤 7자리)
-_RRN_PATTERN = re.compile(r"\b(\d{6})[-.\s]?([1-8]\d{6})\b")
+# IPv4 한글 '점' 표기 (192점 168점 0점 100점 등)
+_IPV4_KOREAN_PATTERN = re.compile(
+    rf"(?<![0-9])({_OCTET})\s*점\s*({_OCTET})\s*점\s*({_OCTET})\s*점\s*({_OCTET})\s*점?(?![0-9])"
+)
 
-# 이메일 주소
-_EMAIL_PATTERN = re.compile(r"\b([a-zA-Z0-9_.+-]+)@([a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+)\b")
+def _has_birth_context(text: str, start_idx: int, end_idx: int) -> bool:
+    """날짜 형식 주변에 생년월일/생일 관련 명시적 문맥이 있는지 판별 (일반 일정 날짜 오탐 방지)."""
+    window_start = max(0, start_idx - 30)
+    window_end = min(len(text), end_idx + 30)
+    surrounding = text[window_start:window_end]
+    birth_keywords = ("생년월일", "생일", "태어난", "출생", "어머니", "아버지", "환자", "나이", "연령", "생년", "진료")
+    return any(k in surrounding for k in birth_keywords)
+
+
+# IPv4 하이픈 표기 (203-112-55-12)
+_IPV4_HYPHEN_PATTERN = re.compile(
+    rf"(?<![0-9])({_OCTET})-({_OCTET})-({_OCTET})-({_OCTET})(?![0-9])"
+)
+
+# 주민등록번호 (앞 6자리 - 뒤 7자리 및 마스킹된 X/별표 포함 형태, 긴 마스킹 지원)
+_RRN_PATTERN = re.compile(
+    r"\b(\d{6})[-.\s]?([1-8\*\?xX][\d\*\?xX]{5,10})\b",
+    re.IGNORECASE
+)
+
+# 이메일 주소 ((at), [at], dot, (dot) 및 한글 아이디 유연 지원)
+_EMAIL_PATTERN = re.compile(
+    r"\b([a-zA-Z0-9_.+가-힣-]+)(?:\s*@\s*|\s*[\(\[]?\s*at\s*[\)\]]?\s*)([a-zA-Z0-9-]+(?:\.|\s*[\(\[]?\s*dot\s*[\)\]]?\s*)[a-zA-Z0-9-.]+)\b",
+    re.IGNORECASE
+)
+
+# SNS 핸들 (@handle, 인스타그램 @별빛여행러 등)
+_SNS_HANDLE_PATTERN = re.compile(
+    r"(?<![a-zA-Z0-9_가-힣])@([a-zA-Z0-9_가-힣]{2,24})(?![a-zA-Z0-9_가-힣])"
+)
 
 # 카드 번호 (16자리)
 _CARD_PATTERN = re.compile(r"\b(?:\d{4}[- ]?){3}\d{4}\b")
@@ -119,12 +163,12 @@ _MAC_PATTERN = re.compile(
     r"\b(?:[0-9A-Fa-f]{2}[:-]){5}[0-9A-Fa-f]{2}\b|\b[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}\b"
 )
 
-# 시스템 계정 및 비밀번호 / 크리덴셜 (ID, PW, 비번, 비밀번호, 암호 등 한국어 조사/어미 분리 지원)
+# 시스템 계정 및 비밀번호 / 크리덴셜 (회원 ID, 계정, ID, PW, 비번 등 한국어 조사 및 따옴표 유연 지원)
 _CREDENTIAL_PATTERN = re.compile(
-    r"(?i)(?<![A-Za-z가-힣])(?P<label>아이디|ID|계정|PW|비밀번호|패스워드|비번|passwd|password|암호)"
+    r"(?i)(?P<label>회원\s*ID|회원\s*아이디|아이디|ID|계정\s*번호|계정|회원\s*번호|회원번호|신청\s*번호|신청번호|PW|비밀번호|패스워드|비번|passwd|password|암호)"
     r"(?P<sep>[은는이가의를을인]?\s*[:#=\-]?\s*|\s+)"
-    r"(?P<val>[A-Za-z0-9!@#$%^&*()_\-+=\[\]{}|;:.<>?~]{3,32})"
-    r"(?P<tail>(?:입니다|이에요|예요|이다|이고|이며|야|다|라고|라)?(?=[^\w가-힣]|$|\s))"
+    r"['\"]?(?P<val>[A-Za-z0-9!@#$%^&*()_\-+=\[\]{}|;:.<>?~]{3,32})['\"]?"
+    r"(?P<tail>(?:입니다|이에요|예요|이다|이고|이며|야|다|라고|라|으로|로)?(?=[^\w가-힣]|$|\s))"
 )
 
 # 은행 계좌번호 (은행명/계좌 라벨 및 10~16자리 하이픈 연결 번호)
@@ -141,7 +185,8 @@ _DRIVER_LICENSE_PATTERN = re.compile(
 
 # 여권번호 (여권 라벨 및 M/S/G/R/D로 시작하는 8~9자리 여권번호)
 _PASSPORT_PATTERN = re.compile(
-    r"(?i)(?:여권\s*번호|여권)\s*[:#=\s]?\s*([A-Z][0-9A-Z]{7,8})|(?<![A-Za-z0-9])([MSGRD][0-9A-Z]{7,8})(?![A-Za-z0-9])"
+    r"(?i)(?:여권\s*번호|여권|패스포트\s*번호|패스포트)\s*(?:는|은|이|가)?\s*[:#=\s]?\s*([A-Za-z0-9]{7,12})|"
+    r"(?<![A-Za-z0-9])([MSGRD][0-9A-Z]{7,8})(?![A-Za-z0-9])"
 )
 
 # 학번 (학번 라벨 뒤 4~10자리 숫자)
@@ -154,9 +199,32 @@ _SCHOOL_RECORD_PATTERN = re.compile(
     r"(?<![가-힣\w])([1-6])(학년\s*)([0-9]{1,2})(반\s*)([0-9]{1,2})(번)(?![가-힣\w])"
 )
 
+# 도로명 / 지번 광역 주소 패턴 ('시' 표기 및 쉼표 포함 유연 탐지)
+_ADDRESS_PATTERN = re.compile(
+    r"(?:서울(?:특별시|시)?|부산(?:광역시|시)?|대구(?:광역시|시)?|인천(?:광역시|시)?|광주(?:광역시|시)?|대전(?:광역시|시)?|울산(?:광역시|시)?|세종(?:특별자치시)?|경기도?|강원(?:특별자치)?도?|충청북도|충북|충청남도|충남|전라북도|전북|전북특별자치도|전라남도|전남|경상북도|경북|경상남도|경남|제주(?:특별자치도)?)"
+    r"(?:\s+[가-힣0-9]+(?:시|군|구))*"
+    r"(?:\s+[가-힣0-9]+(?:읍|면|동|리|로|길))"
+    r"(?:\s*,\s*|\s+)?(?:\d+(?:-\d+)?(?:번지)?)?"
+    r"(?:\s+\d+층|\s+\d+호)?"
+)
+
 # 상세 거주지 주소 (동·호수 및 번지 표기, 한국어 조사 결합 허용, 지하철 1호선 등 제외)
 _ADDRESS_DETAIL_PATTERN = re.compile(
     r"(?<![0-9가-힣])(?:(\d{1,4})동\s*(\d{1,4})호|(\d{1,4})호)(?![선\d])"
+)
+
+# 생년월일 패턴 (1995년 5월 20일, 90년 5월 15일, 95년 5월 20일 등)
+_BIRTH_DATE_PATTERN = re.compile(
+    r"(?<!\d)(?:19\d{2}|20\d{2}|\d{2})년\s*\d{1,2}월\s*\d{1,2}일(?!\d)|"
+    r"(?:생년월일|생일)\s*(?:는|은|이|가)?\s*[:#=\s]?\s*(\d{6,8}|\d{2,4}[-./]\d{1,2}[-./]\d{1,2})",
+    re.IGNORECASE
+)
+
+# 자동차 번호판 패턴 (12가 3456, 123가 4567, 서울 12가 3456, 1가2다3 등)
+_CAR_PLATE_PATTERN = re.compile(
+    r"(?<![0-9가-힣])(?:\d{2,3}|[가-힣]{2}\s*\d{2})\s*[가-힣]\s*\d{4}(?![0-9가-힣])|"
+    r"(?:차량\s*번호|차량번호|차\s*번호|차번호)\s*(?:는|은|이|가)?\s*[:#=\s]?\s*['\"]?([0-9가-힣\s]{3,12})['\"]?",
+    re.IGNORECASE
 )
 
 # 2글자 한국어 성씨(복성 기본값)
@@ -199,12 +267,20 @@ _DOUBLE_SURNAME_PATTERN = re.compile(
     r"|[이가을를의와과도은는]|에게|한테|이며|이고|이면|이다|입니다|이라|라는|이라고|께서|\b|[^\w가-힣]|$))"
 )
 
-# 교육행정/네트워크 도메인 고유명사 및 IT/학교 역할 일반명사 (인명으로 오인 마스킹 방지)
+# 교육행정/네트워크 도메인 고유명사 및 IT/학교 역할/일반명사/지명 (인명으로 오인 마스킹 방지)
 _SAFE_NOUNS = {
-    # 행정 및 역할 명사 (담당, 담임, 전산 등이 인명으로 오인 마스킹 방지)
+    # 행정 및 역할 명사
     "담당", "담임", "전산", "사서", "시설", "행정", "보안", "교과", "원어민",
     "보건", "영양", "상담", "특수", "돌봄", "기간제", "실습", "보조", "총괄",
     "관리자", "관리", "운영", "운영자", "운영팀", "유지보수", "유지보수팀", "네트워크", "시스템",
+    # 일반 호칭/직업/역할
+    "고객", "고객님", "작가", "작가님", "교수", "교수님", "판매자", "판매자님", "공주", "공주님",
+    "상담원", "안내원", "회원", "회원님", "이웃", "이웃님", "선배", "선배님", "후배", "후배님",
+    "동기", "친구", "가족", "부모", "형제", "자매", "자녀", "아이", "어린이", "어르신",
+    "시민", "국민", "소비자", "구독자", "시청자", "독자", "청취자", "환자", "보호자",
+    "의사", "간호사", "약사", "변호사", "회계사", "세무사", "노무사", "법무사",
+    "기자", "감독", "배우", "가수", "아이돌", "연예인", "대통령", "장관", "차관",
+    "국회의원", "시장", "도지사", "구청장",
     # 학교 부서 및 행정 조직
     "정보", "정보부", "교무부", "학생부", "연구부", "행정부", "서무부", "총무부",
     "교육과정부", "진로진학부", "생활지도부", "체육부", "학습부",
@@ -216,6 +292,20 @@ _SAFE_NOUNS = {
     "교실", "체육관", "강당", "본관", "별관", "도서관",
     "지원센터", "운영센터", "통합관제센터", "콜센터", "상담센터",
     "교감선생", "교장선생", "부장선생", "교감선생님", "교장선생님", "부장선생님",
+    # 전국 주요 지명/행정구역 (성씨+조사로 오인 마스킹 방지: 수원은, 안양의, 성수동 등)
+    "수원", "안양", "성수", "성수동", "분당", "판교", "일산", "강남", "역삼", "서초", "종로", "마포",
+    "송파", "영등포", "용산", "동작", "관악", "노원", "은평", "서대문", "동대문", "중랑", "성북",
+    "강북", "도봉", "양천", "강서", "구로", "금천", "강동", "부천", "광명", "과천", "성남", "용인",
+    "고양", "남양주", "의정부", "시흥", "평택", "광주", "화성", "이천", "안성", "김포", "파주",
+    "구리", "포천", "의왕", "양주", "여주", "동두천", "가평", "양평", "연천",
+    "대전", "대구", "부산", "인천", "울산", "세종", "제주", "청주", "천안", "전주", "포항", "창원",
+    # 일반 명사 / 사물 / 개념어 (라임색, 원피스, 한국은행, 시간표 등)
+    "라임", "원피스", "한국은행", "나라", "봄", "여름", "가을", "겨울",
+    "강의", "자료", "시간표", "공원", "기차표", "노선", "맛집", "보고서", "청구서",
+    "상담기록", "꽃집", "장미꽃", "과목", "시간", "날씨", "계절", "도시", "문화",
+    "유산", "디자인", "사이즈", "가이드", "가이드라인", "모델", "예금", "금리", "구조",
+    "변동성", "별명", "접수", "기재", "공지", "신학기", "개강", "중앙", "중앙도서관",
+    "웹사이트", "공항", "김포공항", "서울역", "구매자", "구매자님",
     # IT 기기 및 네트워크 용어
     "시리얼", "시리얼번호", "일련번호", "기기번호", "제조번호", "단말번호",
     "태블릿", "단말기", "스마트스쿨", "노트북",
@@ -224,12 +314,14 @@ _SAFE_NOUNS = {
     "모니터", "마우스", "키보드", "프린터", "인터넷", "공유기", "젠더", "랜선"
 }
 
-# 교직원 직책 / 호칭 접미사 (주의: '담당', '담임'은 역할 수식어이므로 '담당자', '담임선생님' 등으로 분리하여 오탐 방지)
+# 교직원 및 일반 직책 / 호칭 접미사
 _TITLES = {
     "교장선생님", "교장선생", "교장", "교감선생님", "교감선생", "교감",
     "부장선생님", "부장선생", "부장", "행정실장", "실장님", "실장",
     "선생님", "선생", "교사", "주무관", "장학사", "장학관",
-    "팀장님", "팀장", "주임", "계장", "과장", "기사님", "기사",
+    "팀장님", "팀장", "주임", "계장", "과장님", "과장", "기사님", "기사",
+    "교수님", "교수", "작가님", "작가", "고객님", "고객", "회원님", "회원",
+    "판매자님", "판매자", "원장님", "원장", "총장님", "총장",
     "담당자", "담임선생님", "담임교사", "교직원", "학생", "님", "씨"
 }
 _SORTED_TITLES_PATTERN = "|".join(sorted(_TITLES, key=len, reverse=True))
@@ -249,7 +341,7 @@ _ROLE_LABEL_PATTERN = re.compile(
 
 # 3. 호칭 앞치형 성명 정규식 (선생님 김성겸, 교사 홍길동 등)
 _TITLE_PREFIX_PATTERN = re.compile(
-    r"(?<![가-힣])(선생님|선생|교사|주무관|기사님|실장님|팀장님)\s+([가-힣]{2,4})"
+    r"(?<![가-힣])(선생님|선생|교사|주무관|기사님|실장님|팀장님|과장님)\s+([가-힣]{2,4})"
     r"(?=[^가-힣]|$|[이가은는을를의와과도만께]|에게|한테|께서|입니다|이다|이며|이고|이면|으로|로)"
 )
 
@@ -306,6 +398,14 @@ class PiiMasker:
         if clean_word in _SAFE_NOUNS or clean_word in _TITLES or word in _SAFE_NOUNS or word in _TITLES:
             return False
         if any(clean_word.endswith(t) for t in ("선생님", "선생", "교사", "주무관", "실장", "교장", "교감", "부장", "팀장", "주임", "기사", "담당자")):
+            return False
+        # 호칭/존칭 결합 어미 확인 (고객님, 작가님, 공주님, 미소씨 등)
+        if clean_word.endswith(("님", "씨")):
+            stem = clean_word[:-1]
+            if stem in _SAFE_NOUNS or stem in _TITLES:
+                return False
+        # 학년/학기/도서관 등 학교 일반어 제외 (2학년 학생 등)
+        if any(clean_word.endswith(s) for s in ("학년", "학기", "학번", "도서관")):
             return False
         # 기관/부서/조직/시설 접미사 제외 (정보부, 교무부, 학생부, 연구과, 지원센터, 학교 등 인명 오인 마스킹 방지)
         if any(clean_word.endswith(s) for s in ("센터", "학교", "대학", "지원청", "교육청", "서비스", "시스템", "네트워크")):
@@ -514,6 +614,8 @@ class PiiMasker:
             raw = m.group(0)
             if _is_public_or_guidance_number(raw):
                 return raw
+            if _is_order_tracking_context(masked, m.start(), m.end()):
+                return raw
             detected.add("phone")
             prefix, mid, last = m.group(1), m.group(2), m.group(3)
             mask_mid = "*" * len(mid)
@@ -532,6 +634,8 @@ class PiiMasker:
             raw = m.group(0)
             clean = re.sub(r"[-.\s]", "", raw)
             if _is_public_or_guidance_number(raw):
+                return raw
+            if _is_order_tracking_context(masked, m.start(), m.end()):
                 return raw
             if _is_date_number(clean):
                 # 날짜 형식(YYYYMMDD)과 겹칠 때: 주변에 명시적인 전화번호 문맥이 없으면 날짜로 판단하여 보존
@@ -558,6 +662,18 @@ class PiiMasker:
             return f"{o1}.{o2}.*.*"
         masked = _IPV4_PATTERN.sub(_mask_ip, masked)
 
+        def _mask_ip_korean(m):
+            detected.add("ipv4")
+            o1, o2 = m.group(1), m.group(2)
+            return f"{o1}점 {o2}점 *점 *점"
+        masked = _IPV4_KOREAN_PATTERN.sub(_mask_ip_korean, masked)
+
+        def _mask_ip_hyphen(m):
+            detected.add("ipv4")
+            o1, o2 = m.group(1), m.group(2)
+            return f"{o1}-{o2}-*-*"
+        masked = _IPV4_HYPHEN_PATTERN.sub(_mask_ip_hyphen, masked)
+
         # 1-7. 이메일 (아이디 1자리만 유지)
         def _mask_email(m):
             detected.add("email")
@@ -569,7 +685,16 @@ class PiiMasker:
             return f"{masked_user}@{domain}"
         masked = _EMAIL_PATTERN.sub(_mask_email, masked)
 
-        # 1-8. 시스템 계정 및 비밀번호 / 크리덴셜
+        # 1-8. SNS 핸들 (@별빛여행러, @study_genius 등)
+        def _mask_sns(m):
+            handle = m.group(1)
+            if handle in _SAFE_NOUNS:
+                return m.group(0)
+            detected.add("sns")
+            return "@" + ("*" * len(handle))
+        masked = _SNS_HANDLE_PATTERN.sub(_mask_sns, masked)
+
+        # 1-9. 시스템 계정 및 비밀번호 / 크리덴셜
         def _mask_credential(m):
             prefix_ctx = masked[max(0, m.start() - 10):m.start()].strip()
             if any(prefix_ctx.endswith(w) for w in ("VLAN", "vlan", "포트", "port", "장비", "스위치", "라우터", "세션", "프로세스", "process", "트랜잭션", "스레드", "thread")):
@@ -582,7 +707,7 @@ class PiiMasker:
             return f"{label}{sep}" + ("*" * len(val)) + tail
         masked = _CREDENTIAL_PATTERN.sub(_mask_credential, masked)
 
-        # 1-9. 은행 계좌번호
+        # 1-10. 은행 계좌번호
         def _mask_account(m):
             label = m.group("label") or ""
             sep = m.group("sep") or ""
@@ -591,6 +716,8 @@ class PiiMasker:
             if not label and len(clean_digits) in (9, 10, 11) and clean_digits.startswith(("010", "02", "031", "032", "033", "041", "042", "043", "051", "052", "053", "054", "055", "061", "062", "063", "064", "070")):
                 return m.group(0)
             if _is_public_or_guidance_number(num) or _is_date_number(clean_digits):
+                return m.group(0)
+            if _is_order_tracking_context(masked, m.start(), m.end()):
                 return m.group(0)
             detected.add("account")
             parts = re.split(r"([-.\s])", num)
@@ -608,24 +735,24 @@ class PiiMasker:
             return f"{label}{sep}" + "".join(masked_parts)
         masked = _ACCOUNT_PATTERN.sub(_mask_account, masked)
 
-        # 1-10. 운전면허번호
+        # 1-11. 운전면허번호
         def _mask_license(m):
             detected.add("driver_license")
             r, s1, y, s2, n, s3, c = m.group(1), m.group(2), m.group(3), m.group(4), m.group(5), m.group(6), m.group(7)
             return f"{r}{s1}**{s2}******{s3}**"
         masked = _DRIVER_LICENSE_PATTERN.sub(_mask_license, masked)
 
-        # 1-11. 여권번호
+        # 1-12. 여권번호
         def _mask_passport(m):
             raw = m.group(1) or m.group(2)
-            if "-" in raw or "_" in raw:
+            if not raw or "-" in raw or "_" in raw:
                 return m.group(0)
             detected.add("passport")
             masked_val = raw[0] + ("*" * (len(raw) - 1))
             return m.group(0).replace(raw, masked_val)
         masked = _PASSPORT_PATTERN.sub(_mask_passport, masked)
 
-        # 1-12. 학번 및 학적 정보
+        # 1-13. 학번 및 학적 정보
         def _mask_student_id(m):
             detected.add("student_id")
             return f"{m.group(1)}" + ("*" * len(m.group(2)))
@@ -636,7 +763,36 @@ class PiiMasker:
             return f"*{m.group(2)}*{m.group(4)}**{m.group(6)}"
         masked = _SCHOOL_RECORD_PATTERN.sub(_mask_school_record, masked)
 
-        # 1-13. 상세 거주지 주소 (동·호수)
+        # 1-14. 생년월일
+        def _mask_birth(m):
+            raw = m.group(0)
+            if "년" in raw and not _has_birth_context(masked, m.start(), m.end()):
+                return raw
+            detected.add("birth")
+            return re.sub(r"\d", "*", raw)
+        masked = _BIRTH_DATE_PATTERN.sub(_mask_birth, masked)
+
+        # 1-15. 자동차 번호판
+        def _mask_car_plate(m):
+            detected.add("car_plate")
+            val = m.group(1) if m.group(1) else m.group(0)
+            return m.group(0).replace(val, re.sub(r"[0-9가-힣]", "*", val))
+        masked = _CAR_PLATE_PATTERN.sub(_mask_car_plate, masked)
+
+        # 1-16. 광역 도로명/지번 주소
+        def _mask_address(m):
+            addr_text = m.group(0)
+            detected.add("address")
+            tokens = addr_text.split()
+            if len(tokens) <= 2:
+                return addr_text
+            # 시/도 + 구/군 남기고 상세 동/로/길/번지는 마스킹
+            preserved = " ".join(tokens[:2])
+            masked_tail = " ".join(["*" * len(t) for t in tokens[2:]])
+            return f"{preserved} {masked_tail}"
+        masked = _ADDRESS_PATTERN.sub(_mask_address, masked)
+
+        # 1-17. 상세 거주지 주소 (동·호수)
         def _mask_address_detail(m):
             prefix_ctx = masked[max(0, m.start() - 10):m.start()].strip()
             if any(prefix_ctx.endswith(w) for w in ("교무실", "행정실", "과학실", "방송실", "서버실", "전산실", "도서실", "보건실", "상담실", "급식실", "컴퓨터실")):
