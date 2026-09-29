@@ -194,25 +194,32 @@ export function ScenarioTab({ onUpdateBadge }) {
   };
 
   // 하위 자식 노드 추가 모달 (고유 ID 자동 생성 및 부모 노드 바인딩)
-  const handleOpenCreateChild = (parentNode) => {
+  const handleOpenCreateChild = (parentNode, defaultChildType = 'terminal') => {
     if (!parentNode) {
       handleOpenCreate();
       return;
     }
-    const parentId = parentNode.node_id || parentNode.id || 'node';
+    // parentNode 가 nodeId 문자열일 경우 draftNodes 에서 객체 조회
+    const parentObj = typeof parentNode === 'string'
+      ? (draftNodes[parentNode] || { node_id: parentNode })
+      : parentNode;
+    const parentId = parentObj.node_id || parentObj.id || 'node';
     const randomSuffix = Math.random().toString(36).substring(2, 6);
-    const childId = `${parentId}.step_${randomSuffix}`;
+    const isTerminal = defaultChildType === 'terminal';
+    const childId = isTerminal ? `${parentId}.ans_${randomSuffix}` : `${parentId}.step_${randomSuffix}`;
 
     setModalMode('create');
     setNodeForm({
       node_id: childId,
-      scenario_id: parentNode.scenario_id || 'general',
+      scenario_id: parentObj.scenario_id || (parentId.includes('.') ? parentId.split('.')[0] : 'general'),
       parentNodeId: parentId,
-      parentOptionLabel: '상세 점검 진행',
-      type: 'question',
-      text: '',
-      options: [{ label: '다음 단계', next_node: '', next_node_id: '' }],
-      answer_text: ''
+      parentOptionLabel: isTerminal ? '해결 방법 확인' : '상세 점검 진행',
+      type: defaultChildType,
+      text: isTerminal ? '해결 조치 가이드 내용을 확인하세요.' : '',
+      options: isTerminal
+        ? [{ option_id: '__restart__', label: '처음으로', next_node_id: rootId || 'root' }]
+        : [{ label: '다음 단계', next_node: '', next_node_id: '' }],
+      answer_text: isTerminal ? '최종 조치 및 가이드 내용입니다.' : ''
     });
     setModalOpen(true);
   };
@@ -299,17 +306,24 @@ export function ScenarioTab({ onUpdateBadge }) {
         next_node: (o.next_node_id || o.next_node || '').trim()
       }));
 
+    // ★ terminal 노드의 경우: '처음으로(__restart__)' 옵션이 반드시 100% 보장되도록 정규화
+    let finalOptions = cleanOptions;
+    if (nodeForm.type === 'terminal') {
+      const hasRestart = finalOptions.some((o) => o.option_id === '__restart__' || o.next_node_id === (rootId || 'root'));
+      if (!hasRestart) {
+        finalOptions = [{ option_id: '__restart__', label: '처음으로', next_node_id: rootId || 'root' }];
+      }
+    }
+
     const updatedNode = {
       node_id: cleanId,
       scenario_id: nodeForm.scenario_id.trim() || cleanId.split('.')[0] || 'general',
       type: nodeForm.type,
       text: cleanText,
-      options: nodeForm.type === 'terminal' && cleanOptions.length === 0
-        ? [{ option_id: '__restart__', label: '처음으로', next_node_id: rootId || 'root' }]
-        : cleanOptions,
-      answer_text: nodeForm.type === 'terminal' ? (nodeForm.answer_text || '').trim() : undefined,
+      options: finalOptions,
+      answer_text: nodeForm.type === 'terminal' ? ((nodeForm.answer_text || cleanText).trim() || '최종 조치 및 가이드 내용입니다.') : undefined,
       answer: nodeForm.type === 'terminal'
-        ? { source: 'scenario_ppt', text: (nodeForm.answer_text || '').trim() || '최종 조치 및 가이드 내용입니다.' }
+        ? { source: 'scenario_ppt', text: (nodeForm.answer_text || cleanText).trim() || '최종 조치 및 가이드 내용입니다.' }
         : undefined
     };
 
@@ -525,7 +539,8 @@ export function ScenarioTab({ onUpdateBadge }) {
             source: 'scenario_ppt',
             text: ansText
           };
-          if (!n.options || n.options.length === 0) {
+          const hasRestart = n.options && n.options.some((o) => o.option_id === '__restart__' || o.next_node_id === (rootId || 'root'));
+          if (!hasRestart) {
             n.options = [{ option_id: '__restart__', label: '처음으로', next_node_id: rootId || 'root' }];
           }
         }
@@ -712,12 +727,27 @@ export function ScenarioTab({ onUpdateBadge }) {
                   <span>이 노드 수정</span>
                 </button>
                 <button
-                  className="btn btn-secondary btn-sm"
-                  onClick={() => handleOpenCreateChild(selectedNode)}
-                  title="이 노드의 하위 분기 노드 생성"
+                  className="btn btn-emerald btn-sm"
+                  onClick={() => handleOpenCreateChild(selectedNode, 'terminal')}
+                  title="이 노드의 하위 최종 해결 답변 노드('처음으로' 리셋 포함) 생성"
+                  style={{
+                    background: 'rgba(5, 150, 105, 0.15)',
+                    color: 'var(--emerald)',
+                    border: '1px solid var(--emerald)',
+                    fontWeight: 700
+                  }}
                 >
                   <Plus size={13} />
-                  <span>하위 노드 추가</span>
+                  <span>하위 답변 추가</span>
+                </button>
+                <button
+                  className="btn btn-secondary btn-sm"
+                  onClick={() => handleOpenCreateChild(selectedNode, 'question')}
+                  title="이 노드의 하위 질문/분기 노드 생성"
+                  style={{ fontWeight: 600 }}
+                >
+                  <Plus size={13} />
+                  <span>하위 질문 추가</span>
                 </button>
               </div>
             </div>
@@ -1039,12 +1069,43 @@ export function ScenarioTab({ onUpdateBadge }) {
                   <label className="form-label">노드 유형</label>
                   <select
                     className="faq-select"
-                    style={{ width: '100%' }}
+                    style={{ width: '100%', fontWeight: 600 }}
                     value={nodeForm.type}
-                    onChange={(e) => setNodeForm({ ...nodeForm, type: e.target.value })}
+                    onChange={(e) => {
+                      const newType = e.target.value;
+                      setNodeForm((prev) => {
+                        const randomSuffix = Math.random().toString(36).substring(2, 6);
+                        const basePrefix = prev.parentNodeId || prev.scenario_id || 'node';
+                        if (newType === 'terminal') {
+                          return {
+                            ...prev,
+                            type: 'terminal',
+                            node_id: prev.node_id.includes('.step_')
+                              ? prev.node_id.replace('.step_', '.ans_')
+                              : (modalMode === 'create' ? `${basePrefix}.ans_${randomSuffix}` : prev.node_id),
+                            parentOptionLabel: prev.parentOptionLabel === '상세 점검 진행' ? '해결 방법 확인' : prev.parentOptionLabel,
+                            text: prev.text || '해결 조치 가이드 내용을 확인하세요.',
+                            options: [{ option_id: '__restart__', label: '처음으로', next_node_id: rootId || 'root' }],
+                            answer_text: prev.answer_text || '최종 조치 및 가이드 내용입니다.'
+                          };
+                        } else {
+                          return {
+                            ...prev,
+                            type: 'question',
+                            node_id: prev.node_id.includes('.ans_')
+                              ? prev.node_id.replace('.ans_', '.step_')
+                              : (modalMode === 'create' ? `${basePrefix}.step_${randomSuffix}` : prev.node_id),
+                            parentOptionLabel: prev.parentOptionLabel === '해결 방법 확인' ? '상세 점검 진행' : prev.parentOptionLabel,
+                            text: prev.text === '해결 조치 가이드 내용을 확인하세요.' ? '' : prev.text,
+                            options: [{ label: '다음 단계', next_node: '', next_node_id: '' }],
+                            answer_text: ''
+                          };
+                        }
+                      });
+                    }}
                   >
-                    <option value="question">질문 / 분기 선택 노드 (Question)</option>
-                    <option value="terminal">최종 답변 및 조치 노드 (Terminal)</option>
+                    <option value="terminal">✅ 최종 답변 및 조치 노드 (Terminal - '처음으로' 리셋 포함)</option>
+                    <option value="question">❓ 질문 / 분기 선택 노드 (Question - 중간 단계)</option>
                   </select>
                 </div>
 

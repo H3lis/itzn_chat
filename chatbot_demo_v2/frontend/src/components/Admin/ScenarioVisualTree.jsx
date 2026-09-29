@@ -1674,27 +1674,56 @@ export function ScenarioVisualTree({
                       <span style={{ fontSize: '0.7rem', fontWeight: 700, color: 'var(--text-muted)' }}>
                         선택 분기 ({node.options.length}개):
                       </span>
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onCreateChildNode(nid);
-                        }}
-                        style={{
-                          background: 'none',
-                          border: 'none',
-                          color: 'var(--primary)',
-                          fontSize: '0.7rem',
-                          fontWeight: 700,
-                          cursor: 'pointer',
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '0.15rem'
-                        }}
-                      >
-                        <Plus size={11} />
-                        하위 추가
-                      </button>
+                      <div style={{ display: 'flex', gap: '0.35rem', alignItems: 'center' }}>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (onCreateChildNode) onCreateChildNode(nid, 'terminal');
+                          }}
+                          style={{
+                            background: 'rgba(5, 150, 105, 0.12)',
+                            border: '1px solid rgba(5, 150, 105, 0.35)',
+                            borderRadius: '4px',
+                            padding: '0.15rem 0.4rem',
+                            color: 'var(--emerald)',
+                            fontSize: '0.68rem',
+                            fontWeight: 700,
+                            cursor: 'pointer',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '0.15rem'
+                          }}
+                          title="이 분기에 연결될 최종 해결 답변 노드('처음으로' 리셋 포함) 생성"
+                        >
+                          <Plus size={10} />
+                          답변 추가
+                        </button>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (onCreateChildNode) onCreateChildNode(nid, 'question');
+                          }}
+                          style={{
+                            background: 'rgba(37, 99, 235, 0.12)',
+                            border: '1px solid rgba(37, 99, 235, 0.35)',
+                            borderRadius: '4px',
+                            padding: '0.15rem 0.4rem',
+                            color: 'var(--primary)',
+                            fontSize: '0.68rem',
+                            fontWeight: 700,
+                            cursor: 'pointer',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '0.15rem'
+                          }}
+                          title="이 분기에 연결될 추가 하위 질문 노드 생성"
+                        >
+                          <Plus size={10} />
+                          질문 추가
+                        </button>
+                      </div>
                     </div>
 
                     {node.options.map((opt, optIndex) => {
