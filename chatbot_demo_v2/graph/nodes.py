@@ -146,6 +146,15 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
     matcher = ctx.matcher
     settings = ctx.settings
 
+    def _get_tree():
+        return getattr(ctx, "tree", None) or tree
+
+    def _get_faq():
+        return getattr(ctx, "faq", None) or faq
+
+    def _get_matcher():
+        return getattr(ctx, "matcher", None) or matcher
+
     from ..rag.adapter_util import make_evidence_copier
 
     _evidence_copier = make_evidence_copier(settings.evidence_root)
@@ -253,7 +262,8 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
             
             # 먼저 원본 질문(raw)이 FAQ와 정확히 일치(Exact Match)하는지 확인
             norm_raw = normalize_text(raw)
-            exact_entry = faq.exact(norm_raw) if faq else None
+            curr_faq = _get_faq()
+            exact_entry = curr_faq.exact(norm_raw) if curr_faq else None
             
             if exact_entry is not None:
                 # 정확히 일치하는 FAQ가 있으면 강건성 툴을 거치지 않고 우회하여 바로 매칭
@@ -331,13 +341,14 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
 
     # ---------- 3. scenario_action_handler ----------
     def scenario_action_handler(state: ChatState) -> dict:
+        curr_tree = _get_tree()
         node_id = state.get("action_node_id")
         option_id = state.get("selected_option_id")
         label = state.get("action_label") or ""
-        next_node = tree.resolve_option(node_id, option_id)
+        next_node = curr_tree.resolve_option(node_id, option_id)
 
         path = list(state.get("scenario_path") or [])
-        if option_id == "__restart__" or next_node.node_id == tree.root_node_id:
+        if option_id == "__restart__" or next_node.node_id == curr_tree.root_node_id:
             path = []
             scenario_completed = False
         else:
@@ -409,7 +420,7 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
     # ---------- 4. scenario_matcher ----------
     def scenario_matcher(state: ChatState) -> dict:
         norm = state.get("normalized_question") or ""
-        mr = matcher.match(norm)
+        mr = _get_matcher().match(norm)
         _node_meta(
             {
                 "match_decision": mr.decision,
@@ -458,13 +469,15 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
         interrupt() 이전 코드는 재개 시 재실행되므로 부작용을 두지 않는다(후보 조회만).
         """
         norm = state.get("normalized_question") or ""
-        candidates = matcher.top_candidates(norm, k=2)
+        curr_matcher = _get_matcher()
+        curr_faq = _get_faq()
+        candidates = curr_matcher.top_candidates(norm, k=2)
         # 여기서 일시정지. resume 값이 choice 로 반환된다.
         resume = interrupt({"type": "clarify", "candidates": candidates})
         choice = (resume or {}).get("choice") if isinstance(resume, dict) else resume
 
-        if choice and choice != "__none__" and faq.get(choice) is not None:
-            entry = faq.get(choice)
+        if choice and choice != "__none__" and curr_faq and curr_faq.get(choice) is not None:
+            entry = curr_faq.get(choice)
             new_match = {
                 "decision": "accept",
                 "decision_reason": "clarify 되묻기에서 사용자가 후보 선택",
@@ -498,15 +511,17 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
 
     # ---------- 6. scenario_answer ----------
     def scenario_answer(state: ChatState) -> dict:
+        curr_tree = _get_tree()
+        curr_faq = _get_faq()
         if state.get("input_type") == "action":
-            node = tree.get_node(state.get("current_node_id"))
+            node = curr_tree.get_node(state.get("current_node_id"))
             if node.is_terminal:
                 out = {
                     "final_answer": node.answer_text,
                     "answer_path": "scenario",
                     "answer_source": "scenario_tree",
                     "confidence": "n/a",
-                    "options": tree.options_payload(node),
+                    "options": curr_tree.options_payload(node),
                     "scenario_completed": True,
                     "source_meta": {
                         "type": "scenario",
@@ -523,7 +538,7 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
                     "answer_path": "scenario",
                     "answer_source": "scenario_tree",
                     "confidence": "n/a",
-                    "options": tree.options_payload(node),
+                    "options": curr_tree.options_payload(node),
                     "scenario_completed": False,
                     "source_meta": {
                         "type": "scenario",
@@ -538,7 +553,7 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
 
         # 자유 입력 + FAQ 유사도 통과 → 저장된 모범 답변 그대로(LLM 미사용)
         match = state.get("scenario_match") or {}
-        entry = faq.get(match.get("matched_id")) if match.get("matched_id") else None
+        entry = curr_faq.get(match.get("matched_id")) if (curr_faq and match.get("matched_id")) else None
         if entry is None:
             return {
                 "final_answer": None,

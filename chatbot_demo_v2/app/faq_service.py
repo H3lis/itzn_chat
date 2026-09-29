@@ -303,7 +303,13 @@ class FaqManager:
             ctx.faq = new_faq
             ctx.tree = new_tree
             ctx.matcher = new_matcher
-            logger.info("런타임 핫리로드 완료: FAQ %d건 로드됨", len(new_faq.entries))
+
+            # LangGraph 그래프 핫리로드 (기존 세션 체크포인터 보존)
+            from ..graph.builder import build_graph
+            checkpointer = getattr(getattr(ctx, "graph", None), "checkpointer", None)
+            ctx.graph = build_graph(ctx, checkpointer=checkpointer)
+
+            logger.info("런타임 핫리로드 완료: FAQ %d건 로드됨 및 그래프 갱신", len(new_faq.entries))
         except Exception as e:
             logger.error("런타임 핫리로드 실패: %s", e, exc_info=True)
             raise

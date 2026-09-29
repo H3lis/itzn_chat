@@ -342,12 +342,18 @@ class ScenarioManager:
         }
 
     def reload_runtime(self, ctx: Any) -> None:
-        """메모리 내 챗봇 런타임(ScenarioTree) 즉각 핫리로드."""
+        """메모리 내 챗봇 런타임(ScenarioTree 및 LangGraph) 즉각 핫리로드."""
         try:
             faq = ctx.faq or load_faq(self.faq_path)
             new_tree = load_scenarios(self.scenarios_path, faq)
             ctx.tree = new_tree
-            logger.info("시나리오 트리 런타임 핫리로드 완료 (총 %d개 노드)", len(new_tree.nodes))
+
+            # LangGraph 그래프 핫리로드 (기존 세션 체크포인터 보존)
+            from ..graph.builder import build_graph
+            checkpointer = getattr(getattr(ctx, "graph", None), "checkpointer", None)
+            ctx.graph = build_graph(ctx, checkpointer=checkpointer)
+
+            logger.info("시나리오 트리 및 그래프 런타임 핫리로드 완료 (총 %d개 노드)", len(new_tree.nodes))
         except Exception as e:
             logger.error("시나리오 트리 런타임 핫리로드 실패: %s", e, exc_info=True)
             raise
