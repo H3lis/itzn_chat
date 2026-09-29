@@ -1,0 +1,1 @@
+{"id": "A-002793", "text": "여행 날짜 변경을 원하시면, 예약 시 사용하신 대표 연락처인 010 9999 8888로 전화 주시거나 메일로 알려주시면 됩니다.", "pi": [{"type": "PHONE", "text": "010 9999 8888", "start": 34, "end": 47}], "meta": {"domain": "여행 예약", "style": "길고 장황한 설명", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

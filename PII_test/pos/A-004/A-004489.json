@@ -1,0 +1,1 @@
+{"id": "A-004489", "text": "김철수 씨 말씀이신가요? 아니요, 저는 David Kim이에요. 저희는 삼성전자 근무하는 사람이에요.", "pi": [{"type": "NAME", "text": "David Kim", "start": 22, "end": 31}, {"type": "ORG", "text": "삼성전자", "start": 40, "end": 44}], "meta": {"domain": "금융 상담", "style": "짧은 단답", "obfuscation": ["romanized"], "hard_case": "org_person"}}

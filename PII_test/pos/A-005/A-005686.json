@@ -1,0 +1,1 @@
+{"id": "A-005686", "text": "문의하신 내용 확인했습니다. 고객님의 이메일은 user123@example.com 이시고, 연락처는 070-5555-1212 맞으신가요? 혹시 다른 번호가 있으실까요?", "pi": [{"type": "EMAIL", "text": "user123@example.com", "start": 26, "end": 45}, {"type": "PHONE", "text": "070-5555-1212", "start": 56, "end": 69}], "meta": {"domain": "콜센터 상담 요약", "style": "오타 많은 채팅", "obfuscation": ["plain"], "hard_case": "none"}}

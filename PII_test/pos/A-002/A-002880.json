@@ -1,0 +1,1 @@
+{"id": "A-002880", "text": "카드 번호는 4111 다음에 5가 네 번 그리고 3이 네 번으로 돼있어요. 이름은 자두영 씨라고 합니다.", "pi": [{"type": "CARD", "text": "4111 다음에 5가 네 번 그리고 3이 네 번", "start": 7, "end": 33}, {"type": "NAME", "text": "자두영", "start": 46, "end": 49}], "meta": {"domain": "이메일 본문", "style": "구어체", "obfuscation": ["repeat_expr", "korean_reading"], "hard_case": "homonym_name"}}

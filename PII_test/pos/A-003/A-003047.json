@@ -1,0 +1,1 @@
+{"id": "A-003047", "text": "저희가 검토한 분의 성함은 김지수 씨이고요, 다른 분은 최민영 님으로 확인됩니다.", "pi": [{"type": "NAME", "text": "김지수", "start": 15, "end": 18}, {"type": "NAME", "text": "최민영", "start": 31, "end": 34}], "meta": {"domain": "이메일 본문", "style": "길고 장황한 설명", "obfuscation": ["plain"], "hard_case": "none"}}

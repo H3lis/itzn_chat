@@ -1,0 +1,1 @@
+{"id": "A-005213", "text": "김철수 과장님과 이지영 사원님, 그리고 위챗 계정은 연락처를 알고 싶어요.", "pi": [{"type": "NAME", "text": "김철수", "start": 0, "end": 3}, {"type": "NAME", "text": "이지영", "start": 9, "end": 12}, {"type": "SNS", "text": "위챗", "start": 22, "end": 24}], "meta": {"domain": "직장 메신저", "style": "공문서풍", "obfuscation": ["honorific_ref"], "hard_case": "nickname_id"}}

@@ -1,0 +1,1 @@
+{"id": "A-003078", "text": "진료는요, 김민준 님 맞으신가요? 주소는 서울시 강남구 삼성로 450이에요.", "pi": [{"type": "NAME", "text": "김민준", "start": 6, "end": 9}, {"type": "ADDRESS", "text": "서울시 강남구 삼성로 450", "start": 23, "end": 38}], "meta": {"domain": "병원 접수", "style": "구어체", "obfuscation": ["stt_error"], "hard_case": "none"}}

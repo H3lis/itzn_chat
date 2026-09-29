@@ -1,0 +1,1 @@
+{"id": "A-000832", "text": "제가 지금 쓰시는 IP 주소가 192.168.1.1 이라고 확인됐는데요, 혹시 다시 한번 말씀해주시겠어요? 아니면 010-1111-2222 맞으신가요?", "pi": [{"type": "IP_ADDR", "text": "192.168.1.1", "start": 17, "end": 28}, {"type": "PHONE", "text": "010-1111-2222", "start": 64, "end": 77}], "meta": {"domain": "금융 상담", "style": "오타 많은 채팅", "obfuscation": ["self_correction"], "hard_case": "none"}}

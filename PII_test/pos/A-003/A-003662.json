@@ -1,0 +1,1 @@
+{"id": "A-003662", "text": "차량 번호는 12가 아니라, 다시 1204로 돼있어요. 네, 맞습니다. 네, 1204고요.", "pi": [{"type": "CAR_PLATE", "text": "1204", "start": 19, "end": 23}], "meta": {"domain": "콜센터 상담 요약", "style": "격식체", "obfuscation": ["plain"], "hard_case": "none"}}

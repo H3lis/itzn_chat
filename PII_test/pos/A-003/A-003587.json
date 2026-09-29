@@ -1,0 +1,1 @@
+{"id": "A-003587", "text": "바다님, 혹시 여권 번호가 1234567890이 맞나요? 신분증 대신 그걸로 등록했어요.", "pi": [{"type": "NAME", "text": "바다", "start": 0, "end": 2}, {"type": "PASSPORT", "text": "1234567890", "start": 15, "end": 25}], "meta": {"domain": "SNS 댓글", "style": "메신저 줄임말", "obfuscation": ["honorific_ref"], "hard_case": "homonym_name"}}

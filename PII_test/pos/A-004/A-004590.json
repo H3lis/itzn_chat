@@ -1,0 +1,1 @@
+{"id": "A-004590", "text": "저희 제품 주소는 ㄱㅏㅇㄴㅏㅁ ㅇㅣㄴㅁㅏㄴ ㅇㅣㄷㅏ요. 혹시 잘못 들으신 거 있으세요?", "pi": [{"type": "ADDRESS", "text": "ㄱㅏㅇㄴㅏㅁ ㅇㅣㄴㅁㅏㄴ ㅇㅣㄷㅏ요", "start": 10, "end": 29}], "meta": {"domain": "쇼핑몰 문의", "style": "메신저 줄임말", "obfuscation": ["jamo_split"], "hard_case": "none"}}

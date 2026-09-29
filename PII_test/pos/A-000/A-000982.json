@@ -1,0 +1,1 @@
+{"id": "A-000982", "text": "이메일은 myname(at)email(dot)com이고, 아이디는 user1234예요. 이거 맞나요?", "pi": [{"type": "EMAIL", "text": "myname(at)email(dot)com", "start": 5, "end": 28}, {"type": "ID", "text": "user1234", "start": 37, "end": 45}], "meta": {"domain": "직장 메신저", "style": "메신저 줄임말", "obfuscation": ["email_spoken"], "hard_case": "nickname_id"}}

@@ -1,0 +1,1 @@
+{"id": "A-002385", "text": "저는요, '김춘천'이라는 이름으로 왔고요. 회사명은 '춘천테크놀로지'에 계신 분을 찾아요.", "pi": [{"type": "NAME", "text": "김춘천", "start": 6, "end": 9}, {"type": "ORG", "text": "춘천테크놀로지", "start": 30, "end": 37}], "meta": {"domain": "고객센터 채팅", "style": "존댓말 상담", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

@@ -1,0 +1,1 @@
+{"id": "A-005410", "text": "고객님, 고객님의 휴대폰 번호는 010-5555-1234 맞으신가요? 다시 한번 확인 부탁드립니다.", "pi": [{"type": "PHONE", "text": "010-5555-1234", "start": 18, "end": 31}], "meta": {"domain": "민원 접수", "style": "격식체", "obfuscation": ["repeat_expr", "lookalike_char"], "hard_case": "none"}}

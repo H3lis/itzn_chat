@@ -1,0 +1,1 @@
+{"id": "A-004123", "text": "연락처는 email_test@naver.com으로 되어있고요. 성함은 가을 씨로 되어있는데 맞나요?", "pi": [{"type": "EMAIL", "text": "email_test@naver.com", "start": 5, "end": 25}, {"type": "NAME", "text": "가을", "start": 39, "end": 41}], "meta": {"domain": "보험 청구", "style": "짧은 단답", "obfuscation": ["romanized"], "hard_case": "homonym_name"}}

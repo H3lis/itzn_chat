@@ -1,0 +1,1 @@
+{"id": "A-003819", "text": "학생회장으로서의 신분증(ID)은 어떤 형식으로요? 김민준(NAME) 학생이 등록할 때 필요한 서류가 뭔가요?", "pi": [{"type": "ID", "text": "신분증", "start": 9, "end": 12}, {"type": "NAME", "text": "김민준", "start": 28, "end": 31}], "meta": {"domain": "학교 행정 문의", "style": "오타 많은 채팅", "obfuscation": ["lookalike_char", "romanized"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-000105", "text": "아, 계정명이 1234567890이 맞는데요? 아니면 1234567990으로 된 건가요?", "pi": [{"type": "ACCOUNT", "text": "1234567990", "start": 30, "end": 40}], "meta": {"domain": "택배 문의", "style": "반말 대화", "obfuscation": ["self_correction"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-005684", "text": "여권 번호는 A1B2C3D4로 되어 있습니다. 이게 정확합니다.", "pi": [{"type": "PASSPORT", "text": "A1B2C3D4", "start": 7, "end": 15}], "meta": {"domain": "직장 메신저", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-002892", "text": "접속하신 IP 주소는 192점 168점 0점 5점으로 확인됩니다. 혹시 잘못 기록된 부분이 있을까요?", "pi": [{"type": "IP_ADDR", "text": "192점 168점 0점 5점", "start": 12, "end": 27}], "meta": {"domain": "민원 접수", "style": "격식체", "obfuscation": ["mixed_reading", "split_utterance"], "hard_case": "none"}}

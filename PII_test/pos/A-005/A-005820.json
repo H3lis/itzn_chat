@@ -1,0 +1,1 @@
+{"id": "A-005820", "text": "제가 아는 분 이름은 소나무예요. 진짜 소나무 씨라기엔 너무 흔하고요. 신분증 번호는 이거예요.", "pi": [{"type": "NAME", "text": "소나무", "start": 12, "end": 15}, {"type": "PASSPORT", "text": "신분증 번호", "start": 40, "end": 46}], "meta": {"domain": "SNS 댓글", "style": "메신저 줄임말", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

@@ -1,0 +1,1 @@
+{"id": "A-002785", "text": "저기요, 주문한 건 배달 주소는 12대동이고, 연락은 070-5555-1234로 부탁드려요.", "pi": [{"type": "SNS", "text": "12대동", "start": 18, "end": 22}, {"type": "PHONE", "text": "070-5555-1234", "start": 30, "end": 43}], "meta": {"domain": "배달 요청사항", "style": "오타 많은 채팅", "obfuscation": ["romanized"], "hard_case": "none"}}

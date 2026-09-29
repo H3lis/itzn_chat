@@ -1,0 +1,1 @@
+{"id": "A-002056", "text": "거기 주소는 인천광역시 부평구 상림동 999-11이고, 연락처는 011 일일일일 2222요.", "pi": [{"type": "ADDRESS", "text": "인천광역시 부평구 상림동 999-11", "start": 7, "end": 27}, {"type": "PHONE", "text": "011 일일일일 2222", "start": 36, "end": 49}], "meta": {"domain": "SNS 댓글", "style": "메신저 줄임말", "obfuscation": ["korean_reading", "repeat_expr"], "hard_case": "none"}}

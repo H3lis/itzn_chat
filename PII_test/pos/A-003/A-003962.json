@@ -1,0 +1,1 @@
+{"id": "A-003962", "text": "아, 제 아이디는 'tmn'이구요. 성함은 '나무준'이라고 해주시면 될 것 같아요.", "pi": [{"type": "ID", "text": "tmn", "start": 11, "end": 14}, {"type": "NAME", "text": "나무준", "start": 25, "end": 28}], "meta": {"domain": "병원 접수", "style": "오타 많은 채팅", "obfuscation": ["romanized", "jamo_split"], "hard_case": "homonym_name"}}

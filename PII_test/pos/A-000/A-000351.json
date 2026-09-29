@@ -1,0 +1,1 @@
+{"id": "A-000351", "text": "보험금 청구할 때 연락 주신 번호가 010 9999 8888 인가요?", "pi": [{"type": "PHONE", "text": "010 9999 8888", "start": 20, "end": 33}], "meta": {"domain": "보험 청구", "style": "반말 대화", "obfuscation": ["stt_error"], "hard_case": "none"}}

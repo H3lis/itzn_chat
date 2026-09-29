@@ -1,0 +1,1 @@
+{"id": "A-003135", "text": "차량번호는 서울 34가 1234이고요. 성함은 장미라고 불러주시면 됩니다.", "pi": [{"type": "DRIVER_LICENSE", "text": "서울 34가 1234", "start": 6, "end": 17}, {"type": "NAME", "text": "장미", "start": 26, "end": 28}], "meta": {"domain": "금융 상담", "style": "격식체", "obfuscation": ["stt_error", "mixed_reading"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-004867", "text": "저기요, 신청자 아이디는 EID-777777로 다시 말할게요. 이게 맞는지 확인 부탁드립니다.", "pi": [{"type": "OTHER_ID", "text": "EID-777777", "start": 14, "end": 24}], "meta": {"domain": "병원 접수", "style": "음성인식(STT) 전사", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

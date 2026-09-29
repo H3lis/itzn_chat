@@ -1,0 +1,1 @@
+{"id": "A-004250", "text": "회원님 정보 확인되셨어요? 메일은 자두-@네이버-dot-com 이고, 이름은 자두요.", "pi": [{"type": "EMAIL", "text": "자두-@네이버-dot-com", "start": 19, "end": 34}, {"type": "NAME", "text": "자두", "start": 43, "end": 45}], "meta": {"domain": "민원 접수", "style": "메신저 줄임말", "obfuscation": ["separator_noise"], "hard_case": "homonym_name"}}

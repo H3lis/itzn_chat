@@ -1,0 +1,1 @@
+{"id": "A-005665", "text": "등록하신 계정 ID가 user12345이고, 담당자님 성함은 박지성 씨로 되어 있습니다.", "pi": [{"type": "ACCOUNT", "text": "user12345", "start": 12, "end": 21}, {"type": "NAME", "text": "박지성", "start": 34, "end": 37}], "meta": {"domain": "회의록", "style": "구어체", "obfuscation": ["plain"], "hard_case": "none"}}

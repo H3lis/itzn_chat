@@ -1,0 +1,1 @@
+{"id": "A-003474", "text": "카드 번호는 1234-5678입니다. 이게 맞을까요?", "pi": [{"type": "CARD", "text": "1234-5678", "start": 7, "end": 16}], "meta": {"domain": "직장 메신저", "style": "메신저 줄임말", "obfuscation": ["stt_error"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-000476", "text": "저희 집 주소는 경기도 성남시 분당구 정자역로 500이에요. 저는 라임이라고 해요.", "pi": [{"type": "ADDRESS", "text": "경기도 성남시 분당구 정자역로 500", "start": 9, "end": 29}, {"type": "NAME", "text": "라임", "start": 37, "end": 39}], "meta": {"domain": "SNS 댓글", "style": "반말 대화", "obfuscation": ["romanized"], "hard_case": "homonym_name"}}

@@ -1,0 +1,1 @@
+{"id": "A-003191", "text": "차량 번호는 기역 에브이 하나 칠 공 구 삼, 그리고 협성개발 본사로 접수해 주시기 바랍니다.", "pi": [{"type": "CAR_PLATE", "text": "기역 에브이 하나 칠 공 구 삼", "start": 7, "end": 24}, {"type": "ORG", "text": "협성개발 본사", "start": 30, "end": 37}], "meta": {"domain": "여행 예약", "style": "공문서풍", "obfuscation": ["korean_reading"], "hard_case": "org_person"}}

@@ -1,0 +1,1 @@
+{"id": "A-000099", "text": "담당자분 성함이 김철수 님이시고, 연락은 010-5555-6666으로 주시면 됩니다.", "pi": [{"type": "NAME", "text": "김철수", "start": 9, "end": 12}, {"type": "PHONE", "text": "010-5555-6666", "start": 23, "end": 36}], "meta": {"domain": "음성통화 전사문", "style": "오타 많은 채팅", "obfuscation": ["romanized"], "hard_case": "none"}}

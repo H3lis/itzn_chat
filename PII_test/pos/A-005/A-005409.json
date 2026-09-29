@@ -1,0 +1,1 @@
+{"id": "A-005409", "text": "혹시 담당자님 성함이 어떻게 되시나요?", "pi": [{"type": "NAME", "text": "담당자", "start": 3, "end": 6}], "meta": {"domain": "고객센터 채팅", "style": "격식체", "obfuscation": ["jamo_split"], "hard_case": "none"}}

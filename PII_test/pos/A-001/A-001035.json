@@ -1,0 +1,1 @@
+{"id": "A-001035", "text": "네, 고객님. 성함은 '기쁨' 씨 맞으신가요? 다시 한번 말씀해주시겠어요?", "pi": [{"type": "NAME", "text": "기쁨", "start": 13, "end": 15}], "meta": {"domain": "민원 접수", "style": "음성인식(STT) 전사", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

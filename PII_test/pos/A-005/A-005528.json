@@ -1,0 +1,1 @@
+{"id": "A-005528", "text": "출생일은 1990년 12월 25일로 처리해 주시고요, 생년월일은 1990 12 25입니다.", "pi": [{"type": "BIRTH", "text": "1990년 12월 25일", "start": 5, "end": 18}], "meta": {"domain": "보험 청구", "style": "격식체", "obfuscation": ["stt_error", "korean_reading"], "hard_case": "none"}}

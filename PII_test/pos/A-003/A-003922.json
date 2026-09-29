@@ -1,0 +1,1 @@
+{"id": "A-003922", "text": "제 이메일 주소는 jihyun.lee(at)company.net으로 확인되는데요. 홍길동 대리님 말씀이 맞으신가요?", "pi": [{"type": "EMAIL", "text": "jihyun.lee(at)company.net", "start": 10, "end": 35}, {"type": "NAME", "text": "홍길동", "start": 46, "end": 49}], "meta": {"domain": "회의록", "style": "구어체", "obfuscation": ["romanized"], "hard_case": "none"}}

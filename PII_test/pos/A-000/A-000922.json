@@ -1,0 +1,1 @@
+{"id": "A-000922", "text": "담당자님, 제가 방문할 분은 김과장님입니다. 혹시 접수 서류는 미리 준비해 두면 될까요?", "pi": [{"type": "NAME", "text": "김과장님", "start": 16, "end": 20}], "meta": {"domain": "음성통화 전사문", "style": "공문서풍", "obfuscation": ["honorific_ref"], "hard_case": "none"}}

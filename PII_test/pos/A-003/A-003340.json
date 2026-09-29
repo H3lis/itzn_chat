@@ -1,0 +1,1 @@
+{"id": "A-003340", "text": "저희 담당자 메일이요? hhj123@g■mal.net으로 연락 주세요. 정확하게는 hhj123(at)g(dot)mail(dot)net입니다.", "pi": [{"type": "EMAIL", "text": "hhj123(at)g(dot)mail(dot)net", "start": 46, "end": 74}], "meta": {"domain": "직장 메신저", "style": "반말 대화", "obfuscation": ["email_spoken", "lookalike_char"], "hard_case": "none"}}

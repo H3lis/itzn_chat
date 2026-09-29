@@ -1,0 +1,1 @@
+{"id": "A-000236", "text": "여권 번호는 김민준이요. 성함은 진짜 김민준 맞나요?", "pi": [{"type": "NAME", "text": "김민준", "start": 7, "end": 10}, {"type": "PASSPORT", "text": "김민준", "start": 21, "end": 24}], "meta": {"domain": "커뮤니티 게시글", "style": "오타 많은 채팅", "obfuscation": ["jamo_split"], "hard_case": "none"}}

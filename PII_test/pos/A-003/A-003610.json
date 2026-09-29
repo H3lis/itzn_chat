@@ -1,0 +1,1 @@
+{"id": "A-003610", "text": "해당 교육 프로그램은 '네오테크 주식회사'에서 진행하는 것이 맞나요?", "pi": [{"type": "ORG", "text": "네오테크 주식회사", "start": 13, "end": 22}], "meta": {"domain": "쇼핑몰 문의", "style": "짧은 단답", "obfuscation": ["jamo_split", "romanized"], "hard_case": "none"}}

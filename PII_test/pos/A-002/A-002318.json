@@ -1,0 +1,1 @@
+{"id": "A-002318", "text": "택배는 101호로 보내주세요. 받는 분 성함은 박지수 님 맞으시죠?", "pi": [{"type": "ACCOUNT", "text": "101", "start": 4, "end": 7}, {"type": "NAME", "text": "박지수", "start": 26, "end": 29}], "meta": {"domain": "택배 문의", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-004827", "text": "제가 가입한 메일 주소는 mycustomer.svc@bankcorp.net이라고 되어 있는데, 이게 최신 정보인가요?", "pi": [{"type": "EMAIL", "text": "mycustomer.svc@bankcorp.net", "start": 14, "end": 41}], "meta": {"domain": "금융 상담", "style": "오타 많은 채팅", "obfuscation": ["plain"], "hard_case": "none"}}

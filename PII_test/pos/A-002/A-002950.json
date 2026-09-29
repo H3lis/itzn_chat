@@ -1,0 +1,1 @@
+{"id": "A-002950", "text": "가을님은 오늘 새로 오신 회원님이신가요? 많이 반가워요.", "pi": [{"type": "NAME", "text": "가을", "start": 0, "end": 2}], "meta": {"domain": "커뮤니티 게시글", "style": "격식체", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

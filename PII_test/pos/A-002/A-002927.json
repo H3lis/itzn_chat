@@ -1,0 +1,1 @@
+{"id": "A-002927", "text": "접수번호가 8888-xxxx-9999, 혹시 이것도 잘못 읽으신 건가요? 다시 불러드릴게요.", "pi": [{"type": "OTHER_ID", "text": "8888-xxxx-9999", "start": 6, "end": 20}], "meta": {"domain": "택배 문의", "style": "메신저 줄임말", "obfuscation": ["lookalike_char", "stt_error"], "hard_case": "none"}}

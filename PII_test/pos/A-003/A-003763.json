@@ -1,0 +1,1 @@
+{"id": "A-003763", "text": "제가 가입한 계정이요? 821-2222-3333 같은 비정형적인 번호로 돼있고요. 전화번호는 010 9876 5432입니다.", "pi": [{"type": "ACCOUNT", "text": "821-2222-3333", "start": 13, "end": 26}, {"type": "PHONE", "text": "010 9876 5432", "start": 52, "end": 65}], "meta": {"domain": "온라인 강의 Q&A", "style": "구어체", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

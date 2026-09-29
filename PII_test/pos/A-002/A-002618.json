@@ -1,0 +1,1 @@
+{"id": "A-002618", "text": "배달할 곳 앞에 주차된 차량 번호판이 ABC 1234라던데, 그거 맞아요?", "pi": [{"type": "CAR_PLATE", "text": "ABC 1234", "start": 21, "end": 29}], "meta": {"domain": "배달 요청사항", "style": "반말 대화", "obfuscation": ["plain"], "hard_case": "none"}}

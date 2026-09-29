@@ -1,0 +1,1 @@
+{"id": "A-004535", "text": "너 닉네임이 뭐야? 혹시 아이디로 'SeoulWalker' 쓰는 거 맞지? 혹시 'SeoulWalker' 아니면 다른 건 없어?", "pi": [{"type": "ID", "text": "SeoulWalker", "start": 20, "end": 31}, {"type": "NAME", "text": "SeoulWalker", "start": 46, "end": 57}], "meta": {"domain": "중고거래 채팅", "style": "반말 대화", "obfuscation": ["plain"], "hard_case": "nickname_id"}}

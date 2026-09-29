@@ -1,0 +1,1 @@
+{"id": "A-003602", "text": "네, 예약자 계정은 A1B2C3D4예요. 차량 번호는 12가 제스트 34라고 말씀 주셨죠?", "pi": [{"type": "ACCOUNT", "text": "A1B2C3D4", "start": 11, "end": 19}, {"type": "CAR_PLATE", "text": "12가 제스트 34", "start": 30, "end": 40}], "meta": {"domain": "콜센터 상담 요약", "style": "구어체", "obfuscation": ["stt_error"], "hard_case": "none"}}

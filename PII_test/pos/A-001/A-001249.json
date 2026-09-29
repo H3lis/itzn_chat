@@ -1,0 +1,1 @@
+{"id": "A-001249", "text": "요청하신 김현준님 정보 확인했습니다. 등록된 휴대폰 번호와 이메일 주소가 정확한지 다시 한번 말씀해 주시겠어요?", "pi": [{"type": "NAME", "text": "김현준", "start": 5, "end": 8}], "meta": {"domain": "콜센터 상담 요약", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "none"}}

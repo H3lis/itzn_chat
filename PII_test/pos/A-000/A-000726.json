@@ -1,0 +1,1 @@
+{"id": "A-000726", "text": "학생 신분증 번호가 어떻게 되나요? 혹시 'ㅅㅏㄱㅎㅐㄴㅅ ㅣㄴㅂㅜㄴㅈㅡㅇ'이라고 말씀해주시면 될까요?", "pi": [{"type": "NAME", "text": "ㅅㅏㄱㅎㅐㄴㅅ ㅣㄴㅂㅜㄴㅈㅡㅇ", "start": 24, "end": 40}], "meta": {"domain": "학교 행정 문의", "style": "짧은 단답", "obfuscation": ["jamo_split"], "hard_case": "none"}}

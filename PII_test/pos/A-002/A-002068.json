@@ -1,0 +1,1 @@
+{"id": "A-002068", "text": "카드 번호는 1111이에요. 그리고 전화는 010-2222-3333입니다. 혹시 다시 불러주시겠어요?", "pi": [{"type": "CARD", "text": "1111", "start": 7, "end": 11}, {"type": "PHONE", "text": "010-2222-3333", "start": 24, "end": 37}], "meta": {"domain": "학교 행정 문의", "style": "반말 대화", "obfuscation": ["lookalike_char", "split_utterance"], "hard_case": "none"}}

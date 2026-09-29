@@ -1,0 +1,1 @@
+{"id": "A-004607", "text": "고객님의 계정 번호는 9988XXXX이고, 성함은 구름님으로 알고 있는데요. 혹시 ID 확인 부탁드릴게요.", "pi": [{"type": "ACCOUNT", "text": "9988XXXX", "start": 12, "end": 20}, {"type": "NAME", "text": "구름", "start": 28, "end": 30}], "meta": {"domain": "학교 행정 문의", "style": "길고 장황한 설명", "obfuscation": ["romanized", "lookalike_char"], "hard_case": "homonym_name"}}

@@ -1,0 +1,1 @@
+{"id": "A-002702", "text": "저, 제가 사용한 소셜 미디어 계정이 있는데, 그건 X(옛 트위터)에서 'BlueWave2023' 이래요. 혹시 그 계정으로도 청구가 가능한가요?", "pi": [{"type": "SNS", "text": "BlueWave2023", "start": 41, "end": 53}], "meta": {"domain": "보험 청구", "style": "짧은 단답", "obfuscation": ["lookalike_char", "romanized"], "hard_case": "none"}}

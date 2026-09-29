@@ -1,0 +1,1 @@
+{"id": "A-002042", "text": "거주하시는 주소는 서울특별시 강남구 역삼동이고, 성함은 박지영 님 맞으신가요?", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 역삼동", "start": 10, "end": 23}, {"type": "NAME", "text": "박지영", "start": 31, "end": 34}], "meta": {"domain": "콜센터 상담 요약", "style": "구어체", "obfuscation": ["korean_reading"], "hard_case": "none"}}

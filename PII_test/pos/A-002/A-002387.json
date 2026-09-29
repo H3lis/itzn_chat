@@ -1,0 +1,1 @@
+{"id": "A-002387", "text": "연락하실 메일은 abc@test.co.kr이 아니라, abc-at-test-dot-co-kr로 변경해야 합니다.", "pi": [{"type": "EMAIL", "text": "abc@test.co.kr", "start": 9, "end": 23}], "meta": {"domain": "음성통화 전사문", "style": "짧은 단답", "obfuscation": ["separator_noise"], "hard_case": "none"}}

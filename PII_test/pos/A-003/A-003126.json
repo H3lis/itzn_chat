@@ -1,0 +1,1 @@
+{"id": "A-003126", "text": "주문하신 상품 배송은 어디로 돼? 메일 주소 알려줄게.", "pi": [{"type": "EMAIL", "text": "메일 주소", "start": 19, "end": 24}], "meta": {"domain": "쇼핑몰 문의", "style": "반말 대화", "obfuscation": ["plain"], "hard_case": "none"}}

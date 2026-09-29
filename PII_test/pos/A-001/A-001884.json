@@ -1,0 +1,1 @@
+{"id": "A-001884", "text": "신분증 상으로 등록된 주민번호가 920101-1234567은 확실한 건가요?", "pi": [{"type": "RRN", "text": "920101-1234567", "start": 18, "end": 32}], "meta": {"domain": "여행 예약", "style": "오타 많은 채팅", "obfuscation": ["separator_noise"], "hard_case": "none"}}

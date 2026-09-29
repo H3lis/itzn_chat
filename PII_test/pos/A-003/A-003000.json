@@ -1,0 +1,1 @@
+{"id": "A-003000", "text": "김민수 학생은 우리 학교 3학년 1반에 재학 중이고요. 본명은 김민수고, 아버지 성함은 김민수세요.", "pi": [{"type": "NAME", "text": "김민수", "start": 0, "end": 3}, {"type": "NAME", "text": "김민수", "start": 35, "end": 38}], "meta": {"domain": "학교 행정 문의", "style": "길고 장황한 설명", "obfuscation": ["romanized"], "hard_case": "none"}}

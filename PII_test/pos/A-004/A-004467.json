@@ -1,0 +1,1 @@
+{"id": "A-004467", "text": "학생회장 김현수 이름으로 여권 번호는 이거래요. 9876543210.", "pi": [{"type": "ID", "text": "김현수", "start": 5, "end": 8}, {"type": "PASSPORT", "text": "9876543210", "start": 27, "end": 37}], "meta": {"domain": "SNS 댓글", "style": "음성인식(STT) 전사", "obfuscation": ["korean_reading"], "hard_case": "none"}}

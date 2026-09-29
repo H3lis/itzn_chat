@@ -1,0 +1,1 @@
+{"id": "A-005711", "text": "혹시 제 아이디가 진짜 제 계정명이 맞는지 확인 부탁드려요. 그거 아니면 제 개인 SNS도 알려드릴게요.", "pi": [{"type": "OTHER_ID", "text": "아이디", "start": 5, "end": 8}, {"type": "SNS", "text": "개인 SNS", "start": 43, "end": 49}], "meta": {"domain": "쇼핑몰 문의", "style": "반말 대화", "obfuscation": ["self_correction"], "hard_case": "nickname_id"}}

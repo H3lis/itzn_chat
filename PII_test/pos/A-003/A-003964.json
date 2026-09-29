@@ -1,0 +1,1 @@
+{"id": "A-003964", "text": "저희 집 주소는 010-2222-3333예요. 통화는 1111-2222-3333으로 하시고요. 그리고 그쪽으로 오세요.", "pi": [{"type": "ADDRESS", "text": "010-2222-3333", "start": 9, "end": 22}, {"type": "PHONE", "text": "1111-2222-3333", "start": 30, "end": 44}], "meta": {"domain": "SNS 댓글", "style": "메신저 줄임말", "obfuscation": ["split_utterance", "korean_reading", "repeat_expr"], "hard_case": "none"}}

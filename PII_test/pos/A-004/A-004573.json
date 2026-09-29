@@ -1,0 +1,1 @@
+{"id": "A-004573", "text": "김민준 님, 차 번호는 서울 강남구 테헤란로 45, 확인 부탁드립니다.", "pi": [{"type": "NAME", "text": "김민준", "start": 0, "end": 3}, {"type": "CAR_PLATE", "text": "서울 강남구 테헤란로 45", "start": 13, "end": 27}], "meta": {"domain": "병원 접수", "style": "공문서풍", "obfuscation": ["romanized"], "hard_case": "none"}}

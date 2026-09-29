@@ -1,0 +1,1 @@
+{"id": "A-002379", "text": "저희 회사명은 전국보상원이라구요. 이게 맞나요? 혹시 다른 걸로 등록해야 할까요?", "pi": [{"type": "ORG", "text": "전국보상원", "start": 8, "end": 13}], "meta": {"domain": "보험 청구", "style": "오타 많은 채팅", "obfuscation": ["romanized"], "hard_case": "org_person"}}

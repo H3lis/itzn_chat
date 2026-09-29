@@ -1,0 +1,1 @@
+{"id": "A-004321", "text": "상품 결제는 무조건 신용카드예요. 제 이름은 지혜고요. 카드 번호는 4111 다음에 2가 네 번, 그리고 8이 네 번인 거로 해주세요.", "pi": [{"type": "NAME", "text": "지혜", "start": 25, "end": 27}, {"type": "CARD", "text": "4111", "start": 38, "end": 42}], "meta": {"domain": "배달 요청사항", "style": "구어체", "obfuscation": ["jamo_split", "repeat_expr"], "hard_case": "homonym_name"}}

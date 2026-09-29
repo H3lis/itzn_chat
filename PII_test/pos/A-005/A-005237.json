@@ -1,0 +1,1 @@
+{"id": "A-005237", "text": "상담하신 분 성함은 David이고, 이메일 주소는 david.kim@example.com으로 확인되었습니다.", "pi": [{"type": "NAME", "text": "David", "start": 11, "end": 16}, {"type": "EMAIL", "text": "david.kim@example.com", "start": 28, "end": 49}], "meta": {"domain": "콜센터 상담 요약", "style": "공문서풍", "obfuscation": ["romanized"], "hard_case": "none"}}

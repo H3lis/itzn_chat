@@ -1,0 +1,1 @@
+{"id": "A-001659", "text": "연락처는 010 점 9999 점 8888 이구요, 아니요, 이게 맞습니다.", "pi": [{"type": "PHONE", "text": "010 점 9999 점 8888", "start": 5, "end": 22}], "meta": {"domain": "고객센터 채팅", "style": "존댓말 상담", "obfuscation": ["separator_noise", "self_correction"], "hard_case": "none"}}

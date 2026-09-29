@@ -1,0 +1,1 @@
+{"id": "A-005055", "text": "안녕하세요, 주문하신 상품은 영웅 고객님 건가요? 010-9999-1234로 연락 주시면 확인 가능해요.", "pi": [{"type": "NAME", "text": "영웅", "start": 16, "end": 18}, {"type": "PHONE", "text": "010-9999-1234", "start": 28, "end": 41}], "meta": {"domain": "쇼핑몰 문의", "style": "오타 많은 채팅", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-003171", "text": "주소는 서울특별시 강남구 역삼동이고, OO빌딩에 있는 ○○전자입니다.", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 역삼동", "start": 4, "end": 17}, {"type": "ADDRESS", "text": "OO빌딩", "start": 21, "end": 25}, {"type": "ORG", "text": "○○전자", "start": 30, "end": 34}], "meta": {"domain": "금융 상담", "style": "메신저 줄임말", "obfuscation": ["stt_error"], "hard_case": "org_person"}}

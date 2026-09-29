@@ -1,0 +1,1 @@
+{"id": "A-004823", "text": "사무실 주소는 서울시 강남구 테헤란로 123-456이고요, 여기 말고 다른 곳으로 변경해야 할 것 같은데요.", "pi": [{"type": "ADDRESS", "text": "서울시 강남구 테헤란로 123-456", "start": 8, "end": 28}], "meta": {"domain": "보험 청구", "style": "메신저 줄임말", "obfuscation": ["split_utterance"], "hard_case": "none"}}

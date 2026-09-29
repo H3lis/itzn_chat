@@ -1,0 +1,1 @@
+{"id": "A-004421", "text": "네, 고객님. 비밀번호 재설정은 어렵습니다. 해당 계정의 이메일 주소는 'mysecret.info'로 등록되어 있는 것으로 확인되는데요. 다른 분이 사용하시는 것 같네요.", "pi": [{"type": "EMAIL", "text": "mysecret.info", "start": 41, "end": 54}], "meta": {"domain": "금융 상담", "style": "구어체", "obfuscation": ["separator_noise"], "hard_case": "none"}}

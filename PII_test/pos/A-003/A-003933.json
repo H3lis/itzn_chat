@@ -1,0 +1,1 @@
+{"id": "A-003933", "text": "차량 번호가 '12가 3456'이요? 혹시 '일이이삼사육'처럼 들려서요. 이거 맞나요?", "pi": [{"type": "CAR_PLATE", "text": "12가 3456", "start": 8, "end": 16}], "meta": {"domain": "SNS 댓글", "style": "존댓말 상담", "obfuscation": ["stt_error", "korean_reading"], "hard_case": "none"}}

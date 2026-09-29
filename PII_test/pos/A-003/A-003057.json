@@ -1,0 +1,1 @@
+{"id": "A-003057", "text": "제 인스타그램 계정이요, 010-XXXX-YYYY예요. 정확한 주소는 네이버에 있어요.", "pi": [{"type": "SNS", "text": "010-XXXX-YYYY", "start": 14, "end": 27}], "meta": {"domain": "직장 메신저", "style": "반말 대화", "obfuscation": ["separator_noise", "romanized"], "hard_case": "none"}}

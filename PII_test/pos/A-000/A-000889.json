@@ -1,0 +1,1 @@
+{"id": "A-000889", "text": "제가 사는 곳 주소는 경기도 안양시 박지구 1502호 근처에요. 혹시 안양 쪽으로 오실 수 있나요?", "pi": [{"type": "ADDRESS", "text": "경기도 안양시 박지구 1502호", "start": 12, "end": 29}, {"type": "NAME", "text": "안양", "start": 39, "end": 41}], "meta": {"domain": "음성통화 전사문", "style": "반말 대화", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

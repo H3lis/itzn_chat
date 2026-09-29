@@ -1,0 +1,1 @@
+{"id": "A-002683", "text": "카드 번호요? 4444로 되어있고요. 그리고 주민번호는 900101-1234567이 맞나요?", "pi": [{"type": "CARD", "text": "4444", "start": 8, "end": 12}, {"type": "RRN", "text": "900101-1234567", "start": 31, "end": 45}], "meta": {"domain": "중고거래 채팅", "style": "짧은 단답", "obfuscation": ["stt_error"], "hard_case": "none"}}

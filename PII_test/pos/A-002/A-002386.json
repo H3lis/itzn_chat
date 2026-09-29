@@ -1,0 +1,1 @@
+{"id": "A-002386", "text": "다솜 씨 건은요? 주민번호는 880808-2******로 메모해 두겠습니다.", "pi": [{"type": "NAME", "text": "다솜", "start": 0, "end": 2}, {"type": "RRN", "text": "880808-2******", "start": 16, "end": 30}], "meta": {"domain": "회의록", "style": "메신저 줄임말", "obfuscation": ["mixed_reading"], "hard_case": "homonym_name"}}

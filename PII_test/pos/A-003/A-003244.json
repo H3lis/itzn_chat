@@ -1,0 +1,1 @@
+{"id": "A-003244", "text": "담당자 분 성함이 박지훈 씨시죠? 혹시 주민등록번호가 901231-1234567로 알고 있습니다만, 맞을까요?", "pi": [{"type": "NAME", "text": "박지훈", "start": 10, "end": 13}, {"type": "RRN", "text": "901231-1234567", "start": 30, "end": 44}], "meta": {"domain": "병원 접수", "style": "오타 많은 채팅", "obfuscation": ["plain"], "hard_case": "none"}}

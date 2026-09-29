@@ -1,0 +1,1 @@
+{"id": "A-005540", "text": "저 이름이 장미인데요, 그냥 이렇게 불러주시면 돼요.", "pi": [{"type": "NAME", "text": "장미", "start": 6, "end": 8}], "meta": {"domain": "여행 예약", "style": "오타 많은 채팅", "obfuscation": ["jamo_split"], "hard_case": "none"}}

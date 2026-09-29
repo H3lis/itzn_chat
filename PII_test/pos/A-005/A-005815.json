@@ -1,0 +1,1 @@
+{"id": "A-005815", "text": "이메일이 user@domain.net 맞으신가요? IP 주소는 192.168.1.1 같은 건가요?", "pi": [{"type": "EMAIL", "text": "user@domain.net", "start": 5, "end": 20}, {"type": "IP_ADDR", "text": "192.168.1.1", "start": 35, "end": 46}], "meta": {"domain": "병원 접수", "style": "오타 많은 채팅", "obfuscation": ["mixed_reading", "korean_reading"], "hard_case": "none"}}

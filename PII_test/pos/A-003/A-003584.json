@@ -1,0 +1,1 @@
+{"id": "A-003584", "text": "저희가 고객님 생년월일은 88년 5월 15일이고, 이메일 주소는 blue.sky@test.net으로 등록되어 있잖아요?", "pi": [{"type": "BIRTH", "text": "88년 5월 15일", "start": 14, "end": 24}, {"type": "EMAIL", "text": "blue.sky@test.net", "start": 36, "end": 53}], "meta": {"domain": "고객센터 채팅", "style": "존댓말 상담", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

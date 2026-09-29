@@ -1,0 +1,1 @@
+{"id": "A-000267", "text": "거주지는 강남구 역삼동 456이고, 제 이름은 박지민이구요.", "pi": [{"type": "ADDRESS", "text": "강남구 역삼동 456", "start": 5, "end": 16}, {"type": "NAME", "text": "박지민", "start": 26, "end": 29}], "meta": {"domain": "온라인 강의 Q&A", "style": "메신저 줄임말", "obfuscation": ["jamo_split"], "hard_case": "none"}}

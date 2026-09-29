@@ -1,0 +1,1 @@
+{"id": "A-005089", "text": "생년월일이 92년 10월 25일이라고 하셨는데, 혹시 그게 102년 10월 25일로 잘못 전달된 건가요?", "pi": [{"type": "BIRTH", "text": "102년 10월 25일", "start": 33, "end": 45}], "meta": {"domain": "택배 문의", "style": "공문서풍", "obfuscation": ["stt_error"], "hard_case": "none"}}

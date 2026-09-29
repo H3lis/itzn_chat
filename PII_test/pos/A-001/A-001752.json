@@ -1,0 +1,1 @@
+{"id": "A-001752", "text": "문의주신 전화번호가 010 다시 1111 2222이 맞는지 한 번만 더 확인 부탁드립니다.", "pi": [{"type": "PHONE", "text": "010 다시 1111 2222", "start": 11, "end": 27}], "meta": {"domain": "커뮤니티 게시글", "style": "격식체", "obfuscation": ["korean_reading", "separator_noise"], "hard_case": "none"}}

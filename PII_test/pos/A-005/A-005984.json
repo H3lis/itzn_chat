@@ -1,0 +1,1 @@
+{"id": "A-005984", "text": "받는 분 이름이 구름이 맞는지요? 그리고 주민번호는 980115으로 부탁드립니다.", "pi": [{"type": "NAME", "text": "구름", "start": 9, "end": 11}, {"type": "RRN", "text": "980115", "start": 29, "end": 35}], "meta": {"domain": "배달 요청사항", "style": "짧은 단답", "obfuscation": ["stt_error", "self_correction"], "hard_case": "homonym_name"}}

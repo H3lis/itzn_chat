@@ -1,0 +1,1 @@
+{"id": "A-000023", "text": "전화는 010-2222-3333이고요, SNS는 @dream_user_77이에요. 혹시 변경 사항 있나요?", "pi": [{"type": "PHONE", "text": "010-2222-3333", "start": 4, "end": 17}, {"type": "SNS", "text": "@dream_user_77", "start": 27, "end": 41}], "meta": {"domain": "배달 요청사항", "style": "메신저 줄임말", "obfuscation": ["repeat_expr", "split_utterance"], "hard_case": "nickname_id"}}

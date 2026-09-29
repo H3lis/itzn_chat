@@ -1,0 +1,1 @@
+{"id": "A-003769", "text": "저 푸름 씨한테서 연락 왔는데요. 이메일 주소는 purum@test.com 이 맞나요?", "pi": [{"type": "NAME", "text": "푸름", "start": 2, "end": 4}, {"type": "EMAIL", "text": "purum@test.com", "start": 27, "end": 41}], "meta": {"domain": "커뮤니티 게시글", "style": "구어체", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

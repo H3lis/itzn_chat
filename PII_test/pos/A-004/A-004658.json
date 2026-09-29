@@ -1,0 +1,1 @@
+{"id": "A-004658", "text": "차량 번호는 34가 5555, 그리고 신분증 번호는 900101-21xxxxx로 확인했습니다.", "pi": [{"type": "DRIVER_LICENSE", "text": "900101-21xxxxx", "start": 29, "end": 43}], "meta": {"domain": "이메일 본문", "style": "공문서풍", "obfuscation": ["plain"], "hard_case": "none"}}

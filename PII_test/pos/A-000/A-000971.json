@@ -1,0 +1,1 @@
+{"id": "A-000971", "text": "선생님, 혹시 연락처를 다시 한 번만 알려주실 수 있나요? 010-9999-0000 이게 맞을까요?", "pi": [{"type": "PHONE", "text": "010-9999-0000", "start": 33, "end": 46}], "meta": {"domain": "온라인 강의 Q&A", "style": "메신저 줄임말", "obfuscation": ["plain"], "hard_case": "none"}}

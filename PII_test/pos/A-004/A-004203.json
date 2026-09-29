@@ -1,0 +1,1 @@
+{"id": "A-004203", "text": "아침에 연락드렸던 거 같은데, 이름이 아침지민이고 주민등록번호는 910315-21XXXXXX로 알고 있습니다.", "pi": [{"type": "NAME", "text": "아침지민", "start": 21, "end": 25}, {"type": "RRN", "text": "910315-21", "start": 36, "end": 45}], "meta": {"domain": "이메일 본문", "style": "존댓말 상담", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

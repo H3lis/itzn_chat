@@ -1,0 +1,1 @@
+{"id": "A-000737", "text": "예약 도와주셔서 감사합니다. 제 메일은 @jamo.email.com 이고요, 이름은 'ㄱㅏㄴㄷㅏ'로 되어있어요. 혹시 이름 철자가 틀릴까 봐요.", "pi": [{"type": "EMAIL", "text": "@jamo.email.com", "start": 22, "end": 37}, {"type": "NAME", "text": "ㄱㅏㄴㄷㅏ", "start": 48, "end": 53}], "meta": {"domain": "여행 예약", "style": "구어체", "obfuscation": ["lookalike_char", "jamo_split"], "hard_case": "none"}}

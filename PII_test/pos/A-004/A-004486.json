@@ -1,0 +1,1 @@
+{"id": "A-004486", "text": "네, 주문하신 물품에 대해서는 신용카드로 결제가 완료되었고요, 고객님 성함이 김민준 씨 맞으신가요?", "pi": [{"type": "CARD", "text": "신용카드로", "start": 17, "end": 22}, {"type": "NAME", "text": "김민준", "start": 43, "end": 46}], "meta": {"domain": "택배 문의", "style": "길고 장황한 설명", "obfuscation": ["plain"], "hard_case": "none"}}

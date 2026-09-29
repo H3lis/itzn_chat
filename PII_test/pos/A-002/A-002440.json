@@ -1,0 +1,1 @@
+{"id": "A-002440", "text": "접속 ID는 AlphaOneTwo이고, 담당자님 성함은 UserPro님으로 알고 있습니다.", "pi": [{"type": "ID", "text": "AlphaOneTwo", "start": 7, "end": 18}, {"type": "NAME", "text": "UserPro", "start": 31, "end": 38}], "meta": {"domain": "고객센터 채팅", "style": "오타 많은 채팅", "obfuscation": ["lookalike_char"], "hard_case": "nickname_id"}}

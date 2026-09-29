@@ -1,0 +1,1 @@
+{"id": "A-001293", "text": "제가 지금 사는 곳 주소가 정확히 어디인지 다시 한번 알려주시겠어요? 성남시 분당구 판교역 근처예요.", "pi": [{"type": "ADDRESS", "text": "성남시 분당구 판교역", "start": 39, "end": 50}], "meta": {"domain": "커뮤니티 게시글", "style": "짧은 단답", "obfuscation": ["jamo_split", "stt_error"], "hard_case": "none"}}

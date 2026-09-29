@@ -1,0 +1,1 @@
+{"id": "A-002286", "text": "네, 고객님. 결제하신 상품 배송 조회 결과요. 혹시 주소가 좀 바뀌셨나요? 수원으로 다시 확인 부탁드려요.", "pi": [{"type": "NAME", "text": "수원", "start": 43, "end": 45}], "meta": {"domain": "쇼핑몰 문의", "style": "격식체", "obfuscation": ["self_correction", "jamo_split"], "hard_case": "homonym_name"}}

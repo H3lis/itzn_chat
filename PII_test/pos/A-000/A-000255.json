@@ -1,0 +1,1 @@
+{"id": "A-000255", "text": "파리 여행 일정 짜봤는데요. 예약하시는 분 연락처는 '010-5555-1212'예요. 혹시 다른 번호 있어요?", "pi": [{"type": "PHONE", "text": "010-5555-1212", "start": 30, "end": 43}], "meta": {"domain": "여행 예약", "style": "구어체", "obfuscation": ["split_utterance"], "hard_case": "none"}}

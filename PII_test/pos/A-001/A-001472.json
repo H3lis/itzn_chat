@@ -1,0 +1,1 @@
+{"id": "A-001472", "text": "저희는 강남구 중앙로 1504호 거주합니다. 그리고 제가 쓰는 아이디는 jhong1504입니다.", "pi": [{"type": "ADDRESS", "text": "강남구 중앙로 1504호", "start": 4, "end": 17}, {"type": "ID", "text": "jhong1504", "start": 40, "end": 49}], "meta": {"domain": "콜센터 상담 요약", "style": "오타 많은 채팅", "obfuscation": ["jamo_split"], "hard_case": "none"}}

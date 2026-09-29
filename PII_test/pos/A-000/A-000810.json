@@ -1,0 +1,1 @@
+{"id": "A-000810", "text": "혹시 주문하신 상품의 배송 추적 번호가요? 123456789012 이렇게로 되어 있던데, 이거 혹시 전화번호가 아닌가요?", "pi": [{"type": "PHONE", "text": "123456789012", "start": 24, "end": 36}], "meta": {"domain": "택배 문의", "style": "오타 많은 채팅", "obfuscation": ["stt_error"], "hard_case": "none"}}

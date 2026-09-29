@@ -1,0 +1,1 @@
+{"id": "A-004719", "text": "혹시 접수하시는 분 이름이 강민지 씨 맞으신가요? 아니면 다른 분이신가요?", "pi": [{"type": "NAME", "text": "강민지", "start": 15, "end": 18}], "meta": {"domain": "음성통화 전사문", "style": "오타 많은 채팅", "obfuscation": ["jamo_split"], "hard_case": "none"}}

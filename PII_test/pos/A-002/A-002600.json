@@ -1,0 +1,1 @@
+{"id": "A-002600", "text": "신용카드 번호가 010다섯육칠 팔구 백이십 삼 사구예요. 혹시 고객님 성함이 김민지 님이신가요?", "pi": [{"type": "CARD", "text": "010다섯육칠 팔구 백이십 삼 사구", "start": 9, "end": 28}, {"type": "NAME", "text": "김민지", "start": 43, "end": 46}], "meta": {"domain": "학교 행정 문의", "style": "음성인식(STT) 전사", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-004926", "text": "혹시 성남 사람 맞아요? 김성남 씨한테 연락할 거예요. 전화번호는 010-3333-4444 맞죠?", "pi": [{"type": "NAME", "text": "김성남", "start": 14, "end": 17}, {"type": "PHONE", "text": "010-3333-4444", "start": 37, "end": 50}], "meta": {"domain": "온라인 강의 Q&A", "style": "반말 대화", "obfuscation": ["repeat_expr"], "hard_case": "homonym_name"}}

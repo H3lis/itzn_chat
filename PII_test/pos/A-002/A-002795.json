@@ -1,0 +1,1 @@
+{"id": "A-002795", "text": "요청하신 이메일 주소는 john.doe [at] yahoo . com 이 맞는지 다시 한번 확인 부탁드립니다.", "pi": [{"type": "EMAIL", "text": "john.doe [at] yahoo . com", "start": 13, "end": 38}], "meta": {"domain": "고객센터 채팅", "style": "공문서풍", "obfuscation": ["separator_noise"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-002406", "text": "운전면허증 번호가 1111, 아 아니다 2222이고, 이름은 안양민수 씨 맞으신가요?", "pi": [{"type": "DRIVER_LICENSE", "text": "1111, 아 아니다 2222", "start": 10, "end": 26}, {"type": "NAME", "text": "안양민수", "start": 34, "end": 38}], "meta": {"domain": "여행 예약", "style": "음성인식(STT) 전사", "obfuscation": ["self_correction"], "hard_case": "homonym_name"}}

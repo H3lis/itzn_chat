@@ -1,0 +1,1 @@
+{"id": "A-005386", "text": "카드 번호는 4111 여기부터 여섯 글자, 그다음에 8888로 끝납니다.", "pi": [{"type": "CARD", "text": "4111 여기부터 여섯 글자, 그다음에 8888", "start": 7, "end": 33}], "meta": {"domain": "고객센터 채팅", "style": "짧은 단답", "obfuscation": ["korean_reading"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-000788", "text": "팀장님, 프로젝트 담당자는 '보리' 아니에요? 아니라 그럼 '보리'라고 적어주세요.", "pi": [{"type": "ID", "text": "보리", "start": 16, "end": 18}, {"type": "NAME", "text": "보리", "start": 34, "end": 36}], "meta": {"domain": "회의록", "style": "구어체", "obfuscation": ["lookalike_char"], "hard_case": "homonym_name"}}

@@ -1,0 +1,1 @@
+{"id": "A-003545", "text": "문의하신 사항은 저희 대표 이메일로 문의해 주시면 감사하겠습니다. support@company.com 입니다.", "pi": [{"type": "EMAIL", "text": "support@company.com", "start": 37, "end": 56}], "meta": {"domain": "학교 행정 문의", "style": "존댓말 상담", "obfuscation": ["email_spoken"], "hard_case": "none"}}

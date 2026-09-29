@@ -1,0 +1,1 @@
+{"id": "A-001859", "text": "학번은 '123456789'고요. 제가 근무하는 곳은 '한국정보통신연구원'입니다. 메일 주소는 info(at)corp(dot)com이에요.", "pi": [{"type": "ORG", "text": "한국정보통신연구원", "start": 31, "end": 40}, {"type": "EMAIL", "text": "info(at)corp(dot)com", "start": 53, "end": 73}], "meta": {"domain": "온라인 강의 Q&A", "style": "공문서풍", "obfuscation": ["lookalike_char"], "hard_case": "org_person"}}

@@ -1,0 +1,1 @@
+{"id": "A-003847", "text": "혹시 해솔 학생 오늘 오는지 확인해 주실 수 있을까요? 수업 시작 전에 알려주세요.", "pi": [{"type": "NAME", "text": "해솔", "start": 3, "end": 5}], "meta": {"domain": "직장 메신저", "style": "짧은 단답", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

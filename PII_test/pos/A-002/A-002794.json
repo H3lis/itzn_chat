@@ -1,0 +1,1 @@
+{"id": "A-002794", "text": "네, 카드 번호는 5432로 끝나는 거 맞고요? 성함은 '춘천' 맞으신가요?", "pi": [{"type": "CARD", "text": "5432", "start": 10, "end": 14}, {"type": "NAME", "text": "춘천", "start": 32, "end": 34}], "meta": {"domain": "고객센터 채팅", "style": "짧은 단답", "obfuscation": ["mixed_reading"], "hard_case": "homonym_name"}}

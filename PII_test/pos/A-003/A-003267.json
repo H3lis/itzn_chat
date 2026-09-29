@@ -1,0 +1,1 @@
+{"id": "A-003267", "text": "문의주신 거주지 주소는 경기도 성남시 분당구 판교로 77-22이고, 연락처는 02-555-1234예요.", "pi": [{"type": "ADDRESS", "text": "경기도 성남시 분당구 판교로 77-22", "start": 13, "end": 34}, {"type": "PHONE", "text": "02-555-1234", "start": 43, "end": 54}], "meta": {"domain": "콜센터 상담 요약", "style": "공문서풍", "obfuscation": ["jamo_split"], "hard_case": "none"}}

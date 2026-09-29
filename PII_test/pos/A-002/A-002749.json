@@ -1,0 +1,1 @@
+{"id": "A-002749", "text": "제가 전에 만났던 동창이 이름이 민지예요. 그리고 연락처는 010 5555 1234로 돼 있어요.", "pi": [{"type": "NAME", "text": "민지", "start": 18, "end": 20}, {"type": "PHONE", "text": "010 5555 1234", "start": 33, "end": 46}], "meta": {"domain": "커뮤니티 게시글", "style": "구어체", "obfuscation": ["split_utterance"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-003391", "text": "학생분 성함이 어떻게 되시나요? 그리고 생년월일과 연락처도 함께 알려주시면 감사하겠습니다.", "pi": [{"type": "NAME", "text": "학생분", "start": 0, "end": 3}, {"type": "BIRTH", "text": "생년월일", "start": 22, "end": 26}, {"type": "PHONE", "text": "연락처", "start": 28, "end": 31}], "meta": {"domain": "학교 행정 문의", "style": "격식체", "obfuscation": ["honorific_ref"], "hard_case": "none"}}

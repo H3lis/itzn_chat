@@ -1,0 +1,1 @@
+{"id": "A-000584", "text": "고객님, 연락 주신 번호는 010-9999-8888이 맞으신가요?", "pi": [{"type": "PHONE", "text": "010-9999-8888", "start": 15, "end": 28}], "meta": {"domain": "회의록", "style": "구어체", "obfuscation": ["korean_reading"], "hard_case": "none"}}

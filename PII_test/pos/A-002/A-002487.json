@@ -1,0 +1,1 @@
+{"id": "A-002487", "text": "다솜 학생 본인 맞나요? 전화번호는 010-2222-3333입니다.", "pi": [{"type": "NAME", "text": "다솜", "start": 0, "end": 2}, {"type": "PHONE", "text": "010-2222-3333", "start": 20, "end": 33}], "meta": {"domain": "학교 행정 문의", "style": "짧은 단답", "obfuscation": ["lookalike_char"], "hard_case": "homonym_name"}}

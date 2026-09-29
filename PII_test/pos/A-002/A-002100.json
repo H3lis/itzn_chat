@@ -1,0 +1,1 @@
+{"id": "A-002100", "text": "성남 회원님께, 이 게시글을 본 저 성남 지점장님은 정말 많은 도움을 주셨어요.", "pi": [{"type": "NAME", "text": "성남", "start": 0, "end": 2}, {"type": "SNS", "text": "성남", "start": 20, "end": 22}], "meta": {"domain": "SNS 댓글", "style": "길고 장황한 설명", "obfuscation": ["honorific_ref", "lookalike_char"], "hard_case": "homonym_name"}}

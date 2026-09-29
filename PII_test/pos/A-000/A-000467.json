@@ -1,0 +1,1 @@
+{"id": "A-000467", "text": "아니, 나 그 번호 말고, 네가 원래 쓰던 070-9999-8888로 다시 해줘.", "pi": [{"type": "PHONE", "text": "070-9999-8888", "start": 24, "end": 37}], "meta": {"domain": "고객센터 채팅", "style": "반말 대화", "obfuscation": ["split_utterance"], "hard_case": "none"}}

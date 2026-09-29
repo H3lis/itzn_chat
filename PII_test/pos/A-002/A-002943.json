@@ -1,0 +1,1 @@
+{"id": "A-002943", "text": "저기요, 글 작성자님 성함은 '라임'님으로 되어있고, 연락처는 'ㄱㅏㅇㄴㅏㅁ 다시 하나 넷'으로 되는데요. 맞으신가요?", "pi": [{"type": "NAME", "text": "라임", "start": 17, "end": 19}, {"type": "PHONE", "text": "ㄱㅏㅇㄴㅏㅁ 다시 하나 넷", "start": 36, "end": 50}], "meta": {"domain": "커뮤니티 게시글", "style": "음성인식(STT) 전사", "obfuscation": ["korean_reading"], "hard_case": "homonym_name"}}

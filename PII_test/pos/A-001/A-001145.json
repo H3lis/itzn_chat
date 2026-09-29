@@ -1,0 +1,1 @@
+{"id": "A-001145", "text": "판매자님, 이 상품 정말 마음에 들어요. 제 메일은 testuser.test@naver.com 이고요. 이름은 김철수라고 합니다.", "pi": [{"type": "EMAIL", "text": "testuser.test@naver.com", "start": 29, "end": 52}, {"type": "NAME", "text": "김철수", "start": 62, "end": 65}], "meta": {"domain": "중고거래 채팅", "style": "오타 많은 채팅", "obfuscation": ["plain"], "hard_case": "none"}}

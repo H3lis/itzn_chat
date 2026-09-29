@@ -1,0 +1,1 @@
+{"id": "A-005510", "text": "제가 찾던 분은 생년월일이 '신천일'이시고, 이름은 '도윤' 씨였어요.", "pi": [{"type": "BIRTH", "text": "신천일", "start": 16, "end": 19}, {"type": "NAME", "text": "도윤", "start": 30, "end": 32}], "meta": {"domain": "쇼핑몰 문의", "style": "구어체", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

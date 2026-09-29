@@ -1,0 +1,1 @@
+{"id": "A-004525", "text": "신고하신 접수자는 1990년 5월 15일생으로 확인되었고, 접속하신 IP 주소는 119.214.38.17입니다.", "pi": [{"type": "BIRTH", "text": "1990년 5월 15일", "start": 10, "end": 22}, {"type": "IP_ADDR", "text": "119.214.38.17", "start": 45, "end": 58}], "meta": {"domain": "민원 접수", "style": "공문서풍", "obfuscation": ["self_correction", "separator_noise"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-000213", "text": "네, 혹시 성함이 장미 씨 맞으신가요? 아니면 부르시는 다른 분의 성함이 있으신가요?", "pi": [{"type": "NAME", "text": "장미", "start": 10, "end": 12}], "meta": {"domain": "고객센터 채팅", "style": "존댓말 상담", "obfuscation": ["honorific_ref"], "hard_case": "none"}}

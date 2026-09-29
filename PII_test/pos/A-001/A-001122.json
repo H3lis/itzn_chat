@@ -1,0 +1,1 @@
+{"id": "A-001122", "text": "사용자 아이디는 'user123'이고요. 휴대폰 번호는 01011112222로 등록되어 있네요.", "pi": [{"type": "ID", "text": "user123", "start": 10, "end": 17}, {"type": "PHONE", "text": "01011112222", "start": 31, "end": 42}], "meta": {"domain": "부동산 상담", "style": "음성인식(STT) 전사", "obfuscation": ["plain"], "hard_case": "nickname_id"}}

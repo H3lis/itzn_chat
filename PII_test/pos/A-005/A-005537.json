@@ -1,0 +1,1 @@
+{"id": "A-005537", "text": "택배 번호가 010-2222-1111인데요, 배송지를 다시 확인 부탁드려요. 그게 아니라 010-3333-2222가 맞아요.", "pi": [{"type": "PHONE", "text": "010-2222-1111", "start": 7, "end": 20}, {"type": "PHONE", "text": "010-3333-2222", "start": 50, "end": 63}], "meta": {"domain": "택배 문의", "style": "오타 많은 채팅", "obfuscation": ["split_utterance"], "hard_case": "none"}}

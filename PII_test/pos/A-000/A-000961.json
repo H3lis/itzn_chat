@@ -1,0 +1,1 @@
+{"id": "A-000961", "text": "주문하신 배달 경로는 5층 구역 3번 게이트 앞까지 부탁드립니다.", "pi": [{"type": "OTHER_ID", "text": "5층 구역 3번 게이트", "start": 12, "end": 24}], "meta": {"domain": "배달 요청사항", "style": "존댓말 상담", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

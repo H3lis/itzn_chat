@@ -1,0 +1,1 @@
+{"id": "A-002552", "text": "네, 혹시 성함과 학번을 다시 한번 말씀해 주시거나, 학생증 사진을 첨부해 주실 수 있을까요?", "pi": [{"type": "NAME", "text": "성함", "start": 6, "end": 8}], "meta": {"domain": "학교 행정 문의", "style": "메신저 줄임말", "obfuscation": ["plain"], "hard_case": "none"}}

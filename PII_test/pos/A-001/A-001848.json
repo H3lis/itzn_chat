@@ -1,0 +1,1 @@
+{"id": "A-001848", "text": "춘천에 사는 사람 이름이요? 저 혹시 춘천에 살았던 김춘천 맞나요? 그게 또 이름이잖아요.", "pi": [{"type": "NAME", "text": "김춘천", "start": 29, "end": 32}], "meta": {"domain": "SNS 댓글", "style": "음성인식(STT) 전사", "obfuscation": ["jamo_split", "self_correction"], "hard_case": "homonym_name"}}

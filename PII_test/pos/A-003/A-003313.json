@@ -1,0 +1,1 @@
+{"id": "A-003313", "text": "어제 얘기했던 그 분이요, 수원 쪽 근처에 사신다고 하던데, 혹시 같이 가보실래요?", "pi": [{"type": "NAME", "text": "수원", "start": 15, "end": 17}], "meta": {"domain": "중고거래 채팅", "style": "반말 대화", "obfuscation": ["honorific_ref"], "hard_case": "homonym_name"}}

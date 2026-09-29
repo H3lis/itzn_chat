@@ -1,0 +1,1 @@
+{"id": "A-004526", "text": "아 진짜요? 제 전화번호는 010-2222-3333이요, 그리고 주민번호는 900101-2XXXXXXX예요.", "pi": [{"type": "PHONE", "text": "010-2222-3333", "start": 15, "end": 28}, {"type": "RRN", "text": "900101-2XXXXXXX", "start": 42, "end": 57}], "meta": {"domain": "SNS 댓글", "style": "메신저 줄임말", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

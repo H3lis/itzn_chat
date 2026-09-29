@@ -1,0 +1,1 @@
+{"id": "A-000537", "text": "가을 씨는 생일이 언제예요? 아, 제가 1990년 5월 15일이요.", "pi": [{"type": "NAME", "text": "가을", "start": 0, "end": 2}, {"type": "BIRTH", "text": "1990년 5월 15일", "start": 22, "end": 34}], "meta": {"domain": "쇼핑몰 문의", "style": "반말 대화", "obfuscation": ["romanized", "honorific_ref"], "hard_case": "homonym_name"}}

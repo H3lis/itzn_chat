@@ -1,0 +1,1 @@
+{"id": "A-000227", "text": "거주하시는 곳이 인천광역시 연수구 송도동 500번지 근처인지 확인 부탁드리며, 이름은 김지민 씨 맞으신가요?", "pi": [{"type": "ADDRESS", "text": "인천광역시 연수구 송도동 500번지", "start": 9, "end": 28}, {"type": "NAME", "text": "김지민", "start": 48, "end": 51}], "meta": {"domain": "커뮤니티 게시글", "style": "존댓말 상담", "obfuscation": ["korean_reading", "jamo_split", "split_utterance"], "hard_case": "none"}}

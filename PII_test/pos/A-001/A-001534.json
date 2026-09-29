@@ -1,0 +1,1 @@
+{"id": "A-001534", "text": "혹시 민지 씨 번호가 010-1111-2222 맞아요? 제가 연락드릴게요.", "pi": [{"type": "NAME", "text": "민지", "start": 3, "end": 5}, {"type": "PHONE", "text": "010-1111-2222", "start": 12, "end": 25}], "meta": {"domain": "회의록", "style": "반말 대화", "obfuscation": ["honorific_ref"], "hard_case": "none"}}

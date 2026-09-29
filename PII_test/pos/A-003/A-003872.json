@@ -1,0 +1,1 @@
+{"id": "A-003872", "text": "여권 번호는 이지디에이프비구팔원즈점사우디입니다. 혹시 다른 신분증도 있으신가요?", "pi": [{"type": "PASSPORT", "text": "이지디에이프비구팔원즈점사우디", "start": 7, "end": 22}], "meta": {"domain": "배달 요청사항", "style": "음성인식(STT) 전사", "obfuscation": ["mixed_reading", "separator_noise", "lookalike_char"], "hard_case": "none"}}

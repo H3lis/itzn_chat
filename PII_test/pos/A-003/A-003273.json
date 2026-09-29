@@ -1,0 +1,1 @@
+{"id": "A-003273", "text": "혹시 라임 씨 주소는 경기도 성남시 분당구 세븐빌라 2502호예요?", "pi": [{"type": "NAME", "text": "라임", "start": 3, "end": 5}, {"type": "ADDRESS", "text": "경기도 성남시 분당구 세븐빌라 2502호", "start": 12, "end": 34}], "meta": {"domain": "쇼핑몰 문의", "style": "반말 대화", "obfuscation": ["korean_reading", "stt_error"], "hard_case": "homonym_name"}}

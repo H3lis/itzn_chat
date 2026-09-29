@@ -1,0 +1,1 @@
+{"id": "A-004438", "text": "저희 건은 계좌번호가 123-456-7890이고, SNS는 인스타그램 아이디가 'sunny_day_2023'이에요.", "pi": [{"type": "ACCOUNT", "text": "123-456-7890", "start": 12, "end": 24}, {"type": "SNS", "text": "sunny_day_2023", "start": 45, "end": 59}], "meta": {"domain": "보험 청구", "style": "반말 대화", "obfuscation": ["plain"], "hard_case": "none"}}

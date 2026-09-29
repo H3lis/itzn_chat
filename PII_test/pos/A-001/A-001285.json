@@ -1,0 +1,1 @@
+{"id": "A-001285", "text": "청구하신 연락처가 혹시 010 다섯 다섯 다섯 다섯 다섯 다섯 다섯 다섯 번호 맞을까요?", "pi": [{"type": "PHONE", "text": "010 다섯 다섯 다섯 다섯 다섯 다섯 다섯 다섯", "start": 13, "end": 40}], "meta": {"domain": "보험 청구", "style": "짧은 단답", "obfuscation": ["self_correction"], "hard_case": "none"}}

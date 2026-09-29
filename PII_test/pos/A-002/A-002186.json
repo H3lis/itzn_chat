@@ -1,0 +1,1 @@
+{"id": "A-002186", "text": "미소 과장님, 이전 주소는 서울특별시 강남구 역삼동 123-45였는데요, 혹시 이전 주소지 확인 부탁드릴까요?", "pi": [{"type": "NAME", "text": "미소", "start": 0, "end": 2}, {"type": "ADDRESS", "text": "서울특별시 강남구 역삼동 123-45", "start": 15, "end": 35}], "meta": {"domain": "음성통화 전사문", "style": "구어체", "obfuscation": ["honorific_ref", "stt_error"], "hard_case": "homonym_name"}}

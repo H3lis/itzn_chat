@@ -1,0 +1,1 @@
+{"id": "A-000223", "text": "정확한 거주지 주소는 서울특별시 강남구 테헤란로 111-222번지이고, 성함은 보리님 맞으신가요?", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 테헤란로 111-222번지", "start": 12, "end": 36}, {"type": "NAME", "text": "보리", "start": 44, "end": 46}], "meta": {"domain": "부동산 상담", "style": "격식체", "obfuscation": ["split_utterance"], "hard_case": "homonym_name"}}

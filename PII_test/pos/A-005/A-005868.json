@@ -1,0 +1,1 @@
+{"id": "A-005868", "text": "신고 주신 분의 성함이 미소입니다. 어, 아니요. 미소 씨가 아니라, 그냥 미소로만 기재 부탁드립니다.", "pi": [{"type": "NAME", "text": "미소", "start": 13, "end": 15}, {"type": "NAME", "text": "미소", "start": 42, "end": 44}], "meta": {"domain": "민원 접수", "style": "구어체", "obfuscation": ["self_correction"], "hard_case": "homonym_name"}}

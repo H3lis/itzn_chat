@@ -1,0 +1,1 @@
+{"id": "A-004913", "text": "카드번호는 4444 5555 6666-7777 이구요. 네, 저거로 진행할게요.", "pi": [{"type": "CARD", "text": "4444 5555 6666-7777", "start": 6, "end": 25}], "meta": {"domain": "온라인 강의 Q&A", "style": "메신저 줄임말", "obfuscation": ["repeat_expr", "separator_noise"], "hard_case": "none"}}

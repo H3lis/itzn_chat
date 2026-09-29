@@ -1,0 +1,1 @@
+{"id": "A-001860", "text": "제 전화번호는 010-3333-4444예요. 맞나요?", "pi": [{"type": "PHONE", "text": "010-3333-4444", "start": 8, "end": 21}], "meta": {"domain": "온라인 강의 Q&A", "style": "반말 대화", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

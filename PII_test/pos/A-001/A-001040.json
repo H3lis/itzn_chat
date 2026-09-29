@@ -1,0 +1,1 @@
+{"id": "A-001040", "text": "여권 번호가 4U7777 이거 아니야? 4, 7, 7, 7, 7 이거 맞지?", "pi": [{"type": "PASSPORT", "text": "4U7777", "start": 7, "end": 13}], "meta": {"domain": "음성통화 전사문", "style": "반말 대화", "obfuscation": ["mixed_reading", "lookalike_char", "stt_error"], "hard_case": "none"}}

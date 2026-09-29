@@ -1,0 +1,1 @@
+{"id": "A-000494", "text": "저기요, 서울특별시 강남구 테헤란로 123 빌딩에 있는 OO 주거 공간이요.", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 테헤란로 123", "start": 5, "end": 23}, {"type": "ORG", "text": "OO", "start": 31, "end": 33}], "meta": {"domain": "부동산 상담", "style": "구어체", "obfuscation": ["plain"], "hard_case": "org_person"}}

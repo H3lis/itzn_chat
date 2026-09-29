@@ -1,0 +1,1 @@
+{"id": "A-004169", "text": "안녕하세요, 별님께 문의드릴 것이 있어서요. 저한테 이름이 어떻게 되냐고 물어보신 건가요?", "pi": [{"type": "NAME", "text": "별", "start": 7, "end": 8}], "meta": {"domain": "보험 청구", "style": "격식체", "obfuscation": ["jamo_split", "honorific_ref"], "hard_case": "homonym_name"}}

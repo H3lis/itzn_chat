@@ -1,0 +1,1 @@
+{"id": "A-000280", "text": "저번에 담당자님 이름이 김대리님 맞죠? 그리고 제 아이디는 sunshine123이에요.", "pi": [{"type": "PHONE", "text": "김대리", "start": 13, "end": 16}, {"type": "SNS", "text": "sunshine123", "start": 33, "end": 44}], "meta": {"domain": "보험 청구", "style": "메신저 줄임말", "obfuscation": ["split_utterance"], "hard_case": "nickname_id"}}

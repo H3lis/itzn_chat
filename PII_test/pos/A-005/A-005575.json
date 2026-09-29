@@ -1,0 +1,1 @@
+{"id": "A-005575", "text": "예약하신 담당자님 이메일 주소는 guest@corp-service.net 건가요?", "pi": [{"type": "EMAIL", "text": "guest@corp-service.net", "start": 18, "end": 40}], "meta": {"domain": "여행 예약", "style": "공문서풍", "obfuscation": ["separator_noise"], "hard_case": "none"}}

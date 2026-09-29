@@ -1,0 +1,1 @@
+{"id": "A-004775", "text": "차량번호가 '서울 23가'이고요. 회원 아이디는 'a01k'로 알고 있는데, 맞으실까요?", "pi": [{"type": "CAR_PLATE", "text": "서울 23가", "start": 7, "end": 13}, {"type": "ID", "text": "a01k", "start": 28, "end": 32}], "meta": {"domain": "부동산 상담", "style": "구어체", "obfuscation": ["separator_noise"], "hard_case": "none"}}

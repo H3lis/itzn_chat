@@ -1,0 +1,1 @@
+{"id": "A-001818", "text": "제 생년월일이 90년 1월 1일이고, 주민번호는 900101-2XXXXXXX예요.", "pi": [{"type": "BIRTH", "text": "90년 1월 1일", "start": 8, "end": 17}, {"type": "RRN", "text": "900101-2XXXXXXX", "start": 27, "end": 42}], "meta": {"domain": "병원 접수", "style": "오타 많은 채팅", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

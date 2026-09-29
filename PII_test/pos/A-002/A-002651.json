@@ -1,0 +1,1 @@
+{"id": "A-002651", "text": "생일이 2000년 1월 1일이시고 이름은 해솔이시잖아요? 다시 한번 확인 부탁드려요.", "pi": [{"type": "BIRTH", "text": "2000년 1월 1일", "start": 4, "end": 15}, {"type": "NAME", "text": "해솔", "start": 23, "end": 25}], "meta": {"domain": "SNS 댓글", "style": "존댓말 상담", "obfuscation": ["repeat_expr"], "hard_case": "homonym_name"}}

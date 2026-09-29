@@ -1,0 +1,1 @@
+{"id": "A-005893", "text": "이건 내 아이디가 7654고, 제 이름은 민준이에요. 통화는 010 9876 5432로 부탁해요.", "pi": [{"type": "ID", "text": "7654", "start": 10, "end": 14}, {"type": "NAME", "text": "민준", "start": 23, "end": 25}, {"type": "PHONE", "text": "010 9876 5432", "start": 34, "end": 47}], "meta": {"domain": "회의록", "style": "반말 대화", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

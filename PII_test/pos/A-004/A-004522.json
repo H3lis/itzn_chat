@@ -1,0 +1,1 @@
+{"id": "A-004522", "text": "결제는 비자카드로 하실 건가요? 카드 번호는 3700 1234 5678로 해주시겠어요?", "pi": [{"type": "CARD", "text": "3700 1234 5678", "start": 25, "end": 39}], "meta": {"domain": "온라인 강의 Q&A", "style": "음성인식(STT) 전사", "obfuscation": ["split_utterance", "korean_reading"], "hard_case": "none"}}

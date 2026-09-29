@@ -1,0 +1,1 @@
+{"id": "A-001732", "text": "저기요, 달님 씨요. 카드번호는 4111-2222-3333-4444고요. 성함은 진짜 달님 본인 맞으신가요?", "pi": [{"type": "NAME", "text": "달님", "start": 5, "end": 7}, {"type": "CARD", "text": "4111-2222-3333-4444", "start": 18, "end": 37}], "meta": {"domain": "SNS 댓글", "style": "음성인식(STT) 전사", "obfuscation": ["mixed_reading"], "hard_case": "homonym_name"}}

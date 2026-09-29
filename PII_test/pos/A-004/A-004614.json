@@ -1,0 +1,1 @@
+{"id": "A-004614", "text": "저기요, 제 이름은 지수예요. 연락드릴 번호는 010-1234-5678이니 확인 부탁드려요.", "pi": [{"type": "NAME", "text": "지수", "start": 11, "end": 13}, {"type": "PHONE", "text": "010-1234-5678", "start": 26, "end": 39}], "meta": {"domain": "이메일 본문", "style": "반말 대화", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

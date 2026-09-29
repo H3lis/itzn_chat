@@ -1,0 +1,1 @@
+{"id": "A-003080", "text": "이사 갈 주소는 부산광역시 사하구 다대동 123-45예요. 정확한 주소 말씀해주시겠어요?", "pi": [{"type": "ADDRESS", "text": "부산광역시 사하구 다대동 123-45", "start": 9, "end": 29}], "meta": {"domain": "고객센터 채팅", "style": "존댓말 상담", "obfuscation": ["jamo_split", "split_utterance"], "hard_case": "none"}}

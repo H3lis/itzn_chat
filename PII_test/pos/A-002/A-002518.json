@@ -1,0 +1,1 @@
+{"id": "A-002518", "text": "환자분 전화번호는 010. 1111-2222 맞으신가요?", "pi": [{"type": "PHONE", "text": "010. 1111-2222", "start": 10, "end": 24}], "meta": {"domain": "병원 접수", "style": "공문서풍", "obfuscation": ["separator_noise"], "hard_case": "none"}}

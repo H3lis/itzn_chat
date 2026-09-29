@@ -1,0 +1,1 @@
+{"id": "A-001066", "text": "라임 대표로 하겠습니다. 이름이 진짜 라임입니다. 혹시 전화번호 알려주실 수 있나요?", "pi": [{"type": "NAME", "text": "라임", "start": 21, "end": 23}], "meta": {"domain": "배달 요청사항", "style": "음성인식(STT) 전사", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

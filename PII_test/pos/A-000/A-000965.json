@@ -1,0 +1,1 @@
+{"id": "A-000965", "text": "혹시 김 과장님 오신 지 오래되셨나요? 몸은 좀 괜찮으신지 여쭤보려고요.", "pi": [{"type": "NAME", "text": "김 과장님", "start": 3, "end": 8}], "meta": {"domain": "병원 접수", "style": "구어체", "obfuscation": ["jamo_split", "honorific_ref"], "hard_case": "none"}}

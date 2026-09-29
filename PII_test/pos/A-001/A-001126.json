@@ -1,0 +1,1 @@
+{"id": "A-001126", "text": "제 이메일 주소는 ㅇ１ㅇ@지메일(dot)컴이고, 제 이름은 존 스미스입니다.", "pi": [{"type": "EMAIL", "text": "ㅇ１ㅇ@지메일(dot)컴", "start": 10, "end": 23}, {"type": "NAME", "text": "존 스미스", "start": 33, "end": 38}], "meta": {"domain": "학교 행정 문의", "style": "짧은 단답", "obfuscation": ["lookalike_char", "romanized"], "hard_case": "none"}}

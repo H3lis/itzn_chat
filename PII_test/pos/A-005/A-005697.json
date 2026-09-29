@@ -1,0 +1,1 @@
+{"id": "A-005697", "text": "김민지 선생님께서 저희 병원에 예약하려고 하셨습니다. 삼성병원에 오신 건가요?", "pi": [{"type": "NAME", "text": "김민지", "start": 0, "end": 3}, {"type": "ORG", "text": "삼성병원", "start": 30, "end": 34}], "meta": {"domain": "병원 접수", "style": "존댓말 상담", "obfuscation": ["romanized", "honorific_ref"], "hard_case": "org_person"}}

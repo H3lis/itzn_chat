@@ -1,0 +1,1 @@
+{"id": "A-004070", "text": "어제 본 게시글 봤어? ㅇｌ①ｉｄ: S᝼ul_Star. 내 이름은 서울이라고 하면 되려나? ㅎㅎ", "pi": [{"type": "ID", "text": "S᝼ul_Star", "start": 20, "end": 29}, {"type": "NAME", "text": "서울", "start": 37, "end": 39}], "meta": {"domain": "커뮤니티 게시글", "style": "메신저 줄임말", "obfuscation": ["lookalike_char"], "hard_case": "homonym_name"}}

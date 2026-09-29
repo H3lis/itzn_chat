@@ -1,0 +1,1 @@
+{"id": "A-000530", "text": "운전면허증에 적힌 이름이 아침 씨고요, 번호는 1234-5678-9012 맞으신가요?", "pi": [{"type": "NAME", "text": "아침", "start": 14, "end": 16}, {"type": "DRIVER_LICENSE", "text": "1234-5678-9012", "start": 26, "end": 40}], "meta": {"domain": "쇼핑몰 문의", "style": "격식체", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

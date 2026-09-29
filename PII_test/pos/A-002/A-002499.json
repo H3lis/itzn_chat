@@ -1,0 +1,1 @@
+{"id": "A-002499", "text": "이 민준이라고 합니다. 제 주민등록번호는 990510-1****** 입니다. 맞는지 확인 부탁드려요.", "pi": [{"type": "NAME", "text": "민준", "start": 2, "end": 4}, {"type": "RRN", "text": "990510-1******", "start": 23, "end": 37}], "meta": {"domain": "민원 접수", "style": "오타 많은 채팅", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-000514", "text": "혹시 그 제품, 광주에서 직접 가져오실 수 있는지 궁금해서요. 매장 방문도 괜찮으신가요?", "pi": [{"type": "NAME", "text": "광주", "start": 9, "end": 11}], "meta": {"domain": "쇼핑몰 문의", "style": "길고 장황한 설명", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

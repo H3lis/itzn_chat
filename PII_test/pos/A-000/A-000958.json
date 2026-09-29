@@ -1,0 +1,1 @@
+{"id": "A-000958", "text": "홍길동 씨, 연락드리겠습니다. 저희가 조회해보니 고객님 성함은 ㅎㅇㅁㅅ이고 전화번호는 010-1234-5678로 되어 있네요.", "pi": [{"type": "NAME", "text": "ㅎㅇㅁㅅ", "start": 35, "end": 39}, {"type": "PHONE", "text": "010-1234-5678", "start": 48, "end": 61}], "meta": {"domain": "부동산 상담", "style": "음성인식(STT) 전사", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

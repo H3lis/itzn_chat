@@ -1,0 +1,1 @@
+{"id": "A-002802", "text": "전화번호가 010-1234-5678이요? 아니, 잠시만요. 010-5555-1111이 맞아요.", "pi": [{"type": "PHONE", "text": "010-5555-1111", "start": 33, "end": 46}], "meta": {"domain": "고객센터 채팅", "style": "메신저 줄임말", "obfuscation": ["mixed_reading", "repeat_expr", "self_correction"], "hard_case": "none"}}

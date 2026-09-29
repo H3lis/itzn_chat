@@ -1,0 +1,1 @@
+{"id": "A-000471", "text": "카드 번호는 4444-5555-6666-7777이구요. 혹시 연락처는 영하나영 다시 하나 넷이에요.", "pi": [{"type": "CARD", "text": "4444-5555-6666-7777", "start": 7, "end": 26}, {"type": "PHONE", "text": "영하나영 다시 하나 넷", "start": 39, "end": 51}], "meta": {"domain": "중고거래 채팅", "style": "존댓말 상담", "obfuscation": ["repeat_expr", "self_correction", "korean_reading"], "hard_case": "none"}}

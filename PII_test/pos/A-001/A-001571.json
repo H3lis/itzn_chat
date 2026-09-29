@@ -1,0 +1,1 @@
+{"id": "A-001571", "text": "환자분 주소는 '경기도 성남시 분당구 세곡로 123-4'이시고, 비상 연락처 이메일은 'contact@example.net'으로 기록되어 있습니다.", "pi": [{"type": "ADDRESS", "text": "경기도 성남시 분당구 세곡로 123-4", "start": 9, "end": 30}, {"type": "EMAIL", "text": "contact@example.net", "start": 49, "end": 68}], "meta": {"domain": "병원 접수", "style": "길고 장황한 설명", "obfuscation": ["jamo_split"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-005173", "text": "안녕하세요. 네, 고객님. 문의주신 이메일 주소는 susan.kim@gmail.com으로 되어 있고, 저희는 글로벌 테크놀로지라는 회사에 속해있습니다.", "pi": [{"type": "EMAIL", "text": "susan.kim@gmail.com", "start": 28, "end": 47}, {"type": "ORG", "text": "글로벌 테크놀로지", "start": 61, "end": 70}], "meta": {"domain": "음성통화 전사문", "style": "존댓말 상담", "obfuscation": ["romanized"], "hard_case": "org_person"}}

@@ -1,0 +1,1 @@
+{"id": "A-004936", "text": "카드번호는 1234 다음에 5가 네 번 그리고 6이 네 번으로 되어있고, 차번호는 아예 7 같은 느낌으로 말씀해 주세요.", "pi": [{"type": "CARD", "text": "1234 다음에 5가 네 번 그리고 6이 네 번", "start": 6, "end": 32}, {"type": "CAR_PLATE", "text": "7", "start": 49, "end": 50}], "meta": {"domain": "이메일 본문", "style": "메신저 줄임말", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

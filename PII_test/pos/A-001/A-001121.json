@@ -1,0 +1,1 @@
+{"id": "A-001121", "text": "저희 부서는 1990년생이고요, 소속은 인사팀이에요. 이력서 작성할 때 참고하세요.", "pi": [{"type": "BIRTH", "text": "1990년생", "start": 7, "end": 13}, {"type": "ORG", "text": "인사팀", "start": 22, "end": 25}], "meta": {"domain": "금융 상담", "style": "반말 대화", "obfuscation": ["plain"], "hard_case": "org_person"}}

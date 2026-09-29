@@ -1,0 +1,1 @@
+{"id": "A-000649", "text": "주소는 서울시 강남구 역삼로 123이며, 연락 가능한 메일은 john.doe@mail.net 이 적혀있는데요.", "pi": [{"type": "ADDRESS", "text": "서울시 강남구 역삼로 123", "start": 4, "end": 19}, {"type": "EMAIL", "text": "john.doe@mail.net", "start": 34, "end": 51}], "meta": {"domain": "택배 문의", "style": "오타 많은 채팅", "obfuscation": ["email_spoken"], "hard_case": "none"}}

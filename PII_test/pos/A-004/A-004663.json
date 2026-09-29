@@ -1,0 +1,1 @@
+{"id": "A-004663", "text": "제가 살던 곳 주소는 서울시 강남구 역삼동 123-45였는데, 이름은 슬기 맞나요?", "pi": [{"type": "ADDRESS", "text": "서울시 강남구 역삼동 123-45", "start": 12, "end": 30}, {"type": "NAME", "text": "슬기", "start": 39, "end": 41}], "meta": {"domain": "고객센터 채팅", "style": "구어체", "obfuscation": ["split_utterance"], "hard_case": "homonym_name"}}

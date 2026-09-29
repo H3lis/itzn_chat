@@ -1,0 +1,1 @@
+{"id": "A-005188", "text": "가장 최근에 사용하신 차량 등록 번호가 99가 9999 이고, 고객님 성함이 홍길동 맞으신가요?", "pi": [{"type": "CAR_PLATE", "text": "99가 9999", "start": 22, "end": 30}, {"type": "NAME", "text": "홍길동", "start": 43, "end": 46}], "meta": {"domain": "쇼핑몰 문의", "style": "격식체", "obfuscation": ["self_correction"], "hard_case": "none"}}

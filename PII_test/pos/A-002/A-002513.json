@@ -1,0 +1,1 @@
+{"id": "A-002513", "text": "제 번호가 010-1234-5678이 맞는지 확인해 주시고, 혹시 번호가 011-9999-1234로 잘못 기재된 거 아닐까요?", "pi": [{"type": "PHONE", "text": "010-1234-5678", "start": 6, "end": 19}, {"type": "PHONE", "text": "011-9999-1234", "start": 41, "end": 54}], "meta": {"domain": "온라인 강의 Q&A", "style": "메신저 줄임말", "obfuscation": ["self_correction"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-000684", "text": "차량 번호는 12가요. 이름은 사랑이라고 적었는데요, 맞나요?", "pi": [{"type": "CAR_PLATE", "text": "12", "start": 7, "end": 9}, {"type": "NAME", "text": "사랑", "start": 17, "end": 19}], "meta": {"domain": "부동산 상담", "style": "오타 많은 채팅", "obfuscation": ["stt_error"], "hard_case": "homonym_name"}}

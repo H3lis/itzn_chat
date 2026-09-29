@@ -1,0 +1,1 @@
+{"id": "A-004248", "text": "이사 온 주소는 경기도 성남시 분당구 세곡로 111-22, 그리고 연락처는 010-9999-8888입니다.", "pi": [{"type": "ADDRESS", "text": "경기도 성남시 분당구 세곡로 111-22", "start": 9, "end": 31}, {"type": "EMAIL", "text": "010-9999-8888", "start": 42, "end": 55}], "meta": {"domain": "회의록", "style": "반말 대화", "obfuscation": ["split_utterance", "korean_reading"], "hard_case": "none"}}

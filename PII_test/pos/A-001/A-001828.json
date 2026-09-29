@@ -1,0 +1,1 @@
+{"id": "A-001828", "text": "고객님, 연락 주신 번호가 맞는지 다시 한 번 말씀해주시겠어요? 070-9999-1234요.", "pi": [{"type": "PHONE", "text": "070-9999-1234", "start": 36, "end": 49}], "meta": {"domain": "금융 상담", "style": "짧은 단답", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

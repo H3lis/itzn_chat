@@ -1,0 +1,1 @@
+{"id": "A-001474", "text": "김민준 씨가 말씀하신 소나무 쪽 빌라가 맞나요? 네, 소나무라고 하셨으니까 민준 씨가 본 이름은 소나무로 체크하겠습니다.", "pi": [{"type": "NAME", "text": "김민준", "start": 0, "end": 3}, {"type": "NAME", "text": "소나무", "start": 30, "end": 33}], "meta": {"domain": "음성통화 전사문", "style": "음성인식(STT) 전사", "obfuscation": ["romanized"], "hard_case": "homonym_name"}}

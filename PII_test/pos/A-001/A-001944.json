@@ -1,0 +1,1 @@
+{"id": "A-001944", "text": "하늘 씨께서 문의주신 건이요. 성함은 하늘이고, 연락처는 010-2222-3333으로 알고 있습니다.", "pi": [{"type": "NAME", "text": "하늘", "start": 21, "end": 23}, {"type": "PHONE", "text": "010-2222-3333", "start": 32, "end": 45}], "meta": {"domain": "택배 문의", "style": "공문서풍", "obfuscation": ["romanized"], "hard_case": "homonym_name"}}

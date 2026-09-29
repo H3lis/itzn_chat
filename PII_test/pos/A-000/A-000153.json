@@ -1,0 +1,1 @@
+{"id": "A-000153", "text": "급하게 전하는데요. 제 주민등록번호는 910315-1XXXXXXX 이고, 연락처는 010-9999-1234 입니다.", "pi": [{"type": "RRN", "text": "910315-1XXXXXXX", "start": 21, "end": 36}, {"type": "PHONE", "text": "010-9999-1234", "start": 46, "end": 59}], "meta": {"domain": "직장 메신저", "style": "오타 많은 채팅", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

@@ -1,0 +1,999 @@
+{
+  "split": "validation",
+  "evaluated_at": "2026-09-29 17:13:18",
+  "total_samples": 1669,
+  "elapsed_seconds": 3.05,
+  "throughput_samples_per_sec": 546.7,
+  "metrics": {
+    "accuracy": 80.95,
+    "precision": 88.12,
+    "recall": 73.33,
+    "f1_score": 80.05
+  },
+  "confusion_matrix": {
+    "true_positive": 638,
+    "false_positive": 86,
+    "true_negative": 713,
+    "false_negative": 232
+  },
+  "type_level_recall": {
+    "NAME": {
+      "total": 496,
+      "detected": 441,
+      "recall": 88.91
+    },
+    "PHONE": {
+      "total": 287,
+      "detected": 267,
+      "recall": 93.03
+    },
+    "ADDRESS": {
+      "total": 170,
+      "detected": 118,
+      "recall": 69.41
+    },
+    "EMAIL": {
+      "total": 126,
+      "detected": 89,
+      "recall": 70.63
+    },
+    "ACCOUNT": {
+      "total": 109,
+      "detected": 79,
+      "recall": 72.48
+    },
+    "RRN": {
+      "total": 89,
+      "detected": 73,
+      "recall": 82.02
+    },
+    "ID": {
+      "total": 68,
+      "detected": 48,
+      "recall": 70.59
+    },
+    "SNS": {
+      "total": 67,
+      "detected": 54,
+      "recall": 80.6
+    },
+    "BIRTH": {
+      "total": 60,
+      "detected": 38,
+      "recall": 63.33
+    },
+    "CARD": {
+      "total": 56,
+      "detected": 45,
+      "recall": 80.36
+    },
+    "ORG": {
+      "total": 44,
+      "detected": 32,
+      "recall": 72.73
+    },
+    "CAR_PLATE": {
+      "total": 34,
+      "detected": 20,
+      "recall": 58.82
+    },
+    "DRIVER_LICENSE": {
+      "total": 33,
+      "detected": 30,
+      "recall": 90.91
+    },
+    "PASSPORT": {
+      "total": 29,
+      "detected": 20,
+      "recall": 68.97
+    },
+    "IP_ADDR": {
+      "total": 29,
+      "detected": 17,
+      "recall": 58.62
+    },
+    "OTHER_ID": {
+      "total": 9,
+      "detected": 6,
+      "recall": 66.67
+    }
+  },
+  "domain_accuracy": {
+    "고객센터 채팅": {
+      "total": 105,
+      "correct": 84,
+      "accuracy": 80.0
+    },
+    "온라인 강의 Q&A": {
+      "total": 98,
+      "correct": 83,
+      "accuracy": 84.69
+    },
+    "보험 청구": {
+      "total": 95,
+      "correct": 73,
+      "accuracy": 76.84
+    },
+    "학교 행정 문의": {
+      "total": 91,
+      "correct": 69,
+      "accuracy": 75.82
+    },
+    "병원 접수": {
+      "total": 91,
+      "correct": 73,
+      "accuracy": 80.22
+    },
+    "커뮤니티 게시글": {
+      "total": 90,
+      "correct": 76,
+      "accuracy": 84.44
+    },
+    "직장 메신저": {
+      "total": 90,
+      "correct": 67,
+      "accuracy": 74.44
+    },
+    "콜센터 상담 요약": {
+      "total": 89,
+      "correct": 72,
+      "accuracy": 80.9
+    },
+    "택배 문의": {
+      "total": 88,
+      "correct": 68,
+      "accuracy": 77.27
+    },
+    "SNS 댓글": {
+      "total": 85,
+      "correct": 63,
+      "accuracy": 74.12
+    },
+    "음성통화 전사문": {
+      "total": 82,
+      "correct": 66,
+      "accuracy": 80.49
+    },
+    "부동산 상담": {
+      "total": 81,
+      "correct": 69,
+      "accuracy": 85.19
+    },
+    "금융 상담": {
+      "total": 81,
+      "correct": 65,
+      "accuracy": 80.25
+    },
+    "회의록": {
+      "total": 79,
+      "correct": 67,
+      "accuracy": 84.81
+    },
+    "중고거래 채팅": {
+      "total": 76,
+      "correct": 60,
+      "accuracy": 78.95
+    },
+    "쇼핑몰 문의": {
+      "total": 76,
+      "correct": 68,
+      "accuracy": 89.47
+    },
+    "배달 요청사항": {
+      "total": 71,
+      "correct": 56,
+      "accuracy": 78.87
+    },
+    "민원 접수": {
+      "total": 70,
+      "correct": 56,
+      "accuracy": 80.0
+    },
+    "여행 예약": {
+      "total": 66,
+      "correct": 60,
+      "accuracy": 90.91
+    },
+    "이메일 본문": {
+      "total": 65,
+      "correct": 56,
+      "accuracy": 86.15
+    }
+  },
+  "top_fp_samples": [
+    {
+      "id": "B-002696",
+      "file": "neg/B-002/B-002696.json",
+      "text": "사용자 정보 확인을 위해, 고객님께 메일 주소를 다시 알려주시겠어요?",
+      "masked_text": "사용자 정보 확인을 위해, 고*님께 메일 주소를 다시 알려주시겠어요?",
+      "detected_types": [
+        "name"
+      ],
+      "meta": {
+        "domain": "회의록",
+        "style": "음성인식(STT) 전사",
+        "obfuscation": [],
+        "hard_case": "handle_like_nonpi"
+      }
+    },
+    {
+      "id": "B-002686",
+      "file": "neg/B-002/B-002686.json",
+      "text": "배송 조회는 ㅇㅋ? 추적 번호가 9876-5432-1234임.",
+      "masked_text": "배송 조회는 ㅇㅋ? 추적 번호가 ****-5432-1234임.",
+      "detected_types": [
+        "phone"
+      ],
+      "meta": {
+        "domain": "고객센터 채팅",
+        "style": "메신저 줄임말",
+        "obfuscation": [],
+        "hard_case": "number_like_pi"
+      }
+    },
+    {
+      "id": "B-002287",
+      "file": "neg/B-002/B-002287.json",
+      "text": "작가님의 새 작품 기대하고 있어요! 이번 컨셉이 너무 좋더라고요.",
+      "masked_text": "작*님의 새 작품 기대하고 있어요! 이번 컨셉이 너무 좋더라고요.",
+      "detected_types": [
+        "name"
+      ],
+      "meta": {
+        "domain": "SNS 댓글",
+        "style": "구어체",
+        "obfuscation": [],
+        "hard_case": "spoken_number_nonpi"
+      }
+    },
+    {
+      "id": "B-000327",
+      "file": "neg/B-000/B-000327.json",
+      "text": "신청서에 기재된 학번이 12345678입니다. 네, 그거 맞습니다.",
+      "masked_text": "신청서에 기재된 학번이 ****5678입니다. 네, 그거 맞습니다.",
+      "detected_types": [
+        "phone"
+      ],
+      "meta": {
+        "domain": "학교 행정 문의",
+        "style": "오타 많은 채팅",
+        "obfuscation": [],
+        "hard_case": "spoken_number_nonpi"
+      }
+    },
+    {
+      "id": "B-001555",
+      "file": "neg/B-001/B-001555.json",
+      "text": "지혜 씨가 말씀하신 것처럼 그 부분은 구조가 복잡해서 확인이 어려울 것 같습니다.",
+      "masked_text": "지* 씨가 말씀하신 것처럼 그 부분은 구조가 복잡해서 확인이 어려울 것 같습니다.",
+      "detected_types": [
+        "name"
+      ],
+      "meta": {
+        "domain": "택배 문의",
+        "style": "구어체",
+        "obfuscation": [],
+        "hard_case": "homonym_common"
+      }
+    },
+    {
+      "id": "B-000991",
+      "file": "neg/B-000/B-000991.json",
+      "text": "해당 제품의 재고 확인을 위해서는 관리번호 7788-9900-1122 형식의 코드가 필요하며, 이는 공급사에서 배정된 일련번호입니다.",
+      "masked_text": "해당 제품의 재고 확인을 위해서는 관리번호 ****-9900-1122 형식의 코드가 필요하며, 이는 공급사에서 배정된 일련번호입니다.",
+      "detected_types": [
+        "phone"
+      ],
+      "meta": {
+        "domain": "콜센터 상담 요약",
+        "style": "길고 장황한 설명",
+        "obfuscation": [],
+        "hard_case": "number_like_pi"
+      }
+    },
+    {
+      "id": "B-003083",
+      "file": "neg/B-003/B-003083.json",
+      "text": "저희 할머니께서 말씀하시기를, 공주님이 쓰시던 비단 옷감 같은 게 정말 예쁘다고 하셨어요.",
+      "masked_text": "저희 할머니께서 말씀하시기를, 공*님이 쓰시던 비단 옷감 같은 게 정말 예쁘다고 하셨어요.",
+      "detected_types": [
+        "name"
+      ],
+      "meta": {
+        "domain": "직장 메신저",
+        "style": "음성인식(STT) 전사",
+        "obfuscation": [],
+        "hard_case": "homonym_common"
+      }
+    },
+    {
+      "id": "B-002366",
+      "file": "neg/B-002/B-002366.json",
+      "text": "배송 조회하려고 하는데, 주문번호가 11223344 이렇게 되어있습니다. 맞나요?",
+      "masked_text": "배송 조회하려고 하는데, 주문번호가 ****3344 이렇게 되어있습니다. 맞나요?",
+      "detected_types": [
+        "phone"
+      ],
+      "meta": {
+        "domain": "쇼핑몰 문의",
+        "style": "존댓말 상담",
+        "obfuscation": [],
+        "hard_case": "spoken_number_nonpi"
+      }
+    },
+    {
+      "id": "B-003952",
+      "file": "neg/B-003/B-003952.json",
+      "text": "신청서에 명시된 계약 번호는 KTX-9901-2024-A로 확인되었으며, 이대로 진행해도 무방합니까?",
+      "masked_text": "신청서에 명시된 계약 번호는 KTX-****-2024-A로 확인되었으며, 이대로 진행해도 무방합니까?",
+      "detected_types": [
+        "phone"
+      ],
+      "meta": {
+        "domain": "보험 청구",
+        "style": "공문서풍",
+        "obfuscation": [],
+        "hard_case": "number_like_pi"
+      }
+    },
+    {
+      "id": "B-002781",
+      "file": "neg/B-002/B-002781.json",
+      "text": "예약 관련해서 말인데, 만약 검사 항목에 '신분확인코드 123-45-6789' 같은 게 필요하면 어떻게 해야 하는지 알려줄 수 있어?",
+      "masked_text": "예약 관련해서 말인데, 만약 검사 항목에 '신분확인코드 123-**-****' 같은 게 필요하면 어떻게 해야 하는지 알려줄 수 있어?",
+      "detected_types": [
+        "account"
+      ],
+      "meta": {
+        "domain": "병원 접수",
+        "style": "길고 장황한 설명",
+        "obfuscation": [],
+        "hard_case": "spoken_number_nonpi"
+      }
+    },
+    {
+      "id": "B-001292",
+      "file": "neg/B-001/B-001292.json",
+      "text": "수원은 경기도의 대표적인 문화 유산 도시로, 많은 볼거리가 있습니다.",
+      "masked_text": "수*은 경**의 대표적인 문화 유산 도시로, 많은 볼거리가 있습니다.",
+      "detected_types": [
+        "name"
+      ],
+      "meta": {
+        "domain": "직장 메신저",
+        "style": "공문서풍",
+        "obfuscation": [],
+        "hard_case": "homonym_common"
+      }
+    },
+    {
+      "id": "B-001076",
+      "file": "neg/B-001/B-001076.json",
+      "text": "네, 교수님. 지난 주차 강의 내용 중에서 자료 구조에 대한 설명이 좀 부족했던 것 같아서요. 혹시 관련해서 참고할 만한 논문 같은 게 있을까요?",
+      "masked_text": "네, 교*님. 지난 주차 강의 내용 중에서 자료 구조에 대한 설명이 좀 부족했던 것 같아서요. 혹시 관련해서 참고할 만한 논문 같은 게 있을까요?",
+      "detected_types": [
+        "name"
+      ],
+      "meta": {
+        "domain": "온라인 강의 Q&A",
+        "style": "음성인식(STT) 전사",
+        "obfuscation": [],
+        "hard_case": "benign_general"
+      }
+    },
+    {
+      "id": "B-003270",
+      "file": "neg/B-003/B-003270.json",
+      "text": "청구서 작성하시려면, 미소 씨가 작성해 주신 최초 상담 기록이랑 같이 준비해 주셔야 하는 거 아닐까요?",
+      "masked_text": "청구서 작성하시려면, 미* 씨가 작성해 주신 최초 상담 기록이랑 같이 준비해 주셔야 하는 거 아닐까요?",
+      "detected_types": [
+        "name"
+      ],
+      "meta": {
+        "domain": "보험 청구",
+        "style": "구어체",
+        "obfuscation": [],
+        "hard_case": "homonym_common"
+      }
+    },
+    {
+      "id": "B-003282",
+      "file": "neg/B-003/B-003282.json",
+      "text": "네, 송장 번호가 7745123 모델로 확인됐어요.",
+      "masked_text": "네, 송장 번호가 ***5123 모델로 확인됐어요.",
+      "detected_types": [
+        "phone"
+      ],
+      "meta": {
+        "domain": "직장 메신저",
+        "style": "짧은 단답",
+        "obfuscation": [],
+        "hard_case": "number_like_pi"
+      }
+    },
+    {
+      "id": "B-003822",
+      "file": "neg/B-003/B-003822.json",
+      "text": "그 근처에 위치한 공원 쪽으로 걸어오면, 안양의 옛 모습이 고스란히 남아있어서 사진 찍기 좋을 거야.",
+      "masked_text": "그 근처에 위치한 공원 쪽으로 걸어오면, 안*의 옛 모습이 고스란히 남아있어서 사진 찍기 좋을 거야.",
+      "detected_types": [
+        "name"
+      ],
+      "meta": {
+        "domain": "민원 접수",
+        "style": "길고 장황한 설명",
+        "obfuscation": [],
+        "hard_case": "homonym_common"
+      }
+    },
+    {
+      "id": "B-003594",
+      "file": "neg/B-003/B-003594.json",
+      "text": "라임이라는 과목이 추가된다고 하던데, 이번 학기 시간표에 포함돼요?",
+      "masked_text": "라*이라는 과목이 추가된다고 하던데, 이번 학기 시간표에 포함돼요?",
+      "detected_types": [
+        "name"
+      ],
+      "meta": {
+        "domain": "학교 행정 문의",
+        "style": "구어체",
+        "obfuscation": [],
+        "hard_case": "homonym_common"
+      }
+    },
+    {
+      "id": "B-002722",
+      "file": "neg/B-002/B-002722.json",
+      "text": "주문하신 상품의 송장번호가 3827-1955-4102-9001이 맞는지 확인 부탁드립니다.",
+      "masked_text": "주문하신 상품의 송장번호가 ****-1955-****-9001이 맞는지 확인 부탁드립니다.",
+      "detected_types": [
+        "phone"
+      ],
+      "meta": {
+        "domain": "콜센터 상담 요약",
+        "style": "구어체",
+        "obfuscation": [],
+        "hard_case": "number_like_pi"
+      }
+    },
+    {
+      "id": "B-003031",
+      "file": "neg/B-003/B-003031.json",
+      "text": "최근에 경제 기사에서 언급된 '나라'라는 단어가 가진 의미를 좀 더 풀어 설명해 주시겠어요?",
+      "masked_text": "최근에 경* 기사에서 언급된 '나라'라는 단어가 가진 의미를 좀 더 풀어 설명해 주시겠어요?",
+      "detected_types": [
+        "name"
+      ],
+      "meta": {
+        "domain": "고객센터 채팅",
+        "style": "격식체",
+        "obfuscation": [],
+        "hard_case": "homonym_common"
+      }
+    },
+    {
+      "id": "B-000720",
+      "file": "neg/B-000/B-000720.json",
+      "text": "고객님, 조회하신 이체 건은 특정 날짜에 발생한 거래 내역이므로, 정확한 코드는 말씀드리기 어렵습니다. 다른 문의사항 있으신가요?",
+      "masked_text": "고*님, 조회하신 이체 건은 특정 날짜에 발생한 거래 내역이므로, 정확한 코드는 말씀드리기 어렵습니다. 다른 문의사항 있으신가요?",
+      "detected_types": [
+        "name"
+      ],
+      "meta": {
+        "domain": "금융 상담",
+        "style": "오타 많은 채팅",
+        "obfuscation": [],
+        "hard_case": "number_like_pi"
+      }
+    },
+    {
+      "id": "B-000951",
+      "file": "neg/B-000/B-000951.json",
+      "text": "이번 봄에 맞춰서 디자인한 원피스가 제일 예쁘던데, 사이즈가 맞을까요?",
+      "masked_text": "이번 봄에 맞춰서 디자인한 원**가 제일 예쁘던데, 사이즈가 맞을까요?",
+      "detected_types": [
+        "name"
+      ],
+      "meta": {
+        "domain": "민원 접수",
+        "style": "구어체",
+        "obfuscation": [],
+        "hard_case": "homonym_common"
+      }
+    }
+  ],
+  "top_fn_samples": [
+    {
+      "id": "A-004652",
+      "file": "pos/A-004/A-004652.json",
+      "text": "차량 번호가 5가 1로 잘못 들렸어요. 그리고 이름은 '준호' 맞죠?",
+      "expected_pi": [
+        {
+          "type": "CAR_PLATE",
+          "text": "5가 1",
+          "start": 7,
+          "end": 11
+        },
+        {
+          "type": "NAME",
+          "text": "준호",
+          "start": 31,
+          "end": 33
+        }
+      ],
+      "masked_text": "차량 번호가 5가 1로 잘못 들렸어요. 그리고 이름은 '준호' 맞죠?",
+      "meta": {
+        "domain": "여행 예약",
+        "style": "짧은 단답",
+        "obfuscation": [
+          "stt_error"
+        ],
+        "hard_case": "none"
+      }
+    },
+    {
+      "id": "A-004144",
+      "file": "pos/A-004/A-004144.json",
+      "text": "저희 온라인 강의의 최신 기능은 인스타그램 @study_genius 입니다. 참고 부탁드립니다.",
+      "expected_pi": [
+        {
+          "type": "SNS",
+          "text": "@study_genius",
+          "start": 24,
+          "end": 37
+        }
+      ],
+      "masked_text": "저희 온라인 강의의 최신 기능은 인스타그램 @study_genius 입니다. 참고 부탁드립니다.",
+      "meta": {
+        "domain": "온라인 강의 Q&A",
+        "style": "공문서풍",
+        "obfuscation": [
+          "separator_noise"
+        ],
+        "hard_case": "none"
+      }
+    },
+    {
+      "id": "A-000904",
+      "file": "pos/A-000/A-000904.json",
+      "text": "신청하신 분의 생년월일이 언제이신가요? 으... 칠칠이 칠칠이 이십일년이에요.",
+      "expected_pi": [
+        {
+          "type": "BIRTH",
+          "text": "칠칠이 칠칠이 이십일년",
+          "start": 27,
+          "end": 39
+        }
+      ],
+      "masked_text": "신청하신 분의 생년월일이 언제이신가요? 으... 칠칠이 칠칠이 이십일년이에요.",
+      "meta": {
+        "domain": "회의록",
+        "style": "존댓말 상담",
+        "obfuscation": [
+          "stt_error"
+        ],
+        "hard_case": "none"
+      }
+    },
+    {
+      "id": "A-002031",
+      "file": "pos/A-002/A-002031.json",
+      "text": "저희 집 주소는 경기도 수원시 팔달구 효원로에 있는데, 정확한 건 '경기도 수원시' 라고 다시 말해주시겠어요?",
+      "expected_pi": [
+        {
+          "type": "ADDRESS",
+          "text": "경기도 수원시",
+          "start": 9,
+          "end": 16
+        }
+      ],
+      "masked_text": "저희 집 주소는 경기도 수원시 팔달구 효원로에 있는데, 정확한 건 '경기도 수원시' 라고 다시 말해주시겠어요?",
+      "meta": {
+        "domain": "학교 행정 문의",
+        "style": "메신저 줄임말",
+        "obfuscation": [
+          "split_utterance"
+        ],
+        "hard_case": "none"
+      }
+    },
+    {
+      "id": "A-002748",
+      "file": "pos/A-002/A-002748.json",
+      "text": "요즘 기분 어때? 지난번에 말했던 거 말이야, 너 혹시 그 구름이랑 관련 있어?",
+      "expected_pi": [
+        {
+          "type": "NAME",
+          "text": "구름",
+          "start": 33,
+          "end": 35
+        }
+      ],
+      "masked_text": "요즘 기분 어때? 지난번에 말했던 거 말이야, 너 혹시 그 구름이랑 관련 있어?",
+      "meta": {
+        "domain": "직장 메신저",
+        "style": "반말 대화",
+        "obfuscation": [
+          "honorific_ref"
+        ],
+        "hard_case": "homonym_name"
+      }
+    },
+    {
+      "id": "A-000417",
+      "file": "pos/A-000/A-000417.json",
+      "text": "저희가 말씀드린 생년월일이 1995년 5월 20일이 맞을까요? 아니면 1995년 5월 22일이요?",
+      "expected_pi": [
+        {
+          "type": "BIRTH",
+          "text": "1995년 5월 22일",
+          "start": 39,
+          "end": 51
+        }
+      ],
+      "masked_text": "저희가 말씀드린 생년월일이 1995년 5월 20일이 맞을까요? 아니면 1995년 5월 22일이요?",
+      "meta": {
+        "domain": "중고거래 채팅",
+        "style": "존댓말 상담",
+        "obfuscation": [
+          "self_correction"
+        ],
+        "hard_case": "none"
+      }
+    },
+    {
+      "id": "A-002075",
+      "file": "pos/A-002/A-002075.json",
+      "text": "참고로 저희 사번은 987654입니다. 이전에 777777로 하셨다고 하셨는데, 그게 아니고요.",
+      "expected_pi": [
+        {
+          "type": "OTHER_ID",
+          "text": "987654",
+          "start": 11,
+          "end": 17
+        }
+      ],
+      "masked_text": "참고로 저희 사번은 987654입니다. 이전에 777777로 하셨다고 하셨는데, 그게 아니고요.",
+      "meta": {
+        "domain": "고객센터 채팅",
+        "style": "공문서풍",
+        "obfuscation": [
+          "self_correction"
+        ],
+        "hard_case": "none"
+      }
+    },
+    {
+      "id": "A-003733",
+      "file": "pos/A-003/A-003733.json",
+      "text": "담당자분께, 제 이메일은 test.user123@mail.com이고요. 그리고 회원 등급 코드는 AlphaBravo77이에요.",
+      "expected_pi": [
+        {
+          "type": "EMAIL",
+          "text": "test.user123@mail.com",
+          "start": 14,
+          "end": 35
+        },
+        {
+          "type": "OTHER_ID",
+          "text": "AlphaBravo77",
+          "start": 54,
+          "end": 66
+        }
+      ],
+      "masked_text": "담당자분께, 제 이메일은 test.user123@mail.com이고요. 그리고 회원 등급 코드는 AlphaBravo77이에요.",
+      "meta": {
+        "domain": "보험 청구",
+        "style": "메신저 줄임말",
+        "obfuscation": [
+          "split_utterance"
+        ],
+        "hard_case": "none"
+      }
+    },
+    {
+      "id": "A-000243",
+      "file": "pos/A-000/A-000243.json",
+      "text": "연락 주신 이메일은 example.(at)gmail.com으로 확인되는데, 이게 맞으신가요?",
+      "expected_pi": [
+        {
+          "type": "EMAIL",
+          "text": "example.(at)gmail.com",
+          "start": 11,
+          "end": 32
+        }
+      ],
+      "masked_text": "연락 주신 이메일은 example.(at)gmail.com으로 확인되는데, 이게 맞으신가요?",
+      "meta": {
+        "domain": "중고거래 채팅",
+        "style": "길고 장황한 설명",
+        "obfuscation": [
+          "separator_noise"
+        ],
+        "hard_case": "none"
+      }
+    },
+    {
+      "id": "A-004495",
+      "file": "pos/A-004/A-004495.json",
+      "text": "아, 네. 생년월일이 991225, 아니요, 991221이 맞습니다. 혹시 다시 한번 확인해주시겠어요?",
+      "expected_pi": [
+        {
+          "type": "BIRTH",
+          "text": "991225, 아니요, 991221",
+          "start": 12,
+          "end": 31
+        }
+      ],
+      "masked_text": "아, 네. 생년월일이 991225, 아니요, 991221이 맞습니다. 혹시 다시 한번 확인해주시겠어요?",
+      "meta": {
+        "domain": "병원 접수",
+        "style": "음성인식(STT) 전사",
+        "obfuscation": [
+          "self_correction",
+          "lookalike_char"
+        ],
+        "hard_case": "none"
+      }
+    },
+    {
+      "id": "A-004362",
+      "file": "pos/A-004/A-004362.json",
+      "text": "계좌번호가 010 다음에 1이 네 번 그리고 2가 네 번이요, 그리고 이메일은 user@example.com입니다.",
+      "expected_pi": [
+        {
+          "type": "ACCOUNT",
+          "text": "010 다음에 1이 네 번 그리고 2가 네 번",
+          "start": 6,
+          "end": 31
+        },
+        {
+          "type": "EMAIL",
+          "text": "user@example.com",
+          "start": 44,
+          "end": 60
+        }
+      ],
+      "masked_text": "계좌번호가 010 다음에 1이 네 번 그리고 2가 네 번이요, 그리고 이메일은 user@example.com입니다.",
+      "meta": {
+        "domain": "회의록",
+        "style": "존댓말 상담",
+        "obfuscation": [
+          "repeat_expr"
+        ],
+        "hard_case": "none"
+      }
+    },
+    {
+      "id": "A-001377",
+      "file": "pos/A-001/A-001377.json",
+      "text": "이거 닉네임이 '오늘의별'이라서요. 주민등록번호는 920101-1******이고요. 인스타그램은 @별빛여행러로 하시면 돼요.",
+      "expected_pi": [
+        {
+          "type": "NAME",
+          "text": "오늘의별",
+          "start": 9,
+          "end": 13
+        },
+        {
+          "type": "RRN",
+          "text": "920101-1******",
+          "start": 28,
+          "end": 42
+        },
+        {
+          "type": "SNS",
+          "text": "@별빛여행러",
+          "start": 54,
+          "end": 60
+        }
+      ],
+      "masked_text": "이거 닉네임이 '오늘의별'이라서요. 주민등록번호는 920101-1******이고요. 인스타그램은 @별빛여행러로 하시면 돼요.",
+      "meta": {
+        "domain": "SNS 댓글",
+        "style": "길고 장황한 설명",
+        "obfuscation": [
+          "lookalike_char"
+        ],
+        "hard_case": "nickname_id"
+      }
+    },
+    {
+      "id": "A-003916",
+      "file": "pos/A-003/A-003916.json",
+      "text": "가지고 계신 카드가 비자 플래티넘으로 맞는지 다시 확인해 볼게요.",
+      "expected_pi": [
+        {
+          "type": "CARD",
+          "text": "비자 플래티넘",
+          "start": 11,
+          "end": 18
+        }
+      ],
+      "masked_text": "가지고 계신 카드가 비자 플래티넘으로 맞는지 다시 확인해 볼게요.",
+      "meta": {
+        "domain": "금융 상담",
+        "style": "짧은 단답",
+        "obfuscation": [
+          "lookalike_char"
+        ],
+        "hard_case": "none"
+      }
+    },
+    {
+      "id": "A-004054",
+      "file": "pos/A-004/A-004054.json",
+      "text": "어제 보내주신 물건, 혹시 이거 잘못 온 거 아니야? 여권 번호가 999X1122Y 같은데, 이거 좀 다시 확인해봐.",
+      "expected_pi": [
+        {
+          "type": "PASSPORT",
+          "text": "999X1122Y",
+          "start": 37,
+          "end": 46
+        }
+      ],
+      "masked_text": "어제 보내주신 물건, 혹시 이거 잘못 온 거 아니야? 여권 번호가 999X1122Y 같은데, 이거 좀 다시 확인해봐.",
+      "meta": {
+        "domain": "택배 문의",
+        "style": "반말 대화",
+        "obfuscation": [
+          "stt_error"
+        ],
+        "hard_case": "none"
+      }
+    },
+    {
+      "id": "A-002230",
+      "file": "pos/A-002/A-002230.json",
+      "text": "네, 환자분 성함이 '박서연' 씨 맞으신가요? 아니, 그게 아니라 '박서연'이요. 혹시 '강남병원' 쪽으로 예약 도와드릴까요?",
+      "expected_pi": [
+        {
+          "type": "NAME",
+          "text": "박서연",
+          "start": 12,
+          "end": 15
+        },
+        {
+          "type": "SNS",
+          "text": "강남병원",
+          "start": 50,
+          "end": 54
+        }
+      ],
+      "masked_text": "네, 환자분 성함이 '박서연' 씨 맞으신가요? 아니, 그게 아니라 '박서연'이요. 혹시 '강남병원' 쪽으로 예약 도와드릴까요?",
+      "meta": {
+        "domain": "병원 접수",
+        "style": "격식체",
+        "obfuscation": [
+          "self_correction",
+          "separator_noise",
+          "honorific_ref"
+        ],
+        "hard_case": "none"
+      }
+    },
+    {
+      "id": "A-002105",
+      "file": "pos/A-002/A-002105.json",
+      "text": "제가 지금 사시는 곳이 정확히 서울특별시 강남구 역삼동이에요. 거기서 근처로 오시는 게 좋을 것 같아요.",
+      "expected_pi": [
+        {
+          "type": "ADDRESS",
+          "text": "서울특별시 강남구 역삼동",
+          "start": 17,
+          "end": 30
+        }
+      ],
+      "masked_text": "제가 지금 사시는 곳이 정확히 서울특별시 강남구 역삼동이에요. 거기서 근처로 오시는 게 좋을 것 같아요.",
+      "meta": {
+        "domain": "직장 메신저",
+        "style": "반말 대화",
+        "obfuscation": [
+          "jamo_split"
+        ],
+        "hard_case": "none"
+      }
+    },
+    {
+      "id": "A-005288",
+      "file": "pos/A-005/A-005288.json",
+      "text": "혹시 저 보람아니면 비번이라도 알려주시면 바로 확인 가능할까요?",
+      "expected_pi": [
+        {
+          "type": "SNS",
+          "text": "보람",
+          "start": 5,
+          "end": 7
+        }
+      ],
+      "masked_text": "혹시 저 보람아니면 비번이라도 알려주시면 바로 확인 가능할까요?",
+      "meta": {
+        "domain": "금융 상담",
+        "style": "메신저 줄임말",
+        "obfuscation": [
+          "plain"
+        ],
+        "hard_case": "none"
+      }
+    },
+    {
+      "id": "A-001753",
+      "file": "pos/A-001/A-001753.json",
+      "text": "거주지는 경기도 성남시 분당구에 있고, 이메일은 kim.minjun(at)naver.com 입니다.",
+      "expected_pi": [
+        {
+          "type": "ADDRESS",
+          "text": "경기도 성남시 분당구",
+          "start": 5,
+          "end": 16
+        },
+        {
+          "type": "EMAIL",
+          "text": "kim.minjun(at)naver.com",
+          "start": 27,
+          "end": 50
+        }
+      ],
+      "masked_text": "거주지는 경기도 성남시 분당구에 있고, 이메일은 kim.minjun(at)naver.com 입니다.",
+      "meta": {
+        "domain": "금융 상담",
+        "style": "격식체",
+        "obfuscation": [
+          "email_spoken",
+          "korean_reading"
+        ],
+        "hard_case": "none"
+      }
+    },
+    {
+      "id": "A-000147",
+      "file": "pos/A-000/A-000147.json",
+      "text": "혹시 접속하신 IP 주소가 192점 168점 0점 100점 인가요? 확인 좀 부탁드립니다.",
+      "expected_pi": [
+        {
+          "type": "IP_ADDR",
+          "text": "192점 168점 0점 100점",
+          "start": 15,
+          "end": 32
+        }
+      ],
+      "masked_text": "혹시 접속하신 IP 주소가 192점 168점 0점 100점 인가요? 확인 좀 부탁드립니다.",
+      "meta": {
+        "domain": "직장 메신저",
+        "style": "구어체",
+        "obfuscation": [
+          "repeat_expr"
+        ],
+        "hard_case": "none"
+      }
+    },
+    {
+      "id": "A-005433",
+      "file": "pos/A-005/A-005433.json",
+      "text": "방문하신 주소는 서울특별시 강남구 테헤란로 123이구요, 회원 ID는 user_1987으로 기억합니다.",
+      "expected_pi": [
+        {
+          "type": "ADDRESS",
+          "text": "서울특별시 강남구 테헤란로 123",
+          "start": 9,
+          "end": 27
+        },
+        {
+          "type": "ID",
+          "text": "user_1987",
+          "start": 39,
+          "end": 48
+        }
+      ],
+      "masked_text": "방문하신 주소는 서울특별시 강남구 테헤란로 123이구요, 회원 ID는 user_1987으로 기억합니다.",
+      "meta": {
+        "domain": "회의록",
+        "style": "메신저 줄임말",
+        "obfuscation": [
+          "romanized"
+        ],
+        "hard_case": "nickname_id"
+      }
+    }
+  ]
+}

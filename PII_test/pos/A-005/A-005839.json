@@ -1,0 +1,1 @@
+{"id": "A-005839", "text": "이메일은 user_abc@test.com이고, 담당자 이름은 박지훈 씨예요.", "pi": [{"type": "EMAIL", "text": "user_abc@test.com", "start": 5, "end": 22}, {"type": "NAME", "text": "박지훈", "start": 34, "end": 37}], "meta": {"domain": "보험 청구", "style": "음성인식(STT) 전사", "obfuscation": ["plain"], "hard_case": "none"}}

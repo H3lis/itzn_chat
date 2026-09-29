@@ -1,0 +1,1 @@
+{"id": "A-003890", "text": "네, 성함은 라임이 맞아요. 혹시 다른 분 연락처는 없으신가요?", "pi": [{"type": "NAME", "text": "라임", "start": 7, "end": 9}], "meta": {"domain": "고객센터 채팅", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

@@ -1,0 +1,1 @@
+{"id": "A-004700", "text": "어? 그 나라 쪽 담당자 되시나요? 연락처는 010-1234-5678로 해주세요.", "pi": [{"type": "NAME", "text": "나라", "start": 5, "end": 7}, {"type": "PHONE", "text": "010-1234-5678", "start": 25, "end": 38}], "meta": {"domain": "중고거래 채팅", "style": "짧은 단답", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

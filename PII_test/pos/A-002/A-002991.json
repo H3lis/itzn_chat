@@ -1,0 +1,1 @@
+{"id": "A-002991", "text": "혹시 주소지가 서울특별시 강남구 테헤란로 152-3 건물 3층 맞나요? 그리고 담당자 이름이 민규 님이셨던 것 같은데.", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 테헤란로 152-3", "start": 8, "end": 28}, {"type": "NAME", "text": "민규", "start": 52, "end": 54}], "meta": {"domain": "택배 문의", "style": "음성인식(STT) 전사", "obfuscation": ["romanized"], "hard_case": "none"}}

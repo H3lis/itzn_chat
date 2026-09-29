@@ -1,0 +1,1 @@
+{"id": "A-003314", "text": "접속 시 사용하신 IP 주소가 192.168.1.100 같은데, 혹시 다른 네트워크에서 접속하신 건가요?", "pi": [{"type": "IP_ADDR", "text": "192.168.1.100", "start": 17, "end": 30}], "meta": {"domain": "금융 상담", "style": "오타 많은 채팅", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

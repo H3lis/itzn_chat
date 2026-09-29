@@ -1,0 +1,1 @@
+{"id": "A-000931", "text": "고객님 생년월일이 90년 5월 15일 맞으신가요? 아, 잠시만요. 90년 5월 16일이 맞습니다. 김민정 님 이름은요?", "pi": [{"type": "BIRTH", "text": "90년 5월 16일", "start": 37, "end": 47}, {"type": "NAME", "text": "김민정", "start": 55, "end": 58}], "meta": {"domain": "쇼핑몰 문의", "style": "공문서풍", "obfuscation": ["self_correction"], "hard_case": "none"}}

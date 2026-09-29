@@ -1,0 +1,1 @@
+{"id": "A-005137", "text": "결제할 카드가 바뀌어서요. 이전에 쓰던 게 아니고, 이번엔 4번으로요. 9999 끝으로요.", "pi": [{"type": "CARD", "text": "9999", "start": 40, "end": 44}], "meta": {"domain": "이메일 본문", "style": "구어체", "obfuscation": ["self_correction", "repeat_expr"], "hard_case": "none"}}

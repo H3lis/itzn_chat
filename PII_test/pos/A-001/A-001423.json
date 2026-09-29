@@ -1,0 +1,1 @@
+{"id": "A-001423", "text": "네, 고객님. 주소는 서울특별시 강남구 테헤란로 123번지 맞으실까요? 아니면 상세 주소가 필요하신가요?", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 테헤란로 123번지", "start": 12, "end": 32}], "meta": {"domain": "콜센터 상담 요약", "style": "존댓말 상담", "obfuscation": ["plain"], "hard_case": "none"}}

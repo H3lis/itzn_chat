@@ -1,0 +1,1 @@
+{"id": "A-000758", "text": "제 메일이 ㅇㅁㄴㅁㄴ@지메일.com 으로 변경됐어요. 혹시 이거 맞나요?", "pi": [{"type": "EMAIL", "text": "ㅇㅁㄴㅁㄴ@지메일.com", "start": 6, "end": 19}], "meta": {"domain": "음성통화 전사문", "style": "오타 많은 채팅", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

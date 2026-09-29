@@ -1,0 +1,1 @@
+{"id": "A-003165", "text": "운전면허증 번호 말씀해 주시겠어요? 공일오 삼사 다시 일이 삼팔?", "pi": [{"type": "DRIVER_LICENSE", "text": "공일오 삼사 다시 일이 삼팔", "start": 20, "end": 35}], "meta": {"domain": "택배 문의", "style": "메신저 줄임말", "obfuscation": ["korean_reading", "split_utterance", "mixed_reading"], "hard_case": "none"}}

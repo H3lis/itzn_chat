@@ -1,0 +1,1 @@
+{"id": "A-001180", "text": "접수된 접속 주소는 192.168.1.100이고, SNS 계정은 @user123입니다.", "pi": [{"type": "IP_ADDR", "text": "192.168.1.100", "start": 11, "end": 24}, {"type": "SNS", "text": "@user123", "start": 36, "end": 44}], "meta": {"domain": "민원 접수", "style": "존댓말 상담", "obfuscation": ["split_utterance"], "hard_case": "none"}}

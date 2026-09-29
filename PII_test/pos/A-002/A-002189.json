@@ -1,0 +1,1 @@
+{"id": "A-002189", "text": "저희 고객센터는 010 다음에 1이 네 번 그리고 2가 네 번으로 걸려오셨고요, 혹시 사용하시는 SNS 아이디가 뭐야에요?", "pi": [{"type": "PHONE", "text": "010 다음에 1이 네 번 그리고 2가 네 번", "start": 9, "end": 34}, {"type": "SNS", "text": "SNS 아이디", "start": 54, "end": 61}], "meta": {"domain": "고객센터 채팅", "style": "오타 많은 채팅", "obfuscation": ["repeat_expr"], "hard_case": "nickname_id"}}

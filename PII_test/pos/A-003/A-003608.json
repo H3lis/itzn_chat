@@ -1,0 +1,1 @@
+{"id": "A-003608", "text": "전화번호가 010-2020-3030이고요? 저희는 진짜 많이 바빠서 연락이 안 됐던 것 같아요. sns도 한번 확인해보시겠어요?", "pi": [{"type": "PHONE", "text": "010-2020-3030", "start": 6, "end": 19}, {"type": "SNS", "text": "sns", "start": 54, "end": 57}], "meta": {"domain": "음성통화 전사문", "style": "길고 장황한 설명", "obfuscation": ["stt_error"], "hard_case": "nickname_id"}}

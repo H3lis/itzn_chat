@@ -1,0 +1,1 @@
+{"id": "A-000719", "text": "제 인스타그램은 @user_a12b예요. 제 이름은 민준이요.", "pi": [{"type": "SNS", "text": "@user_a12b", "start": 9, "end": 19}, {"type": "NAME", "text": "민준", "start": 29, "end": 31}], "meta": {"domain": "중고거래 채팅", "style": "반말 대화", "obfuscation": ["separator_noise"], "hard_case": "nickname_id"}}

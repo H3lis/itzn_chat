@@ -1,0 +1,1 @@
+{"id": "A-000410", "text": "문의하신 이메일 주소는 'dev_team@mail(at)company.com' 으로 되어있습니다.", "pi": [{"type": "EMAIL", "text": "dev_team@mail(at)company.com", "start": 14, "end": 42}], "meta": {"domain": "직장 메신저", "style": "구어체", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

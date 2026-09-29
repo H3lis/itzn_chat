@@ -1,0 +1,1 @@
+{"id": "A-002957", "text": "접수되신 보험 청구 건은 고객님 이메일 주소로 안내드리겠습니다.", "pi": [{"type": "EMAIL", "text": "고객님 이메일 주소로", "start": 14, "end": 25}], "meta": {"domain": "보험 청구", "style": "짧은 단답", "obfuscation": ["email_spoken"], "hard_case": "none"}}

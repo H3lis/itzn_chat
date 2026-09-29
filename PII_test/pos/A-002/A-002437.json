@@ -1,0 +1,1 @@
+{"id": "A-002437", "text": "제 이름은 Park Jihoon이에요. 한국어로 읽으면 파크 지훈이라고 합니다.", "pi": [{"type": "NAME", "text": "Park Jihoon", "start": 6, "end": 17}], "meta": {"domain": "음성통화 전사문", "style": "음성인식(STT) 전사", "obfuscation": ["romanized", "jamo_split"], "hard_case": "none"}}

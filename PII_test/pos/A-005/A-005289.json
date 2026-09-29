@@ -1,0 +1,1 @@
+{"id": "A-005289", "text": "보람이에요? 신분증 번호는 20010515로 알고 있는데 맞나요?", "pi": [{"type": "NAME", "text": "보람", "start": 0, "end": 2}, {"type": "RRN", "text": "20010515", "start": 15, "end": 23}], "meta": {"domain": "SNS 댓글", "style": "짧은 단답", "obfuscation": ["romanized"], "hard_case": "homonym_name"}}

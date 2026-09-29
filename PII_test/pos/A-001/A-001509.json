@@ -1,0 +1,1 @@
+{"id": "A-001509", "text": "혹시 이번 학기 수강신청 기간이 언제부터인지 다시 한 번만 말씀해 주실 수 있을까요? 010-5555-1234요.", "pi": [{"type": "PHONE", "text": "010-5555-1234", "start": 48, "end": 61}], "meta": {"domain": "학교 행정 문의", "style": "오타 많은 채팅", "obfuscation": ["self_correction"], "hard_case": "none"}}

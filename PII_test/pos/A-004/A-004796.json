@@ -1,0 +1,1 @@
+{"id": "A-004796", "text": "주소는 광주광역시 서구 첨단로 1502-3이고요. 접수는 김과장님으로 부탁드립니다.", "pi": [{"type": "ADDRESS", "text": "광주광역시 서구 첨단로 1502-3", "start": 4, "end": 23}, {"type": "NAME", "text": "김과장", "start": 32, "end": 35}], "meta": {"domain": "보험 청구", "style": "메신저 줄임말", "obfuscation": ["honorific_ref"], "hard_case": "none"}}

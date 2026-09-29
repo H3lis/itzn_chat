@@ -1,0 +1,1 @@
+{"id": "A-003688", "text": "보험 서류 다 냈잖아요? 혹시 제 이름 다시 말씀해주시거나, 아니, 그게 아니라 이 번호가 좀 달라졌는데 확인 좀 해주세요.", "pi": [{"type": "NAME", "text": "나", "start": 31, "end": 32}], "meta": {"domain": "보험 청구", "style": "메신저 줄임말", "obfuscation": ["self_correction"], "hard_case": "none"}}

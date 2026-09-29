@@ -1,0 +1,1 @@
+{"id": "A-002873", "text": "배송받으실 주소는 네, 경기도 광교동에 위치한 123-45번지고요, 제가 들으신 대로가 정확한가요?", "pi": [{"type": "ADDRESS", "text": "경기도 광교동", "start": 13, "end": 20}], "meta": {"domain": "보험 청구", "style": "길고 장황한 설명", "obfuscation": ["stt_error"], "hard_case": "none"}}

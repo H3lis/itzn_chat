@@ -1,0 +1,1 @@
+{"id": "A-002851", "text": "주소는 서울시 강남구 테헤란로 150이고, 카드는 비자 마지막 네 자리가 3333번이에요.", "pi": [{"type": "ADDRESS", "text": "서울시 강남구 테헤란로 150", "start": 4, "end": 20}, {"type": "CARD", "text": "3333", "start": 41, "end": 45}], "meta": {"domain": "온라인 강의 Q&A", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "none"}}

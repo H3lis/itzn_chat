@@ -1,0 +1,1 @@
+{"id": "A-004699", "text": "저기요? 메일은 user.name@mail.net 인가봐요? 그리고 이름은 김철수 님 맞죠?", "pi": [{"type": "EMAIL", "text": "user.name@mail.net", "start": 9, "end": 27}, {"type": "NAME", "text": "김철수", "start": 42, "end": 45}], "meta": {"domain": "SNS 댓글", "style": "오타 많은 채팅", "obfuscation": ["separator_noise"], "hard_case": "none"}}

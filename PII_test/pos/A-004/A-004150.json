@@ -1,0 +1,1 @@
+{"id": "A-004150", "text": "김민준 씨요? 아, 아니요. 이 가은이라고 불러주시면 될 것 같아요.", "pi": [{"type": "NAME", "text": "이 가은", "start": 16, "end": 20}], "meta": {"domain": "보험 청구", "style": "반말 대화", "obfuscation": ["jamo_split", "romanized"], "hard_case": "none"}}

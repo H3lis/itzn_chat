@@ -1,0 +1,1 @@
+{"id": "A-005041", "text": "나라 선생님, 접수하시려면 성함과 어머님 성함이 필요합니다. 혹시 나라 선생님이시죠?", "pi": [{"type": "NAME", "text": "나라", "start": 0, "end": 2}], "meta": {"domain": "병원 접수", "style": "격식체", "obfuscation": ["honorific_ref"], "hard_case": "homonym_name"}}

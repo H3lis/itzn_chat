@@ -1,0 +1,1 @@
+{"id": "A-004278", "text": "요청하신 담당자분 연락처는 혹시 010-2222-3333 이 맞으신가요?", "pi": [{"type": "PHONE", "text": "010-2222-3333", "start": 18, "end": 31}], "meta": {"domain": "중고거래 채팅", "style": "격식체", "obfuscation": ["korean_reading"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-000517", "text": "제가 사는 곳은 수원시 팔달구 효원로에 있는 OOO 아파트 근처인데요. 혹시 이름이 '수원' 씨 맞으신가요?", "pi": [{"type": "ADDRESS", "text": "수원시 팔달구 효원로", "start": 9, "end": 20}, {"type": "NAME", "text": "수원", "start": 48, "end": 50}], "meta": {"domain": "커뮤니티 게시글", "style": "격식체", "obfuscation": ["romanized", "korean_reading", "jamo_split"], "hard_case": "homonym_name"}}

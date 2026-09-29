@@ -1,0 +1,1 @@
+{"id": "A-001887", "text": "거주하시는 주소는 경기도 가상의 동네 7503호 맞으신가요? 생년월일은 91년 12월 5일로 되어 있습니다.", "pi": [{"type": "ADDRESS", "text": "경기도 가상의 동네 7503호", "start": 10, "end": 26}, {"type": "BIRTH", "text": "91년 12월 5일", "start": 40, "end": 50}], "meta": {"domain": "고객센터 채팅", "style": "존댓말 상담", "obfuscation": ["mixed_reading", "jamo_split"], "hard_case": "none"}}

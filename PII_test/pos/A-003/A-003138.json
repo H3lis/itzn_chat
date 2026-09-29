@@ -1,0 +1,1 @@
+{"id": "A-003138", "text": "차량 번호가 789가 강남테크노파크예요. 그리고 소속은 삼성개발원입니다.", "pi": [{"type": "CAR_PLATE", "text": "789가", "start": 7, "end": 11}, {"type": "ORG", "text": "삼성개발원", "start": 31, "end": 36}], "meta": {"domain": "금융 상담", "style": "길고 장황한 설명", "obfuscation": ["jamo_split", "stt_error"], "hard_case": "org_person"}}

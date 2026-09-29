@@ -1,0 +1,1 @@
+{"id": "A-004435", "text": "저게 팔려고 하는 거 맞나요? 주소는 서울시 강남구 역삼동이고, 이름은 하루 씨 거예요.", "pi": [{"type": "ADDRESS", "text": "서울시 강남구 역삼동", "start": 21, "end": 32}, {"type": "NAME", "text": "하루", "start": 40, "end": 42}], "meta": {"domain": "중고거래 채팅", "style": "구어체", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

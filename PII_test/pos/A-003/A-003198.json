@@ -1,0 +1,1 @@
+{"id": "A-003198", "text": "문의주신 분 성함이 진주 씨 맞으시죠? 연락 가능한 핸드폰 번호는 010-2222-3333 이요.", "pi": [{"type": "NAME", "text": "진주", "start": 11, "end": 13}, {"type": "PHONE", "text": "010-2222-3333", "start": 37, "end": 50}], "meta": {"domain": "쇼핑몰 문의", "style": "오타 많은 채팅", "obfuscation": ["separator_noise"], "hard_case": "homonym_name"}}

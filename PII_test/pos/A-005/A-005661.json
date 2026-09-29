@@ -1,0 +1,1 @@
+{"id": "A-005661", "text": "신용카드 결제는 010 다음에 3이 네 번 그리고 7이 네 번으로 되나요?", "pi": [{"type": "CARD", "text": "010 다음에 3이 네 번 그리고 7이 네 번", "start": 9, "end": 34}], "meta": {"domain": "보험 청구", "style": "존댓말 상담", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

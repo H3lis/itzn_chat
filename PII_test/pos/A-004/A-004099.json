@@ -1,0 +1,1 @@
+{"id": "A-004099", "text": "제가 살던 곳이 광안리 근처거든요. 이름은 노을이에요. 거기서 만난 사람이요.", "pi": [{"type": "ADDRESS", "text": "광안리", "start": 9, "end": 12}, {"type": "NAME", "text": "노을", "start": 24, "end": 26}], "meta": {"domain": "커뮤니티 게시글", "style": "반말 대화", "obfuscation": ["split_utterance"], "hard_case": "homonym_name"}}

@@ -1,0 +1,1 @@
+{"id": "A-001006", "text": "보람 씨의 여권 번호는 비읍 이 자 음 자, 비읍 이 자 음 자 다시 비읍 이 자 음 자 입니다.", "pi": [{"type": "NAME", "text": "보람", "start": 0, "end": 2}, {"type": "PASSPORT", "text": "비읍 이 자 음 자, 비읍 이 자 음 자 다시 비읍 이 자 음 자", "start": 13, "end": 49}], "meta": {"domain": "음성통화 전사문", "style": "공문서풍", "obfuscation": ["jamo_split", "repeat_expr"], "hard_case": "homonym_name"}}

@@ -1,0 +1,1 @@
+{"id": "A-003288", "text": "예약하신 전화번호는 010-1234-5678인데요, 이게 혹시 010-1234-5670으로 잘못 들린 걸까요?", "pi": [{"type": "PHONE", "text": "010-1234-5670", "start": 35, "end": 48}], "meta": {"domain": "여행 예약", "style": "공문서풍", "obfuscation": ["stt_error", "repeat_expr"], "hard_case": "none"}}

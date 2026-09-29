@@ -1,0 +1,1 @@
+{"id": "A-005337", "text": "저희 담당자 아이디가 'TestID123'이고, 주민등록번호는 901234-5678901이던데 맞나요?", "pi": [{"type": "ID", "text": "TestID123", "start": 13, "end": 22}, {"type": "RRN", "text": "901234-5678901", "start": 35, "end": 49}], "meta": {"domain": "회의록", "style": "구어체", "obfuscation": ["mixed_reading", "split_utterance"], "hard_case": "nickname_id"}}

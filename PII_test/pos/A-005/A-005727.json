@@ -1,0 +1,1 @@
+{"id": "A-005727", "text": "문의하신 이메일 주소는 000@example.com 이 맞을까요? 이게 맞는 건가요?", "pi": [{"type": "EMAIL", "text": "000@example.com", "start": 13, "end": 28}], "meta": {"domain": "병원 접수", "style": "존댓말 상담", "obfuscation": ["lookalike_char", "separator_noise"], "hard_case": "none"}}

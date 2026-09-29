@@ -1,0 +1,1 @@
+{"id": "A-004481", "text": "운전면허증 번호가 111122223333이 맞습니다. 이거 반복되는 패턴인가요?", "pi": [{"type": "DRIVER_LICENSE", "text": "111122223333", "start": 10, "end": 22}], "meta": {"domain": "커뮤니티 게시글", "style": "짧은 단답", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-000742", "text": "저희 계정 아이디는 K1a2b3c4이고, 부서명은 인사관리팀으로 알고 있습니다.", "pi": [{"type": "ID", "text": "K1a2b3c4", "start": 11, "end": 19}, {"type": "ORG", "text": "인사관리팀", "start": 28, "end": 33}], "meta": {"domain": "이메일 본문", "style": "구어체", "obfuscation": ["lookalike_char"], "hard_case": "org_person"}}

@@ -1,0 +1,1 @@
+{"id": "A-004263", "text": "혹시 기쁨 님 계정으로 접속하셨나요? 사용자 아이디가 어떻게 되셨나요? 기쁨 님 성함이 혹시 다르신가요?", "pi": [{"type": "ID", "text": "기쁨", "start": 3, "end": 5}, {"type": "NAME", "text": "기쁨", "start": 40, "end": 42}], "meta": {"domain": "콜센터 상담 요약", "style": "오타 많은 채팅", "obfuscation": ["romanized", "self_correction", "honorific_ref"], "hard_case": "homonym_name"}}

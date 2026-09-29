@@ -1,0 +1,1 @@
+{"id": "A-000117", "text": "거주지 주소는 서울특별시 강남구 역삼동 555-22, 그리고 성함은 지수 씨예요.", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 역삼동 555-22", "start": 8, "end": 28}, {"type": "NAME", "text": "지수", "start": 38, "end": 40}], "meta": {"domain": "병원 접수", "style": "구어체", "obfuscation": ["korean_reading"], "hard_case": "none"}}

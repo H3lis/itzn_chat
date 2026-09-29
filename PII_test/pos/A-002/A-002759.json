@@ -1,0 +1,1 @@
+{"id": "A-002759", "text": "혹시 저희 계정이 박서준 님 명의이고, 연락처는 02-7777-8888 맞을까요? 그리고 제가 재산세 납부 내역도 확인해봐야 해요.", "pi": [{"type": "ACCOUNT", "text": "박서준", "start": 10, "end": 13}, {"type": "PHONE", "text": "02-7777-8888", "start": 27, "end": 39}], "meta": {"domain": "부동산 상담", "style": "격식체", "obfuscation": ["stt_error", "korean_reading"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-005189", "text": "제 회원 아이디는 사용자101이고요, 연락처는 010-5555-1234로 해 주시면 돼요.", "pi": [{"type": "ID", "text": "사용자101", "start": 10, "end": 16}, {"type": "PHONE", "text": "010-5555-1234", "start": 26, "end": 39}], "meta": {"domain": "보험 청구", "style": "메신저 줄임말", "obfuscation": ["stt_error"], "hard_case": "nickname_id"}}

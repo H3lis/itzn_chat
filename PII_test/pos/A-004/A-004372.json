@@ -1,0 +1,1 @@
+{"id": "A-004372", "text": "택배가 지금 어디에 와? 연락처가 010 1111 2222니까 나한테 바로 전화해.", "pi": [{"type": "PHONE", "text": "010 1111 2222", "start": 19, "end": 32}], "meta": {"domain": "택배 문의", "style": "반말 대화", "obfuscation": ["separator_noise", "korean_reading"], "hard_case": "none"}}

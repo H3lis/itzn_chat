@@ -1,0 +1,1 @@
+{"id": "A-005007", "text": "제 이름은 Park Seojoon이에요. 성함이요.", "pi": [{"type": "NAME", "text": "Park Seojoon", "start": 6, "end": 18}], "meta": {"domain": "병원 접수", "style": "구어체", "obfuscation": ["romanized", "self_correction"], "hard_case": "none"}}

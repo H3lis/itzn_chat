@@ -1,0 +1,1 @@
+{"id": "A-003821", "text": "이사 온 주소는 서울특별시 강남구 테헤란로 123이에요. 그리고 연락처는 010-5555-1234로 바꿨어요.", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 테헤란로 123", "start": 9, "end": 27}, {"type": "PHONE", "text": "010-5555-1234", "start": 41, "end": 54}], "meta": {"domain": "SNS 댓글", "style": "구어체", "obfuscation": ["self_correction"], "hard_case": "none"}}

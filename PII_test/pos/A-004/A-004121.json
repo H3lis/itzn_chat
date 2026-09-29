@@ -1,0 +1,1 @@
+{"id": "A-004121", "text": "직원번호는 7722-1100-3344로 지정되어 있으니, 이 부분은 혹시 다시 한번 불러주실 수 있을까요?", "pi": [{"type": "RRN", "text": "7722-1100-3344", "start": 6, "end": 20}], "meta": {"domain": "회의록", "style": "공문서풍", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

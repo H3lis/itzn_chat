@@ -1,0 +1,1 @@
+{"id": "A-005122", "text": "주소는 서울시 마포구 월드컵북로 333-11고요, 카드 번호는 1***-****-2222로 부탁드립니다.", "pi": [{"type": "ADDRESS", "text": "서울시 마포구 월드컵북로 333-11", "start": 4, "end": 24}, {"type": "CARD", "text": "1***-****-2222", "start": 35, "end": 49}], "meta": {"domain": "배달 요청사항", "style": "구어체", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

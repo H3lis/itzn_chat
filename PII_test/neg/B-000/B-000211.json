@@ -1,0 +1,1 @@
+{"id": "B-000211", "text": "혹시 검사 결과가 1234567890 같은 건가요?", "pi": [], "meta": {"domain": "병원 접수", "style": "반말 대화", "obfuscation": [], "hard_case": "number_like_pi"}}

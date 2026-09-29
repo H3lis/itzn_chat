@@ -1,0 +1,1 @@
+{"id": "A-005040", "text": "접수 시에 필요하신 정보는 생년월일 90년 5월 15일이랑, 연락처 010-7777-8888 두 가지예요.", "pi": [{"type": "BIRTH", "text": "90년 5월 15일", "start": 20, "end": 30}, {"type": "PHONE", "text": "010-7777-8888", "start": 38, "end": 51}], "meta": {"domain": "병원 접수", "style": "메신저 줄임말", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

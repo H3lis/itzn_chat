@@ -1,0 +1,1 @@
+{"id": "A-001190", "text": "생년월일이 94년 08월 15일이 맞는지 다시 한번 확인 부탁드립니다.", "pi": [{"type": "BIRTH", "text": "94년 08월 15일", "start": 6, "end": 17}], "meta": {"domain": "택배 문의", "style": "짧은 단답", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

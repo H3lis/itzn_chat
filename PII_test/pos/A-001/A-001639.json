@@ -1,0 +1,1 @@
+{"id": "A-001639", "text": "네? 성동 씨는 이름이 이지은이라고요. 아, 아니요, 제 진짜 이름은 김지민이에요.", "pi": [{"type": "NAME", "text": "이지은", "start": 13, "end": 16}, {"type": "NAME", "text": "김지민", "start": 39, "end": 42}], "meta": {"domain": "회의록", "style": "짧은 단답", "obfuscation": ["self_correction", "jamo_split"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-005441", "text": "제가 태어난 날짜는 2000년 5월 15일이에요. 그리고 저는 사랑이라는 이름이에요.", "pi": [{"type": "BIRTH", "text": "2000년 5월 15일", "start": 11, "end": 23}, {"type": "NAME", "text": "사랑", "start": 35, "end": 37}], "meta": {"domain": "고객센터 채팅", "style": "반말 대화", "obfuscation": ["korean_reading"], "hard_case": "homonym_name"}}

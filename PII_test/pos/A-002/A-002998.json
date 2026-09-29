@@ -1,0 +1,1 @@
+{"id": "A-002998", "text": "제출 서류에 기재된 회원님은 2000년 5월 15일에 입사한 강남 본사 직원입니다.", "pi": [{"type": "BIRTH", "text": "2000년 5월 15일", "start": 16, "end": 28}, {"type": "ORG", "text": "강남 본사", "start": 34, "end": 39}], "meta": {"domain": "쇼핑몰 문의", "style": "격식체", "obfuscation": ["jamo_split"], "hard_case": "org_person"}}

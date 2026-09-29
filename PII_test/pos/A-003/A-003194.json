@@ -1,0 +1,1 @@
+{"id": "A-003194", "text": "어제 본 거요? 제 닉네임이 별이라고 하셨죠. 아니, 사실은 'Star'에요. 저 별이에요.", "pi": [{"type": "NAME", "text": "별", "start": 16, "end": 17}, {"type": "SNS", "text": "별", "start": 46, "end": 47}], "meta": {"domain": "SNS 댓글", "style": "메신저 줄임말", "obfuscation": ["self_correction", "jamo_split", "romanized"], "hard_case": "homonym_name"}}

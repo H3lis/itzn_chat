@@ -1,0 +1,1 @@
+{"id": "A-005678", "text": "판매자님, 죄송한데요, 제가 생각했던 분 성함이 아니에요. 혹시 푸름 씨가 맞는 건가요?", "pi": [{"type": "NAME", "text": "푸름", "start": 36, "end": 38}], "meta": {"domain": "중고거래 채팅", "style": "짧은 단답", "obfuscation": ["self_correction"], "hard_case": "homonym_name"}}

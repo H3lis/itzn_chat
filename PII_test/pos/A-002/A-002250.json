@@ -1,0 +1,1 @@
+{"id": "A-002250", "text": "홍길동 님께서 지난번에 말씀해주신 건데, 김지혜 님께 확인받아보는 게 좋을 것 같습니다. 혹시 연락 가능한 번호가 있으신가요?", "pi": [{"type": "NAME", "text": "홍길동", "start": 0, "end": 3}, {"type": "NAME", "text": "김지혜", "start": 23, "end": 26}], "meta": {"domain": "부동산 상담", "style": "존댓말 상담", "obfuscation": ["romanized", "self_correction"], "hard_case": "none"}}

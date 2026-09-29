@@ -1,0 +1,1 @@
+{"id": "A-004185", "text": "메일 주소는 user(at)naver(dot)com 이고, 확인이 안 돼서 다시 한번 알려드리겠습니다.", "pi": [{"type": "EMAIL", "text": "user(at)naver(dot)com", "start": 7, "end": 28}], "meta": {"domain": "민원 접수", "style": "길고 장황한 설명", "obfuscation": ["lookalike_char", "separator_noise", "email_spoken"], "hard_case": "none"}}

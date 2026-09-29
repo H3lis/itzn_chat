@@ -1,0 +1,1 @@
+{"id": "A-004148", "text": "사용자님, 이메일 주소는 rain.life@test.com 이 맞는지요? 성함은 라임 씨 맞으시죠?", "pi": [{"type": "EMAIL", "text": "rain.life@test.com", "start": 14, "end": 32}, {"type": "NAME", "text": "라임", "start": 45, "end": 47}], "meta": {"domain": "고객센터 채팅", "style": "오타 많은 채팅", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

@@ -1,0 +1,1 @@
+{"id": "A-002789", "text": "환자분의 연락처는 공일공-1234-5678로 등록되어 있으니 참고 부탁드립니다.", "pi": [{"type": "PHONE", "text": "공일공-1234-5678", "start": 10, "end": 23}], "meta": {"domain": "병원 접수", "style": "공문서풍", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

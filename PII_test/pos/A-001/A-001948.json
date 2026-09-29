@@ -1,0 +1,1 @@
+{"id": "A-001948", "text": "주소는 강남구 테헤란로에 있는 505호이고, 제 임시 식별 번호가 7788이라고 확인되네요.", "pi": [{"type": "ADDRESS", "text": "강남구 테헤란로", "start": 4, "end": 12}, {"type": "OTHER_ID", "text": "7788", "start": 37, "end": 41}], "meta": {"domain": "병원 접수", "style": "오타 많은 채팅", "obfuscation": ["jamo_split", "korean_reading"], "hard_case": "none"}}

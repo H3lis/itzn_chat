@@ -1,0 +1,1 @@
+{"id": "A-004851", "text": "저기, 이름이 김현우라고 말씀해주셨죠? 혹시 자모 단위로 쪼개서 말씀해주시면 제가 이해하기 쉬울 것 같아요.", "pi": [{"type": "NAME", "text": "김현우", "start": 8, "end": 11}], "meta": {"domain": "고객센터 채팅", "style": "격식체", "obfuscation": ["jamo_split"], "hard_case": "none"}}

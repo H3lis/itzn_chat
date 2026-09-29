@@ -1,0 +1,1 @@
+{"id": "A-004690", "text": "제 학번은 20231234 다섯 여섯으로, 연락처는 010-9999-8888 쪽이에요.", "pi": [{"type": "OTHER_ID", "text": "20231234", "start": 6, "end": 14}, {"type": "PHONE", "text": "010-9999-8888", "start": 29, "end": 42}], "meta": {"domain": "음성통화 전사문", "style": "오타 많은 채팅", "obfuscation": ["split_utterance"], "hard_case": "none"}}

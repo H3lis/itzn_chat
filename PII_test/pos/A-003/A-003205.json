@@ -1,0 +1,1 @@
+{"id": "A-003205", "text": "환자분께서는 진료 접수를 위해 연락 주셨으며, 예약하신 번호는 공일공 5555 다섯 다섯 다섯 오입니다.", "pi": [{"type": "PHONE", "text": "공일공 5555 다섯 다섯 다섯 오", "start": 35, "end": 54}], "meta": {"domain": "병원 접수", "style": "공문서풍", "obfuscation": ["split_utterance"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-005525", "text": "제가 맡긴 것은 단비라고 하고, 여권 번호는 ㄱㅐㅁㄴㅣㅇㄷㅣ ㄱㅏㄴㄴㅣㄷㅏ입니다.", "pi": [{"type": "NAME", "text": "단비", "start": 9, "end": 11}, {"type": "PASSPORT", "text": "ㄱㅐㅁㄴㅣㅇㄷㅣ ㄱㅏㄴㄴㅣㄷㅏ", "start": 25, "end": 41}], "meta": {"domain": "커뮤니티 게시글", "style": "짧은 단답", "obfuscation": ["jamo_split", "korean_reading"], "hard_case": "homonym_name"}}

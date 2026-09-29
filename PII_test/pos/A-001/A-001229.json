@@ -1,0 +1,1 @@
+{"id": "A-001229", "text": "저의 이름은 현우예요. 연락 가능한 번호는 010-9999-0000입니다. 혹시 다른 번호가 있나요?", "pi": [{"type": "NAME", "text": "현우", "start": 7, "end": 9}, {"type": "PHONE", "text": "010-9999-0000", "start": 24, "end": 37}], "meta": {"domain": "커뮤니티 게시글", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "none"}}

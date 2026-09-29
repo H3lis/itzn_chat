@@ -1,0 +1,1 @@
+{"id": "A-004202", "text": "제 운전면허는 10자리로 시작하고, 그 뒤에 닉네임은 민지예요. 제가 알려드린 번호가 맞는지 다시 한번 확인해 볼게요. 이거 혹시 ㅇ1ㅇ 2222 아니었나요?", "pi": [{"type": "DRIVER_LICENSE", "text": "10자리", "start": 8, "end": 12}, {"type": "ID", "text": "민지", "start": 30, "end": 32}], "meta": {"domain": "SNS 댓글", "style": "길고 장황한 설명", "obfuscation": ["mixed_reading", "self_correction"], "hard_case": "nickname_id"}}

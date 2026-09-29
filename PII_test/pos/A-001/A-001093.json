@@ -1,0 +1,1 @@
+{"id": "A-001093", "text": "주소는 서울특별시 강남구 테헤란로 123, 4층에 있습니다. 제가 김지수라고 하는데, 혹시 이 분이 맞을까요?", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 테헤란로 123, 4층", "start": 4, "end": 26}, {"type": "NAME", "text": "김지수", "start": 37, "end": 40}], "meta": {"domain": "병원 접수", "style": "길고 장황한 설명", "obfuscation": ["romanized"], "hard_case": "none"}}

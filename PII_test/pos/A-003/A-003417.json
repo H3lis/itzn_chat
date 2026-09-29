@@ -1,0 +1,1 @@
+{"id": "A-003417", "text": "번호가요? 010-5555-1111이요. 아니, 죄송해요. 010-5555-2222로 다시 확인 부탁드릴게요.", "pi": [{"type": "PHONE", "text": "010-5555-1111", "start": 6, "end": 19}, {"type": "PHONE", "text": "010-5555-2222", "start": 33, "end": 46}], "meta": {"domain": "고객센터 채팅", "style": "메신저 줄임말", "obfuscation": ["plain"], "hard_case": "none"}}

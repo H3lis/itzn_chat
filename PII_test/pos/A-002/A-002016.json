@@ -1,0 +1,1 @@
+{"id": "A-002016", "text": "한결 님 글 잘 봤어요! 저도 다음 주에 만나서 이야기 나눠요. 제 전화번호는 010-9999-8888이에요.", "pi": [{"type": "NAME", "text": "한결", "start": 0, "end": 2}, {"type": "PHONE", "text": "010-9999-8888", "start": 44, "end": 57}], "meta": {"domain": "SNS 댓글", "style": "메신저 줄임말", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

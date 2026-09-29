@@ -1,0 +1,1 @@
+{"id": "A-004180", "text": "혹시 한결 씨가 주문한 상품 말인데요. 전화는 010-9999-8888로 연결해 드릴게요.", "pi": [{"type": "NAME", "text": "한결", "start": 3, "end": 5}, {"type": "PHONE", "text": "010-9999-8888", "start": 26, "end": 39}], "meta": {"domain": "쇼핑몰 문의", "style": "구어체", "obfuscation": ["separator_noise"], "hard_case": "homonym_name"}}

@@ -1,0 +1,1 @@
+{"id": "A-001336", "text": "담당자님, 그 분 이름이요? 아, 아니, 김민재라고 말씀하시는 게 맞을까요?", "pi": [{"type": "NAME", "text": "김민재", "start": 23, "end": 26}], "meta": {"domain": "음성통화 전사문", "style": "구어체", "obfuscation": ["self_correction", "jamo_split"], "hard_case": "none"}}

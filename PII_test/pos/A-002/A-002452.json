@@ -1,0 +1,1 @@
+{"id": "A-002452", "text": "저 사람이 미소 씨 맞는 것 같은데요, 주민등록번호는 880111222222예요.", "pi": [{"type": "NAME", "text": "미소", "start": 6, "end": 8}, {"type": "RRN", "text": "880111222222", "start": 30, "end": 42}], "meta": {"domain": "음성통화 전사문", "style": "구어체", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

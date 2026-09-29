@@ -1,0 +1,1 @@
+{"id": "A-002737", "text": "거주하시는 주소는 서울특별시 강남구 테헤란로 151 빌딩 3층 빌딩 맞으신가요?", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 테헤란로 151 빌딩 3층 빌딩", "start": 10, "end": 37}], "meta": {"domain": "부동산 상담", "style": "음성인식(STT) 전사", "obfuscation": ["stt_error"], "hard_case": "none"}}

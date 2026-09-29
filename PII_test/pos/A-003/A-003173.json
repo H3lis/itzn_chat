@@ -1,0 +1,1 @@
+{"id": "A-003173", "text": "저... 사람 이름이요? 로마자로 말씀해주시겠어요?", "pi": [{"type": "NAME", "text": "사람", "start": 5, "end": 7}], "meta": {"domain": "부동산 상담", "style": "짧은 단답", "obfuscation": ["romanized", "jamo_split"], "hard_case": "none"}}

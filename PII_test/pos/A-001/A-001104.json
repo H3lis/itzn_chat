@@ -1,0 +1,1 @@
+{"id": "A-001104", "text": "회원 아이디는 Dreamer_Kim이고요, 이용하시는 계정명은 SKT_Account로 확인되었습니다. 본인 확인 부탁드립니다.", "pi": [{"type": "ID", "text": "Dreamer_Kim", "start": 8, "end": 19}, {"type": "ACCOUNT", "text": "SKT_Account", "start": 35, "end": 46}], "meta": {"domain": "쇼핑몰 문의", "style": "공문서풍", "obfuscation": ["split_utterance"], "hard_case": "nickname_id"}}

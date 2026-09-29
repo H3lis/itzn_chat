@@ -1,0 +1,1 @@
+{"id": "A-004940", "text": "네, 아이디는 zhihye2000 이고, 담당자 분 성함이 지혜 씨 맞으신가요?", "pi": [{"type": "ID", "text": "zhihye2000", "start": 8, "end": 18}, {"type": "NAME", "text": "지혜", "start": 33, "end": 35}], "meta": {"domain": "택배 문의", "style": "구어체", "obfuscation": ["lookalike_char"], "hard_case": "homonym_name"}}

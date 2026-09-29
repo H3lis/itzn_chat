@@ -1,0 +1,1 @@
+{"id": "A-002912", "text": "환자 이름은 김민수 맞으시죠? 혹시 차트 확인해야 할 부분이 있을까요?", "pi": [{"type": "NAME", "text": "김민수", "start": 7, "end": 10}], "meta": {"domain": "병원 접수", "style": "메신저 줄임말", "obfuscation": ["plain"], "hard_case": "none"}}

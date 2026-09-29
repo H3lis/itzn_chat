@@ -1,0 +1,1 @@
+{"id": "A-002649", "text": "고객님 성함은 진주 씨 맞으시죠? 연락처로 010 1234 5678로 다시 한번 불러주시겠어요?", "pi": [{"type": "NAME", "text": "진주", "start": 8, "end": 10}, {"type": "PHONE", "text": "010 1234 5678", "start": 24, "end": 37}], "meta": {"domain": "금융 상담", "style": "반말 대화", "obfuscation": ["korean_reading"], "hard_case": "homonym_name"}}

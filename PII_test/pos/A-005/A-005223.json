@@ -1,0 +1,1 @@
+{"id": "A-005223", "text": "주민번호가 9512311234567이랑, 나중에 11122222 같은 건가요? 헷갈려요.", "pi": [{"type": "RRN", "text": "9512311234567", "start": 6, "end": 19}], "meta": {"domain": "중고거래 채팅", "style": "반말 대화", "obfuscation": ["stt_error", "korean_reading"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-000349", "text": "이메일 주소는 user(at)example(dot)com 이고, 제 이름은 박준우예요. 저희 회의록에 기록해 주세요.", "pi": [{"type": "EMAIL", "text": "user(at)example(dot)com", "start": 8, "end": 31}, {"type": "NAME", "text": "박준우", "start": 42, "end": 45}], "meta": {"domain": "회의록", "style": "반말 대화", "obfuscation": ["separator_noise", "romanized"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-000152", "text": "혹시 '하루'라는 이름으로 활동하셨던 분일까요? SNS 아이디가 '하루하루'인 분이요.", "pi": [{"type": "NAME", "text": "하루", "start": 4, "end": 6}, {"type": "SNS", "text": "하루하루", "start": 37, "end": 41}], "meta": {"domain": "콜센터 상담 요약", "style": "존댓말 상담", "obfuscation": ["lookalike_char"], "hard_case": "homonym_name"}}

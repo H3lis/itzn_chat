@@ -1,0 +1,1 @@
+{"id": "A-002913", "text": "카드 번호는 1234로 시작하고, 제 이름은 김민준이에요. 전화번호는 070-9999-8888 맞나요?", "pi": [{"type": "CARD", "text": "1234", "start": 7, "end": 11}, {"type": "NAME", "text": "김민준", "start": 25, "end": 28}, {"type": "PHONE", "text": "070-9999-8888", "start": 39, "end": 52}], "meta": {"domain": "보험 청구", "style": "짧은 단답", "obfuscation": ["self_correction"], "hard_case": "none"}}

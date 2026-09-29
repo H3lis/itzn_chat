@@ -1,0 +1,1 @@
+{"id": "A-002383", "text": "배송 받을 주소지 옆에 비상 연락처로 아이디는 ㄱㅏㅇㄴㅏㅁ, 이름은 ㅊㅓㄹㅅㅜ로 부탁드립니다.", "pi": [{"type": "ID", "text": "ㄱㅏㅇㄴㅏㅁ", "start": 26, "end": 32}, {"type": "NAME", "text": "ㅊㅓㄹㅅㅜ", "start": 38, "end": 43}], "meta": {"domain": "배달 요청사항", "style": "구어체", "obfuscation": ["lookalike_char", "jamo_split"], "hard_case": "none"}}

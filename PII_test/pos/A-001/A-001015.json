@@ -1,0 +1,1 @@
+{"id": "A-001015", "text": "저의 새 메일은 @#$#$%@.com이니 꼭 확인해주세요!", "pi": [{"type": "EMAIL", "text": "@#$#$%@.com", "start": 9, "end": 20}], "meta": {"domain": "SNS 댓글", "style": "격식체", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

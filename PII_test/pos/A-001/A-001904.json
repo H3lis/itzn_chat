@@ -1,0 +1,1 @@
+{"id": "A-001904", "text": "안녕하세요, 제가 오늘 처리하고 싶은 분은 '안양'님이에요. 혹시 성함이 '안양'이 맞으신가요?", "pi": [{"type": "NAME", "text": "안양", "start": 25, "end": 27}], "meta": {"domain": "배달 요청사항", "style": "격식체", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

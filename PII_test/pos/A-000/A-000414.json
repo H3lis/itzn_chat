@@ -1,0 +1,1 @@
+{"id": "A-000414", "text": "담당자 분이 푸름 씨라 하셨는데, 연락은 puleum@test.co.kr 로 되어 있나요? 성함이 어떻게 되세요?", "pi": [{"type": "NAME", "text": "푸름", "start": 7, "end": 9}, {"type": "EMAIL", "text": "puleum@test.co.kr", "start": 23, "end": 40}], "meta": {"domain": "콜센터 상담 요약", "style": "공문서풍", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

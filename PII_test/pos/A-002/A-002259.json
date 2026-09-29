@@ -1,0 +1,1 @@
+{"id": "A-002259", "text": "저 사랑이라는 이름의 아기에게요. 어머니가 될 분의 생년월일은 910515이고, 이름은 사랑이예요.", "pi": [{"type": "BIRTH", "text": "910515", "start": 35, "end": 41}, {"type": "NAME", "text": "사랑", "start": 49, "end": 51}], "meta": {"domain": "이메일 본문", "style": "존댓말 상담", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

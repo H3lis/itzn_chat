@@ -1,0 +1,1 @@
+{"id": "A-000077", "text": "고객님, 배송받으신 주소지는 혹시 강남구 역삼동에 맞으실까요? 다시 한번 확인 부탁드립니다.", "pi": [{"type": "ADDRESS", "text": "강남구 역삼동", "start": 19, "end": 26}], "meta": {"domain": "금융 상담", "style": "격식체", "obfuscation": ["jamo_split", "split_utterance"], "hard_case": "none"}}

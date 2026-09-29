@@ -1,0 +1,1 @@
+{"id": "A-004209", "text": "지원자님께서 문의하신 메일 주소는 service@gamil.com 이 맞는지요? 혹시 오타가 있을 수도 있잖아요.", "pi": [{"type": "EMAIL", "text": "service@gamil.com", "start": 19, "end": 36}], "meta": {"domain": "회의록", "style": "구어체", "obfuscation": ["separator_noise", "lookalike_char"], "hard_case": "none"}}

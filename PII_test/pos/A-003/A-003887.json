@@ -1,0 +1,1 @@
+{"id": "A-003887", "text": "질문자님 성함은 김민준이고요, 이 과제는 박지혜 님 이름으로 제출해도 될까요?", "pi": [{"type": "NAME", "text": "김민준", "start": 9, "end": 12}, {"type": "NAME", "text": "박지혜", "start": 23, "end": 26}], "meta": {"domain": "온라인 강의 Q&A", "style": "음성인식(STT) 전사", "obfuscation": ["plain"], "hard_case": "none"}}

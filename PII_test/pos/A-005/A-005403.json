@@ -1,0 +1,1 @@
+{"id": "A-005403", "text": "도착 주소는 서울시 강남구 테헤란로 456, 3층이에요. 거기 맞죠?", "pi": [{"type": "ADDRESS", "text": "서울시 강남구 테헤란로 456", "start": 7, "end": 23}], "meta": {"domain": "음성통화 전사문", "style": "공문서풍", "obfuscation": ["split_utterance", "jamo_split"], "hard_case": "none"}}

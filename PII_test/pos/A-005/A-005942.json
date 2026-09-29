@@ -1,0 +1,1 @@
+{"id": "A-005942", "text": "신용카드 번호가 1111로 시작하고, 개인 식별 번호는 2222로 끝나는 것이 맞는지 다시 한번 말씀해 주시겠어요?", "pi": [{"type": "RRN", "text": "2222", "start": 31, "end": 35}], "meta": {"domain": "콜센터 상담 요약", "style": "존댓말 상담", "obfuscation": ["repeat_expr", "korean_reading"], "hard_case": "none"}}

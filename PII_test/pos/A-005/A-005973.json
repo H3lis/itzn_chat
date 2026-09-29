@@ -1,0 +1,1 @@
+{"id": "A-005973", "text": "이게 제가 신청한 서류인데, 박서준이랑 민준이 연락처가 이게 맞나요?", "pi": [{"type": "NAME", "text": "박서준", "start": 16, "end": 19}, {"type": "PHONE", "text": "민준이", "start": 22, "end": 25}], "meta": {"domain": "보험 청구", "style": "메신저 줄임말", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

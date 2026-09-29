@@ -1,0 +1,1 @@
+{"id": "A-003092", "text": "여권 번호가요? 하, 제가 이걸 통째로 외우기가 힘들어서요. 이거는 999-888-7777 형태로 되어 있는데요.", "pi": [{"type": "PASSPORT", "text": "999-888-7777", "start": 38, "end": 50}], "meta": {"domain": "중고거래 채팅", "style": "반말 대화", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

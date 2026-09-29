@@ -1,0 +1,1 @@
+{"id": "A-000111", "text": "네, 성함이 나라 씨 맞으세요? 전화번호는 010-3333-4444로 확인 부탁드리고요.", "pi": [{"type": "NAME", "text": "나라", "start": 7, "end": 9}, {"type": "PHONE", "text": "010-3333-4444", "start": 24, "end": 37}], "meta": {"domain": "고객센터 채팅", "style": "구어체", "obfuscation": ["mixed_reading", "lookalike_char"], "hard_case": "homonym_name"}}

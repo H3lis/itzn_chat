@@ -1,0 +1,1 @@
+{"id": "A-000539", "text": "다솜 씨가 말씀하신 주소는요? 자모로 풀어보면 ㄴㅇㅁ ㅇㅇㄱ 315-77입니다.", "pi": [{"type": "NAME", "text": "다솜", "start": 0, "end": 2}, {"type": "ADDRESS", "text": "ㄴㅇㅁ ㅇㅇㄱ 315-77", "start": 26, "end": 40}], "meta": {"domain": "부동산 상담", "style": "반말 대화", "obfuscation": ["jamo_split", "stt_error"], "hard_case": "homonym_name"}}

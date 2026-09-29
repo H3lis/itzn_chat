@@ -1,0 +1,1 @@
+{"id": "A-004659", "text": "고객님 전화번호는 010/1234/5678 이고, 바로 연결 가능하신가요?", "pi": [{"type": "PHONE", "text": "010/1234/5678", "start": 10, "end": 23}], "meta": {"domain": "부동산 상담", "style": "메신저 줄임말", "obfuscation": ["separator_noise"], "hard_case": "none"}}

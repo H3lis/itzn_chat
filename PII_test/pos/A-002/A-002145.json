@@ -1,0 +1,1 @@
+{"id": "A-002145", "text": "아, 죄송한데 제가 아파트가 OO시 OO구 OO동 뒷골목이에요. 입구 쪽으로 부탁드려요.", "pi": [{"type": "ADDRESS", "text": "OO시 OO구 OO동", "start": 16, "end": 27}], "meta": {"domain": "배달 요청사항", "style": "구어체", "obfuscation": ["plain"], "hard_case": "none"}}

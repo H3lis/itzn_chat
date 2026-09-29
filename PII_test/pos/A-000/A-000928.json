@@ -1,0 +1,1 @@
+{"id": "A-000928", "text": "지난번 회의록 말씀인데요, 김철수 사원 연락처는 010-5555-1234로 다시 확인 부탁드립니다.", "pi": [{"type": "PHONE", "text": "010-5555-1234", "start": 27, "end": 40}], "meta": {"domain": "회의록", "style": "구어체", "obfuscation": ["plain"], "hard_case": "none"}}

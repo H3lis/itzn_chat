@@ -1,0 +1,1 @@
+{"id": "A-004589", "text": "운전면허증 번호가 998877-1122333이고요. 제 이름은 온유입니다. 이 정보들을 모두 재차 확인 부탁드립니다.", "pi": [{"type": "DRIVER_LICENSE", "text": "998877-1122333", "start": 10, "end": 24}, {"type": "NAME", "text": "온유", "start": 35, "end": 37}], "meta": {"domain": "고객센터 채팅", "style": "공문서풍", "obfuscation": ["repeat_expr"], "hard_case": "homonym_name"}}

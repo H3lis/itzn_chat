@@ -1,0 +1,1 @@
+{"id": "A-003136", "text": "담당자는 라이언이라고 하고, 전화번호는 010-9876-5432로 되어 있습니다.", "pi": [{"type": "NAME", "text": "라이언", "start": 5, "end": 8}, {"type": "PHONE", "text": "010-9876-5432", "start": 22, "end": 35}], "meta": {"domain": "직장 메신저", "style": "음성인식(STT) 전사", "obfuscation": ["romanized", "korean_reading", "self_correction"], "hard_case": "none"}}

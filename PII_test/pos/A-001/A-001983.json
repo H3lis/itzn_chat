@@ -1,0 +1,1 @@
+{"id": "A-001983", "text": "회원님께서는 문의하신 사항에 대해 이메일 주소가 abc@test.com 이시고, 연락처는 02-1234-5678 입니다.", "pi": [{"type": "EMAIL", "text": "abc@test.com", "start": 27, "end": 39}, {"type": "PHONE", "text": "02-1234-5678", "start": 50, "end": 62}], "meta": {"domain": "커뮤니티 게시글", "style": "공문서풍", "obfuscation": ["separator_noise"], "hard_case": "none"}}

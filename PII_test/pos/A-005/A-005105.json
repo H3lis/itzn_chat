@@ -1,0 +1,1 @@
+{"id": "A-005105", "text": "회원님 이메일 주소가 jseong_user(at)naver(dot)com으로 등록되어 있는 것 맞으신가요? 다시 한번 확인 부탁드려요.", "pi": [{"type": "EMAIL", "text": "jseong_user(at)naver(dot)com", "start": 12, "end": 40}], "meta": {"domain": "병원 접수", "style": "음성인식(STT) 전사", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

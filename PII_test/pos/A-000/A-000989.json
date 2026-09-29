@@ -1,0 +1,1 @@
+{"id": "A-000989", "text": "그럼 김과장님 전화번호가 010-9999-8888이고, 주민등록번호는 900101-2****** 까지 맞으시죠?", "pi": [{"type": "PHONE", "text": "010-9999-8888", "start": 14, "end": 27}, {"type": "RRN", "text": "900101-2******", "start": 39, "end": 53}], "meta": {"domain": "회의록", "style": "구어체", "obfuscation": ["stt_error"], "hard_case": "none"}}

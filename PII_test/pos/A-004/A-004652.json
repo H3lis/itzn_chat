@@ -1,0 +1,1 @@
+{"id": "A-004652", "text": "차량 번호가 5가 1로 잘못 들렸어요. 그리고 이름은 '준호' 맞죠?", "pi": [{"type": "CAR_PLATE", "text": "5가 1", "start": 7, "end": 11}, {"type": "NAME", "text": "준호", "start": 31, "end": 33}], "meta": {"domain": "여행 예약", "style": "짧은 단답", "obfuscation": ["stt_error"], "hard_case": "none"}}

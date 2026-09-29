@@ -1,0 +1,1 @@
+{"id": "A-002248", "text": "구매하신 상품의 결제는 도토리님으로 진행했고, 주문자 이름은 도토리입니다. 번거롭게 해드려 죄송해요.", "pi": [{"type": "CARD", "text": "도토리", "start": 13, "end": 16}, {"type": "NAME", "text": "도토리", "start": 34, "end": 37}], "meta": {"domain": "쇼핑몰 문의", "style": "음성인식(STT) 전사", "obfuscation": ["mixed_reading"], "hard_case": "homonym_name"}}

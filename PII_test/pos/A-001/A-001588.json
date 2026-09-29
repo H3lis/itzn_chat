@@ -1,0 +1,1 @@
+{"id": "A-001588", "text": "방문했는데, 주소는 세종특별자치시 다정동 405호예요. 병원 이름은 OO메디컬 병원입니다.", "pi": [{"type": "ADDRESS", "text": "세종특별자치시 다정동 405호", "start": 11, "end": 27}, {"type": "ORG", "text": "OO메디컬 병원", "start": 38, "end": 46}], "meta": {"domain": "병원 접수", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "none"}}

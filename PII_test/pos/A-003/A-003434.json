@@ -1,0 +1,1 @@
+{"id": "A-003434", "text": "이메일 주소는 test.user@****.com 이고, 이름은 김새벽 님으로 되어있네요? 연락처는 제가 다시 확인해 보겠습니다.", "pi": [{"type": "EMAIL", "text": "test.user@****.com", "start": 8, "end": 26}, {"type": "NAME", "text": "김새벽", "start": 35, "end": 38}], "meta": {"domain": "학교 행정 문의", "style": "구어체", "obfuscation": ["separator_noise"], "hard_case": "homonym_name"}}

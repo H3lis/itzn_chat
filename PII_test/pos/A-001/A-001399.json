@@ -1,0 +1,1 @@
+{"id": "A-001399", "text": "저 사용자 아이디는 킴이고 SNS는 트위터로 알고 있습니다.", "pi": [{"type": "ID", "text": "킴", "start": 11, "end": 12}, {"type": "SNS", "text": "트위터", "start": 20, "end": 23}], "meta": {"domain": "학교 행정 문의", "style": "메신저 줄임말", "obfuscation": ["romanized"], "hard_case": "none"}}

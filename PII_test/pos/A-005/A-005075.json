@@ -1,0 +1,1 @@
+{"id": "A-005075", "text": "어르신, 김민준 고객님이시죠? 제가 말씀드린 거랑은 좀 다르신 것 같은데요? 성함이 맞으신가요?", "pi": [{"type": "NAME", "text": "김민준", "start": 5, "end": 8}], "meta": {"domain": "금융 상담", "style": "구어체", "obfuscation": ["honorific_ref", "self_correction"], "hard_case": "none"}}

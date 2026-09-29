@@ -1,0 +1,1 @@
+{"id": "A-005762", "text": "제 닉네임이 라이온이고, 제 sns는 @Lion_K입니다.", "pi": [{"type": "NAME", "text": "라이온", "start": 7, "end": 10}, {"type": "SNS", "text": "@Lion_K", "start": 21, "end": 28}], "meta": {"domain": "SNS 댓글", "style": "메신저 줄임말", "obfuscation": ["romanized"], "hard_case": "nickname_id"}}

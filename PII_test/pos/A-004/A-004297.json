@@ -1,0 +1,1 @@
+{"id": "A-004297", "text": "네, 그 전화번호는 010-1234-5678 맞습니다.", "pi": [{"type": "PHONE", "text": "010-1234-5678", "start": 11, "end": 24}], "meta": {"domain": "음성통화 전사문", "style": "짧은 단답", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

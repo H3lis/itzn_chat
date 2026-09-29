@@ -1,0 +1,1 @@
+{"id": "A-001740", "text": "주소는 부산광역시 해운대구 마린시티로 500이고, 차량 번호는 12가3456입니다.", "pi": [{"type": "ADDRESS", "text": "부산광역시 해운대구 마린시티로 500", "start": 4, "end": 24}, {"type": "CAR_PLATE", "text": "12가3456", "start": 35, "end": 42}], "meta": {"domain": "콜센터 상담 요약", "style": "짧은 단답", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

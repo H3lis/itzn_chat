@@ -1,0 +1,1 @@
+{"id": "A-001794", "text": "이 선생님, 전화번호가 010-1234-5678이 맞으신가요? 성함은 김민준이라고 들었는데, 정확한 이름이 어떻게 되시나요?", "pi": [{"type": "PHONE", "text": "010-1234-5678", "start": 13, "end": 26}, {"type": "NAME", "text": "김민준", "start": 39, "end": 42}], "meta": {"domain": "학교 행정 문의", "style": "오타 많은 채팅", "obfuscation": ["romanized", "stt_error", "honorific_ref"], "hard_case": "none"}}

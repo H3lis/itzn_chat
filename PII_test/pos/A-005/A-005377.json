@@ -1,0 +1,1 @@
+{"id": "A-005377", "text": "학생 문의 건으로 전화드렸는데요, 저 김민지 선생님께 여쭤보고 싶은 게 있어서요. 제가 전학 온 건이라서요.", "pi": [{"type": "NAME", "text": "김민지", "start": 21, "end": 24}], "meta": {"domain": "학교 행정 문의", "style": "길고 장황한 설명", "obfuscation": ["self_correction", "honorific_ref"], "hard_case": "none"}}

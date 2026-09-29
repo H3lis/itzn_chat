@@ -1,0 +1,1 @@
+{"id": "A-002327", "text": "저 오늘 만난 사람이 번호가 010-1234-5678이었는데, 아 아니다. 010-9999-0000이었던 것 같아요.", "pi": [{"type": "PHONE", "text": "010-1234-5678", "start": 16, "end": 29}, {"type": "PHONE", "text": "010-9999-0000", "start": 42, "end": 55}], "meta": {"domain": "SNS 댓글", "style": "격식체", "obfuscation": ["stt_error", "self_correction"], "hard_case": "none"}}

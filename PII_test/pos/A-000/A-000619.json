@@ -1,0 +1,1 @@
+{"id": "A-000619", "text": "저기요, 조직이름이 한국대학교 병원이고, 대표번호는 02-1234-5678이 맞을까요?", "pi": [{"type": "ORG", "text": "한국대학교 병원", "start": 11, "end": 19}], "meta": {"domain": "병원 접수", "style": "짧은 단답", "obfuscation": ["jamo_split", "romanized"], "hard_case": "none"}}

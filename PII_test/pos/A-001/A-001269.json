@@ -1,0 +1,1 @@
+{"id": "A-001269", "text": "고객님의 계좌 번호가 010 다섯 여섯일곱, 네 번째 자리 부분이 3333이라고 되어 있는데요.", "pi": [{"type": "ACCOUNT", "text": "010 다섯 여섯일곱, 네 번째 자리 부분", "start": 12, "end": 35}], "meta": {"domain": "금융 상담", "style": "존댓말 상담", "obfuscation": ["stt_error", "korean_reading"], "hard_case": "none"}}

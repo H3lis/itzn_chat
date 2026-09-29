@@ -1,0 +1,1 @@
+{"id": "A-001671", "text": "접속하신 IP 주소가 203.11.13.12입니다. 그리고 연락처는 010-2222-3333 맞으신가요?", "pi": [{"type": "IP_ADDR", "text": "203.11.13.12", "start": 12, "end": 24}, {"type": "PHONE", "text": "010-2222-3333", "start": 38, "end": 51}], "meta": {"domain": "민원 접수", "style": "메신저 줄임말", "obfuscation": ["plain"], "hard_case": "none"}}

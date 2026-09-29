@@ -1,0 +1,1 @@
+{"id": "A-005565", "text": "신청자 이름이 이서연인데요. 아뇨, 아니에요. 이름은 김수현으로 정정 부탁드립니다. 연락처도 같이요.", "pi": [{"type": "NAME", "text": "이서연", "start": 8, "end": 11}, {"type": "NAME", "text": "김수현", "start": 30, "end": 33}], "meta": {"domain": "민원 접수", "style": "존댓말 상담", "obfuscation": ["self_correction"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-001038", "text": "혹시 서울특별시 종로구 세종대로에 위치한 미래물류센터에 보내시는 건가요? 그곳이 맞을까요?", "pi": [{"type": "ADDRESS", "text": "서울특별시 종로구 세종대로", "start": 3, "end": 17}, {"type": "ORG", "text": "미래물류센터", "start": 23, "end": 29}], "meta": {"domain": "택배 문의", "style": "길고 장황한 설명", "obfuscation": ["korean_reading"], "hard_case": "org_person"}}

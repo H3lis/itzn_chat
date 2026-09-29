@@ -1,0 +1,1 @@
+{"id": "A-004864", "text": "예약 관련해서 문의드립니다. 제 계정 번호는 CUST9876이며, 생년월일은 1990년 5월 15일입니다.", "pi": [{"type": "ACCOUNT", "text": "CUST9876", "start": 25, "end": 33}, {"type": "BIRTH", "text": "1990년 5월 15일", "start": 43, "end": 55}], "meta": {"domain": "병원 접수", "style": "존댓말 상담", "obfuscation": ["plain"], "hard_case": "none"}}

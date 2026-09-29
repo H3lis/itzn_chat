@@ -1,0 +1,1 @@
+{"id": "A-002706", "text": "회원님의 계정은 ID가 00112233 이고, 소셜 미디어는 naver(at)mail 점 com 으로 확인 가능합니다.", "pi": [{"type": "ID", "text": "00112233", "start": 13, "end": 21}, {"type": "SNS", "text": "naver(at)mail 점 com", "start": 34, "end": 53}], "meta": {"domain": "이메일 본문", "style": "길고 장황한 설명", "obfuscation": ["separator_noise", "lookalike_char", "romanized"], "hard_case": "none"}}

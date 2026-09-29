@@ -1,0 +1,1 @@
+{"id": "A-004245", "text": "주민등록번호는 901215-1xxxxxxx 이고, 거주지는 부산광역시 해운대구 마린시티로 말씀드립니다.", "pi": [{"type": "RRN", "text": "901215-1xxxxxxx", "start": 8, "end": 23}, {"type": "ADDRESS", "text": "부산광역시 해운대구 마린시티", "start": 33, "end": 48}], "meta": {"domain": "고객센터 채팅", "style": "공문서풍", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

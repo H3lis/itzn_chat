@@ -1,0 +1,1 @@
+{"id": "A-000939", "text": "제가 가입한 계정은 star_user99이고, 연락처는 010-1234-5678입니다.", "pi": [{"type": "ACCOUNT", "text": "star_user99", "start": 11, "end": 22}, {"type": "PHONE", "text": "010-1234-5678", "start": 31, "end": 44}], "meta": {"domain": "온라인 강의 Q&A", "style": "존댓말 상담", "obfuscation": ["stt_error"], "hard_case": "none"}}

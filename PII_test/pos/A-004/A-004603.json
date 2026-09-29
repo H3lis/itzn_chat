@@ -1,0 +1,1 @@
+{"id": "A-004603", "text": "저희 아이디는 User_XYZ예요. 전화번호는 010-5555-4444로 연락 주세요.", "pi": [{"type": "ID", "text": "User_XYZ", "start": 8, "end": 16}, {"type": "PHONE", "text": "010-5555-4444", "start": 26, "end": 39}], "meta": {"domain": "부동산 상담", "style": "짧은 단답", "obfuscation": ["mixed_reading"], "hard_case": "nickname_id"}}

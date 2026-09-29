@@ -1,0 +1,1 @@
+{"id": "A-001271", "text": "접수하시는 번호는 010 1111 2222인데요, 주민번호는 900101-1234567이 맞나요?", "pi": [{"type": "PHONE", "text": "010 1111 2222", "start": 10, "end": 23}, {"type": "RRN", "text": "900101-1234567", "start": 34, "end": 48}], "meta": {"domain": "온라인 강의 Q&A", "style": "메신저 줄임말", "obfuscation": ["separator_noise", "korean_reading"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-005843", "text": "단비는 오늘 학교에 오지 못한다고 하는데, 다른 사람 이름이라도 알려주실 수 있나요?", "pi": [{"type": "NAME", "text": "단비", "start": 0, "end": 2}], "meta": {"domain": "학교 행정 문의", "style": "반말 대화", "obfuscation": ["jamo_split", "self_correction"], "hard_case": "homonym_name"}}

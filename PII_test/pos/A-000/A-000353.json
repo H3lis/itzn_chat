@@ -1,0 +1,1 @@
+{"id": "A-000353", "text": "요청사항으로, 아기 생일이 2005년 12월 3일에 도착하는 걸로 해 주세요.", "pi": [{"type": "BIRTH", "text": "2005년 12월 3일", "start": 15, "end": 27}], "meta": {"domain": "배달 요청사항", "style": "음성인식(STT) 전사", "obfuscation": ["plain"], "hard_case": "none"}}

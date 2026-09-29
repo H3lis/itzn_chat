@@ -1,0 +1,1 @@
+{"id": "A-002150", "text": "이메일 주소는 ㅇ1o@gmaii.co.kr 이거 맞나요? 네, 이게 정확한 건데, 제가 자꾸 틀리게 말해요.", "pi": [{"type": "EMAIL", "text": "ㅇ1o@gmaii.co.kr", "start": 8, "end": 23}], "meta": {"domain": "음성통화 전사문", "style": "음성인식(STT) 전사", "obfuscation": ["lookalike_char", "separator_noise", "email_spoken"], "hard_case": "none"}}

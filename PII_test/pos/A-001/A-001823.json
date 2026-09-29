@@ -1,0 +1,1 @@
+{"id": "A-001823", "text": "혹시 담당 부서의 인스타그램 아이디를 알 수 있을까요? 저희가 @user_abc 같은 걸로 검색해보려고요.", "pi": [{"type": "SNS", "text": "@user_abc", "start": 35, "end": 44}], "meta": {"domain": "병원 접수", "style": "구어체", "obfuscation": ["romanized"], "hard_case": "none"}}

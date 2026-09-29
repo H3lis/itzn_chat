@@ -1,0 +1,1 @@
+{"id": "A-000184", "text": "이사 가시는 곳이요? 종로구 삼청동 쪽으로, 그게 자음으로 'ㅈㅇㄹㄱ'이고요. 번지는 '삼사' 쪽으로 말씀해주시면 됩니다.", "pi": [{"type": "ADDRESS", "text": "종로구 삼청동", "start": 12, "end": 19}], "meta": {"domain": "부동산 상담", "style": "오타 많은 채팅", "obfuscation": ["jamo_split", "stt_error", "korean_reading"], "hard_case": "none"}}

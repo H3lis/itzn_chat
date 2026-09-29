@@ -1,0 +1,1 @@
+{"id": "A-003879", "text": "수원 병원 접수 도와드리겠습니다. 접수하신 분은 수원 이지은 씨 맞으신가요?", "pi": [{"type": "NAME", "text": "수원", "start": 0, "end": 2}, {"type": "SNS", "text": "이지은", "start": 30, "end": 33}], "meta": {"domain": "병원 접수", "style": "음성인식(STT) 전사", "obfuscation": ["jamo_split", "honorific_ref"], "hard_case": "homonym_name"}}

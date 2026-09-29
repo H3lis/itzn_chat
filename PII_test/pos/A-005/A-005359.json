@@ -1,0 +1,1 @@
+{"id": "A-005359", "text": "저희 아이의 주민등록번호는 911231 - 1xxxxxxx로 조회되는데요. 혹시 다른 정보가 필요할까요?", "pi": [{"type": "RRN", "text": "911231 - 1xxxxxxx", "start": 15, "end": 32}], "meta": {"domain": "여행 예약", "style": "길고 장황한 설명", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

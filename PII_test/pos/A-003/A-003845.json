@@ -1,0 +1,1 @@
+{"id": "A-003845", "text": "주소지는 '경기도 광주시 상현동 345'이고, 주민등록번호는 770515-1234567입니다.", "pi": [{"type": "ADDRESS", "text": "경기도 광주시 상현동 345", "start": 6, "end": 21}, {"type": "RRN", "text": "770515-1234567", "start": 34, "end": 48}], "meta": {"domain": "학교 행정 문의", "style": "짧은 단답", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

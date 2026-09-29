@@ -1,0 +1,1 @@
+{"id": "A-004221", "text": "네, 부장님 성함은 김민준 부장님, 그리고 저희는 글로벌테크에 소속되어 있습니다.", "pi": [{"type": "NAME", "text": "김민준", "start": 11, "end": 14}, {"type": "ORG", "text": "글로벌테크", "start": 28, "end": 33}], "meta": {"domain": "음성통화 전사문", "style": "격식체", "obfuscation": ["honorific_ref", "romanized"], "hard_case": "org_person"}}

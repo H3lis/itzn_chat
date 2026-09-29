@@ -1,0 +1,1 @@
+{"id": "A-000426", "text": "혹시 아이디가 ０１０ - 8888 - 1234 인가요? 그거 비번도 아는 게 필요해요.", "pi": [{"type": "ACCOUNT", "text": "０１０ - 8888 - 1234", "start": 8, "end": 25}], "meta": {"domain": "중고거래 채팅", "style": "짧은 단답", "obfuscation": ["lookalike_char", "split_utterance"], "hard_case": "none"}}

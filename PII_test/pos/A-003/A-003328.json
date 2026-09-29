@@ -1,0 +1,1 @@
+{"id": "A-003328", "text": "제 이름은 나라고요, 사번은 A12345678이에요.", "pi": [{"type": "NAME", "text": "나라", "start": 6, "end": 8}, {"type": "OTHER_ID", "text": "A12345678", "start": 16, "end": 25}], "meta": {"domain": "음성통화 전사문", "style": "반말 대화", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

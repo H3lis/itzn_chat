@@ -1,0 +1,1 @@
+{"id": "A-000542", "text": "네, 저희가 확인해 보니 고객님 댁 주소는 경기도 신도심구 청년가로 123-45이고요. 이쪽으로 한번 와주시면 돼요.", "pi": [{"type": "ADDRESS", "text": "경기도 신도심구 청년가로 123-45", "start": 24, "end": 44}], "meta": {"domain": "고객센터 채팅", "style": "길고 장황한 설명", "obfuscation": ["split_utterance"], "hard_case": "none"}}

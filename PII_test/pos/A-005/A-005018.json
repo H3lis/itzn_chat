@@ -1,0 +1,1 @@
+{"id": "A-005018", "text": "문의하신 이메일 주소가 chulsoo(at)gmail(dot)com으로 되어있는데, 혹시 정확한 주소가 맞을까요?", "pi": [{"type": "EMAIL", "text": "chulsoo(at)gmail(dot)com", "start": 13, "end": 37}], "meta": {"domain": "부동산 상담", "style": "음성인식(STT) 전사", "obfuscation": ["lookalike_char", "separator_noise"], "hard_case": "none"}}

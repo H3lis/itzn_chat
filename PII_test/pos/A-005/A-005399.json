@@ -1,0 +1,1 @@
+{"id": "A-005399", "text": "저기요, 김과장님께서 등록된 아이디가 '별똥별'이 맞나요? 아니면 '새벽별'인가요?", "pi": [{"type": "NAME", "text": "김과장님", "start": 5, "end": 9}, {"type": "ID", "text": "별똥별", "start": 22, "end": 25}], "meta": {"domain": "택배 문의", "style": "짧은 단답", "obfuscation": ["honorific_ref"], "hard_case": "nickname_id"}}

@@ -1,0 +1,1 @@
+{"id": "A-002868", "text": "운전면허는 123-45-6789고요, 성함은 이지은 씨로 되어 있습니다.", "pi": [{"type": "DRIVER_LICENSE", "text": "123-45-6789", "start": 6, "end": 17}, {"type": "NAME", "text": "이지은", "start": 25, "end": 28}], "meta": {"domain": "민원 접수", "style": "존댓말 상담", "obfuscation": ["romanized"], "hard_case": "none"}}

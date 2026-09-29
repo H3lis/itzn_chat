@@ -1,0 +1,1 @@
+{"id": "A-001496", "text": "배송받으실 분 성함은 박민준이고, 주민등록번호는 901230-1xxxxxxx로 부탁드립니다.", "pi": [{"type": "NAME", "text": "박민준", "start": 12, "end": 15}, {"type": "RRN", "text": "901230-1xxxxxxx", "start": 27, "end": 42}], "meta": {"domain": "배달 요청사항", "style": "길고 장황한 설명", "obfuscation": ["plain"], "hard_case": "none"}}

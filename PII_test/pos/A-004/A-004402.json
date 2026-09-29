@@ -1,0 +1,1 @@
+{"id": "A-004402", "text": "담당자분 성함이 박지영 씨로 알고 있는데요, 혹시 회사 대표 전화번호가 어떻게 되는지 다시 한번만 말씀해 주시겠어요?", "pi": [{"type": "NAME", "text": "박지영", "start": 9, "end": 12}], "meta": {"domain": "이메일 본문", "style": "구어체", "obfuscation": ["plain"], "hard_case": "none"}}

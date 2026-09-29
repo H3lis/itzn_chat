@@ -1,0 +1,1 @@
+{"id": "A-001057", "text": "학생분의 아이디는 nara-study 이고 성함은 나라 님으로 되어 있는데요, 맞나요? 전산에 등록된 이름이요.", "pi": [{"type": "ID", "text": "nara-study", "start": 10, "end": 20}, {"type": "NAME", "text": "나라", "start": 28, "end": 30}], "meta": {"domain": "온라인 강의 Q&A", "style": "격식체", "obfuscation": ["jamo_split", "romanized"], "hard_case": "homonym_name"}}

@@ -1,0 +1,1 @@
+{"id": "A-003597", "text": "사용자님, 혹시 아이디가 'kjhn'이신가요? 이름은 김민준님으로 확인됐어요.", "pi": [{"type": "ID", "text": "kjhn", "start": 15, "end": 19}, {"type": "NAME", "text": "김민준", "start": 30, "end": 33}], "meta": {"domain": "부동산 상담", "style": "메신저 줄임말", "obfuscation": ["jamo_split"], "hard_case": "nickname_id"}}

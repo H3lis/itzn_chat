@@ -1,0 +1,1 @@
+{"id": "A-004013", "text": "네, 고객님, 현재 가입하신 계정은 8888 끝자리로 확인됩니다.", "pi": [{"type": "ACCOUNT", "text": "8888", "start": 20, "end": 24}], "meta": {"domain": "콜센터 상담 요약", "style": "존댓말 상담", "obfuscation": ["self_correction"], "hard_case": "none"}}

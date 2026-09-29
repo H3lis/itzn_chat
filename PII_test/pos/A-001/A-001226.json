@@ -1,0 +1,1 @@
+{"id": "A-001226", "text": "제가 이름이 수원이라고 하긴 했는데, 정확히는 스원이라고 불러주세요.", "pi": [{"type": "NAME", "text": "수원", "start": 7, "end": 9}], "meta": {"domain": "여행 예약", "style": "오타 많은 채팅", "obfuscation": ["romanized", "jamo_split"], "hard_case": "homonym_name"}}

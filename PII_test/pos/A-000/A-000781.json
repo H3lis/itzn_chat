@@ -1,0 +1,1 @@
+{"id": "A-000781", "text": "혹시 이 계좌로 입금하시면 되나요? 010-5555-1234로 보내주시면 돼요.", "pi": [{"type": "PHONE", "text": "010-5555-1234", "start": 20, "end": 33}], "meta": {"domain": "금융 상담", "style": "반말 대화", "obfuscation": ["plain"], "hard_case": "none"}}

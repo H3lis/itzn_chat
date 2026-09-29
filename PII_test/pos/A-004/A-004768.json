@@ -1,0 +1,1 @@
+{"id": "A-004768", "text": "이사할 주소는 경기도 수원시 영통구망포동 555-12이고, 연락처는 010-9876-5432예요.", "pi": [{"type": "ADDRESS", "text": "경기도 수원시 영통구망포동 555-12", "start": 8, "end": 29}, {"type": "PHONE", "text": "010-9876-5432", "start": 38, "end": 51}], "meta": {"domain": "택배 문의", "style": "짧은 단답", "obfuscation": ["stt_error"], "hard_case": "none"}}

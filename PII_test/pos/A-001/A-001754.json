@@ -1,0 +1,1 @@
+{"id": "A-001754", "text": "배송 조회는 192.168.0.1 이고요, 저희는 게이머별명이 'ShadowFox'입니다.", "pi": [{"type": "IP_ADDR", "text": "192.168.0.1", "start": 7, "end": 18}, {"type": "SNS", "text": "ShadowFox", "start": 36, "end": 45}], "meta": {"domain": "택배 문의", "style": "존댓말 상담", "obfuscation": ["korean_reading"], "hard_case": "nickname_id"}}

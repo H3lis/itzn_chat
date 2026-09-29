@@ -1,0 +1,1 @@
+{"id": "A-001877", "text": "요청하신 주소는 경기도 고양시 일산동으로 알고 계시고요, 원래는 다른 동이 아니었나요?", "pi": [{"type": "ADDRESS", "text": "경기도 고양시 일산동", "start": 9, "end": 20}, {"type": "ADDRESS", "text": "다른 동", "start": 36, "end": 40}], "meta": {"domain": "콜센터 상담 요약", "style": "구어체", "obfuscation": ["split_utterance", "jamo_split"], "hard_case": "none"}}

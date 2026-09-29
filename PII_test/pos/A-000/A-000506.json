@@ -1,0 +1,1 @@
+{"id": "A-000506", "text": "저 사람 이름이 이슬이요. 아, 아니지, 이건 그냥 별명일 뿐이에요. 인스타그램은 @seulgi_pic 이거예요.", "pi": [{"type": "NAME", "text": "이슬", "start": 9, "end": 11}, {"type": "SNS", "text": "@seulgi_pic", "start": 46, "end": 57}], "meta": {"domain": "고객센터 채팅", "style": "메신저 줄임말", "obfuscation": ["self_correction"], "hard_case": "homonym_name"}}

@@ -1,0 +1,1 @@
+{"id": "A-004675", "text": "연락 가능한 번호는 070-9999-1111로 되어 있습니다. 이 번호로 다시 연락드리겠습니다.", "pi": [{"type": "PHONE", "text": "070-9999-1111", "start": 11, "end": 24}], "meta": {"domain": "고객센터 채팅", "style": "공문서풍", "obfuscation": ["split_utterance"], "hard_case": "none"}}

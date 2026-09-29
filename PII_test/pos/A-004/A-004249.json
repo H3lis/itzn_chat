@@ -1,0 +1,1 @@
+{"id": "A-004249", "text": "고객님 성함이 봄 씨 맞으시죠? 그리고 카드 번호는 3700 1234 5678 9010입니다.", "pi": [{"type": "NAME", "text": "봄", "start": 8, "end": 9}, {"type": "CARD", "text": "3700 1234 5678 9010", "start": 29, "end": 48}], "meta": {"domain": "택배 문의", "style": "공문서풍", "obfuscation": ["korean_reading"], "hard_case": "homonym_name"}}

@@ -1,0 +1,1 @@
+{"id": "A-003748", "text": "회원님께서 남겨주신 이메일 주소는 testuser@example.com 으로 확인되었습니다.", "pi": [{"type": "EMAIL", "text": "testuser@example.com", "start": 19, "end": 39}], "meta": {"domain": "음성통화 전사문", "style": "음성인식(STT) 전사", "obfuscation": ["plain"], "hard_case": "none"}}

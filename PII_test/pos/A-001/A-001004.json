@@ -1,0 +1,1 @@
+{"id": "A-001004", "text": "카드 번호는 5555로 시작하고, 김철수 님 성함과 전화번호는 010-1111-2222 맞으신가요?", "pi": [{"type": "CARD", "text": "5555", "start": 7, "end": 11}, {"type": "NAME", "text": "김철수", "start": 19, "end": 22}, {"type": "PHONE", "text": "010-1111-2222", "start": 35, "end": 48}], "meta": {"domain": "병원 접수", "style": "격식체", "obfuscation": ["self_correction"], "hard_case": "none"}}

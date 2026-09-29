@@ -1,0 +1,1 @@
+{"id": "A-005979", "text": "제 연락처 메일이 flower.user@mail.com이에요. 이름은 꽃님으로 되어 있어요.", "pi": [{"type": "EMAIL", "text": "flower.user@mail.com", "start": 10, "end": 30}, {"type": "NAME", "text": "꽃님", "start": 39, "end": 41}], "meta": {"domain": "학교 행정 문의", "style": "구어체", "obfuscation": ["romanized"], "hard_case": "homonym_name"}}

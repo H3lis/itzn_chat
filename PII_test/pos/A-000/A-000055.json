@@ -1,0 +1,1 @@
+{"id": "A-000055", "text": "담당자분 성함이 혹시 어떻게 되시나요? 성함을 말씀해 주시면 기록할게요. 이 분은 전형적으로 영어권 이름처럼 들리긴 해요.", "pi": [{"type": "NAME", "text": "전형적으로 영어권 이름처럼", "start": 46, "end": 60}], "meta": {"domain": "부동산 상담", "style": "공문서풍", "obfuscation": ["jamo_split", "romanized"], "hard_case": "none"}}

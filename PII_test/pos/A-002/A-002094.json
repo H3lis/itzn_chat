@@ -1,0 +1,1 @@
+{"id": "A-002094", "text": "고객님의 전화번호가 02-1234-5678 맞으신가요? 제가 다시 한 번 확인하겠습니다.", "pi": [{"type": "PHONE", "text": "02-1234-5678", "start": 11, "end": 23}], "meta": {"domain": "금융 상담", "style": "존댓말 상담", "obfuscation": ["self_correction"], "hard_case": "none"}}

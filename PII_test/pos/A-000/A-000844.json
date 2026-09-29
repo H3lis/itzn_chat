@@ -1,0 +1,1 @@
+{"id": "A-000844", "text": "주소는 서울시 강남구 논현동 325-11이고, 연락처는 010-2222-3333입니다.", "pi": [{"type": "ADDRESS", "text": "서울시 강남구 논현동 325-11", "start": 4, "end": 22}, {"type": "PHONE", "text": "010-2222-3333", "start": 31, "end": 44}], "meta": {"domain": "중고거래 채팅", "style": "존댓말 상담", "obfuscation": ["jamo_split"], "hard_case": "none"}}

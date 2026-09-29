@@ -1,0 +1,1 @@
+{"id": "A-005352", "text": "요금이 너무 많이 나왔다고요? 주소는 당연히 강북구 미아동 1102호고요. 본인 이름은 박서준 맞죠?", "pi": [{"type": "ADDRESS", "text": "강북구 미아동 1102호", "start": 25, "end": 38}, {"type": "NAME", "text": "박서준", "start": 49, "end": 52}], "meta": {"domain": "금융 상담", "style": "반말 대화", "obfuscation": ["plain"], "hard_case": "none"}}

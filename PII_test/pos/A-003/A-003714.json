@@ -1,0 +1,1 @@
+{"id": "A-003714", "text": "혹시 연락 가능한 번호가 있나요? 공일공 5555 6666으로 되어 있는데, 이게 최신 번호가 아닐 수도 있어서요.", "pi": [{"type": "PHONE", "text": "공일공 5555 6666", "start": 19, "end": 32}], "meta": {"domain": "민원 접수", "style": "구어체", "obfuscation": ["split_utterance", "mixed_reading"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-004703", "text": "주문한 제품 배송지 주소는 그대로 할게요. 번호는 070-8888-9999가 맞는지 재확인 부탁드려요.", "pi": [{"type": "PHONE", "text": "070-8888-9999", "start": 28, "end": 41}], "meta": {"domain": "민원 접수", "style": "메신저 줄임말", "obfuscation": ["self_correction"], "hard_case": "none"}}

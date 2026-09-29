@@ -1,0 +1,1 @@
+{"id": "A-004130", "text": "아, 혹시 성함이 공주님이시라면 저희 시스템에 등록된 정보가 맞을까요?", "pi": [{"type": "NAME", "text": "공주", "start": 10, "end": 12}], "meta": {"domain": "금융 상담", "style": "오타 많은 채팅", "obfuscation": ["romanized"], "hard_case": "homonym_name"}}

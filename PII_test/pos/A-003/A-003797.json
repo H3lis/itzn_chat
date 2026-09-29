@@ -1,0 +1,1 @@
+{"id": "A-003797", "text": "생일이 95년 3월 1일이구요, IP는 203.0.113.5입니다. 이름은 장미예요.", "pi": [{"type": "BIRTH", "text": "95년 3월 1일", "start": 4, "end": 13}, {"type": "IP_ADDR", "text": "203.0.113.5", "start": 22, "end": 33}, {"type": "NAME", "text": "장미", "start": 42, "end": 44}], "meta": {"domain": "부동산 상담", "style": "오타 많은 채팅", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

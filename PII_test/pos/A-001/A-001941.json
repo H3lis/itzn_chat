@@ -1,0 +1,1 @@
+{"id": "A-001941", "text": "공주 씨가 작성한 질문인데요, 혹시 결제하실 때는 카드 번호로 8472에 10이요, 이름은 공주예요.", "pi": [{"type": "NAME", "text": "공주", "start": 0, "end": 2}, {"type": "CARD", "text": "8472에 10", "start": 35, "end": 43}], "meta": {"domain": "온라인 강의 Q&A", "style": "구어체", "obfuscation": ["mixed_reading", "korean_reading"], "hard_case": "homonym_name"}}

@@ -1,0 +1,1 @@
+{"id": "A-002344", "text": "신분증 번호요? '2111'으로 되나요? 아니면 혹시 다른 게 있나요? 전화번호는 '010 9999 8888'이요.", "pi": [{"type": "PASSPORT", "text": "2111", "start": 10, "end": 14}, {"type": "PHONE", "text": "010 9999 8888", "start": 47, "end": 60}], "meta": {"domain": "병원 접수", "style": "짧은 단답", "obfuscation": ["split_utterance"], "hard_case": "none"}}

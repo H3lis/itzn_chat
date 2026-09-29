@@ -1,0 +1,1 @@
+{"id": "A-004308", "text": "주소는 전체를 한번에 말하기 어려우니, '서울특별시 강남구 삼성동'처럼 순서대로 말씀해 주시겠어요?", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 삼성동", "start": 23, "end": 36}], "meta": {"domain": "커뮤니티 게시글", "style": "격식체", "obfuscation": ["korean_reading"], "hard_case": "none"}}

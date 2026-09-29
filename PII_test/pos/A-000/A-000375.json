@@ -1,0 +1,1 @@
+{"id": "A-000375", "text": "보람님, 가입하신 분 성함은 '보람'으로 하셨고, 연락처는 010-5555-1212 맞으실까요? 보험서에 기재해주세요.", "pi": [{"type": "NAME", "text": "보람", "start": 0, "end": 2}, {"type": "PHONE", "text": "010-5555-1212", "start": 33, "end": 46}], "meta": {"domain": "보험 청구", "style": "공문서풍", "obfuscation": ["mixed_reading"], "hard_case": "homonym_name"}}

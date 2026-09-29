@@ -1,0 +1,1 @@
+{"id": "A-005828", "text": "계정명은 온유1990이고, 제 이름은 온유라고 확인했습니다.", "pi": [{"type": "ACCOUNT", "text": "온유1990", "start": 5, "end": 11}, {"type": "NAME", "text": "온유", "start": 21, "end": 23}], "meta": {"domain": "택배 문의", "style": "오타 많은 채팅", "obfuscation": ["repeat_expr", "romanized"], "hard_case": "homonym_name"}}

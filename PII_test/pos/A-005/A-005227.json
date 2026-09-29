@@ -1,0 +1,1 @@
+{"id": "A-005227", "text": "혹시 ㅇㅇ역 근처에 있는 301호 아파트 쪽으로 알아보는 거 어때요? 달님이라고 하신 분 맞으세요?", "pi": [{"type": "ADDRESS", "text": "ㅇㅇ역 근처에 있는 301호 아파트", "start": 3, "end": 22}, {"type": "NAME", "text": "달님", "start": 39, "end": 41}], "meta": {"domain": "중고거래 채팅", "style": "오타 많은 채팅", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

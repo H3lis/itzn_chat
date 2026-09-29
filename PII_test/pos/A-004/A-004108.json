@@ -1,0 +1,1 @@
+{"id": "A-004108", "text": "계좌는 A사에서 발급한 거라 123456-7890이고요. 주소는 부산시 해운대구로 오셨다고 하셨네요.", "pi": [{"type": "ACCOUNT", "text": "123456-7890", "start": 16, "end": 27}, {"type": "ADDRESS", "text": "부산시 해운대구", "start": 36, "end": 44}], "meta": {"domain": "이메일 본문", "style": "오타 많은 채팅", "obfuscation": ["separator_noise", "mixed_reading"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-004856", "text": "저희 부서는 서울시 종로구 세종대로 123이고, 담당자는 박민준입니다.", "pi": [{"type": "ADDRESS", "text": "서울시 종로구 세종대로 123", "start": 7, "end": 23}, {"type": "NAME", "text": "박민준", "start": 32, "end": 35}], "meta": {"domain": "직장 메신저", "style": "구어체", "obfuscation": ["split_utterance", "romanized"], "hard_case": "none"}}

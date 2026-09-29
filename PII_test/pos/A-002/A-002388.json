@@ -1,0 +1,1 @@
+{"id": "A-002388", "text": "저거 메일 주소가 이게 맞나? user123@naver.com 같은 거 말이야.", "pi": [{"type": "EMAIL", "text": "user123@naver.com", "start": 17, "end": 34}], "meta": {"domain": "SNS 댓글", "style": "반말 대화", "obfuscation": ["separator_noise"], "hard_case": "none"}}

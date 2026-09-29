@@ -1,0 +1,1 @@
+{"id": "A-003168", "text": "제 주소는 서울특별시 강남구 역삼로 123인데요. 김민준 씨가 왔을까요?", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 역삼로 123", "start": 6, "end": 23}, {"type": "NAME", "text": "김민준", "start": 28, "end": 31}], "meta": {"domain": "콜센터 상담 요약", "style": "오타 많은 채팅", "obfuscation": ["split_utterance"], "hard_case": "none"}}

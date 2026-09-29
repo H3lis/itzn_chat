@@ -1,0 +1,1 @@
+{"id": "A-005016", "text": "환자분 성함은 최민준입니다. 등록하시려면 신분증 제시 부탁드리겠습니다.", "pi": [{"type": "NAME", "text": "최민준", "start": 8, "end": 11}], "meta": {"domain": "병원 접수", "style": "공문서풍", "obfuscation": ["romanized"], "hard_case": "none"}}

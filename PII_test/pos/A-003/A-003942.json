@@ -1,0 +1,1 @@
+{"id": "A-003942", "text": "차량 번호는 공일공-3456-7890처럼 불러주세요.", "pi": [{"type": "CAR_PLATE", "text": "공일공-3456-7890", "start": 7, "end": 20}], "meta": {"domain": "음성통화 전사문", "style": "존댓말 상담", "obfuscation": ["korean_reading"], "hard_case": "none"}}

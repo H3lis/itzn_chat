@@ -1,0 +1,1 @@
+{"id": "A-003947", "text": "차량 번호가 ㅇㅊㄱ-9999-1234라고 말씀해주셨는데, 성함이 정확히 어떻게 되시나요?", "pi": [{"type": "CAR_PLATE", "text": "ㅇㅊㄱ-9999-1234", "start": 7, "end": 20}, {"type": "NAME", "text": "성함", "start": 32, "end": 34}], "meta": {"domain": "보험 청구", "style": "구어체", "obfuscation": ["stt_error"], "hard_case": "none"}}

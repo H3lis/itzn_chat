@@ -1,0 +1,1 @@
+{"id": "A-001881", "text": "지금 연락하신 번호는 010-2222-3333 맞으신가요?", "pi": [{"type": "PHONE", "text": "010-2222-3333", "start": 12, "end": 25}], "meta": {"domain": "고객센터 채팅", "style": "짧은 단답", "obfuscation": ["stt_error"], "hard_case": "none"}}

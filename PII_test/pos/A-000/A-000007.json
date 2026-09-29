@@ -1,0 +1,1 @@
+{"id": "A-000007", "text": "예약 확인 도와드릴게요. 고객님의 휴대폰 번호가 010-9999-8888이 맞으신가요?", "pi": [{"type": "PHONE", "text": "010-9999-8888", "start": 27, "end": 40}], "meta": {"domain": "여행 예약", "style": "격식체", "obfuscation": ["plain"], "hard_case": "none"}}

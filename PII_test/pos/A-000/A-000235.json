@@ -1,0 +1,1 @@
+{"id": "A-000235", "text": "이메일은 my_user@xxxx.net 이시고, 성함은 소나무님으로 확인되었습니다.", "pi": [{"type": "EMAIL", "text": "my_user@xxxx.net", "start": 5, "end": 21}, {"type": "NAME", "text": "소나무", "start": 31, "end": 34}], "meta": {"domain": "콜센터 상담 요약", "style": "메신저 줄임말", "obfuscation": ["separator_noise"], "hard_case": "homonym_name"}}

@@ -1,0 +1,1 @@
+{"id": "A-005427", "text": "번호는 010-9999-8888 이 맞나요?", "pi": [{"type": "PHONE", "text": "010-9999-8888", "start": 4, "end": 17}], "meta": {"domain": "고객센터 채팅", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-005176", "text": "제 아이디는 하늘지식관리자고, 주민등록번호는 900101-1******이에요.", "pi": [{"type": "ID", "text": "하늘지식관리자", "start": 7, "end": 14}, {"type": "RRN", "text": "900101-1", "start": 25, "end": 33}], "meta": {"domain": "SNS 댓글", "style": "음성인식(STT) 전사", "obfuscation": ["stt_error"], "hard_case": "nickname_id"}}

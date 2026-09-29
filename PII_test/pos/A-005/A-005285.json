@@ -1,0 +1,1 @@
+{"id": "A-005285", "text": "네, 성함은 사랑이고요, 연락 가능한 번호는 010-2222-3333 맞으신가요?", "pi": [{"type": "NAME", "text": "사랑", "start": 7, "end": 9}, {"type": "PHONE", "text": "010-2222-3333", "start": 25, "end": 38}], "meta": {"domain": "고객센터 채팅", "style": "짧은 단답", "obfuscation": ["separator_noise"], "hard_case": "homonym_name"}}

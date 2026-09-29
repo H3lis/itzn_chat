@@ -1,0 +1,1 @@
+{"id": "A-000317", "text": "저희 고객님 생년월일은 92년 11월 15일이시고, 자주 사용하는 SNS는 인스타그래머예요.", "pi": [{"type": "BIRTH", "text": "92년 11월 15일", "start": 13, "end": 24}, {"type": "SNS", "text": "인스타그래머", "start": 42, "end": 48}], "meta": {"domain": "금융 상담", "style": "오타 많은 채팅", "obfuscation": ["separator_noise"], "hard_case": "nickname_id"}}

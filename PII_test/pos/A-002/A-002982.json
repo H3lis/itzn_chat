@@ -1,0 +1,1 @@
+{"id": "A-002982", "text": "회원님의 이메일 주소는 @@a@m@ile.com 같은 건가요?", "pi": [{"type": "EMAIL", "text": "@@a@m@ile.com", "start": 13, "end": 26}], "meta": {"domain": "학교 행정 문의", "style": "격식체", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

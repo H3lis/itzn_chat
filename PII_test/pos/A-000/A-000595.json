@@ -1,0 +1,1 @@
+{"id": "A-000595", "text": "차량번호는 7가 3 사 오, 그리고 끝자리 8이 찍혔습니다.", "pi": [{"type": "CAR_PLATE", "text": "7가 3 사 오", "start": 6, "end": 14}], "meta": {"domain": "콜센터 상담 요약", "style": "음성인식(STT) 전사", "obfuscation": ["separator_noise"], "hard_case": "none"}}

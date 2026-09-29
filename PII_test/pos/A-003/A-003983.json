@@ -1,0 +1,1 @@
+{"id": "A-003983", "text": "주소는 서울시 강남구 역삼동 123, 패스포트 번호는 US12345678입니다.", "pi": [{"type": "ADDRESS", "text": "서울시 강남구 역삼동 123", "start": 4, "end": 19}, {"type": "PASSPORT", "text": "US12345678", "start": 30, "end": 40}], "meta": {"domain": "병원 접수", "style": "오타 많은 채팅", "obfuscation": ["mixed_reading", "stt_error", "separator_noise"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-001529", "text": "아이디는 abc1234이고요, 주민등록번호는 900101-1234567이 맞는지 확인 부탁드립니다.", "pi": [{"type": "ID", "text": "abc1234", "start": 5, "end": 12}, {"type": "RRN", "text": "900101-1234567", "start": 25, "end": 39}], "meta": {"domain": "고객센터 채팅", "style": "길고 장황한 설명", "obfuscation": ["split_utterance"], "hard_case": "none"}}

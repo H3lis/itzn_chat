@@ -1,0 +1,1 @@
+{"id": "A-003827", "text": "저희 동네 근처 어디쯤에 사시나요? 혹시 성함이나 지역명 좀 말씀해주실 수 있나요?", "pi": [{"type": "ID", "text": "성함이나 지역명", "start": 23, "end": 31}], "meta": {"domain": "중고거래 채팅", "style": "구어체", "obfuscation": ["jamo_split", "romanized"], "hard_case": "none"}}

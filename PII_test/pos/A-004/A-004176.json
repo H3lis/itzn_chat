@@ -1,0 +1,1 @@
+{"id": "A-004176", "text": "문의하신 접수 번호는 A-2023-9876이고, 담당 부서는 정보기술원(IT Institute)에서 처리하고 있습니다.", "pi": [{"type": "ID", "text": "A-2023-9876", "start": 12, "end": 23}, {"type": "ORG", "text": "정보기술원", "start": 34, "end": 39}], "meta": {"domain": "택배 문의", "style": "공문서풍", "obfuscation": ["romanized"], "hard_case": "org_person"}}

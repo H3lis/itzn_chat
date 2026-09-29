@@ -1,0 +1,1 @@
+{"id": "A-004067", "text": "택배는 혹시 어제 발송된 건가요? 아니면 혹시 송장번호가 888-999-7777이요?", "pi": [{"type": "ACCOUNT", "text": "888-999-7777", "start": 32, "end": 44}], "meta": {"domain": "택배 문의", "style": "구어체", "obfuscation": ["separator_noise"], "hard_case": "none"}}

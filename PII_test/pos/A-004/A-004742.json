@@ -1,0 +1,1 @@
+{"id": "A-004742", "text": "요청하신 운전면허증 번호는 910-22-1234예요. 혹시 다시 확인해 주시겠어요?", "pi": [{"type": "DRIVER_LICENSE", "text": "910-22-1234", "start": 15, "end": 26}], "meta": {"domain": "고객센터 채팅", "style": "격식체", "obfuscation": ["separator_noise"], "hard_case": "none"}}

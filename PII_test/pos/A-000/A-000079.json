@@ -1,0 +1,1 @@
+{"id": "A-000079", "text": "혹시 배송 오는 차량 번호가 기아 3D4567 이 맞는지 확인 좀 부탁드립니다.", "pi": [{"type": "CAR_PLATE", "text": "기아 3D4567", "start": 16, "end": 25}], "meta": {"domain": "배달 요청사항", "style": "구어체", "obfuscation": ["korean_reading"], "hard_case": "none"}}

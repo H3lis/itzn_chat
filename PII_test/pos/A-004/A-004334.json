@@ -1,0 +1,1 @@
+{"id": "A-004334", "text": "제가 생년월일이 2002년 11월 17일인데요. 이게 맞는지 다시 한번 확인해 주실 수 있을까요?", "pi": [{"type": "BIRTH", "text": "2002년 11월 17일", "start": 9, "end": 22}], "meta": {"domain": "직장 메신저", "style": "메신저 줄임말", "obfuscation": ["korean_reading"], "hard_case": "none"}}

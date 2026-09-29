@@ -1,0 +1,1 @@
+{"id": "A-005151", "text": "저희 건은 지원팀장님 이서영(seoyeong.lee@mail.com) 이메일로 다시 보내주시면 돼요.", "pi": [{"type": "NAME", "text": "이서영", "start": 12, "end": 15}, {"type": "EMAIL", "text": "seoyeong.lee@mail.com", "start": 16, "end": 37}], "meta": {"domain": "이메일 본문", "style": "구어체", "obfuscation": ["plain"], "hard_case": "none"}}

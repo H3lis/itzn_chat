@@ -1,0 +1,1 @@
+{"id": "A-002752", "text": "결제하시는 카드는 5410년도 12월에 발급된 비자 카드입니다.", "pi": [{"type": "CARD", "text": "5410", "start": 10, "end": 14}], "meta": {"domain": "고객센터 채팅", "style": "공문서풍", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

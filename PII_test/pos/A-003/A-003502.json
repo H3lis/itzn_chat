@@ -1,0 +1,1 @@
+{"id": "A-003502", "text": "회원님 이메일은 test@gamil.com 이구요, 접속하신 IP 주소가 119.20.30.44 인데요, 혹시 이게 맞나요?", "pi": [{"type": "EMAIL", "text": "test@gamil.com", "start": 9, "end": 23}, {"type": "IP_ADDR", "text": "119.20.30.44", "start": 41, "end": 53}], "meta": {"domain": "택배 문의", "style": "오타 많은 채팅", "obfuscation": ["self_correction"], "hard_case": "none"}}

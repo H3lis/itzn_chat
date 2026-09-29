@@ -1,0 +1,1 @@
+{"id": "A-005473", "text": "이번에 구매하시려는 상품에 대해서는 비자카드 번호로 결제하셔야 합니다.", "pi": [{"type": "CARD", "text": "비자카드", "start": 20, "end": 24}], "meta": {"domain": "SNS 댓글", "style": "격식체", "obfuscation": ["plain"], "hard_case": "none"}}

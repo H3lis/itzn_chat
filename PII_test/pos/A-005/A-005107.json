@@ -1,0 +1,1 @@
+{"id": "A-005107", "text": "혹시 예약자 분 성함이 박지성 씨시고, 연락 가능한 번호는 010-9876-5432로 알고 있는데요?", "pi": [{"type": "NAME", "text": "박지성", "start": 13, "end": 16}, {"type": "PHONE", "text": "010-9876-5432", "start": 33, "end": 46}], "meta": {"domain": "여행 예약", "style": "존댓말 상담", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

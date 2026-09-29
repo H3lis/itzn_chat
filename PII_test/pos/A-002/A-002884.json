@@ -1,0 +1,1 @@
+{"id": "A-002884", "text": "저희가 찾는 분은 '박선영' 씨입니다. 혹시 '박' 자로 시작하는 분이신가요?", "pi": [{"type": "NAME", "text": "박선영", "start": 11, "end": 14}], "meta": {"domain": "여행 예약", "style": "오타 많은 채팅", "obfuscation": ["jamo_split", "honorific_ref"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-001240", "text": "나라님, 혹시 이메일 주소는 [나라]@example.com 인가요? 신분 확인을 위해 정확한 이름도 한 번만 말씀해 주시겠어요?", "pi": [{"type": "NAME", "text": "나라", "start": 0, "end": 2}, {"type": "EMAIL", "text": "[나라]@example.com", "start": 16, "end": 32}], "meta": {"domain": "학교 행정 문의", "style": "구어체", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

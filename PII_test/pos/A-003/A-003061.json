@@ -1,0 +1,1 @@
+{"id": "A-003061", "text": "고객님의 계정 정보가 현재 시스템 오류로 인해 접속이 원활하지 않습니다. 아이디가 '사용자1234' 맞으신가요?", "pi": [{"type": "ACCOUNT", "text": "사용자1234", "start": 47, "end": 54}], "meta": {"domain": "쇼핑몰 문의", "style": "공문서풍", "obfuscation": ["stt_error", "repeat_expr"], "hard_case": "none"}}

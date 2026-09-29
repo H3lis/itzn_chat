@@ -1,0 +1,1 @@
+{"id": "A-004266", "text": "담당자님께서는 support@example.com 이메일 주소로 연락 부탁드리며, 업무용으로 070-3333-4444로 회신하겠습니다.", "pi": [{"type": "EMAIL", "text": "support@example.com", "start": 8, "end": 27}, {"type": "PHONE", "text": "070-3333-4444", "start": 52, "end": 65}], "meta": {"domain": "고객센터 채팅", "style": "공문서풍", "obfuscation": ["split_utterance"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-000933", "text": "담당자님, 연락처는 my.email@gmal.com이구요. 이름은 은행 부장님으로 되어있는데 맞나요?", "pi": [{"type": "EMAIL", "text": "my.email@gmal.com", "start": 11, "end": 28}, {"type": "NAME", "text": "은행", "start": 37, "end": 39}], "meta": {"domain": "학교 행정 문의", "style": "공문서풍", "obfuscation": ["honorific_ref", "lookalike_char", "separator_noise"], "hard_case": "homonym_name"}}

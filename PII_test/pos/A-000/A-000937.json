@@ -1,0 +1,1 @@
+{"id": "A-000937", "text": "혹시 민정 선생님, 그리고 윤지 학생 같은 경우에 상담 시간이 어떻게 되나요?", "pi": [{"type": "NAME", "text": "민정", "start": 3, "end": 5}, {"type": "NAME", "text": "윤지", "start": 15, "end": 17}], "meta": {"domain": "온라인 강의 Q&A", "style": "음성인식(STT) 전사", "obfuscation": ["honorific_ref"], "hard_case": "none"}}

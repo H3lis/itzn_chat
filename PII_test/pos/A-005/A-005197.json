@@ -1,0 +1,1 @@
+{"id": "A-005197", "text": "주소는 서울특별시 강남구 역삼동 1504호이고요, 고객님 성함은 이서영 씨예요.", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 역삼동 1504호", "start": 4, "end": 23}, {"type": "NAME", "text": "이서영", "start": 36, "end": 39}], "meta": {"domain": "중고거래 채팅", "style": "구어체", "obfuscation": ["korean_reading"], "hard_case": "none"}}

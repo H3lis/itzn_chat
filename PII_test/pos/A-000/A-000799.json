@@ -1,0 +1,1 @@
+{"id": "A-000799", "text": "광주 짱이라고 해요. 제 이메일은 광주쓰리핏@나인메일.com이니까 확인해 보세요.", "pi": [{"type": "NAME", "text": "광주", "start": 0, "end": 2}, {"type": "EMAIL", "text": "광주쓰리핏@나인메일.com", "start": 19, "end": 33}], "meta": {"domain": "중고거래 채팅", "style": "반말 대화", "obfuscation": ["romanized"], "hard_case": "homonym_name"}}

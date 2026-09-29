@@ -1,0 +1,1 @@
+{"id": "A-001333", "text": "고객님, 성함이 어떻게 되시나요? 아, 아니, 홍길동 씨로 말씀해주시겠어요?", "pi": [{"type": "NAME", "text": "홍길동", "start": 26, "end": 29}], "meta": {"domain": "금융 상담", "style": "격식체", "obfuscation": ["self_correction"], "hard_case": "none"}}

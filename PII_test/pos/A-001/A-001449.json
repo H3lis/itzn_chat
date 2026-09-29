@@ -1,0 +1,1 @@
+{"id": "A-001449", "text": "고객님의 아이디는 ㄱㅏㅇㄴㅏㅁ이고, 성함은 ㅊㅓㄹㅅㅜ님으로 확인됩니다. 혹시 조직명 같은 것도 알려주실 수 있나요?", "pi": [{"type": "ID", "text": "ㄱㅏㅇㄴㅏㅁ", "start": 10, "end": 16}, {"type": "NAME", "text": "ㅊㅓㄹㅅㅜ", "start": 24, "end": 29}], "meta": {"domain": "금융 상담", "style": "공문서풍", "obfuscation": ["jamo_split"], "hard_case": "nickname_id"}}

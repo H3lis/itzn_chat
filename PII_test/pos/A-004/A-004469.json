@@ -1,0 +1,1 @@
+{"id": "A-004469", "text": "제 이름은 박지성이라고 해요. 그러니까 영어로는 Park Jisung이라고만 해주세요.", "pi": [{"type": "NAME", "text": "박지성", "start": 6, "end": 9}], "meta": {"domain": "SNS 댓글", "style": "오타 많은 채팅", "obfuscation": ["romanized", "jamo_split"], "hard_case": "none"}}

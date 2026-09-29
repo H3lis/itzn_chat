@@ -1,0 +1,1 @@
+{"id": "A-004984", "text": "학생분 정보 확인하려고요. 생년월일이 2008년 05월 15일 맞으신지, 그리고 학생 이름은 이서연 학생이요?", "pi": [{"type": "BIRTH", "text": "2008년 05월 15일", "start": 21, "end": 34}], "meta": {"domain": "학교 행정 문의", "style": "오타 많은 채팅", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

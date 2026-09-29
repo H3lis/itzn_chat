@@ -1,0 +1,1 @@
+{"id": "A-003658", "text": "연락 가능한 이메일은 abc_test@mail.co.kr로 해주세요.", "pi": [{"type": "EMAIL", "text": "abc_test@mail.co.kr", "start": 12, "end": 31}], "meta": {"domain": "콜센터 상담 요약", "style": "오타 많은 채팅", "obfuscation": ["email_spoken"], "hard_case": "none"}}

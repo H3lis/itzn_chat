@@ -1,0 +1,1 @@
+{"id": "A-003186", "text": "계정번호는 user_A1B2. 그리고 이메일은 abc@example.com입니다.", "pi": [{"type": "ACCOUNT", "text": "user_A1B2", "start": 6, "end": 15}, {"type": "EMAIL", "text": "abc@example.com", "start": 26, "end": 41}], "meta": {"domain": "여행 예약", "style": "짧은 단답", "obfuscation": ["separator_noise"], "hard_case": "none"}}

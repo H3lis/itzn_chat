@@ -1,0 +1,1 @@
+{"id": "A-002719", "text": "혹시 제 이름이 '김민지' 맞나요? 네, 그리고 옛날 번호가 010-1234-5678이었어요.", "pi": [{"type": "NAME", "text": "김민지", "start": 10, "end": 13}, {"type": "PHONE", "text": "010-1234-5678", "start": 34, "end": 47}], "meta": {"domain": "학교 행정 문의", "style": "메신저 줄임말", "obfuscation": ["plain"], "hard_case": "none"}}

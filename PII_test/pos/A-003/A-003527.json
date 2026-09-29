@@ -1,0 +1,1 @@
+{"id": "A-003527", "text": "혹시 받을 주소는 아파트 이름이나 정확한 동 호수로 말씀해주시겠어요? 123-4567.", "pi": [{"type": "ID", "text": "아파트", "start": 10, "end": 13}, {"type": "ADDRESS", "text": "123-4567", "start": 39, "end": 47}], "meta": {"domain": "중고거래 채팅", "style": "메신저 줄임말", "obfuscation": ["jamo_split"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-003596", "text": "확인했습니다. 계정 정보는 ㅇ1o1234@test.com으로 되어 있네요.", "pi": [{"type": "ACCOUNT", "text": "ㅇ1o1234@test.com", "start": 15, "end": 31}], "meta": {"domain": "직장 메신저", "style": "메신저 줄임말", "obfuscation": ["separator_noise"], "hard_case": "none"}}

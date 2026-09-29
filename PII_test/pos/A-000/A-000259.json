@@ -1,0 +1,1 @@
+{"id": "A-000259", "text": "신고가요. 주소는 '서울특별시 강남구 테헤란로 123'이고, 주민등록번호는 '901010-1234567'이 맞습니다.", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 테헤란로 123", "start": 11, "end": 29}, {"type": "RRN", "text": "901010-1234567", "start": 43, "end": 57}], "meta": {"domain": "고객센터 채팅", "style": "공문서풍", "obfuscation": ["plain"], "hard_case": "none"}}

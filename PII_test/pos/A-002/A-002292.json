@@ -1,0 +1,1 @@
+{"id": "A-002292", "text": "저희 차가요? 음... 네, 차량 번호가 A-201B, 아무튼 3322년생이라고 하셔서요.", "pi": [{"type": "CAR_PLATE", "text": "A-201B", "start": 23, "end": 29}], "meta": {"domain": "이메일 본문", "style": "구어체", "obfuscation": ["mixed_reading", "stt_error"], "hard_case": "none"}}

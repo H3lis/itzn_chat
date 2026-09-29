@@ -1,0 +1,1 @@
+{"id": "A-000885", "text": "온유야, 너 혹시 무슨 물건 팝니까? 네 이름이 온유 맞지?", "pi": [{"type": "NAME", "text": "온유", "start": 0, "end": 2}], "meta": {"domain": "중고거래 채팅", "style": "반말 대화", "obfuscation": ["jamo_split", "romanized"], "hard_case": "homonym_name"}}

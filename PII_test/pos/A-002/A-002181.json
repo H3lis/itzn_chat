@@ -1,0 +1,1 @@
+{"id": "A-002181", "text": "회원님께서 문의하신 이메일 주소는 support@mail.co.kr 이 맞으신가요? 다시 한번 확인 부탁드립니다.", "pi": [{"type": "EMAIL", "text": "support@mail.co.kr", "start": 19, "end": 37}], "meta": {"domain": "이메일 본문", "style": "존댓말 상담", "obfuscation": ["separator_noise"], "hard_case": "none"}}

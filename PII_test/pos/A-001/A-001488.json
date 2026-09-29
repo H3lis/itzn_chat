@@ -1,0 +1,1 @@
+{"id": "A-001488", "text": "제가 말씀드린 이름이 맞는지 확인해 주시겠어요? 혹시 오기가 있을 수도 있어서요.", "pi": [{"type": "NAME", "text": "오기", "start": 30, "end": 32}], "meta": {"domain": "여행 예약", "style": "격식체", "obfuscation": ["self_correction"], "hard_case": "none"}}

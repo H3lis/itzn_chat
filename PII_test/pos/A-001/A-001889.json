@@ -1,0 +1,1 @@
+{"id": "A-001889", "text": "안녕하세요, 고객님. 성함은 박서준 님으로 알고 있는데, 혹시 다른 이름이 있으신가요? 아니면 김지수 님으로 해도 괜찮을까요?", "pi": [{"type": "NAME", "text": "박서준", "start": 16, "end": 19}, {"type": "NAME", "text": "김지수", "start": 53, "end": 56}], "meta": {"domain": "쇼핑몰 문의", "style": "오타 많은 채팅", "obfuscation": ["honorific_ref"], "hard_case": "none"}}

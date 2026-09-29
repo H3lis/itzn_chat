@@ -1,0 +1,1 @@
+{"id": "A-000041", "text": "접속하시려는 IP 주소는 211.33.55.88이니, 이 부분 다시 한번 말씀해 주시겠어요?", "pi": [{"type": "IP_ADDR", "text": "211.33.55.88", "start": 14, "end": 26}], "meta": {"domain": "콜센터 상담 요약", "style": "격식체", "obfuscation": ["korean_reading"], "hard_case": "none"}}

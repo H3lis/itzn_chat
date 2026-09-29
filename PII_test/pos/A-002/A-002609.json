@@ -1,0 +1,1 @@
+{"id": "A-002609", "text": "나 오늘 급하게 맡길 거 있는데, 주소는 서울특별시 강남구 테헤란로 123이고요. 우리 거기 네이버 같은 곳에서 업무 보는 거 알지?", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 테헤란로 123", "start": 23, "end": 41}, {"type": "ORG", "text": "네이버", "start": 52, "end": 55}], "meta": {"domain": "이메일 본문", "style": "반말 대화", "obfuscation": ["romanized"], "hard_case": "org_person"}}

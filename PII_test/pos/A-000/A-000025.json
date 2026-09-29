@@ -1,0 +1,1 @@
+{"id": "A-000025", "text": "접수하신 번호가 104-555-2233인데요, 이거 혹시 다른 번호 아닐까요?", "pi": [{"type": "PHONE", "text": "104-555-2233", "start": 9, "end": 21}], "meta": {"domain": "민원 접수", "style": "메신저 줄임말", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

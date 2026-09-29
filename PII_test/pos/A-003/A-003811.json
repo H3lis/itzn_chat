@@ -1,0 +1,1 @@
+{"id": "A-003811", "text": "받는 곳은 부산에 있는 행복빌딩(Hapgok Building)으로 부탁드려요.", "pi": [{"type": "ORG", "text": "Hapgok Building", "start": 18, "end": 33}], "meta": {"domain": "배달 요청사항", "style": "짧은 단답", "obfuscation": ["romanized", "jamo_split"], "hard_case": "none"}}

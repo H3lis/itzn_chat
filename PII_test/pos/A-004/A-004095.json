@@ -1,0 +1,1 @@
+{"id": "A-004095", "text": "접수증을 받았는데요, 혹시 예약 시간이 잘못 기재된 것 같아서요. 번호가 070-3333-4444 맞나요?", "pi": [{"type": "PHONE", "text": "070-3333-4444", "start": 41, "end": 54}], "meta": {"domain": "병원 접수", "style": "오타 많은 채팅", "obfuscation": ["separator_noise"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-004620", "text": "차량 번호가 '12가 3456' 맞는지 다시 한번 말씀해주실 수 있나요? 이거 녹음된 거 보면 '12가 3456'으로 들리는데요.", "pi": [{"type": "CAR_PLATE", "text": "12가 3456", "start": 8, "end": 16}], "meta": {"domain": "커뮤니티 게시글", "style": "음성인식(STT) 전사", "obfuscation": ["korean_reading"], "hard_case": "none"}}

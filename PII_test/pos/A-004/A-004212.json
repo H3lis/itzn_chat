@@ -1,0 +1,1 @@
+{"id": "A-004212", "text": "접수하실 분 이름이 '장미' 씨 맞으신가요? 보호자 분 성함도 다시 한번 말씀해 주시겠어요?", "pi": [{"type": "NAME", "text": "장미", "start": 12, "end": 14}], "meta": {"domain": "병원 접수", "style": "오타 많은 채팅", "obfuscation": ["jamo_split", "honorific_ref"], "hard_case": "none"}}

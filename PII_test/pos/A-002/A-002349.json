@@ -1,0 +1,1 @@
+{"id": "A-002349", "text": "신청하신 계정 번호 말이야? 지금 다시 불러줄까? 1234-5678-9012야.", "pi": [{"type": "ACCOUNT", "text": "1234-5678-9012", "start": 28, "end": 42}], "meta": {"domain": "학교 행정 문의", "style": "반말 대화", "obfuscation": ["separator_noise"], "hard_case": "none"}}

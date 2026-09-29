@@ -1,0 +1,1 @@
+{"id": "A-003364", "text": "제 운전면허번호는 99112233이고요. 전화는 010 5555 6666 맞나요?", "pi": [{"type": "DRIVER_LICENSE", "text": "99112233", "start": 10, "end": 18}, {"type": "PHONE", "text": "010 5555 6666", "start": 27, "end": 40}], "meta": {"domain": "SNS 댓글", "style": "구어체", "obfuscation": ["separator_noise", "stt_error"], "hard_case": "none"}}

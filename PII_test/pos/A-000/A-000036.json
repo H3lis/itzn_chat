@@ -1,0 +1,1 @@
+{"id": "A-000036", "text": "안녕하세요, 제 계정 이름은 '안양'이에요. 아, 잠깐만요, 아니요. 제 아이디는 실제로는 '안양개발'이 맞아요.", "pi": [{"type": "NAME", "text": "안양", "start": 17, "end": 19}, {"type": "SNS", "text": "안양개발", "start": 52, "end": 56}], "meta": {"domain": "직장 메신저", "style": "메신저 줄임말", "obfuscation": ["self_correction", "romanized"], "hard_case": "homonym_name"}}

@@ -1,0 +1,1 @@
+{"id": "A-001765", "text": "보람 씨께 확인 부탁드립니다. 업무상 제가 사용하던 이 메일 주소, Ⓔ_boram.corp.net 이거 혹시 변경되었는지요?", "pi": [{"type": "NAME", "text": "보람", "start": 0, "end": 2}, {"type": "EMAIL", "text": "Ⓔ_boram.corp.net", "start": 38, "end": 54}], "meta": {"domain": "직장 메신저", "style": "길고 장황한 설명", "obfuscation": ["lookalike_char"], "hard_case": "homonym_name"}}

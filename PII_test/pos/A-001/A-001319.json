@@ -1,0 +1,1 @@
+{"id": "A-001319", "text": "저희 아파트 주소는 '서울특별시 강남구 역삼로 123-45'예요. 그리고 담당자 이름은 '하늘' 씨한테 물어보시는 게 제일 정확할 것 같습니다.", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 역삼로 123-45", "start": 12, "end": 32}, {"type": "NAME", "text": "하늘", "start": 50, "end": 52}], "meta": {"domain": "커뮤니티 게시글", "style": "메신저 줄임말", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

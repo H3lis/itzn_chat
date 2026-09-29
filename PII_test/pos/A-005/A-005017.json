@@ -1,0 +1,1 @@
+{"id": "A-005017", "text": "상품에 문제가 있다고요? 카드 번호가 1234부터 5678까지이고, 혹시 다른 부분도 말씀해주시겠어요?", "pi": [{"type": "CARD", "text": "1234부터 5678까지", "start": 21, "end": 34}], "meta": {"domain": "중고거래 채팅", "style": "격식체", "obfuscation": ["split_utterance"], "hard_case": "none"}}

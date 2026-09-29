@@ -1,0 +1,1 @@
+{"id": "A-004993", "text": "저희 회원번호는 9999부터 시작하고, 제 닉네임은 박지수라고 해주세요.", "pi": [{"type": "ACCOUNT", "text": "9999", "start": 9, "end": 13}, {"type": "NAME", "text": "박지수", "start": 29, "end": 32}], "meta": {"domain": "커뮤니티 게시글", "style": "반말 대화", "obfuscation": ["repeat_expr", "korean_reading"], "hard_case": "none"}}

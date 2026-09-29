@@ -1,0 +1,1 @@
+{"id": "A-002643", "text": "제 이름은 박지훈인데요. 사실 저 사실은 김민준이에요. 제가 잘못 말했네요.", "pi": [{"type": "NAME", "text": "박지훈", "start": 6, "end": 9}, {"type": "NAME", "text": "김민준", "start": 23, "end": 26}], "meta": {"domain": "금융 상담", "style": "반말 대화", "obfuscation": ["romanized", "self_correction"], "hard_case": "none"}}

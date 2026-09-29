@@ -1,0 +1,1 @@
+{"id": "A-005241", "text": "운전면허번호가 1234-5678901이 맞으신가요? 네, 저는 보람입니다.", "pi": [{"type": "DRIVER_LICENSE", "text": "1234-5678901", "start": 8, "end": 20}, {"type": "NAME", "text": "보람", "start": 35, "end": 37}], "meta": {"domain": "학교 행정 문의", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

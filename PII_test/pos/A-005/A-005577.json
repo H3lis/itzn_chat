@@ -1,0 +1,1 @@
+{"id": "A-005577", "text": "계정은 A1B2C3D4이고요, 주민등록번호는 950101-1234567이 맞나요?", "pi": [{"type": "ACCOUNT", "text": "A1B2C3D4", "start": 4, "end": 12}, {"type": "RRN", "text": "950101-1234567", "start": 25, "end": 39}], "meta": {"domain": "직장 메신저", "style": "음성인식(STT) 전사", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-002404", "text": "네, 저희 반 담임 선생님은 보람 선생님이세요. 그리고 휴대폰 번호는 010-9999-1212로 저장해 놓으시면 됩니다.", "pi": [{"type": "NAME", "text": "보람", "start": 16, "end": 18}, {"type": "PHONE", "text": "010-9999-1212", "start": 39, "end": 52}], "meta": {"domain": "학교 행정 문의", "style": "구어체", "obfuscation": ["korean_reading"], "hard_case": "homonym_name"}}

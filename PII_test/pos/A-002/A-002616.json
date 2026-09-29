@@ -1,0 +1,1 @@
+{"id": "A-002616", "text": "배달 받을 분 이름은 Lee Jihoon이요. 그리고 연락할 SNS는 인스타그램에 @jihoon_lee로 되어있어요.", "pi": [{"type": "NAME", "text": "Lee Jihoon", "start": 12, "end": 22}, {"type": "SNS", "text": "@jihoon_lee", "start": 46, "end": 57}], "meta": {"domain": "배달 요청사항", "style": "오타 많은 채팅", "obfuscation": ["romanized"], "hard_case": "none"}}

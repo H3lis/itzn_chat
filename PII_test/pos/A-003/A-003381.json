@@ -1,0 +1,1 @@
+{"id": "A-003381", "text": "차량 번호는 76가 20년식 차량에 적합한 건지, 그리고 문의하신 이메일 주소는 example.com입니다.", "pi": [{"type": "DRIVER_LICENSE", "text": "76", "start": 7, "end": 9}, {"type": "EMAIL", "text": "example.com", "start": 45, "end": 56}], "meta": {"domain": "보험 청구", "style": "길고 장황한 설명", "obfuscation": ["plain"], "hard_case": "none"}}

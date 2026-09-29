@@ -1,0 +1,1 @@
+{"id": "A-003121", "text": "제 이름이 사실은 홍길동이 아니라, 이준호입니다. 혹시 접수 도와주실 수 있나요?", "pi": [{"type": "NAME", "text": "이준호", "start": 20, "end": 23}], "meta": {"domain": "병원 접수", "style": "구어체", "obfuscation": ["self_correction"], "hard_case": "none"}}

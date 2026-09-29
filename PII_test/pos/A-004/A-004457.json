@@ -1,0 +1,1 @@
+{"id": "A-004457", "text": "저번 보험 건은 chulsoo(at)gmail(dot)com으로 보내면 되나요?", "pi": [{"type": "EMAIL", "text": "chulsoo(at)gmail(dot)com", "start": 9, "end": 33}], "meta": {"domain": "보험 청구", "style": "반말 대화", "obfuscation": ["email_spoken", "separator_noise", "lookalike_char"], "hard_case": "none"}}

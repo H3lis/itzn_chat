@@ -1,0 +1,1 @@
+{"id": "A-004527", "text": "주소는 서울 강남구 역삼동 123-45이고, 개인 SNS는 인스타그램에 몽글곰이예요.", "pi": [{"type": "ADDRESS", "text": "서울 강남구 역삼동 123-45", "start": 4, "end": 21}, {"type": "SNS", "text": "인스타그램", "start": 33, "end": 38}], "meta": {"domain": "직장 메신저", "style": "공문서풍", "obfuscation": ["split_utterance"], "hard_case": "none"}}

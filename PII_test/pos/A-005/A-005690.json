@@ -1,0 +1,1 @@
+{"id": "A-005690", "text": "강사님, 제가 닉네임으로 꾸민 '오늘의공부'라는 계정 이름으로 연락 드렸는데, 혹시 제 인스타그램도 거기서 볼 수 있을까요?", "pi": [{"type": "NAME", "text": "오늘의공부", "start": 18, "end": 23}, {"type": "SNS", "text": "인스타그램", "start": 49, "end": 54}], "meta": {"domain": "SNS 댓글", "style": "존댓말 상담", "obfuscation": ["jamo_split"], "hard_case": "nickname_id"}}

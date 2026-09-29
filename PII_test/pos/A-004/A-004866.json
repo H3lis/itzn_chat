@@ -1,0 +1,1 @@
+{"id": "A-004866", "text": "그거 이메일 주소 혹시 spam-test@@gmaill.com 으로 바꿔주세요. 지금 써 있는 건 아닌 것 같아요.", "pi": [{"type": "EMAIL", "text": "spam-test@@gmaill.com", "start": 13, "end": 34}], "meta": {"domain": "민원 접수", "style": "오타 많은 채팅", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

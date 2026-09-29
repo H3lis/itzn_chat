@@ -1,0 +1,1 @@
+{"id": "A-000120", "text": "네, 학생 이름이 '구름'이에요. 이게 맞는 정보인가요? 다른 정보도 알려주시겠어요?", "pi": [{"type": "NAME", "text": "구름", "start": 11, "end": 13}], "meta": {"domain": "학교 행정 문의", "style": "구어체", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

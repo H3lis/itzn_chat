@@ -1,0 +1,1 @@
+{"id": "A-004229", "text": "결제하신 카드는 VISA 끝 네 자리가 5678이고, 휴대폰 번호는 010 9876 5432로 기록해 두세요.", "pi": [{"type": "CARD", "text": "VISA", "start": 9, "end": 13}, {"type": "CARD", "text": "5678", "start": 22, "end": 26}, {"type": "PHONE", "text": "010 9876 5432", "start": 38, "end": 51}], "meta": {"domain": "회의록", "style": "존댓말 상담", "obfuscation": ["plain"], "hard_case": "none"}}

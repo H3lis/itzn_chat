@@ -1,0 +1,1 @@
+{"id": "A-002277", "text": "고객님 성함은 보리 님이시죠? 연락처는 010-5555-1234번으로 다시 한번 확인 부탁드립니다.", "pi": [{"type": "NAME", "text": "보리", "start": 8, "end": 10}, {"type": "PHONE", "text": "010-5555-1234", "start": 22, "end": 35}], "meta": {"domain": "콜센터 상담 요약", "style": "음성인식(STT) 전사", "obfuscation": ["romanized"], "hard_case": "homonym_name"}}

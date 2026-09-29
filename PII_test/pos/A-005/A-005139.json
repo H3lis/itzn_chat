@@ -1,0 +1,1 @@
+{"id": "A-005139", "text": "로그인 계정은 사랑입니다. 사용자명은 사랑_user예요. 이거 혹시 사랑이라고 오해하신 건가요?", "pi": [{"type": "ACCOUNT", "text": "사랑", "start": 8, "end": 10}, {"type": "NAME", "text": "사랑", "start": 38, "end": 40}], "meta": {"domain": "고객센터 채팅", "style": "짧은 단답", "obfuscation": ["separator_noise", "mixed_reading", "stt_error"], "hard_case": "homonym_name"}}

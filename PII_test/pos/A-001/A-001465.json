@@ -1,0 +1,1 @@
+{"id": "A-001465", "text": "제 이름은 'Leo Kim'이고요, 연락처는 010 1234 5678이에요.", "pi": [{"type": "NAME", "text": "Leo Kim", "start": 7, "end": 14}, {"type": "PHONE", "text": "010 1234 5678", "start": 25, "end": 38}], "meta": {"domain": "학교 행정 문의", "style": "짧은 단답", "obfuscation": ["romanized"], "hard_case": "none"}}

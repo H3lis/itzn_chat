@@ -1,0 +1,1 @@
+{"id": "A-004778", "text": "혹시 생년월일이 '1985년 5월 20일'이시고, 운전면허 번호는 '1234567890123'으로 되어 있나요?", "pi": [{"type": "BIRTH", "text": "1985년 5월 20일", "start": 10, "end": 22}, {"type": "DRIVER_LICENSE", "text": "1234567890123", "start": 38, "end": 51}], "meta": {"domain": "고객센터 채팅", "style": "존댓말 상담", "obfuscation": ["separator_noise"], "hard_case": "none"}}

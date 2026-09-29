@@ -1,0 +1,1 @@
+{"id": "A-003842", "text": "담당자 이름이 이슬 씨였는데, 혹시 저한테 오늘 오시는 분이 이슬 씨 맞아요?", "pi": [{"type": "NAME", "text": "이슬", "start": 8, "end": 10}], "meta": {"domain": "민원 접수", "style": "메신저 줄임말", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

@@ -1,0 +1,1 @@
+{"id": "A-004497", "text": "담당자님께 연락드리려면, 혹시 성함이 어떻게 되시는지 다시 말씀해주시겠어요? 김아름 씨가 오늘 오시기로 하셨는데, 그 분 연락처가 필요해서요.", "pi": [{"type": "NAME", "text": "김아름", "start": 43, "end": 46}], "meta": {"domain": "음성통화 전사문", "style": "길고 장황한 설명", "obfuscation": ["jamo_split", "self_correction", "romanized"], "hard_case": "none"}}

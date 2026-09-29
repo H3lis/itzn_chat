@@ -1,0 +1,1 @@
+{"id": "A-003690", "text": "회의록에 기록된 분 성함이 해솔 씨 맞나요? 이사님께 말씀드리고 확인 부탁드립니다.", "pi": [{"type": "NAME", "text": "해솔", "start": 15, "end": 17}], "meta": {"domain": "회의록", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

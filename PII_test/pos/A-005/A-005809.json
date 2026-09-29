@@ -1,0 +1,1 @@
+{"id": "A-005809", "text": "혹시 삼성전자 같은 곳에 다니시는 김민수 씨 맞으신가요? 번호가 010-9876-5432 맞으시고요.", "pi": [{"type": "ORG", "text": "삼성전자", "start": 3, "end": 7}, {"type": "PHONE", "text": "010-9876-5432", "start": 36, "end": 49}], "meta": {"domain": "음성통화 전사문", "style": "구어체", "obfuscation": ["self_correction"], "hard_case": "org_person"}}

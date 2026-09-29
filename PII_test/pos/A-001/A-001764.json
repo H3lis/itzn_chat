@@ -1,0 +1,1 @@
+{"id": "A-001764", "text": "보험료 납부 확인하시려면 카드 번호 마지막 네 자리만 알려주시겠어요? 5678이 맞나요?", "pi": [{"type": "CARD", "text": "5678", "start": 39, "end": 43}], "meta": {"domain": "보험 청구", "style": "존댓말 상담", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

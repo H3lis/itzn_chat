@@ -1,0 +1,1 @@
+{"id": "A-000624", "text": "혹시 김지혜 씨가 예약한 거 맞아요? 010-8888-1234로 연락 왔는데, 그 번호로 지금 바로 확인해 줄 수 있어요? 제가 기억하는 이름이 맞는지 다시 한번요.", "pi": [{"type": "NAME", "text": "김지혜", "start": 3, "end": 6}, {"type": "PHONE", "text": "010-8888-1234", "start": 21, "end": 34}], "meta": {"domain": "민원 접수", "style": "반말 대화", "obfuscation": ["repeat_expr"], "hard_case": "homonym_name"}}

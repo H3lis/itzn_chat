@@ -1,0 +1,1 @@
+{"id": "A-005423", "text": "결제 오류가 발생해서요. 저희 회원 아이디가 뭐였더라, 아 맞다, A_USER1234 가 맞던가요?", "pi": [{"type": "ACCOUNT", "text": "A_USER1234", "start": 37, "end": 47}], "meta": {"domain": "쇼핑몰 문의", "style": "구어체", "obfuscation": ["stt_error", "repeat_expr"], "hard_case": "none"}}

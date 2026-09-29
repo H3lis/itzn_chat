@@ -1,0 +1,1 @@
+{"id": "A-003106", "text": "저기요, 주소가 부산광역시 해운대구 마린시티로 옮겼는데, 여기에 거주하는 사람 이름은 박서준 씨예요.", "pi": [{"type": "ADDRESS", "text": "부산광역시 해운대구 마린시티", "start": 9, "end": 24}, {"type": "NAME", "text": "박서준", "start": 48, "end": 51}], "meta": {"domain": "고객센터 채팅", "style": "길고 장황한 설명", "obfuscation": ["plain"], "hard_case": "none"}}

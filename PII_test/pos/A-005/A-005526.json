@@ -1,0 +1,1 @@
+{"id": "A-005526", "text": "도착하실 주소는 서울특별시 강남구 테헤란로 123이고, 예약자분 성함은 이지수 씨와 최현우 님 두 분이십니다.", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 테헤란로 123", "start": 9, "end": 27}, {"type": "NAME", "text": "이지수", "start": 40, "end": 43}, {"type": "NAME", "text": "최현우", "start": 47, "end": 50}], "meta": {"domain": "여행 예약", "style": "격식체", "obfuscation": ["plain"], "hard_case": "none"}}

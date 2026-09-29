@@ -1,0 +1,1 @@
+{"id": "A-001815", "text": "혹시 고객센터에 전화할 때, 010-5555-1234로 해주실 수 있어요?", "pi": [{"type": "PHONE", "text": "010-5555-1234", "start": 16, "end": 29}], "meta": {"domain": "직장 메신저", "style": "메신저 줄임말", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-001325", "text": "운전면허증에 적힌 번호가 ０１０-ㅂㅂㅂㅂ-ｗｗｗｗ예요. 혹시 다시 한번 알려주실 수 있나요?", "pi": [{"type": "DRIVER_LICENSE", "text": "０１０-ㅂㅂㅂㅂ-ｗｗｗｗ", "start": 14, "end": 27}], "meta": {"domain": "학교 행정 문의", "style": "오타 많은 채팅", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

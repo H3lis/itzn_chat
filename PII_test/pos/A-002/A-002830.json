@@ -1,0 +1,1 @@
+{"id": "A-002830", "text": "저기요, 제 이메일 주소는 user.name@mail.co.kr 이고요, 전화는 070-9999-8888 이었어요.", "pi": [{"type": "EMAIL", "text": "user.name@mail.co.kr", "start": 15, "end": 35}, {"type": "PHONE", "text": "070-9999-8888", "start": 45, "end": 58}], "meta": {"domain": "학교 행정 문의", "style": "오타 많은 채팅", "obfuscation": ["separator_noise"], "hard_case": "none"}}

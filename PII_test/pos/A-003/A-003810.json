@@ -1,0 +1,1 @@
+{"id": "A-003810", "text": "아이디는 my_user_abc입니다.", "pi": [{"type": "ID", "text": "my_user_abc", "start": 5, "end": 16}], "meta": {"domain": "SNS 댓글", "style": "짧은 단답", "obfuscation": ["romanized"], "hard_case": "none"}}

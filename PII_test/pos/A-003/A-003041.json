@@ -1,0 +1,1 @@
+{"id": "A-003041", "text": "차량 번호는 12가34 가 아니고요, 정확히 1234라고 불러주시면 됩니다.", "pi": [{"type": "CAR_PLATE", "text": "12가34", "start": 7, "end": 12}], "meta": {"domain": "금융 상담", "style": "구어체", "obfuscation": ["plain"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-002863", "text": "신입생 전용 주소지 입력은 혹시 '경기도 수원시 영통구 광교로 500'으로 하면 될까요?", "pi": [{"type": "ADDRESS", "text": "경기도 수원시 영통구 광교로 500", "start": 19, "end": 38}], "meta": {"domain": "학교 행정 문의", "style": "메신저 줄임말", "obfuscation": ["plain"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-002954", "text": "제 이름은 David Kim이고, 주민등록번호는 900101-1234567이 맞습니다.", "pi": [{"type": "NAME", "text": "David Kim", "start": 6, "end": 15}, {"type": "RRN", "text": "900101-1234567", "start": 27, "end": 41}], "meta": {"domain": "직장 메신저", "style": "공문서풍", "obfuscation": ["romanized", "self_correction"], "hard_case": "none"}}

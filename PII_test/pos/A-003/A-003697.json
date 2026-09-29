@@ -1,0 +1,1 @@
+{"id": "A-003697", "text": "가을 씨 찾으시나요? 혹시 이름이 가을이 맞나요? 아니면 다른 분일까요?", "pi": [{"type": "NAME", "text": "가을", "start": 0, "end": 2}], "meta": {"domain": "택배 문의", "style": "격식체", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

@@ -1,0 +1,1 @@
+{"id": "A-000905", "text": "주소는 서울시 강남구 테헤란로 123이고요, 전화번호는 010-5555-1234입니다.", "pi": [{"type": "ADDRESS", "text": "서울시 강남구 테헤란로 123", "start": 4, "end": 20}, {"type": "PHONE", "text": "010-5555-1234", "start": 31, "end": 44}], "meta": {"domain": "콜센터 상담 요약", "style": "짧은 단답", "obfuscation": ["lookalike_char", "mixed_reading"], "hard_case": "none"}}

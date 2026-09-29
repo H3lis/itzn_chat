@@ -1,0 +1,1 @@
+{"id": "A-003147", "text": "주소는 경기도 성남시 분당구 판교테크노벨리 555-111이고, 제 생년월일은 90년 1월 1일로 기억해요.", "pi": [{"type": "ADDRESS", "text": "경기도 성남시 분당구 판교테크노벨리 555-111", "start": 4, "end": 31}, {"type": "BIRTH", "text": "90년 1월 1일", "start": 43, "end": 52}], "meta": {"domain": "SNS 댓글", "style": "오타 많은 채팅", "obfuscation": ["mixed_reading", "korean_reading"], "hard_case": "none"}}

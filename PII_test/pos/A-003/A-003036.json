@@ -1,0 +1,1 @@
+{"id": "A-003036", "text": "저 연락처가 010 9999 1111이 맞는지 확인 좀 해주시고요, 그리고 다른 번호도 있으세요?", "pi": [{"type": "PHONE", "text": "010 9999 1111", "start": 7, "end": 20}, {"type": "PHONE", "text": "다른 번호", "start": 42, "end": 47}], "meta": {"domain": "SNS 댓글", "style": "반말 대화", "obfuscation": ["korean_reading"], "hard_case": "none"}}

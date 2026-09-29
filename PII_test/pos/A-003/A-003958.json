@@ -1,0 +1,1 @@
+{"id": "A-003958", "text": "저희는 신촌에 있어요. 주소는 111대 로엠이구요. 그리고 저희 사무실은 222대 쪽으로 찾아와 주시면 돼요.", "pi": [{"type": "ADDRESS", "text": "111대 로", "start": 17, "end": 23}, {"type": "ADDRESS", "text": "222대", "start": 41, "end": 45}], "meta": {"domain": "직장 메신저", "style": "구어체", "obfuscation": ["split_utterance"], "hard_case": "none"}}

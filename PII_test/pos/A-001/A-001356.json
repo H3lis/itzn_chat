@@ -1,0 +1,1 @@
+{"id": "A-001356", "text": "혹시 고객님 번호 다시 확인 부탁드립니다. 010-2222-1111 말씀이시죠? 아니요, 아니라 010-3333-4444 맞으신가요?", "pi": [{"type": "PHONE", "text": "010-2222-1111", "start": 24, "end": 37}, {"type": "RRN", "text": "010-3333-4444", "start": 54, "end": 67}], "meta": {"domain": "SNS 댓글", "style": "존댓말 상담", "obfuscation": ["stt_error", "self_correction"], "hard_case": "none"}}

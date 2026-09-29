@@ -1,0 +1,1 @@
+{"id": "A-002273", "text": "저희가 지난번에 주소는 123 대구광역시가 맞다고 했는데, 혹시 123-4444-5555가 아니라 아까 말씀하신 666-7777-8888이 맞을까요?", "pi": [{"type": "ADDRESS", "text": "123 대구광역시", "start": 13, "end": 22}, {"type": "PHONE", "text": "666-7777-8888", "start": 63, "end": 76}], "meta": {"domain": "SNS 댓글", "style": "구어체", "obfuscation": ["self_correction"], "hard_case": "none"}}

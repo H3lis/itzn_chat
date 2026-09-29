@@ -1,0 +1,1 @@
+{"id": "A-001314", "text": "김 박사님의 주민등록번호가 900101-1234567은 말씀하신 게 맞나요?", "pi": [{"type": "RRN", "text": "900101-1234567", "start": 15, "end": 29}], "meta": {"domain": "회의록", "style": "구어체", "obfuscation": ["mixed_reading", "self_correction"], "hard_case": "none"}}

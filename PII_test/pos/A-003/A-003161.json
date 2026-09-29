@@ -1,0 +1,1 @@
+{"id": "A-003161", "text": "여권 번호는 A1B2C3D4E5F6이고요. 그리고 등록하신 주소는 '010-1234-5678'로 되어있는데요, 정확히 확인 부탁드립니다.", "pi": [{"type": "PASSPORT", "text": "A1B2C3D4E5F6", "start": 7, "end": 19}, {"type": "ADDRESS", "text": "010-1234-5678", "start": 38, "end": 51}], "meta": {"domain": "콜센터 상담 요약", "style": "오타 많은 채팅", "obfuscation": ["repeat_expr", "lookalike_char"], "hard_case": "none"}}

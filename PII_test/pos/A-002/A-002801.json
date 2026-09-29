@@ -1,0 +1,1 @@
+{"id": "A-002801", "text": "접수하실 계정 아이디는 공주나공주로 해주시고요. 성함은 공주 씨로 기재 부탁드립니다.", "pi": [{"type": "ACCOUNT", "text": "공주나공주", "start": 13, "end": 18}, {"type": "NAME", "text": "공주", "start": 31, "end": 33}], "meta": {"domain": "배달 요청사항", "style": "공문서풍", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

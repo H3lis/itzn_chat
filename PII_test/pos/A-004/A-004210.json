@@ -1,0 +1,1 @@
+{"id": "A-004210", "text": "저희가 알고 있는 생년월일이 90년 10월 1일이구요, 그리고 연락처는 010-1111-2222- 입니다.", "pi": [{"type": "BIRTH", "text": "90년 10월 1일", "start": 16, "end": 26}, {"type": "PHONE", "text": "010-1111-2222", "start": 40, "end": 53}], "meta": {"domain": "금융 상담", "style": "음성인식(STT) 전사", "obfuscation": ["self_correction"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-004853", "text": "로그인 시에는 회원 아이디와 비밀번호, 그리고 휴대폰 번호를 꼭 입력해 주셔야 해요.", "pi": [{"type": "ACCOUNT", "text": "회원 아이디", "start": 8, "end": 14}, {"type": "PHONE", "text": "휴대폰 번호", "start": 26, "end": 32}], "meta": {"domain": "이메일 본문", "style": "음성인식(STT) 전사", "obfuscation": ["plain"], "hard_case": "none"}}

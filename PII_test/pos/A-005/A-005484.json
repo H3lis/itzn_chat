@@ -1,0 +1,1 @@
+{"id": "A-005484", "text": "강의 수강생이 많이들 질문하시는 것 같아요. 혹시 계정 비밀번호 재설정은 어떻게 해야 하나요?", "pi": [{"type": "ACCOUNT", "text": "비밀번호", "start": 31, "end": 35}], "meta": {"domain": "온라인 강의 Q&A", "style": "오타 많은 채팅", "obfuscation": ["plain"], "hard_case": "none"}}

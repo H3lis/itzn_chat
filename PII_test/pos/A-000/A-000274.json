@@ -1,0 +1,1 @@
+{"id": "A-000274", "text": "이름은 ㄱㅏㅁㅁ이고 주민번호는 900101-1234567이요.", "pi": [{"type": "NAME", "text": "ㄱㅏㅁㅁ", "start": 4, "end": 8}, {"type": "RRN", "text": "900101-1234567", "start": 17, "end": 31}], "meta": {"domain": "콜센터 상담 요약", "style": "짧은 단답", "obfuscation": ["jamo_split", "lookalike_char"], "hard_case": "none"}}

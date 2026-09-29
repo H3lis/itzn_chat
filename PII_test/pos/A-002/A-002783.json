@@ -1,0 +1,1 @@
+{"id": "A-002783", "text": "내 번호가 010-9876-5432니까, 혹시 카톡은 jseon.user@mail.com으로 접속해.", "pi": [{"type": "PHONE", "text": "010-9876-5432", "start": 6, "end": 19}, {"type": "SNS", "text": "jseon.user@mail.com", "start": 30, "end": 49}], "meta": {"domain": "이메일 본문", "style": "반말 대화", "obfuscation": ["plain"], "hard_case": "none"}}

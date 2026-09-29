@@ -1,0 +1,1 @@
+{"id": "A-002919", "text": "네, 주소는 경기도 광주시 오포읍 신축빌라 301호예요. 그리고 연락처는 010 9999 8888로 부탁드립니다.", "pi": [{"type": "ADDRESS", "text": "경기도 광주시 오포읍 신축빌라 301호", "start": 7, "end": 28}, {"type": "PHONE", "text": "010 9999 8888", "start": 41, "end": 54}], "meta": {"domain": "쇼핑몰 문의", "style": "존댓말 상담", "obfuscation": ["split_utterance"], "hard_case": "none"}}

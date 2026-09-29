@@ -1,0 +1,1 @@
+{"id": "A-001622", "text": "보람 씨, 거주하시는 주소지가 혹시 강남구 역삼동 522-10 맞으신가요?", "pi": [{"type": "NAME", "text": "보람", "start": 0, "end": 2}, {"type": "ADDRESS", "text": "강남구 역삼동 522-10", "start": 20, "end": 34}], "meta": {"domain": "금융 상담", "style": "구어체", "obfuscation": ["honorific_ref"], "hard_case": "homonym_name"}}

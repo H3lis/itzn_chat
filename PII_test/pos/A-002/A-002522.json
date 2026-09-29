@@ -1,0 +1,1 @@
+{"id": "A-002522", "text": "프로젝트 책임자는 박서준 팀장으로 할게요. 아, 아니요. 그냥 홍길동 대리님으로 수정해주세요.", "pi": [{"type": "NAME", "text": "홍길동", "start": 35, "end": 38}], "meta": {"domain": "커뮤니티 게시글", "style": "공문서풍", "obfuscation": ["self_correction"], "hard_case": "none"}}

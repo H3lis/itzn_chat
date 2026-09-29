@@ -1,0 +1,1 @@
+{"id": "A-005353", "text": "카드 번호는 4111-****-2222로 끝나는 게 맞고, 본인 아이디는 star_user99예요.", "pi": [{"type": "CARD", "text": "4111-****-2222", "start": 7, "end": 21}, {"type": "ID", "text": "star_user99", "start": 41, "end": 52}], "meta": {"domain": "민원 접수", "style": "음성인식(STT) 전사", "obfuscation": ["mixed_reading"], "hard_case": "nickname_id"}}

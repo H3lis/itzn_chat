@@ -1,0 +1,1 @@
+{"id": "A-001370", "text": "운전면허번호는 910112345678이고, 연락처는 010-5555-1212입니다.", "pi": [{"type": "DRIVER_LICENSE", "text": "910112345678", "start": 8, "end": 20}, {"type": "PHONE", "text": "010-5555-1212", "start": 29, "end": 42}], "meta": {"domain": "음성통화 전사문", "style": "구어체", "obfuscation": ["plain"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-003451", "text": "차량번호는 12가 5555이고요, 이름은 김철수입니다. 혹시요?", "pi": [{"type": "CAR_PLATE", "text": "12가 5555", "start": 6, "end": 14}, {"type": "NAME", "text": "김철수", "start": 23, "end": 26}], "meta": {"domain": "음성통화 전사문", "style": "음성인식(STT) 전사", "obfuscation": ["self_correction", "repeat_expr"], "hard_case": "none"}}

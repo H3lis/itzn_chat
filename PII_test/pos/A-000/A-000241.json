@@ -1,0 +1,1 @@
+{"id": "A-000241", "text": "담당자님 연락처는 010-8888-9999이고, 저희 계정 아이디는 jhn_user입니다.", "pi": [{"type": "PHONE", "text": "010-8888-9999", "start": 10, "end": 23}, {"type": "ACCOUNT", "text": "jhn_user", "start": 38, "end": 46}], "meta": {"domain": "직장 메신저", "style": "구어체", "obfuscation": ["plain"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-004583", "text": "제가 원래 이름은 정말 미소라 불러주셨는데, 저 사실은 다른 이름으로 바꿨어요.", "pi": [{"type": "NAME", "text": "미소", "start": 13, "end": 15}], "meta": {"domain": "커뮤니티 게시글", "style": "구어체", "obfuscation": ["self_correction"], "hard_case": "homonym_name"}}

@@ -1,0 +1,1 @@
+{"id": "A-003840", "text": "네, 회원님 아이디는 98abcd1234예요. 혹시 비밀번호도 같이 알려줄 수 있어?", "pi": [{"type": "ID", "text": "98abcd1234", "start": 12, "end": 22}], "meta": {"domain": "고객센터 채팅", "style": "반말 대화", "obfuscation": ["plain"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-003162", "text": "혹시 생년월일은 2000년 1월 1일이고, SNS는 'mi_love'로 등록되어 있으신가요? 아니면 말씀하신 아이디가 따로 있나요?", "pi": [{"type": "BIRTH", "text": "2000년 1월 1일", "start": 9, "end": 20}, {"type": "SNS", "text": "mi_love", "start": 30, "end": 37}], "meta": {"domain": "고객센터 채팅", "style": "구어체", "obfuscation": ["lookalike_char", "split_utterance"], "hard_case": "none"}}

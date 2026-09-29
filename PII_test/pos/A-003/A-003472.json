@@ -1,0 +1,1 @@
+{"id": "A-003472", "text": "차량 번호는 에스엠엔씨 이삼사, 그리고 회사명은 구글코퍼레이션입니다.", "pi": [{"type": "CAR_PLATE", "text": "에스엠엔씨 이삼사", "start": 7, "end": 16}, {"type": "ORG", "text": "구글코퍼레이션", "start": 27, "end": 34}], "meta": {"domain": "택배 문의", "style": "존댓말 상담", "obfuscation": ["stt_error", "romanized"], "hard_case": "none"}}

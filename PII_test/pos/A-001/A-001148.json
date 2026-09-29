@@ -1,0 +1,1 @@
+{"id": "A-001148", "text": "제 아이디가 초딩맘인데, 그거 혹시 되나요? 이게 제 닉네임이거든요.", "pi": [{"type": "NAME", "text": "초딩맘", "start": 7, "end": 10}], "meta": {"domain": "SNS 댓글", "style": "짧은 단답", "obfuscation": ["jamo_split"], "hard_case": "none"}}

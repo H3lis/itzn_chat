@@ -1,0 +1,1 @@
+{"id": "A-001693", "text": "보리 씨는 혹시 'ㅁㅏㄱ'이 아니라 'ㅁㅏㄴ'이라고 부르셨어요?", "pi": [{"type": "NAME", "text": "보리", "start": 0, "end": 2}], "meta": {"domain": "쇼핑몰 문의", "style": "반말 대화", "obfuscation": ["jamo_split", "honorific_ref"], "hard_case": "homonym_name"}}

@@ -1,0 +1,1 @@
+{"id": "A-001714", "text": "주문하신 상품은 계좌번호가 010-1234-5678이고, 전화번호는 010다시2222예요. 꼭 확인해 주세요.", "pi": [{"type": "ACCOUNT", "text": "010-1234-5678", "start": 15, "end": 28}, {"type": "PHONE", "text": "010다시2222", "start": 38, "end": 47}], "meta": {"domain": "배달 요청사항", "style": "음성인식(STT) 전사", "obfuscation": ["repeat_expr", "stt_error", "lookalike_char"], "hard_case": "none"}}

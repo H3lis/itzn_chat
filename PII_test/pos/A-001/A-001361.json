@@ -1,0 +1,1 @@
+{"id": "A-001361", "text": "제가 사용하는 계정은 user1234에요. 그리고 주민번호는 900101-2******가 맞습니다.", "pi": [{"type": "ACCOUNT", "text": "user1234", "start": 12, "end": 20}, {"type": "RRN", "text": "900101", "start": 34, "end": 40}], "meta": {"domain": "직장 메신저", "style": "존댓말 상담", "obfuscation": ["korean_reading", "repeat_expr"], "hard_case": "none"}}

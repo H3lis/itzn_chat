@@ -1,0 +1,1 @@
+{"id": "A-000172", "text": "학생분의 주민등록번호는 오팔일공일이-이삼사오육칠로 잘못 말씀해주셨어요. 다시 말씀해주시겠어요?", "pi": [{"type": "RRN", "text": "오팔일공일이-이삼사오육칠", "start": 13, "end": 26}], "meta": {"domain": "학교 행정 문의", "style": "음성인식(STT) 전사", "obfuscation": ["lookalike_char", "korean_reading"], "hard_case": "none"}}

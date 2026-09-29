@@ -1,0 +1,1 @@
+{"id": "A-004550", "text": "혹시 겨울 고객님께 문의하신 건가요? 겨울님은 어떤 계정으로 가입하셨는지 알 수 있을까요?", "pi": [{"type": "ACCOUNT", "text": "겨울", "start": 3, "end": 5}, {"type": "NAME", "text": "겨울", "start": 21, "end": 23}], "meta": {"domain": "민원 접수", "style": "존댓말 상담", "obfuscation": ["honorific_ref"], "hard_case": "homonym_name"}}

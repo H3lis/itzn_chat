@@ -1,0 +1,1 @@
+{"id": "A-003075", "text": "첫 번째 연락처는 010-3333-4444이고, 두 번째는 011-5555-6666으로 확인 부탁드립니다.", "pi": [{"type": "PHONE", "text": "010-3333-4444", "start": 10, "end": 23}, {"type": "PHONE", "text": "011-5555-6666", "start": 33, "end": 46}], "meta": {"domain": "이메일 본문", "style": "구어체", "obfuscation": ["stt_error", "korean_reading"], "hard_case": "none"}}

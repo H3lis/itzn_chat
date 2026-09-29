@@ -1,0 +1,1 @@
+{"id": "A-000068", "text": "숙박 예약은요? 그게 99.11.22/3333-4444로 해주면 돼요.", "pi": [{"type": "EMAIL", "text": "99.11.22/3333-4444", "start": 12, "end": 30}], "meta": {"domain": "여행 예약", "style": "반말 대화", "obfuscation": ["separator_noise"], "hard_case": "none"}}

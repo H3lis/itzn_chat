@@ -1,0 +1,1 @@
+{"id": "A-005723", "text": "제가 사용하는 이메일 주소는 example@testdomain.com이에요. 혹시 이 주소로 자료를 보내주실 수 있나요?", "pi": [{"type": "EMAIL", "text": "example@testdomain.com", "start": 16, "end": 38}], "meta": {"domain": "부동산 상담", "style": "오타 많은 채팅", "obfuscation": ["plain"], "hard_case": "none"}}

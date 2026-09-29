@@ -1,0 +1,1 @@
+{"id": "A-004604", "text": "전화번호는 010-3333-2222이고, SNS는 @my_cool_handle로 활동하고 있습니다.", "pi": [{"type": "PHONE", "text": "010-3333-2222", "start": 6, "end": 19}, {"type": "SNS", "text": "@my_cool_handle", "start": 28, "end": 43}], "meta": {"domain": "고객센터 채팅", "style": "구어체", "obfuscation": ["plain"], "hard_case": "nickname_id"}}

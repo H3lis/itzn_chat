@@ -1,0 +1,1 @@
+{"id": "A-001076", "text": "카드 끝자리만 알려주시면 될까요? 아니면 혹시 고객님 성함이요? '은행'이라고 하셨죠?", "pi": [{"type": "CARD", "text": "카드", "start": 0, "end": 2}, {"type": "NAME", "text": "은행", "start": 37, "end": 39}], "meta": {"domain": "직장 메신저", "style": "구어체", "obfuscation": ["repeat_expr"], "hard_case": "homonym_name"}}

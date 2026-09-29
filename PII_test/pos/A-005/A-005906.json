@@ -1,0 +1,1 @@
+{"id": "A-005906", "text": "네, 그게 몇 번이죠? 050-1234-5678이요.", "pi": [{"type": "PHONE", "text": "050-1234-5678", "start": 13, "end": 26}], "meta": {"domain": "음성통화 전사문", "style": "짧은 단답", "obfuscation": ["separator_noise"], "hard_case": "none"}}

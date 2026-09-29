@@ -1,0 +1,1 @@
+{"id": "A-005956", "text": "저기 OO개발팀이에요. 대표 번호는 02-777-8888로 연락 주시면 됩니다.", "pi": [{"type": "ORG", "text": "OO개발팀", "start": 3, "end": 8}, {"type": "PHONE", "text": "02-777-8888", "start": 20, "end": 31}], "meta": {"domain": "부동산 상담", "style": "짧은 단답", "obfuscation": ["repeat_expr"], "hard_case": "org_person"}}

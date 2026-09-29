@@ -1,0 +1,1 @@
+{"id": "A-004378", "text": "문의 주신 분 아이디는 'star_user'고요. 성함은 '하늘' 님으로 되어있네요?", "pi": [{"type": "ID", "text": "star_user", "start": 14, "end": 23}, {"type": "NAME", "text": "하늘", "start": 33, "end": 35}], "meta": {"domain": "택배 문의", "style": "짧은 단답", "obfuscation": ["honorific_ref"], "hard_case": "homonym_name"}}

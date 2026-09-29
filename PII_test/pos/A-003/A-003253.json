@@ -1,0 +1,1 @@
+{"id": "A-003253", "text": "아, 혹시 인터넷 주소 같은 거 아세요? 소나무님은 'ㅅㅗㄴㅏㅁㅜ' 이거 맞나요?", "pi": [{"type": "NAME", "text": "소나무", "start": 23, "end": 26}, {"type": "IP_ADDR", "text": "ㅅㅗㄴㅏㅁㅜ", "start": 30, "end": 36}], "meta": {"domain": "금융 상담", "style": "오타 많은 채팅", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

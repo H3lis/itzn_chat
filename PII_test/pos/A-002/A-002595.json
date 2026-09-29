@@ -1,0 +1,1 @@
+{"id": "A-002595", "text": "혹시 메일 주소가 필요해서요. 제 메일 주소는 cloud.mail[at]naver[dot]com 이예요. 이걸로 보내주시면 될 것 같아요. 점(.)이나 골뱅이(@) 같은 기호가 헷갈리실 수 있어서요. (EMAIL)", "pi": [{"type": "EMAIL", "text": "cloud.mail[at]naver[dot]com", "start": 26, "end": 53}], "meta": {"domain": "콜센터 상담 요약", "style": "메신저 줄임말", "obfuscation": ["separator_noise"], "hard_case": "none"}}

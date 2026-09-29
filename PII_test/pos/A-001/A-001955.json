@@ -1,0 +1,1 @@
+{"id": "A-001955", "text": "전화번호 말씀하시는 건가요? 공일공 1111 2222가 맞을까요? 다시 확인해 볼게요.", "pi": [{"type": "PHONE", "text": "공일공 1111 2222", "start": 16, "end": 29}], "meta": {"domain": "금융 상담", "style": "구어체", "obfuscation": ["korean_reading", "split_utterance"], "hard_case": "none"}}

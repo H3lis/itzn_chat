@@ -1,0 +1,1 @@
+{"id": "A-000313", "text": "김 과장님께서 주신 서류가 맞는지 다시 한번 확인 부탁드립니다. 아니면 혹시 성함이 '박지영' 맞으신가요?", "pi": [{"type": "NAME", "text": "박지영", "start": 48, "end": 51}], "meta": {"domain": "콜센터 상담 요약", "style": "격식체", "obfuscation": ["honorific_ref", "self_correction", "romanized"], "hard_case": "none"}}

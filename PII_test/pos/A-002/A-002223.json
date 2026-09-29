@@ -1,0 +1,1 @@
+{"id": "A-002223", "text": "김민준 선생님께서 회사와 관련하여 상담을 요청하셨습니다. 접수된 서류를 바탕으로 절차를 안내드리겠습니다.", "pi": [{"type": "NAME", "text": "김민준", "start": 0, "end": 3}, {"type": "ORG", "text": "회사", "start": 10, "end": 12}], "meta": {"domain": "부동산 상담", "style": "공문서풍", "obfuscation": ["honorific_ref", "romanized"], "hard_case": "none"}}

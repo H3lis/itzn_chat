@@ -1,0 +1,1 @@
+{"id": "A-002321", "text": "예약할 전화번호는 010-3333-4444로 해 주시고, 다른 번호는 안 돼요.", "pi": [{"type": "PHONE", "text": "010-3333-4444", "start": 10, "end": 23}], "meta": {"domain": "여행 예약", "style": "메신저 줄임말", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

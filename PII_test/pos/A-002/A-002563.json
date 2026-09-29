@@ -1,0 +1,1 @@
+{"id": "A-002563", "text": "택배가 아직 도착을 못 해서요. 주소가 경기도 성남시 분당구 판교역로 123-4번지 맞는지 다시 한번 봐주세요. SNS는 인스타 아이디가 'best_mom_99'예요.", "pi": [{"type": "ADDRESS", "text": "경기도 성남시 분당구 판교역로 123-4번지", "start": 22, "end": 46}, {"type": "SNS", "text": "best_mom_99", "start": 78, "end": 89}], "meta": {"domain": "택배 문의", "style": "오타 많은 채팅", "obfuscation": ["plain"], "hard_case": "none"}}

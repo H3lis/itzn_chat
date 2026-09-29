@@ -1,0 +1,1 @@
+{"id": "A-005361", "text": "ID는 소나무이고, 제 이름은 소나무입니다. 그리고 연락처는 010-2222-3333으로 부탁드려요.", "pi": [{"type": "ID", "text": "소나무", "start": 4, "end": 7}, {"type": "NAME", "text": "소나무", "start": 17, "end": 20}, {"type": "PHONE", "text": "010-2222-3333", "start": 34, "end": 47}], "meta": {"domain": "회의록", "style": "오타 많은 채팅", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

@@ -1,0 +1,1 @@
+{"id": "A-003739", "text": "차량 번호는 아 1234이고요. 이메일은 abc@test.com이요.", "pi": [{"type": "CAR_PLATE", "text": "1234", "start": 9, "end": 13}, {"type": "EMAIL", "text": "abc@test.com", "start": 23, "end": 35}], "meta": {"domain": "직장 메신저", "style": "짧은 단답", "obfuscation": ["korean_reading"], "hard_case": "none"}}

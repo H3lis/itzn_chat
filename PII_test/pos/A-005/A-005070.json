@@ -1,0 +1,1 @@
+{"id": "A-005070", "text": "네, 생년월일은 90년 5월 15일이 맞습니다. 혹시 신분증이랑 같이 보여주실 수 있나요?", "pi": [{"type": "BIRTH", "text": "90년 5월 15일", "start": 9, "end": 19}], "meta": {"domain": "고객센터 채팅", "style": "구어체", "obfuscation": ["self_correction"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-003664", "text": "차량 번호는 아, 죄송한데 7자리로 되어있고요. 1번이 세 번 반복되고, 2번이 네 번 반복되는 식으로요.", "pi": [{"type": "CAR_PLATE", "text": "1번이 세 번 반복되고, 2번이 네 번 반복되는", "start": 27, "end": 53}], "meta": {"domain": "고객센터 채팅", "style": "길고 장황한 설명", "obfuscation": ["repeat_expr", "mixed_reading"], "hard_case": "none"}}

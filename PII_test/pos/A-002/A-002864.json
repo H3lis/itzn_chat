@@ -1,0 +1,1 @@
+{"id": "A-002864", "text": "혹시 여기 주소 좀 다시 확인 부탁드리는데요? 저는 영문으로 'Sejong City'에 거주하고 있고요. 인스타는 @sejong_fan_official이에요.", "pi": [{"type": "ADDRESS", "text": "여기", "start": 3, "end": 5}, {"type": "SNS", "text": "@sejong_fan_official", "start": 64, "end": 84}], "meta": {"domain": "SNS 댓글", "style": "격식체", "obfuscation": ["romanized"], "hard_case": "nickname_id"}}

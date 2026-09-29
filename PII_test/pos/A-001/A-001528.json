@@ -1,0 +1,1 @@
+{"id": "A-001528", "text": "접수하신 연락처가 010-1111-2222 맞으신가요? 다시 한번 말씀해주시겠어요?", "pi": [{"type": "PHONE", "text": "010-1111-2222", "start": 10, "end": 23}], "meta": {"domain": "직장 메신저", "style": "공문서풍", "obfuscation": ["lookalike_char", "korean_reading"], "hard_case": "none"}}

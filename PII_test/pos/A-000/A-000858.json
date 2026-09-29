@@ -1,0 +1,1 @@
+{"id": "A-000858", "text": "저희 이메일은 test@example.net이에요. 아, 아니요. 제가 말씀드리려던 분 성함은 박지현이에요.", "pi": [{"type": "EMAIL", "text": "test@example.net", "start": 8, "end": 24}, {"type": "NAME", "text": "박지현", "start": 53, "end": 56}], "meta": {"domain": "병원 접수", "style": "짧은 단답", "obfuscation": ["self_correction"], "hard_case": "none"}}

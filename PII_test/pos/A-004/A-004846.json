@@ -1,0 +1,1 @@
+{"id": "A-004846", "text": "사용자 계정 정보는 김민준 씨가 등록한 것으로 확인되는데요, 로그아웃 하실 때는 1234567890 같은 비밀번호를 사용해야 해요.", "pi": [{"type": "ACCOUNT", "text": "김민준 씨", "start": 11, "end": 16}], "meta": {"domain": "직장 메신저", "style": "음성인식(STT) 전사", "obfuscation": ["split_utterance"], "hard_case": "none"}}

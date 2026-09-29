@@ -1,0 +1,1 @@
+{"id": "A-005531", "text": "생일이 0510으로 되어 있고, 주민번호가 901212로 잘못 기입된 것 같아. 확인 좀 해줄래?", "pi": [{"type": "BIRTH", "text": "0510", "start": 4, "end": 8}, {"type": "RRN", "text": "901212", "start": 24, "end": 30}], "meta": {"domain": "보험 청구", "style": "반말 대화", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

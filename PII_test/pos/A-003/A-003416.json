@@ -1,0 +1,1 @@
+{"id": "A-003416", "text": "박지민 씨 건인데요. 이메일은 'min.park@naver.com'으로 알고 있는데, 혹시 다른 건가요?", "pi": [{"type": "NAME", "text": "박지민", "start": 0, "end": 3}, {"type": "EMAIL", "text": "min.park@naver.com", "start": 18, "end": 36}], "meta": {"domain": "택배 문의", "style": "메신저 줄임말", "obfuscation": ["email_spoken"], "hard_case": "none"}}

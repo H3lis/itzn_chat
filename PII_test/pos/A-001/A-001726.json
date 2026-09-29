@@ -1,0 +1,1 @@
+{"id": "A-001726", "text": "혹시 사장님, 여기 주소는 '서울특별시 영등포구 목동역 100' 맞으신가요? 그리고 성함은 도토리 씨 맞으시죠?", "pi": [{"type": "ADDRESS", "text": "서울특별시 영등포구 목동역 100", "start": 16, "end": 34}, {"type": "NAME", "text": "도토리", "start": 51, "end": 54}], "meta": {"domain": "음성통화 전사문", "style": "반말 대화", "obfuscation": ["stt_error"], "hard_case": "homonym_name"}}

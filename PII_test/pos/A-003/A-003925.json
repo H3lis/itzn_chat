@@ -1,0 +1,1 @@
+{"id": "A-003925", "text": "저희는 최지훈입니다. 연락처는 070-9999-8888로 되어 있는데요, 혹시 이게 최지훈님 거 맞으세요?", "pi": [{"type": "NAME", "text": "최지훈", "start": 4, "end": 7}, {"type": "PHONE", "text": "070-9999-8888", "start": 17, "end": 30}], "meta": {"domain": "금융 상담", "style": "메신저 줄임말", "obfuscation": ["separator_noise"], "hard_case": "none"}}

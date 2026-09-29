@@ -1,0 +1,1 @@
+{"id": "A-000433", "text": "저 메일 주소 좀 확인해 주실래요? 이거는 lee.hanul(at)naver.com이요.", "pi": [{"type": "EMAIL", "text": "lee.hanul(at)naver.com", "start": 24, "end": 46}], "meta": {"domain": "SNS 댓글", "style": "오타 많은 채팅", "obfuscation": ["email_spoken"], "hard_case": "none"}}

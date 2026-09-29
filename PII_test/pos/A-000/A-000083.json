@@ -1,0 +1,1 @@
+{"id": "A-000083", "text": "청구서 상의 주소는 경기도 수원시 영통구 삼성로 500번지로 되어 있구요, 연락처는 010 삼사 오육 일이예요.", "pi": [{"type": "ADDRESS", "text": "경기도 수원시 영통구 삼성로 500번지", "start": 11, "end": 32}, {"type": "PHONE", "text": "010 삼사 오육 일이", "start": 47, "end": 59}], "meta": {"domain": "커뮤니티 게시글", "style": "격식체", "obfuscation": ["stt_error"], "hard_case": "none"}}

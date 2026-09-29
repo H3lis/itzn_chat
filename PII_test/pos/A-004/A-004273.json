@@ -1,0 +1,1 @@
+{"id": "A-004273", "text": "접수된 건은 kang.developer(at)gmail(dot)com 으로 문의 부탁드립니다.", "pi": [{"type": "EMAIL", "text": "kang.developer(at)gmail(dot)com", "start": 7, "end": 38}], "meta": {"domain": "음성통화 전사문", "style": "음성인식(STT) 전사", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

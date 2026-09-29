@@ -1,0 +1,1 @@
+{"id": "A-004216", "text": "지혜 선생님, 차량 번호는 5가 21가 88가입니다. 성함은 지혜라고 불러주시면 됩니다.", "pi": [{"type": "NAME", "text": "지혜", "start": 0, "end": 2}, {"type": "CAR_PLATE", "text": "5가 21가 88가", "start": 15, "end": 25}], "meta": {"domain": "학교 행정 문의", "style": "음성인식(STT) 전사", "obfuscation": ["honorific_ref", "self_correction"], "hard_case": "homonym_name"}}

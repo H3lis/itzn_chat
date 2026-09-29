@@ -1,0 +1,1 @@
+{"id": "A-001694", "text": "비밀번호는 '이이쓰-오-일-공'으로 하셨고, 그리고 계정은 'zulu-one-zulu'로 확인됩니다.", "pi": [{"type": "ACCOUNT", "text": "zulu-one-zulu", "start": 34, "end": 47}], "meta": {"domain": "고객센터 채팅", "style": "음성인식(STT) 전사", "obfuscation": ["split_utterance", "mixed_reading", "stt_error"], "hard_case": "none"}}

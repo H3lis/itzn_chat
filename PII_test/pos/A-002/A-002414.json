@@ -1,0 +1,1 @@
+{"id": "A-002414", "text": "팀장님, 제가 말씀드렸던 그 분 이름이 김민준 씨 맞나요?", "pi": [{"type": "NAME", "text": "김민준", "start": 22, "end": 25}], "meta": {"domain": "보험 청구", "style": "짧은 단답", "obfuscation": ["self_correction", "honorific_ref"], "hard_case": "none"}}

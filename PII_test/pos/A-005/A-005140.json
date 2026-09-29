@@ -1,0 +1,1 @@
+{"id": "A-005140", "text": "카드 번호는 1234로요. 혹시 제 이름이 최수진 맞나요?", "pi": [{"type": "CARD", "text": "1234", "start": 7, "end": 11}, {"type": "NAME", "text": "최수진", "start": 24, "end": 27}], "meta": {"domain": "중고거래 채팅", "style": "짧은 단답", "obfuscation": ["self_correction"], "hard_case": "none"}}

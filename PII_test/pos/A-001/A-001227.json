@@ -1,0 +1,1 @@
+{"id": "A-001227", "text": "주소는 부산광역시 해운대구 마린시티 123-45이고, SNS는 hans_park 입니다.", "pi": [{"type": "ADDRESS", "text": "부산광역시 해운대구 마린시티 123-45", "start": 4, "end": 26}, {"type": "SNS", "text": "hans_park", "start": 35, "end": 44}], "meta": {"domain": "여행 예약", "style": "음성인식(STT) 전사", "obfuscation": ["separator_noise", "romanized"], "hard_case": "none"}}

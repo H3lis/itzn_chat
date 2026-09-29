@@ -1,0 +1,1 @@
+{"id": "A-002187", "text": "고객님의 성함은 김지수 님이고, 주민번호는 950720-2****** 으로 조회되는 것이 맞는지요?", "pi": [{"type": "NAME", "text": "김지수", "start": 9, "end": 12}, {"type": "RRN", "text": "950720-2******", "start": 24, "end": 38}], "meta": {"domain": "쇼핑몰 문의", "style": "존댓말 상담", "obfuscation": ["plain"], "hard_case": "none"}}

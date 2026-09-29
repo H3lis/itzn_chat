@@ -1,0 +1,1 @@
+{"id": "A-003864", "text": "푸름 씨요? 010-5555-6666으로 연락주세요. 제 이름은 박푸름입니다.", "pi": [{"type": "NAME", "text": "푸름", "start": 0, "end": 2}, {"type": "PHONE", "text": "010-5555-6666", "start": 7, "end": 20}], "meta": {"domain": "직장 메신저", "style": "짧은 단답", "obfuscation": ["romanized"], "hard_case": "homonym_name"}}

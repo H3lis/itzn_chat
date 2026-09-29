@@ -1,0 +1,1 @@
+{"id": "A-002154", "text": "담당자님, 제 이름은 Minjun Kim이고요. 연락처는 영문으로 010-9999-8888입니다. 꼭 기억해주세요.", "pi": [{"type": "NAME", "text": "Minjun Kim", "start": 12, "end": 22}, {"type": "PHONE", "text": "010-9999-8888", "start": 37, "end": 50}], "meta": {"domain": "직장 메신저", "style": "격식체", "obfuscation": ["romanized"], "hard_case": "none"}}

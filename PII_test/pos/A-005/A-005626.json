@@ -1,0 +1,1 @@
+{"id": "A-005626", "text": "신분증상에 적힌 이름은 보람입니다. 차량 번호판은 1가 2나 3다이고요, 운전면허증의 소유자 성함도 보람이 맞나요?", "pi": [{"type": "DRIVER_LICENSE", "text": "보람", "start": 13, "end": 15}, {"type": "NAME", "text": "보람", "start": 56, "end": 58}], "meta": {"domain": "병원 접수", "style": "길고 장황한 설명", "obfuscation": ["lookalike_char"], "hard_case": "homonym_name"}}

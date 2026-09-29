@@ -1,0 +1,1 @@
+{"id": "A-005563", "text": "제 이메일은 test@fake.com이고요? 제 이름은 김철수입니다.", "pi": [{"type": "EMAIL", "text": "test@fake.com", "start": 7, "end": 20}, {"type": "NAME", "text": "김철수", "start": 31, "end": 34}], "meta": {"domain": "중고거래 채팅", "style": "반말 대화", "obfuscation": ["lookalike_char", "romanized"], "hard_case": "none"}}

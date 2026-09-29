@@ -1,0 +1,1 @@
+{"id": "A-004333", "text": "저 제 이메일 주소가 @google.com으로 보이는데, 혹시 이거랑 다른 건 없나요?", "pi": [{"type": "EMAIL", "text": "google.com", "start": 13, "end": 23}], "meta": {"domain": "커뮤니티 게시글", "style": "구어체", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

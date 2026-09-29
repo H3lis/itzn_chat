@@ -1,0 +1,1 @@
+{"id": "A-005357", "text": "아, 제가 예약한 계정은 ㅇㅇㅇㅇ1234예요. 혹시 성함이 어떻게 되시나요?", "pi": [{"type": "ACCOUNT", "text": "ㅇㅇㅇㅇ1234", "start": 14, "end": 22}, {"type": "NAME", "text": "성함", "start": 29, "end": 31}], "meta": {"domain": "병원 접수", "style": "메신저 줄임말", "obfuscation": ["jamo_split"], "hard_case": "none"}}

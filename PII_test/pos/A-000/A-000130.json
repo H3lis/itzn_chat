@@ -1,0 +1,1 @@
+{"id": "A-000130", "text": "이번 프로젝트 관련해서 김민준 씨의 연락처는 010-1111-2222 라니, 그리고 메일은 k.m.j@test.co.kr 이요.", "pi": [{"type": "SNS", "text": "k.m.j@test.co.kr", "start": 51, "end": 67}], "meta": {"domain": "회의록", "style": "길고 장황한 설명", "obfuscation": ["lookalike_char", "separator_noise"], "hard_case": "none"}}

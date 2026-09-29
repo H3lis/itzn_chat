@@ -1,0 +1,1 @@
+{"id": "A-004520", "text": "학생 신분증에 적힌 이름은 박서연인데요. 저기요, 제가 어제 제출한 정보에 오타가 있는 것 같아서 다시 확인해 주실 수 있을까요? 제 이름이요.", "pi": [{"type": "NAME", "text": "박서연", "start": 15, "end": 18}], "meta": {"domain": "학교 행정 문의", "style": "길고 장황한 설명", "obfuscation": ["self_correction"], "hard_case": "none"}}

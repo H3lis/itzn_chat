@@ -1,0 +1,1 @@
+{"id": "A-000768", "text": "문의하신 이메일 주소는 abc(at)naver(dot)com 으로 확인 부탁드립니다. 혹시 다른 주소 있으신가요?", "pi": [{"type": "EMAIL", "text": "abc(at)naver(dot)com", "start": 13, "end": 33}], "meta": {"domain": "회의록", "style": "존댓말 상담", "obfuscation": ["email_spoken", "separator_noise"], "hard_case": "none"}}

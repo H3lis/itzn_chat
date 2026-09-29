@@ -1,0 +1,1 @@
+{"id": "A-001536", "text": "저희 이메일 주소는 charlie(at)gmail(dot)com 이구요, 비밀번호는 별도로 안내드렸습니다.", "pi": [{"type": "EMAIL", "text": "charlie(at)gmail(dot)com", "start": 11, "end": 35}], "meta": {"domain": "이메일 본문", "style": "음성인식(STT) 전사", "obfuscation": ["lookalike_char", "email_spoken", "separator_noise"], "hard_case": "none"}}

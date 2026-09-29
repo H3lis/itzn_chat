@@ -1,0 +1,1 @@
+{"id": "A-001609", "text": "이사 주소는 안양시 만안구 대표로, 신청자 이름은 안양민 씨로 확인되었습니다.", "pi": [{"type": "ADDRESS", "text": "안양시 만안구 대표", "start": 7, "end": 17}, {"type": "NAME", "text": "안양민", "start": 28, "end": 31}], "meta": {"domain": "콜센터 상담 요약", "style": "오타 많은 채팅", "obfuscation": ["self_correction"], "hard_case": "homonym_name"}}

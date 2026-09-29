@@ -1,0 +1,1 @@
+{"id": "A-000631", "text": "운전 면허증이요. 번호는 999-999-9999-8888-7777-6666 이렇게 되어있어요.", "pi": [{"type": "DRIVER_LICENSE", "text": "999-999-9999-8888-7777-6666", "start": 14, "end": 41}], "meta": {"domain": "회의록", "style": "공문서풍", "obfuscation": ["separator_noise"], "hard_case": "none"}}

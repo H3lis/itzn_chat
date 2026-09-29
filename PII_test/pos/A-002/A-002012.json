@@ -1,0 +1,1 @@
+{"id": "A-002012", "text": "먼저 주소는 서울특별시 강남구 테헤란로 101이고, 메일 주소는 test(at)mail(dot)com입니다.", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 테헤란로 101", "start": 7, "end": 25}, {"type": "EMAIL", "text": "test(at)mail(dot)com", "start": 36, "end": 56}], "meta": {"domain": "음성통화 전사문", "style": "음성인식(STT) 전사", "obfuscation": ["split_utterance", "email_spoken"], "hard_case": "none"}}

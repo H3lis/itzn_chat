@@ -1,0 +1,1 @@
+{"id": "A-005875", "text": "저기요, 예약한 계정 번호가 889900입니다. 이걸로 조회할 수 있나요?", "pi": [{"type": "ACCOUNT", "text": "889900", "start": 16, "end": 22}], "meta": {"domain": "여행 예약", "style": "반말 대화", "obfuscation": ["plain"], "hard_case": "none"}}

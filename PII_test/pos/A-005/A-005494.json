@@ -1,0 +1,1 @@
+{"id": "A-005494", "text": "회원 ID는 ㄱㅏㅇㄴㅏㅁ이고, 접속하신 IP는 192.168.1.10이 맞나요? 다시 한번 확인 부탁드려요.", "pi": [{"type": "ID", "text": "ㄱㅏㅇㄴㅏㅁ", "start": 7, "end": 13}, {"type": "IP_ADDR", "text": "192.168.1.10", "start": 26, "end": 38}], "meta": {"domain": "커뮤니티 게시글", "style": "음성인식(STT) 전사", "obfuscation": ["jamo_split", "split_utterance"], "hard_case": "none"}}

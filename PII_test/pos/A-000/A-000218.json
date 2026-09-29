@@ -1,0 +1,1 @@
+{"id": "A-000218", "text": "혹시 푸름 씨가 계신 청송화경 근처에 있는 그 오션뷰 숙소 아시나요?", "pi": [{"type": "NAME", "text": "푸름", "start": 3, "end": 5}, {"type": "ADDRESS", "text": "청송화경", "start": 12, "end": 16}], "meta": {"domain": "여행 예약", "style": "메신저 줄임말", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

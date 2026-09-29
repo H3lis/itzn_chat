@@ -1,0 +1,1 @@
+{"id": "A-002041", "text": "제 이메일은 '푸름@naver.com'이 맞는데요, 제가 아까 말씀드렸던 건 그게 아니고요. 제 이름은 '푸름'이에요.", "pi": [{"type": "EMAIL", "text": "푸름@naver.com", "start": 8, "end": 20}, {"type": "NAME", "text": "푸름", "start": 59, "end": 61}], "meta": {"domain": "온라인 강의 Q&A", "style": "메신저 줄임말", "obfuscation": ["self_correction"], "hard_case": "homonym_name"}}

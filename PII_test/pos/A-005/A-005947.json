@@ -1,0 +1,1 @@
+{"id": "A-005947", "text": "첫 번째 메일은 user.test@mail.co.kr이고요, 두 번째는 admin_hq(at)naver.com으로 적어주시면 돼요.", "pi": [{"type": "EMAIL", "text": "user.test@mail.co.kr", "start": 9, "end": 29}, {"type": "EMAIL", "text": "admin_hq(at)naver.com", "start": 40, "end": 61}], "meta": {"domain": "학교 행정 문의", "style": "구어체", "obfuscation": ["email_spoken"], "hard_case": "none"}}

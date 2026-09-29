@@ -1,0 +1,1 @@
+{"id": "A-004574", "text": "거주하시는 곳은 부산 해운대구 마린시티 8901동 102호예요. 생년월일은 95년 3월 15일로 확인 부탁드립니다.", "pi": [{"type": "ADDRESS", "text": "부산 해운대구 마린시티 8901동 102호", "start": 9, "end": 32}, {"type": "BIRTH", "text": "95년 3월 15일", "start": 42, "end": 52}], "meta": {"domain": "병원 접수", "style": "음성인식(STT) 전사", "obfuscation": ["stt_error", "split_utterance"], "hard_case": "none"}}

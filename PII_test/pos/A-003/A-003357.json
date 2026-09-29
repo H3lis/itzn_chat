@@ -1,0 +1,1 @@
+{"id": "A-003357", "text": "혹시 이메일 주소는 ㅇ1@naver점 컴이고, 전화번호는 010 다음에 1이 네 번 그리고 2가 네 번이에요.", "pi": [{"type": "EMAIL", "text": "ㅇ1@naver점 컴", "start": 11, "end": 22}, {"type": "PHONE", "text": "010 다음에 1이 네 번 그리고 2가 네 번", "start": 32, "end": 57}], "meta": {"domain": "배달 요청사항", "style": "짧은 단답", "obfuscation": ["self_correction", "separator_noise"], "hard_case": "none"}}

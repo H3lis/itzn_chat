@@ -1,0 +1,1 @@
+{"id": "A-005253", "text": "문의하신 차량 번호는 53가 그리고 연락 가능한 전화번호는 010-9876-5432입니다. 확인 부탁드립니다.", "pi": [{"type": "CAR_PLATE", "text": "53", "start": 12, "end": 14}, {"type": "PHONE", "text": "010-9876-5432", "start": 33, "end": 46}], "meta": {"domain": "이메일 본문", "style": "공문서풍", "obfuscation": ["plain"], "hard_case": "none"}}

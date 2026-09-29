@@ -1,0 +1,1 @@
+{"id": "A-001640", "text": "네, 저희 고객님 성함은 라임 철수 님이고, 연락처는 010 5555 1212로 되어있습니다.", "pi": [{"type": "NAME", "text": "라임 철수", "start": 14, "end": 19}, {"type": "PHONE", "text": "010 5555 1212", "start": 30, "end": 43}], "meta": {"domain": "콜센터 상담 요약", "style": "구어체", "obfuscation": ["romanized"], "hard_case": "homonym_name"}}

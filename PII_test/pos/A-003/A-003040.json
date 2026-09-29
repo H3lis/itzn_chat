@@ -1,0 +1,1 @@
+{"id": "A-003040", "text": "제가 이름이요, 아 죄송해요. 진짜 제 이름은 '이영희'거든요.", "pi": [{"type": "NAME", "text": "이영희", "start": 27, "end": 30}], "meta": {"domain": "콜센터 상담 요약", "style": "반말 대화", "obfuscation": ["self_correction", "jamo_split"], "hard_case": "none"}}

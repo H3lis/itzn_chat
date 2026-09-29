@@ -1,0 +1,1 @@
+{"id": "A-001668", "text": "어떤 물건이요? 일단 송장 번호는 33222110 같은 건가요? 확인해보겠습니다.", "pi": [{"type": "OTHER_ID", "text": "33222110", "start": 19, "end": 27}], "meta": {"domain": "택배 문의", "style": "짧은 단답", "obfuscation": ["split_utterance"], "hard_case": "none"}}

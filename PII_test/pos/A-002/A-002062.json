@@ -1,0 +1,1 @@
+{"id": "A-002062", "text": "저는 김지영입니다. 급하게 상담이 필요해서요. 제가 오늘 방문해도 될까요?", "pi": [{"type": "NAME", "text": "김지영", "start": 3, "end": 6}], "meta": {"domain": "직장 메신저", "style": "존댓말 상담", "obfuscation": ["jamo_split"], "hard_case": "none"}}

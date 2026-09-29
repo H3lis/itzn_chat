@@ -1,0 +1,1 @@
+{"id": "A-005595", "text": "네, 주소는 경기도 성남시 분당구 세일대로 500이에요. 본인 이름은 한결 맞으시죠?", "pi": [{"type": "ADDRESS", "text": "경기도 성남시 분당구 세일대로 500", "start": 7, "end": 27}, {"type": "NAME", "text": "한결", "start": 39, "end": 41}], "meta": {"domain": "콜센터 상담 요약", "style": "짧은 단답", "obfuscation": ["self_correction"], "hard_case": "homonym_name"}}

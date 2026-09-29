@@ -1,0 +1,1 @@
+{"id": "A-004734", "text": "진료 기록 조회용 생년월일은 95년 5월 20일로 맞게 입력해 주세요.", "pi": [{"type": "BIRTH", "text": "95년 5월 20일", "start": 16, "end": 26}], "meta": {"domain": "병원 접수", "style": "음성인식(STT) 전사", "obfuscation": ["plain"], "hard_case": "none"}}

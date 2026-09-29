@@ -1,0 +1,1 @@
+{"id": "A-004608", "text": "접수 도와드리겠습니다. 성함이 장미라고 하셨는데, 혹시 김민지 씨가 아니라서요?", "pi": [{"type": "NAME", "text": "장미", "start": 17, "end": 19}], "meta": {"domain": "병원 접수", "style": "오타 많은 채팅", "obfuscation": ["jamo_split"], "hard_case": "none"}}

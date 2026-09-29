@@ -1,0 +1,1 @@
+{"id": "A-004034", "text": "혹시 상품 번호가 010-5555-1234 맞나요? 제가 다른 번호로 잘못 적었을 수도 있어서요.", "pi": [{"type": "PHONE", "text": "010-5555-1234", "start": 10, "end": 23}], "meta": {"domain": "중고거래 채팅", "style": "오타 많은 채팅", "obfuscation": ["plain"], "hard_case": "none"}}

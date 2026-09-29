@@ -1,0 +1,1 @@
+{"id": "A-001052", "text": "신청하시는 주소는 서울특별시 강남구 테헤란로 123 빌딩 5층이에요. 이쪽 주소로 다시 한번 확인해 주시겠어요?", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 테헤란로 123 빌딩 5층", "start": 10, "end": 34}], "meta": {"domain": "회의록", "style": "존댓말 상담", "obfuscation": ["split_utterance", "korean_reading"], "hard_case": "none"}}

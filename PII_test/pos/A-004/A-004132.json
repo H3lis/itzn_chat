@@ -1,0 +1,1 @@
+{"id": "A-004132", "text": "저 계정은 'TestUser123'으로 만든 거고, 제 이름은 존 리예요.", "pi": [{"type": "ACCOUNT", "text": "TestUser123", "start": 7, "end": 18}, {"type": "NAME", "text": "존 리", "start": 35, "end": 38}], "meta": {"domain": "온라인 강의 Q&A", "style": "반말 대화", "obfuscation": ["romanized"], "hard_case": "none"}}

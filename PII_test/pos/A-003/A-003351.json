@@ -1,0 +1,1 @@
+{"id": "A-003351", "text": "고객님, 조회하신 물품의 배송지 주소는 서울시 강남구 테헤란로 152, 501호 맞으신가요? (02-3456-7890)", "pi": [{"type": "PHONE", "text": "02-3456-7890", "start": 53, "end": 65}], "meta": {"domain": "부동산 상담", "style": "공문서풍", "obfuscation": ["korean_reading"], "hard_case": "none"}}

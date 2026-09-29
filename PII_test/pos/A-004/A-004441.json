@@ -1,0 +1,1 @@
+{"id": "A-004441", "text": "예약하시려는 분은 사용자 아이디가 ㅋㅇㅂ12345거예요. SNS 주소는 @user_kcb입니다.", "pi": [{"type": "RRN", "text": "ㅋㅇㅂ12345", "start": 19, "end": 27}, {"type": "SNS", "text": "@user_kcb", "start": 40, "end": 49}], "meta": {"domain": "여행 예약", "style": "음성인식(STT) 전사", "obfuscation": ["mixed_reading"], "hard_case": "nickname_id"}}

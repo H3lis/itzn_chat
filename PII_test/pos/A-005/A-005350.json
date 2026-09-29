@@ -1,0 +1,1 @@
+{"id": "A-005350", "text": "혹시 '바다'라는 분이 찾으시는 건가요? 아니면 다른 분의 계정 말씀이세요?", "pi": [{"type": "NAME", "text": "바다", "start": 4, "end": 6}], "meta": {"domain": "중고거래 채팅", "style": "음성인식(STT) 전사", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

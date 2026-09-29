@@ -1,0 +1,1 @@
+{"id": "A-002786", "text": "라임님은 최근에 뭐 하셨어요? 메일 주소는 r.lime@test.com이 맞나요?", "pi": [{"type": "NAME", "text": "라임", "start": 0, "end": 2}, {"type": "EMAIL", "text": "r.lime@test.com", "start": 24, "end": 39}], "meta": {"domain": "SNS 댓글", "style": "짧은 단답", "obfuscation": ["separator_noise"], "hard_case": "homonym_name"}}

@@ -1,0 +1,1 @@
+{"id": "A-004744", "text": "강사님, 제 이름은 우주입니다. 연락처는 010-3333-4444로 등록하면 될까요?", "pi": [{"type": "NAME", "text": "우주", "start": 11, "end": 13}, {"type": "PHONE", "text": "010-3333-4444", "start": 23, "end": 36}], "meta": {"domain": "온라인 강의 Q&A", "style": "짧은 단답", "obfuscation": ["honorific_ref"], "hard_case": "homonym_name"}}

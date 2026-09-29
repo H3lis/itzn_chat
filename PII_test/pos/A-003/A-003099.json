@@ -1,0 +1,1 @@
+{"id": "A-003099", "text": "여행 예약 건 문의드리는데요, 카드 번호는 이거에요. 4567 다음에 8이 네 번이고, 전화는 010 9999 8888 맞으신가요?", "pi": [{"type": "CARD", "text": "4567 다음에 8이 네 번", "start": 30, "end": 45}, {"type": "PHONE", "text": "010 9999 8888", "start": 53, "end": 66}], "meta": {"domain": "여행 예약", "style": "반말 대화", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

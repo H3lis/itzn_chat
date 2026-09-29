@@ -1,0 +1,1 @@
+{"id": "A-000570", "text": "접속하신 IP가 203.1.1.1이고, 연락처는 010-2222-3333으로 확인됩니다.", "pi": [{"type": "IP_ADDR", "text": "203.1.1.1", "start": 9, "end": 18}, {"type": "PHONE", "text": "010-2222-3333", "start": 27, "end": 40}], "meta": {"domain": "온라인 강의 Q&A", "style": "메신저 줄임말", "obfuscation": ["split_utterance", "separator_noise"], "hard_case": "none"}}

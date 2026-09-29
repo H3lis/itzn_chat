@@ -1,0 +1,1 @@
+{"id": "A-004656", "text": "문의주신 분은 온유 씨이요. 연락은 onyu@naver.com 이랑, 성함은 온유예요.", "pi": [{"type": "NAME", "text": "온유", "start": 8, "end": 10}, {"type": "EMAIL", "text": "onyu@naver.com", "start": 20, "end": 34}], "meta": {"domain": "쇼핑몰 문의", "style": "짧은 단답", "obfuscation": ["email_spoken", "honorific_ref", "separator_noise"], "hard_case": "homonym_name"}}

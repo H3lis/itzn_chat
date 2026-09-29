@@ -1,0 +1,1 @@
+{"id": "A-000472", "text": "제가 담당하는 부서에 대해 문의드립니다. 저희는 나라라는 이름의 팀이 관리하고 있고, 메일 주소는 n-ara(at)mail.co.kr 로 설정되어 있습니다.", "pi": [{"type": "NAME", "text": "나라", "start": 27, "end": 29}, {"type": "EMAIL", "text": "n-ara(at)mail.co.kr", "start": 55, "end": 74}], "meta": {"domain": "이메일 본문", "style": "길고 장황한 설명", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

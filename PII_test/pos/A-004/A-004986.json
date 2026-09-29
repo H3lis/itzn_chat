@@ -1,0 +1,1 @@
+{"id": "A-004986", "text": "카드 번호는 5555-4444-3333-2222이고, 청구권자 성함은 별 대표님으로 처리하면 될까요? 서명은 별로 부탁드립니다.", "pi": [{"type": "CARD", "text": "5555-4444-3333-2222", "start": 7, "end": 26}, {"type": "NAME", "text": "별", "start": 39, "end": 40}], "meta": {"domain": "보험 청구", "style": "공문서풍", "obfuscation": ["separator_noise"], "hard_case": "homonym_name"}}

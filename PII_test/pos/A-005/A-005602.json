@@ -1,0 +1,1 @@
+{"id": "A-005602", "text": "접수하신 번호는 070-5555-1212로 확인되네요. 혹시 이 번호가 정확한지 다시 한번 말씀해 주시겠어요?", "pi": [{"type": "PHONE", "text": "070-5555-1212", "start": 9, "end": 22}], "meta": {"domain": "금융 상담", "style": "격식체", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

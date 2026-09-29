@@ -1,0 +1,1 @@
+{"id": "A-002978", "text": "전화번호는 01011112222고요. 인스타그램은 user_name_01이 맞으세요?", "pi": [{"type": "PHONE", "text": "01011112222", "start": 6, "end": 17}, {"type": "SNS", "text": "user_name_01", "start": 28, "end": 40}], "meta": {"domain": "중고거래 채팅", "style": "메신저 줄임말", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

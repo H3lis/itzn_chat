@@ -1,0 +1,1 @@
+{"id": "A-005476", "text": "택배 물품은 고객님 주소지 앞에 010 - 1111 - 2222 로 배송될 예정이니 참고 부탁드립니다.", "pi": [{"type": "PHONE", "text": "010 - 1111 - 2222", "start": 18, "end": 35}], "meta": {"domain": "택배 문의", "style": "음성인식(STT) 전사", "obfuscation": ["separator_noise"], "hard_case": "none"}}

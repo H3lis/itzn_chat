@@ -1,0 +1,1 @@
+{"id": "A-002727", "text": "운전면허는 9012345678이고, 성함은 소나무 씨예요. 혹시 주소는 따로 말씀해주실 수 있으신가요?", "pi": [{"type": "DRIVER_LICENSE", "text": "9012345678", "start": 6, "end": 16}, {"type": "NAME", "text": "소나무", "start": 24, "end": 27}], "meta": {"domain": "금융 상담", "style": "짧은 단답", "obfuscation": ["mixed_reading", "split_utterance"], "hard_case": "homonym_name"}}

@@ -1,0 +1,1 @@
+{"id": "A-002819", "text": "해솔이가 어제 쓴 글 같은데, 해솔이 닉네임이 맞는지요? 아니면 다른 분이신가요?", "pi": [{"type": "NAME", "text": "해솔", "start": 0, "end": 2}], "meta": {"domain": "중고거래 채팅", "style": "오타 많은 채팅", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

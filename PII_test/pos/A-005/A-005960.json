@@ -1,0 +1,1 @@
+{"id": "A-005960", "text": "여권 번호는 저희가 따로 확인해 드리겠습니다. 혹시 연락 가능한 전화번호를 다시 한번 말씀해주시겠어요? 010. 9876. 5432요.", "pi": [{"type": "PASSPORT", "text": "여권 번호", "start": 0, "end": 5}, {"type": "PHONE", "text": "010. 9876. 5432", "start": 58, "end": 73}], "meta": {"domain": "여행 예약", "style": "길고 장황한 설명", "obfuscation": ["separator_noise"], "hard_case": "none"}}

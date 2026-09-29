@@ -1,0 +1,1 @@
+{"id": "A-005605", "text": "아, 그 광주요? 광주는 사실 인명이라기보단 지역 이름이라 좀 애매한데...", "pi": [{"type": "NAME", "text": "광주", "start": 5, "end": 7}], "meta": {"domain": "커뮤니티 게시글", "style": "짧은 단답", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

@@ -1,0 +1,1 @@
+{"id": "A-001102", "text": "요청하신 주소는 경기도 성남시 분당구 판교역로 77입니다. 그리고 고객센터 번호는 02-1234-5678로 연락 주십시오.", "pi": [{"type": "ADDRESS", "text": "경기도 성남시 분당구 판교역로 77", "start": 9, "end": 28}, {"type": "PHONE", "text": "02-1234-5678", "start": 46, "end": 58}], "meta": {"domain": "금융 상담", "style": "공문서풍", "obfuscation": ["plain"], "hard_case": "none"}}

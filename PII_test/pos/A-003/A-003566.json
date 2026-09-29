@@ -1,0 +1,1 @@
+{"id": "A-003566", "text": "저기요, 저는 OOO 학원이라서요. 주소는 서울시 강남구 역삼동에 있는 건물 302호로 해주시고요. 혹시 학원명은 OOO로만 기재하면 될까요?", "pi": [{"type": "ORG", "text": "OOO 학원", "start": 8, "end": 14}, {"type": "ADDRESS", "text": "서울시 강남구 역삼동", "start": 24, "end": 35}], "meta": {"domain": "학교 행정 문의", "style": "오타 많은 채팅", "obfuscation": ["split_utterance"], "hard_case": "org_person"}}

@@ -1,0 +1,1 @@
+{"id": "A-002130", "text": "제 사용자 번호는 7777이고, SNS는 에이비씨디예요. 이거 맞나요?", "pi": [{"type": "OTHER_ID", "text": "7777", "start": 10, "end": 14}, {"type": "SNS", "text": "에이비씨디", "start": 23, "end": 28}], "meta": {"domain": "SNS 댓글", "style": "존댓말 상담", "obfuscation": ["stt_error"], "hard_case": "nickname_id"}}

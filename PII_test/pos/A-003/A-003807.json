@@ -1,0 +1,1 @@
+{"id": "A-003807", "text": "여권 번호가 A1B2C3D4인데, 아, 아니에요. 제가 처음에 잘못 말했네요. 99887766이 맞아요.", "pi": [{"type": "PASSPORT", "text": "A1B2C3D4", "start": 7, "end": 15}, {"type": "PHONE", "text": "99887766", "start": 44, "end": 52}], "meta": {"domain": "음성통화 전사문", "style": "메신저 줄임말", "obfuscation": ["self_correction"], "hard_case": "none"}}

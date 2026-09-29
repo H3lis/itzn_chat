@@ -1,0 +1,1 @@
+{"id": "A-003485", "text": "혹시 노을 님이신가요? 연락드리려는 건서 010 1234 5678 번호예요.", "pi": [{"type": "NAME", "text": "노을", "start": 3, "end": 5}, {"type": "PHONE", "text": "010 1234 5678", "start": 23, "end": 36}], "meta": {"domain": "콜센터 상담 요약", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

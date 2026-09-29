@@ -1,0 +1,1 @@
+{"id": "A-005389", "text": "문의 주신 이메일 주소는 김민지 골뱅이 지메일 점 컴으로 확인 가능할까요?", "pi": [{"type": "EMAIL", "text": "김민지 골뱅이 지메일 점 컴", "start": 14, "end": 29}], "meta": {"domain": "음성통화 전사문", "style": "격식체", "obfuscation": ["email_spoken"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-005261", "text": "진료 예약하셨는데요, 혹시 연락처 다시 한번 확인해 드릴게요. 010 다시 하나 넷 오팔입니다.", "pi": [{"type": "PHONE", "text": "010 다시 하나 넷 오팔", "start": 35, "end": 49}], "meta": {"domain": "병원 접수", "style": "반말 대화", "obfuscation": ["korean_reading"], "hard_case": "none"}}

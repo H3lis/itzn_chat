@@ -1,0 +1,1 @@
+{"id": "A-002774", "text": "예약하신 분 메일 주소는 giga_travel_user123@mail.co.kr 이 맞을까요?", "pi": [{"type": "EMAIL", "text": "giga_travel_user123@mail.co.kr", "start": 14, "end": 44}], "meta": {"domain": "여행 예약", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "none"}}

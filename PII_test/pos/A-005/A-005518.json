@@ -1,0 +1,1 @@
+{"id": "A-005518", "text": "운전하시는 분의 신분증 번호가 911231-1234567이에요.", "pi": [{"type": "DRIVER_LICENSE", "text": "911231-1234567", "start": 17, "end": 31}], "meta": {"domain": "부동산 상담", "style": "격식체", "obfuscation": ["split_utterance"], "hard_case": "none"}}

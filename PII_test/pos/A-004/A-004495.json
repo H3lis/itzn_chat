@@ -1,0 +1,1 @@
+{"id": "A-004495", "text": "아, 네. 생년월일이 991225, 아니요, 991221이 맞습니다. 혹시 다시 한번 확인해주시겠어요?", "pi": [{"type": "BIRTH", "text": "991225, 아니요, 991221", "start": 12, "end": 31}], "meta": {"domain": "병원 접수", "style": "음성인식(STT) 전사", "obfuscation": ["self_correction", "lookalike_char"], "hard_case": "none"}}

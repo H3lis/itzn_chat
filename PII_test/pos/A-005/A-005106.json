@@ -1,0 +1,1 @@
+{"id": "A-005106", "text": "방문객 아이디는 gaming_king이고, 연락처는 070-5555-6666으로 부탁해.", "pi": [{"type": "ID", "text": "gaming_king", "start": 9, "end": 20}, {"type": "PHONE", "text": "070-5555-6666", "start": 29, "end": 42}], "meta": {"domain": "배달 요청사항", "style": "반말 대화", "obfuscation": ["repeat_expr"], "hard_case": "nickname_id"}}

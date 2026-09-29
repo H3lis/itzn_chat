@@ -1,0 +1,1 @@
+{"id": "A-001224", "text": "주소는 경기도 수원시 권선구 월곶동 쪽이고, 전화번호는 02-711-8899 로 남겨주세요.", "pi": [{"type": "ADDRESS", "text": "경기도 수원시 권선구 월곶동", "start": 4, "end": 19}, {"type": "PHONE", "text": "02-711-8899", "start": 31, "end": 42}], "meta": {"domain": "보험 청구", "style": "격식체", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

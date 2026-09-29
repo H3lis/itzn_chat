@@ -1,0 +1,1 @@
+{"id": "A-000683", "text": "제 생년월일은 991201이고, 이메일은 test골뱅이naver점com으로 사용하고 있어요.", "pi": [{"type": "BIRTH", "text": "991201", "start": 8, "end": 14}, {"type": "EMAIL", "text": "test골뱅이naver점com", "start": 23, "end": 39}], "meta": {"domain": "온라인 강의 Q&A", "style": "반말 대화", "obfuscation": ["email_spoken", "repeat_expr"], "hard_case": "none"}}

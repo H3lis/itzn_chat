@@ -1,0 +1,1 @@
+{"id": "A-003393", "text": "판매자분은 진짜 진주 씨가 맞으세요? 혹시 성함 다시 한번만 말씀해 주시겠어요?", "pi": [{"type": "NAME", "text": "진주", "start": 9, "end": 11}], "meta": {"domain": "중고거래 채팅", "style": "음성인식(STT) 전사", "obfuscation": ["romanized"], "hard_case": "homonym_name"}}

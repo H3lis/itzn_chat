@@ -1,0 +1,1 @@
+{"id": "A-002817", "text": "제 이름은 최지민인데요, 전화번호가 010-1111-3333이 맞는지 다시 한번 확인 부탁드립니다.", "pi": [{"type": "NAME", "text": "최지민", "start": 6, "end": 9}, {"type": "PHONE", "text": "010-1111-3333", "start": 20, "end": 33}], "meta": {"domain": "커뮤니티 게시글", "style": "격식체", "obfuscation": ["stt_error"], "hard_case": "none"}}

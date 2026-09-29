@@ -1,0 +1,1 @@
+{"id": "A-003362", "text": "안녕하세요, 제 이름은 지혜이고요. 제 번호는 010-2222-3333입니다.", "pi": [{"type": "NAME", "text": "지혜", "start": 13, "end": 15}, {"type": "PHONE", "text": "010-2222-3333", "start": 26, "end": 39}], "meta": {"domain": "중고거래 채팅", "style": "격식체", "obfuscation": ["self_correction"], "hard_case": "homonym_name"}}

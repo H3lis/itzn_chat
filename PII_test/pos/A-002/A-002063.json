@@ -1,0 +1,1 @@
+{"id": "A-002063", "text": "담당자님 성함이 최민호 씨 맞으세요? 그분께 문의드릴 것이 있어서요.", "pi": [{"type": "NAME", "text": "최민호", "start": 9, "end": 12}], "meta": {"domain": "직장 메신저", "style": "존댓말 상담", "obfuscation": ["jamo_split"], "hard_case": "none"}}

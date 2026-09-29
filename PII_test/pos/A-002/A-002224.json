@@ -1,0 +1,1 @@
+{"id": "A-002224", "text": "고객님 계정 번호는 7890 입니다. 이메일은 service_user(at)gmail(dot)com 으로 등록해 주시면 됩니다.", "pi": [{"type": "ACCOUNT", "text": "7890", "start": 11, "end": 15}, {"type": "EMAIL", "text": "service_user(at)gmail(dot)com", "start": 26, "end": 55}], "meta": {"domain": "음성통화 전사문", "style": "구어체", "obfuscation": ["separator_noise"], "hard_case": "none"}}

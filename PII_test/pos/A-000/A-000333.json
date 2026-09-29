@@ -1,0 +1,1 @@
+{"id": "A-000333", "text": "학생증과 함께 결제한 카드 번호는 1234-5678-9012이고, 주민등록번호는 850101-2122222 이 맞는지 재차 확인하겠습니다.", "pi": [{"type": "CARD", "text": "1234-5678-9012", "start": 19, "end": 33}, {"type": "RRN", "text": "850101-2122222", "start": 45, "end": 59}], "meta": {"domain": "학교 행정 문의", "style": "격식체", "obfuscation": ["separator_noise"], "hard_case": "none"}}

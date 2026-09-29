@@ -1,0 +1,1 @@
+{"id": "A-000381", "text": "저 우주 아버님께 문의드리는데요, 아이디가 우주별똥이라 하셨어요. 이게 맞는 건가요?", "pi": [{"type": "NAME", "text": "우주", "start": 2, "end": 4}, {"type": "ID", "text": "우주별똥", "start": 24, "end": 28}], "meta": {"domain": "쇼핑몰 문의", "style": "길고 장황한 설명", "obfuscation": ["honorific_ref", "jamo_split"], "hard_case": "homonym_name"}}

@@ -1,0 +1,1 @@
+{"id": "A-005908", "text": "아, 제가 아이디가 기억이 안 나서요. 이게 'alpha-beta-gamma' 이런 건가요? 아니면 특수문자가 들어가는 건가요?", "pi": [{"type": "ID", "text": "alpha-beta-gamma", "start": 26, "end": 42}], "meta": {"domain": "중고거래 채팅", "style": "메신저 줄임말", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

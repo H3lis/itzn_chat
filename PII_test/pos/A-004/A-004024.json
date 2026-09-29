@@ -1,0 +1,1 @@
+{"id": "A-004024", "text": "박서준 씨, 여권 번호가 뭐였지? 아니, 잠시만요. 전 2010년 3월 15일에 발급받았는데요.", "pi": [{"type": "NAME", "text": "박서준", "start": 0, "end": 3}, {"type": "PASSPORT", "text": "2010년 3월 15일", "start": 31, "end": 43}], "meta": {"domain": "부동산 상담", "style": "반말 대화", "obfuscation": ["stt_error", "honorific_ref", "split_utterance"], "hard_case": "none"}}

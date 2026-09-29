@@ -1,0 +1,1 @@
+{"id": "A-004445", "text": "담당자는 홍길동 사원이구요. 그의 이름은 Kim Gildong이라고 등록되어 있고, 주민번호는 9512311234567입니다. 이 자료를 확인해주세요.", "pi": [{"type": "NAME", "text": "홍길동", "start": 5, "end": 8}, {"type": "RRN", "text": "9512311234567", "start": 53, "end": 66}], "meta": {"domain": "직장 메신저", "style": "공문서풍", "obfuscation": ["romanized", "stt_error", "mixed_reading"], "hard_case": "none"}}

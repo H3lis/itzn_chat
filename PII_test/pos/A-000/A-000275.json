@@ -1,0 +1,1 @@
+{"id": "A-000275", "text": "푸름 씨 환자분이세요? 전화번호가 010-2222-3333 맞으신가요?", "pi": [{"type": "NAME", "text": "푸름", "start": 0, "end": 2}, {"type": "PHONE", "text": "010-2222-3333", "start": 19, "end": 32}], "meta": {"domain": "병원 접수", "style": "반말 대화", "obfuscation": ["honorific_ref"], "hard_case": "homonym_name"}}

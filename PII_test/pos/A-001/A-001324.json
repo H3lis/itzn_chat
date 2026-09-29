@@ -1,0 +1,1 @@
+{"id": "A-001324", "text": "혹시 예약하신 분 전화번호가 '010-3333-4444' 맞으신가요? 조회해보니 '010 3333 4444'로 되어있어서요. 제가 다시 한번 확인해 드릴게요.", "pi": [{"type": "PHONE", "text": "010-3333-4444", "start": 17, "end": 30}], "meta": {"domain": "여행 예약", "style": "존댓말 상담", "obfuscation": ["lookalike_char", "korean_reading"], "hard_case": "none"}}

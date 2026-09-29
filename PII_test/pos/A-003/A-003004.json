@@ -1,0 +1,1 @@
+{"id": "A-003004", "text": "야, 네 학번이 20221122라며? 혹시 성함은 장미로 제대로 입력했어?", "pi": [{"type": "ACCOUNT", "text": "20221122", "start": 9, "end": 17}, {"type": "NAME", "text": "장미", "start": 28, "end": 30}], "meta": {"domain": "학교 행정 문의", "style": "반말 대화", "obfuscation": ["split_utterance"], "hard_case": "homonym_name"}}

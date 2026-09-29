@@ -1,0 +1,1 @@
+{"id": "A-000938", "text": "어제 그 번호, 010 다섯일오 다시 하나구둘이었어.", "pi": [{"type": "PHONE", "text": "010 다섯일오 다시 하나구둘", "start": 9, "end": 25}], "meta": {"domain": "SNS 댓글", "style": "반말 대화", "obfuscation": ["korean_reading", "self_correction"], "hard_case": "none"}}

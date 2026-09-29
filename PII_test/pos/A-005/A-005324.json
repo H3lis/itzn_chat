@@ -1,0 +1,1 @@
+{"id": "A-005324", "text": "예약은 최준영 씨 이름으로 부탁하고, 연락처는 010-5555-1212가 맞을까요?", "pi": [{"type": "NAME", "text": "최준영", "start": 4, "end": 7}, {"type": "PHONE", "text": "010-5555-1212", "start": 26, "end": 39}], "meta": {"domain": "여행 예약", "style": "구어체", "obfuscation": ["romanized"], "hard_case": "none"}}

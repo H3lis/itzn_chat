@@ -1,0 +1,1 @@
+{"id": "A-004307", "text": "배달 주소는 괜찮고요, 차량 번호는 12가 네 번이고 3이 네 번 들어간 번호로 부탁드립니다.", "pi": [{"type": "CAR_PLATE", "text": "12가 네 번이고 3이 네 번", "start": 20, "end": 36}], "meta": {"domain": "배달 요청사항", "style": "짧은 단답", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

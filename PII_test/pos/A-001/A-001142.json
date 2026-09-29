@@ -1,0 +1,1 @@
+{"id": "A-001142", "text": "제 이름은 이지은이고요, 저도 박서진이에요. 저희 둘 다 같은 건물에 거주하고 있어요.", "pi": [{"type": "NAME", "text": "이지은", "start": 6, "end": 9}, {"type": "NAME", "text": "박서진", "start": 17, "end": 20}], "meta": {"domain": "SNS 댓글", "style": "구어체", "obfuscation": ["plain"], "hard_case": "none"}}

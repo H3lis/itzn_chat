@@ -1,0 +1,1 @@
+{"id": "A-003515", "text": "결제하신 카드의 마지막 네 자리 번호는 7777 맞으신가요?", "pi": [{"type": "CARD", "text": "7777", "start": 22, "end": 26}], "meta": {"domain": "콜센터 상담 요약", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "none"}}

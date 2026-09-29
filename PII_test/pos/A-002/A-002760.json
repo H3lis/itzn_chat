@@ -1,0 +1,1 @@
+{"id": "A-002760", "text": "이사갈 집 주소가 종로구 세종로 123-45인데, 혹시 이 주소로 배달 가능한가요?", "pi": [{"type": "ADDRESS", "text": "종로구 세종로 123-45", "start": 10, "end": 24}], "meta": {"domain": "직장 메신저", "style": "반말 대화", "obfuscation": ["stt_error"], "hard_case": "none"}}

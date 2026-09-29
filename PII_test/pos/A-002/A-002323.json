@@ -1,0 +1,1 @@
+{"id": "A-002323", "text": "여기 강남역 근처인데, 이름은 최서준이에요. 혹시 오시면 연락 주세요.", "pi": [{"type": "ADDRESS", "text": "강남역 근처", "start": 3, "end": 9}, {"type": "NAME", "text": "최서준", "start": 17, "end": 20}], "meta": {"domain": "배달 요청사항", "style": "반말 대화", "obfuscation": ["stt_error"], "hard_case": "none"}}

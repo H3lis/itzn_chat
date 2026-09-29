@@ -1,0 +1,1 @@
+{"id": "A-005278", "text": "제가 사는 곳은 서울시 강남구 역삼동 근처고요. 차량 번호는 12가을 3456입니다.", "pi": [{"type": "ADDRESS", "text": "서울시 강남구 역삼동", "start": 9, "end": 20}, {"type": "CAR_PLATE", "text": "12가을 3456", "start": 34, "end": 43}], "meta": {"domain": "SNS 댓글", "style": "짧은 단답", "obfuscation": ["korean_reading"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-005895", "text": "카드번호가 3780-1111-2222-3333 맞나요? 이 번호로 결제해도 괜찮을까요?", "pi": [{"type": "CARD", "text": "3780-1111-2222-3333", "start": 6, "end": 25}], "meta": {"domain": "온라인 강의 Q&A", "style": "오타 많은 채팅", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

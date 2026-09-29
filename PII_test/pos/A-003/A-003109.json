@@ -1,0 +1,1 @@
+{"id": "A-003109", "text": "저희가 확인해보니 거주지는 가나다동 지점이고, 생년월일은 오월에 태어나셨네요.", "pi": [{"type": "ADDRESS", "text": "가나다동", "start": 15, "end": 19}, {"type": "BIRTH", "text": "오월", "start": 32, "end": 34}], "meta": {"domain": "콜센터 상담 요약", "style": "존댓말 상담", "obfuscation": ["jamo_split"], "hard_case": "none"}}

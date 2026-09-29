@@ -1,0 +1,1 @@
+{"id": "A-003012", "text": "혹시 이 상품 재고는 언제 들어오나요? 제 SNS 계정으로 문의드리려고 하는데, 사용자명은 'Dreamy_Star' 이고요. 배송받을 주소지는 051-xxxx-xxxx로 알고 있어요.", "pi": [{"type": "SNS", "text": "Dreamy_Star", "start": 52, "end": 63}, {"type": "ADDRESS", "text": "051-xxxx-xxxx", "start": 80, "end": 93}], "meta": {"domain": "쇼핑몰 문의", "style": "구어체", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

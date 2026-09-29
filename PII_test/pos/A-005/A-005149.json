@@ -1,0 +1,1 @@
+{"id": "A-005149", "text": "주문한 제품 배송이요? 네, 오늘 받을게요. 성함은 슬기 맞으시죠? 연락처는 010-2222-3333으로 부탁드립니다.", "pi": [{"type": "NAME", "text": "슬기", "start": 29, "end": 31}, {"type": "PHONE", "text": "010-2222-3333", "start": 43, "end": 56}], "meta": {"domain": "쇼핑몰 문의", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

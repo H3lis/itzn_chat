@@ -1,0 +1,1 @@
+{"id": "A-001453", "text": "주문하신 상품은 저희 쇼핑몰 회원님의 계정으로 확인되는데요, 차대번호가 좀 다른 것 같아서요. 아, 아니고요. 차대번호는 '삼육일삼' 맞으세요?", "pi": [{"type": "ACCOUNT", "text": "회원님의 계정", "start": 16, "end": 23}, {"type": "CAR_PLATE", "text": "삼육일삼", "start": 69, "end": 73}], "meta": {"domain": "쇼핑몰 문의", "style": "격식체", "obfuscation": ["korean_reading", "self_correction"], "hard_case": "none"}}

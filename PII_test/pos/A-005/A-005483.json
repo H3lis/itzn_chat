@@ -1,0 +1,1 @@
+{"id": "A-005483", "text": "저의 아이디가 ㅁㅣㅇㅣ디가요? 제 이름은 박지성인데요.", "pi": [{"type": "ID", "text": "ㅁㅣㅇㅣ디", "start": 8, "end": 13}, {"type": "NAME", "text": "박지성", "start": 23, "end": 26}], "meta": {"domain": "커뮤니티 게시글", "style": "공문서풍", "obfuscation": ["jamo_split"], "hard_case": "nickname_id"}}

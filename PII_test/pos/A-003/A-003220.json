@@ -1,0 +1,1 @@
+{"id": "A-003220", "text": "카드번호는 4111-2222-3333-4444이고, 연락처는 010-5555-6666이에요.", "pi": [{"type": "CARD", "text": "4111-2222-3333-4444", "start": 6, "end": 25}, {"type": "PHONE", "text": "010-5555-6666", "start": 34, "end": 47}], "meta": {"domain": "커뮤니티 게시글", "style": "반말 대화", "obfuscation": ["lookalike_char", "korean_reading"], "hard_case": "none"}}

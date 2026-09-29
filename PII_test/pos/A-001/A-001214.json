@@ -1,0 +1,1 @@
+{"id": "A-001214", "text": "김민준 학생의 연락처가 궁금한데요. 혹시 010-9999-8888로 되어 있었던가요? 다시 확인 부탁드립니다.", "pi": [{"type": "NAME", "text": "김민준", "start": 0, "end": 3}, {"type": "PHONE", "text": "010-9999-8888", "start": 23, "end": 36}], "meta": {"domain": "온라인 강의 Q&A", "style": "짧은 단답", "obfuscation": ["stt_error", "separator_noise"], "hard_case": "none"}}

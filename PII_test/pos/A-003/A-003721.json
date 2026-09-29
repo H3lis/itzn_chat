@@ -1,0 +1,1 @@
+{"id": "A-003721", "text": "저희 어머니 생년월일은 90년 5월 15일이거든요. 그리고 이메일 주소는 test.user@example.com으로 알고 있습니다.", "pi": [{"type": "BIRTH", "text": "90년 5월 15일", "start": 13, "end": 23}, {"type": "EMAIL", "text": "test.user@example.com", "start": 41, "end": 62}], "meta": {"domain": "부동산 상담", "style": "구어체", "obfuscation": ["plain"], "hard_case": "none"}}

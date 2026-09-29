@@ -1,0 +1,1 @@
+{"id": "A-002647", "text": "다솜 님 계정 확인했는데요. 사용자 이름은 '다솜_love'고요, 메신저는 'd_s123'으로 되어 있어요.", "pi": [{"type": "NAME", "text": "다솜", "start": 0, "end": 2}, {"type": "SNS", "text": "d_s123", "start": 43, "end": 49}], "meta": {"domain": "콜센터 상담 요약", "style": "메신저 줄임말", "obfuscation": ["jamo_split", "lookalike_char"], "hard_case": "homonym_name"}}

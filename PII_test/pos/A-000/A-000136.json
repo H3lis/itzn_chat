@@ -1,0 +1,1 @@
+{"id": "A-000136", "text": "제 이메일은 user.id@mail.co.kr 이고, 아이디는 kuser123 이예요. 혹시 구분자 문제로 오해하신 건가요?", "pi": [{"type": "EMAIL", "text": "user.id@mail.co.kr", "start": 7, "end": 25}, {"type": "ID", "text": "kuser123", "start": 35, "end": 43}], "meta": {"domain": "온라인 강의 Q&A", "style": "반말 대화", "obfuscation": ["separator_noise", "lookalike_char"], "hard_case": "nickname_id"}}

@@ -1,0 +1,1 @@
+{"id": "A-001568", "text": "주소지를 다시 한번 말씀해 주시겠어요? '서울특별시 강남구 역삼동 오천 번지'로 하셨는데, 혹시 '서울특별시 강남구 역삼동 오천'이 맞을까요?", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 역삼동 오천", "start": 23, "end": 39}], "meta": {"domain": "민원 접수", "style": "격식체", "obfuscation": ["stt_error", "split_utterance", "jamo_split"], "hard_case": "none"}}

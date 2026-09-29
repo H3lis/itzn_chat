@@ -1,0 +1,1 @@
+{"id": "A-002973", "text": "문의하신 분 성함이 최진우 님 맞으세요? 이메일 주소는 chulsoo(at)gmail(dot)com으로 알고 있는데 맞을까요?", "pi": [{"type": "NAME", "text": "최진우", "start": 11, "end": 14}, {"type": "EMAIL", "text": "chulsoo(at)gmail(dot)com", "start": 31, "end": 55}], "meta": {"domain": "금융 상담", "style": "음성인식(STT) 전사", "obfuscation": ["romanized"], "hard_case": "none"}}

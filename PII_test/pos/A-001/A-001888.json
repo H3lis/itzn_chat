@@ -1,0 +1,1 @@
+{"id": "A-001888", "text": "저희가 요청하신 주소는 강남구 테헤란로 111-22층이고요. 고객님 성함이 김민준 씨 맞으신지, 생일도 알려주시겠어요?", "pi": [{"type": "ADDRESS", "text": "강남구 테헤란로 111-22층", "start": 13, "end": 29}, {"type": "NAME", "text": "김민준", "start": 42, "end": 45}], "meta": {"domain": "배달 요청사항", "style": "길고 장황한 설명", "obfuscation": ["honorific_ref", "self_correction"], "hard_case": "none"}}

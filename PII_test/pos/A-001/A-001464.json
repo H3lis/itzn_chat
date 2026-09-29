@@ -1,0 +1,1 @@
+{"id": "A-001464", "text": "결제가 안 되네요. 혹시 전화번호가 010-8888-3333이 맞나요?", "pi": [{"type": "PHONE", "text": "010-8888-3333", "start": 20, "end": 33}], "meta": {"domain": "쇼핑몰 문의", "style": "오타 많은 채팅", "obfuscation": ["plain"], "hard_case": "none"}}

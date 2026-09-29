@@ -1,0 +1,1 @@
+{"id": "A-004173", "text": "봄 선생님께, 저는 봄 씨의 거주지 주소지에 관해 문의드릴 것이 있습니다. 봄 씨의 집 주소가 정확히 어디인지 확인 부탁드려요.", "pi": [{"type": "ADDRESS", "text": "봄 씨의 거주지 주소지", "start": 11, "end": 23}, {"type": "NAME", "text": "봄 씨", "start": 42, "end": 45}], "meta": {"domain": "이메일 본문", "style": "길고 장황한 설명", "obfuscation": ["jamo_split", "honorific_ref"], "hard_case": "homonym_name"}}

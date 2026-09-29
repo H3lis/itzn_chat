@@ -1,0 +1,1 @@
+{"id": "A-003023", "text": "제 연락처는 cherry(at)naver(dot)com이고요. 제 이름은 강민준입니다.", "pi": [{"type": "EMAIL", "text": "cherry(at)naver(dot)com", "start": 7, "end": 30}, {"type": "NAME", "text": "강민준", "start": 41, "end": 44}], "meta": {"domain": "온라인 강의 Q&A", "style": "짧은 단답", "obfuscation": ["email_spoken"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-003405", "text": "저 이번 프로젝트 관련해서는 user_test(at)company(dot)com으로 메일 보냈어요.", "pi": [{"type": "EMAIL", "text": "user_test(at)company(dot)com", "start": 16, "end": 44}], "meta": {"domain": "SNS 댓글", "style": "오타 많은 채팅", "obfuscation": ["email_spoken", "separator_noise"], "hard_case": "none"}}

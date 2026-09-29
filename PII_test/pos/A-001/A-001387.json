@@ -1,0 +1,1 @@
+{"id": "A-001387", "text": "연락처가요? 혹시 070-9999-8888로 되어있던가요?", "pi": [{"type": "PHONE", "text": "070-9999-8888", "start": 10, "end": 23}], "meta": {"domain": "부동산 상담", "style": "오타 많은 채팅", "obfuscation": ["separator_noise"], "hard_case": "none"}}

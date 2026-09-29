@@ -1,0 +1,1 @@
+{"id": "A-004822", "text": "담당자님, 제 메일 주소는 chulsoo(at)gmail(dot)com이고, 주민번호는 920101-1******이 맞을까요?", "pi": [{"type": "EMAIL", "text": "chulsoo(at)gmail(dot)com", "start": 15, "end": 39}, {"type": "RRN", "text": "920101-1******", "start": 49, "end": 63}], "meta": {"domain": "보험 청구", "style": "오타 많은 채팅", "obfuscation": ["email_spoken"], "hard_case": "none"}}

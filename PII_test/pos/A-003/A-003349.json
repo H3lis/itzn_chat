@@ -1,0 +1,1 @@
+{"id": "A-003349", "text": "계좌 번호가 Ａ１２３４５６７８９０이고, 연락 가능한 메일 주소는 b@g@il.com 입니다. 혹시 이 정보들로 청구가 가능한가요?", "pi": [{"type": "ACCOUNT", "text": "Ａ１２３４５６７８９０", "start": 7, "end": 18}, {"type": "EMAIL", "text": "b@g@il.com", "start": 36, "end": 46}], "meta": {"domain": "보험 청구", "style": "존댓말 상담", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

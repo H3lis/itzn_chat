@@ -1,0 +1,1 @@
+{"id": "A-000214", "text": "주소는 일단 경기도 수원시 영통구 매탄대로에, 차량 번호는 12가요. 이건 혼용해서 말씀드릴게요.", "pi": [{"type": "ADDRESS", "text": "경기도 수원시 영통구 매탄대로", "start": 7, "end": 23}, {"type": "CAR_PLATE", "text": "12", "start": 33, "end": 35}], "meta": {"domain": "부동산 상담", "style": "구어체", "obfuscation": ["mixed_reading", "korean_reading"], "hard_case": "none"}}

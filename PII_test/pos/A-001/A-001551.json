@@ -1,0 +1,1 @@
+{"id": "A-001551", "text": "혹시 장미 씨 성함이 맞으신가요? 네, 연락 가능한 이메일 주소로 다시 한번 확인 부탁드릴게요. 장미 님께서 쓰시는 이메일 주소는 장미골뱅이지메일점컴으로 해주세요.", "pi": [{"type": "NAME", "text": "장미", "start": 3, "end": 5}, {"type": "EMAIL", "text": "장미골뱅이지메일점컴", "start": 73, "end": 83}], "meta": {"domain": "부동산 상담", "style": "길고 장황한 설명", "obfuscation": ["email_spoken"], "hard_case": "homonym_name"}}

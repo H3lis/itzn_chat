@@ -1,0 +1,1 @@
+{"id": "A-002999", "text": "여권 번호는 스물일 오칠 삼일 네십이에서부터 끝까지 이래요.", "pi": [{"type": "PASSPORT", "text": "스물일 오칠 삼일 네십이", "start": 7, "end": 20}], "meta": {"domain": "병원 접수", "style": "격식체", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-001369", "text": "생년월일은 90년 12월 25일이고, 이메일 주소는 testuser@naver.com입니다.", "pi": [{"type": "BIRTH", "text": "90년 12월 25일", "start": 6, "end": 17}, {"type": "EMAIL", "text": "testuser@naver.com", "start": 29, "end": 47}], "meta": {"domain": "콜센터 상담 요약", "style": "구어체", "obfuscation": ["plain"], "hard_case": "none"}}

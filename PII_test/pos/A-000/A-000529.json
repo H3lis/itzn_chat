@@ -1,0 +1,1 @@
+{"id": "A-000529", "text": "궁금한 점이 있어서요. 고객센터로 전화드렸는데, 번호가 010-5555-1234로 연결됐어요.", "pi": [{"type": "PHONE", "text": "010-5555-1234", "start": 31, "end": 44}], "meta": {"domain": "쇼핑몰 문의", "style": "길고 장황한 설명", "obfuscation": ["split_utterance", "stt_error"], "hard_case": "none"}}

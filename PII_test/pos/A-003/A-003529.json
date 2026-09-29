@@ -1,0 +1,1 @@
+{"id": "A-003529", "text": "도토리님 연락처가 010-3333-4444로 되어있는데요, 혹시 다른 번호가 있으신가요?", "pi": [{"type": "NAME", "text": "도토리", "start": 0, "end": 3}, {"type": "PHONE", "text": "010-3333-4444", "start": 10, "end": 23}], "meta": {"domain": "부동산 상담", "style": "음성인식(STT) 전사", "obfuscation": ["lookalike_char"], "hard_case": "homonym_name"}}

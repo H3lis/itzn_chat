@@ -1,0 +1,1 @@
+{"id": "A-004234", "text": "담당자님 성함은 최지훈 씨, 여권 번호는 B1234. C코드 778899-XX-YYYY입니다.", "pi": [{"type": "NAME", "text": "최지훈", "start": 9, "end": 12}, {"type": "PASSPORT", "text": "B1234. C코드 778899-XX-YYYY", "start": 23, "end": 48}], "meta": {"domain": "택배 문의", "style": "격식체", "obfuscation": ["separator_noise"], "hard_case": "none"}}

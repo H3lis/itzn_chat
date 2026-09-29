@@ -1,0 +1,1 @@
+{"id": "A-002109", "text": "저요? 아, 저 성함은 'ㄱㅏㅇㄴㅏㅁ'입니다.", "pi": [{"type": "NAME", "text": "ㄱㅏㅇㄴㅏㅁ", "start": 14, "end": 20}], "meta": {"domain": "커뮤니티 게시글", "style": "짧은 단답", "obfuscation": ["jamo_split"], "hard_case": "none"}}

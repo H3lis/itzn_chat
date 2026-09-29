@@ -1,0 +1,1 @@
+{"id": "A-004052", "text": "저 공주님 관련해서 말씀드리는데요, 생년월일이 2000년 1월 1일 맞으신지, 성함은 공주님으로 확인됩니다.", "pi": [{"type": "BIRTH", "text": "2000년 1월 1일", "start": 26, "end": 37}, {"type": "NAME", "text": "공주", "start": 48, "end": 50}], "meta": {"domain": "배달 요청사항", "style": "오타 많은 채팅", "obfuscation": ["honorific_ref", "self_correction"], "hard_case": "homonym_name"}}

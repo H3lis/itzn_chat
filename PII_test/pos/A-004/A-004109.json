@@ -1,0 +1,1 @@
+{"id": "A-004109", "text": "저 노을 씨는 오늘 메뉴가 어떤가요? 아, 아니다. 대표번호는 010-8108-5555가 맞아요.", "pi": [{"type": "NAME", "text": "노을", "start": 2, "end": 4}, {"type": "PHONE", "text": "010-8108-5555", "start": 35, "end": 48}], "meta": {"domain": "배달 요청사항", "style": "짧은 단답", "obfuscation": ["honorific_ref", "self_correction", "stt_error"], "hard_case": "homonym_name"}}

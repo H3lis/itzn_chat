@@ -1,0 +1,1 @@
+{"id": "A-001548", "text": "예약 문의하신 전화번호가 맞는지 다시 한번 불러주시겠어요? 010-5555-1234로 되어있는데요.", "pi": [{"type": "PHONE", "text": "010-5555-1234", "start": 33, "end": 46}], "meta": {"domain": "회의록", "style": "존댓말 상담", "obfuscation": ["korean_reading"], "hard_case": "none"}}

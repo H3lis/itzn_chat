@@ -1,0 +1,1 @@
+{"id": "A-004059", "text": "신청자분의 주민등록번호는 920101-1234567이 맞으신가요? 다시 한 번만 확인 부탁드립니다.", "pi": [{"type": "RRN", "text": "920101-1234567", "start": 14, "end": 28}], "meta": {"domain": "부동산 상담", "style": "격식체", "obfuscation": ["separator_noise"], "hard_case": "none"}}

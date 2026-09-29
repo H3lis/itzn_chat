@@ -1,0 +1,1 @@
+{"id": "A-000795", "text": "담당자 두 분 이름이 나무현수님과 나무지현님이고, 연락처는 010-9999-8888입니다.", "pi": [{"type": "NAME", "text": "나무현수", "start": 12, "end": 16}, {"type": "NAME", "text": "나무지현", "start": 19, "end": 23}, {"type": "PHONE", "text": "010-9999-8888", "start": 33, "end": 46}], "meta": {"domain": "음성통화 전사문", "style": "메신저 줄임말", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

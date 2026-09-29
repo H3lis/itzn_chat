@@ -1,0 +1,1 @@
+{"id": "A-002582", "text": "저 이번에 이천삼백네십오동에 사는데, 제가 이름이 김민준인가요? 아니 그냥 박지수예요.", "pi": [{"type": "ADDRESS", "text": "이천삼백네십오동", "start": 6, "end": 14}, {"type": "NAME", "text": "박지수", "start": 42, "end": 45}], "meta": {"domain": "커뮤니티 게시글", "style": "오타 많은 채팅", "obfuscation": ["self_correction"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-002279", "text": "제 개인적인 SNS는 아이디가 'Dreamer09'예요. 이걸로 연락 주시면 될 것 같아요.", "pi": [{"type": "SNS", "text": "Dreamer09", "start": 18, "end": 27}], "meta": {"domain": "고객센터 채팅", "style": "존댓말 상담", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

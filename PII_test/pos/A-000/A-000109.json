@@ -1,0 +1,1 @@
+{"id": "A-000109", "text": "김 과장님께, 그리고 박 부장님께 해당 서류를 전달드리겠습니다. 검토 부탁드립니다.", "pi": [{"type": "NAME", "text": "김 과장님", "start": 0, "end": 5}, {"type": "NAME", "text": "박 부장님", "start": 12, "end": 17}], "meta": {"domain": "배달 요청사항", "style": "공문서풍", "obfuscation": ["honorific_ref"], "hard_case": "none"}}

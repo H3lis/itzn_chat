@@ -1,0 +1,1 @@
+{"id": "A-001690", "text": "국민건강보험공단으로 신청할 건데요. 계정명은 'nara_user'고요, 담당자는 나라 씨로 처리해 주세요.", "pi": [{"type": "ACCOUNT", "text": "nara_user", "start": 26, "end": 35}, {"type": "NAME", "text": "나라", "start": 45, "end": 47}], "meta": {"domain": "보험 청구", "style": "구어체", "obfuscation": ["separator_noise"], "hard_case": "homonym_name"}}

@@ -1,0 +1,1 @@
+{"id": "A-005307", "text": "이슬 님, 저희가 요청하신 주소는 경기도 수원시 영통구 광교로예요. 이름은 이슬 씨 맞으신가요?", "pi": [{"type": "NAME", "text": "이슬", "start": 0, "end": 2}, {"type": "ADDRESS", "text": "경기도 수원시 영통구 광교로", "start": 19, "end": 34}], "meta": {"domain": "여행 예약", "style": "오타 많은 채팅", "obfuscation": ["honorific_ref", "korean_reading"], "hard_case": "homonym_name"}}

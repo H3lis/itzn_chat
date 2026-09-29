@@ -1,0 +1,1 @@
+{"id": "A-005233", "text": "예약하신 계정 아이디는 abc1234예요? 그리고 추가 아이디는 user22로 부탁드립니다.", "pi": [{"type": "ACCOUNT", "text": "abc1234", "start": 13, "end": 20}, {"type": "ID", "text": "user22", "start": 36, "end": 42}], "meta": {"domain": "여행 예약", "style": "짧은 단답", "obfuscation": ["stt_error"], "hard_case": "nickname_id"}}

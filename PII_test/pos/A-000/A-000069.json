@@ -1,0 +1,1 @@
+{"id": "A-000069", "text": "김 과장님, 혹시 그쪽에 있는 스마트 가전 코너의 '테크노 코리아'라는 곳에 문의할 수 있을까요?", "pi": [{"type": "NAME", "text": "김 과장님", "start": 0, "end": 5}, {"type": "ORG", "text": "테크노 코리아", "start": 29, "end": 36}], "meta": {"domain": "쇼핑몰 문의", "style": "격식체", "obfuscation": ["honorific_ref", "jamo_split"], "hard_case": "none"}}

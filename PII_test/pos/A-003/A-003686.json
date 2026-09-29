@@ -1,0 +1,1 @@
+{"id": "A-003686", "text": "저기요, 김민지 학생이 305호로 전학 갔는데, 혹시 새 주소 알려줄 수 있어요?", "pi": [{"type": "NAME", "text": "김민지", "start": 5, "end": 8}, {"type": "ADDRESS", "text": "305호", "start": 13, "end": 17}], "meta": {"domain": "학교 행정 문의", "style": "반말 대화", "obfuscation": ["plain"], "hard_case": "none"}}

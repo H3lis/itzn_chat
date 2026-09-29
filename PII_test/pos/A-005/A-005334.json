@@ -1,0 +1,1 @@
+{"id": "A-005334", "text": "혹시 김과장님께 연락처 좀 여쭤봐도 될까요? 주말에 개인적으로 드릴 말씀이 있어서요.", "pi": [{"type": "NAME", "text": "김과장님", "start": 3, "end": 7}], "meta": {"domain": "이메일 본문", "style": "메신저 줄임말", "obfuscation": ["honorific_ref"], "hard_case": "none"}}

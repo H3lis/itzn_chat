@@ -1,0 +1,1 @@
+{"id": "A-005459", "text": "저의 주민등록번호는 901231-1XXXXXX 이니, 이 정보로 학생 정보 조회가 가능한지 여쭤보고 싶습니다.", "pi": [{"type": "RRN", "text": "901231-1XXXXXX", "start": 11, "end": 25}], "meta": {"domain": "학교 행정 문의", "style": "존댓말 상담", "obfuscation": ["plain"], "hard_case": "none"}}

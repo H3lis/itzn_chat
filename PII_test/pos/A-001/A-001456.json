@@ -1,0 +1,1 @@
+{"id": "A-001456", "text": "저기요, 제가 사시는 곳 주소가 '서울특별시 강남구' 맞나요? 성함은 '하늘' 씨 맞으신가요?", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구", "start": 19, "end": 28}, {"type": "NAME", "text": "하늘", "start": 40, "end": 42}], "meta": {"domain": "중고거래 채팅", "style": "공문서풍", "obfuscation": ["romanized"], "hard_case": "homonym_name"}}

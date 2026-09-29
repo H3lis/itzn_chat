@@ -1,0 +1,1 @@
+{"id": "A-001455", "text": "여름에 이사 갈 생각인데, 혹시 이름이 '여름'이신 분이신가요? 전화번호가 '일일이일일-이이이이' 맞으신지 다시 한번요.", "pi": [{"type": "NAME", "text": "여름", "start": 23, "end": 25}, {"type": "PHONE", "text": "일일이일일-이이이이", "start": 43, "end": 53}], "meta": {"domain": "부동산 상담", "style": "구어체", "obfuscation": ["repeat_expr", "korean_reading"], "hard_case": "homonym_name"}}

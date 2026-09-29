@@ -1,0 +1,1 @@
+{"id": "A-002104", "text": "거주지는 서울시 강동구 천호동이시고, 고객님 성함은 소나무 님 맞으신가요?", "pi": [{"type": "ADDRESS", "text": "서울시 강동구 천호동", "start": 5, "end": 16}, {"type": "NAME", "text": "소나무", "start": 29, "end": 32}], "meta": {"domain": "콜센터 상담 요약", "style": "음성인식(STT) 전사", "obfuscation": ["honorific_ref"], "hard_case": "homonym_name"}}

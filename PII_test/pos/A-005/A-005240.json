@@ -1,0 +1,1 @@
+{"id": "A-005240", "text": "제 이름이 봄이라고 하는데, 연락 가능한 전화번호는 070-9999-1234가 맞을까요?", "pi": [{"type": "NAME", "text": "봄", "start": 6, "end": 7}, {"type": "PHONE", "text": "070-9999-1234", "start": 29, "end": 42}], "meta": {"domain": "고객센터 채팅", "style": "오타 많은 채팅", "obfuscation": ["romanized"], "hard_case": "homonym_name"}}

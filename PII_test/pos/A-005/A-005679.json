@@ -1,0 +1,1 @@
+{"id": "A-005679", "text": "혹시 담당자님 성함이 김영수 씨 맞나요? 아니면 김영수라고 불러주세요.", "pi": [{"type": "NAME", "text": "김영수", "start": 12, "end": 15}, {"type": "ORG", "text": "김영수", "start": 27, "end": 30}], "meta": {"domain": "SNS 댓글", "style": "음성인식(STT) 전사", "obfuscation": ["jamo_split", "romanized"], "hard_case": "org_person"}}

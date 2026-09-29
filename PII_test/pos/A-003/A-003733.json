@@ -1,0 +1,1 @@
+{"id": "A-003733", "text": "담당자분께, 제 이메일은 test.user123@mail.com이고요. 그리고 회원 등급 코드는 AlphaBravo77이에요.", "pi": [{"type": "EMAIL", "text": "test.user123@mail.com", "start": 14, "end": 35}, {"type": "OTHER_ID", "text": "AlphaBravo77", "start": 54, "end": 66}], "meta": {"domain": "보험 청구", "style": "메신저 줄임말", "obfuscation": ["split_utterance"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-005298", "text": "여권 번호는 A12345678을 확인 부탁드리며, 기타 정보는 없습니다.", "pi": [{"type": "PASSPORT", "text": "A12345678", "start": 7, "end": 16}], "meta": {"domain": "커뮤니티 게시글", "style": "공문서풍", "obfuscation": ["korean_reading"], "hard_case": "none"}}

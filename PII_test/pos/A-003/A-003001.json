@@ -1,0 +1,1 @@
+{"id": "A-003001", "text": "받으실 주소는 서울특별시 강남구 역삼동 501호가 맞을까요? 오디오 시스템에서 듣기로는 여기가 제일 정확해요.", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 역삼동 501호", "start": 8, "end": 26}], "meta": {"domain": "쇼핑몰 문의", "style": "격식체", "obfuscation": ["jamo_split", "stt_error"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-002356", "text": "가입 시 쓰신 계정 ID가 혹시 112233요? 헷갈리셔서 다시 확인 부탁드립니다.", "pi": [{"type": "ACCOUNT", "text": "112233", "start": 18, "end": 24}], "meta": {"domain": "고객센터 채팅", "style": "오타 많은 채팅", "obfuscation": ["self_correction"], "hard_case": "none"}}

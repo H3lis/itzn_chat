@@ -1,0 +1,1 @@
+{"id": "A-001130", "text": "제가 계정 이름이 'User_Dev'였던 것 같은데, 죄송합니다. 실제로는 'DevUser_2024'였던 것 같습니다.", "pi": [{"type": "ACCOUNT", "text": "User_Dev", "start": 11, "end": 19}, {"type": "PHONE", "text": "DevUser_2024", "start": 43, "end": 55}], "meta": {"domain": "커뮤니티 게시글", "style": "길고 장황한 설명", "obfuscation": ["self_correction"], "hard_case": "none"}}

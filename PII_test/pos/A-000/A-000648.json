@@ -1,0 +1,1 @@
+{"id": "A-000648", "text": "제 여권 번호가 1234-5678-9012이고, 메일 주소는 test@example.com 입니다.", "pi": [{"type": "PASSPORT", "text": "1234-5678-9012", "start": 9, "end": 23}, {"type": "EMAIL", "text": "test@example.com", "start": 34, "end": 50}], "meta": {"domain": "온라인 강의 Q&A", "style": "오타 많은 채팅", "obfuscation": ["plain"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-002564", "text": "담당자님, 문의드릴 게 있는데요. 제 이름이 정수철이에요. 전화번호는 010-9999-8888이고, 혹시 주소는 어떻게 되나요?", "pi": [{"type": "NAME", "text": "정수철", "start": 25, "end": 28}, {"type": "PHONE", "text": "010-9999-8888", "start": 39, "end": 52}], "meta": {"domain": "민원 접수", "style": "오타 많은 채팅", "obfuscation": ["mixed_reading", "self_correction"], "hard_case": "none"}}

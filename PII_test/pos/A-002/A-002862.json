@@ -1,0 +1,1 @@
+{"id": "A-002862", "text": "거기 주소는 한글로 적어주실 수 있나요? '서울특별시 강남구 역삼동 123-45'라고요.", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 역삼동 123-45", "start": 24, "end": 44}], "meta": {"domain": "중고거래 채팅", "style": "공문서풍", "obfuscation": ["korean_reading"], "hard_case": "none"}}

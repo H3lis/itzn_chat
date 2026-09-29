@@ -1,0 +1,1 @@
+{"id": "A-005499", "text": "신분 확인을 위해 주민등록번호 앞 여섯 자리가 123456이라고 말씀해주시겠어요?", "pi": [{"type": "RRN", "text": "123456", "start": 26, "end": 32}], "meta": {"domain": "고객센터 채팅", "style": "격식체", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-002127", "text": "계정 번호는 9999, 이메일은 1111@xxx.com, 이름은 달님으로 부탁드려요.", "pi": [{"type": "ACCOUNT", "text": "9999", "start": 7, "end": 11}, {"type": "EMAIL", "text": "1111@xxx.com", "start": 18, "end": 30}, {"type": "NAME", "text": "달님", "start": 36, "end": 38}], "meta": {"domain": "배달 요청사항", "style": "짧은 단답", "obfuscation": ["repeat_expr"], "hard_case": "homonym_name"}}

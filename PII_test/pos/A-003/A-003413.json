@@ -1,0 +1,1 @@
+{"id": "A-003413", "text": "저희 집 주소는 경기도 성남시 분당구 판교역 근처야. 이름은 서연이고.", "pi": [{"type": "ADDRESS", "text": "경기도 성남시 분당구 판교역", "start": 9, "end": 24}, {"type": "NAME", "text": "서연", "start": 34, "end": 36}], "meta": {"domain": "배달 요청사항", "style": "반말 대화", "obfuscation": ["korean_reading"], "hard_case": "none"}}

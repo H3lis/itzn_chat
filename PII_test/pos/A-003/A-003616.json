@@ -1,0 +1,1 @@
+{"id": "A-003616", "text": "학생의 주민등록번호는 901234-5678901이 맞는지 다시 한번 확인 부탁드립니다.", "pi": [{"type": "RRN", "text": "901234-5678901", "start": 12, "end": 26}], "meta": {"domain": "쇼핑몰 문의", "style": "음성인식(STT) 전사", "obfuscation": ["stt_error"], "hard_case": "none"}}

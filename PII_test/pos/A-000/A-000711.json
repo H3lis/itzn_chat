@@ -1,0 +1,1 @@
+{"id": "A-000711", "text": "제 이름은 다솜인데요, 이게 혹시 'DaSom'이 맞을까요? 네,아니요, 맞습니다. '다솜'이요.", "pi": [{"type": "NAME", "text": "다솜", "start": 6, "end": 8}], "meta": {"domain": "온라인 강의 Q&A", "style": "메신저 줄임말", "obfuscation": ["self_correction", "jamo_split"], "hard_case": "homonym_name"}}

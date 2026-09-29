@@ -1,0 +1,1 @@
+{"id": "A-004228", "text": "결제는 비자 마지막 네 자리가 4012에서요. 네, 4-0-1-2입니다.", "pi": [{"type": "CARD", "text": "4-0-1-2", "start": 29, "end": 36}], "meta": {"domain": "음성통화 전사문", "style": "음성인식(STT) 전사", "obfuscation": ["separator_noise", "stt_error"], "hard_case": "none"}}

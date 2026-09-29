@@ -1,0 +1,1 @@
+{"id": "A-001795", "text": "고객님, 보내주신 메일 주소는 바다.lover@example.net 이고요. 성함은 바다 님 맞으시죠? 추가로 확인이 필요합니다.", "pi": [{"type": "EMAIL", "text": "바다.lover@example.net", "start": 17, "end": 37}, {"type": "NAME", "text": "바다", "start": 47, "end": 49}], "meta": {"domain": "배달 요청사항", "style": "격식체", "obfuscation": ["honorific_ref"], "hard_case": "homonym_name"}}

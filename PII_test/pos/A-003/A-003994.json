@@ -1,0 +1,1 @@
+{"id": "A-003994", "text": "저희 회사 계정은 abc1234입니다. 혹시 연락 가능한 전화번호는 010-1111-2222로 변경해 주시겠어요?", "pi": [{"type": "ACCOUNT", "text": "abc1234", "start": 10, "end": 17}, {"type": "PHONE", "text": "010-1111-2222", "start": 38, "end": 51}], "meta": {"domain": "커뮤니티 게시글", "style": "격식체", "obfuscation": ["separator_noise"], "hard_case": "none"}}

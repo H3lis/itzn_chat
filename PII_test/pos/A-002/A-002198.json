@@ -1,0 +1,1 @@
+{"id": "A-002198", "text": "저의 주민등록번호는 921123 이렇게 말씀드렸는데, 혹시가요? 92 1 1 2 3 끝에 생년월일 말씀하시는 거예요.", "pi": [{"type": "RRN", "text": "92 1 1 2 3", "start": 36, "end": 46}], "meta": {"domain": "SNS 댓글", "style": "음성인식(STT) 전사", "obfuscation": ["split_utterance", "korean_reading"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-001275", "text": "생년월일은 1985년 3월 15일이고요, 성함은 슬기님으로 확인 부탁드립니다.", "pi": [{"type": "BIRTH", "text": "1985년 3월 15일", "start": 6, "end": 18}, {"type": "NAME", "text": "슬기", "start": 27, "end": 29}], "meta": {"domain": "병원 접수", "style": "공문서풍", "obfuscation": ["separator_noise", "repeat_expr"], "hard_case": "homonym_name"}}

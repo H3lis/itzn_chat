@@ -1,0 +1,1 @@
+{"id": "A-002188", "text": "저희 채널은 @user_abc 입니다. 그리고 텔레그램은 userabc_official 이고요.", "pi": [{"type": "SNS", "text": "@user_abc", "start": 7, "end": 16}, {"type": "SNS", "text": "userabc_official", "start": 32, "end": 48}], "meta": {"domain": "택배 문의", "style": "짧은 단답", "obfuscation": ["lookalike_char", "romanized", "separator_noise"], "hard_case": "none"}}

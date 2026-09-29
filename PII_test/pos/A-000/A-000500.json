@@ -1,0 +1,1 @@
+{"id": "A-000500", "text": "제가 운전면허증 번호를 확인해야 할 것 같습니다. 1234-567-8901 이거 맞나요?", "pi": [{"type": "DRIVER_LICENSE", "text": "1234-567-8901", "start": 28, "end": 41}], "meta": {"domain": "직장 메신저", "style": "짧은 단답", "obfuscation": ["split_utterance"], "hard_case": "none"}}

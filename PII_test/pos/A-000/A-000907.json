@@ -1,0 +1,1 @@
+{"id": "A-000907", "text": "네, 고객님. 확인하신 성함은 김민정 님이 맞으신가요? 혹시 다른 분 이름이신가요?", "pi": [{"type": "NAME", "text": "김민정", "start": 17, "end": 20}], "meta": {"domain": "음성통화 전사문", "style": "존댓말 상담", "obfuscation": ["self_correction"], "hard_case": "none"}}

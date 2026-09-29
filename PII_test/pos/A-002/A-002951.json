@@ -1,0 +1,1 @@
+{"id": "A-002951", "text": "제 계정은 aaaaa@bbbb.net 이고, 이름은 한결이에요.", "pi": [{"type": "ACCOUNT", "text": "aaaaa@bbbb.net", "start": 6, "end": 20}, {"type": "NAME", "text": "한결", "start": 29, "end": 31}], "meta": {"domain": "온라인 강의 Q&A", "style": "메신저 줄임말", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

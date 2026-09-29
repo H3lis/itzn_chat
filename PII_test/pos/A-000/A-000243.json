@@ -1,0 +1,1 @@
+{"id": "A-000243", "text": "연락 주신 이메일은 example.(at)gmail.com으로 확인되는데, 이게 맞으신가요?", "pi": [{"type": "EMAIL", "text": "example.(at)gmail.com", "start": 11, "end": 32}], "meta": {"domain": "중고거래 채팅", "style": "길고 장황한 설명", "obfuscation": ["separator_noise"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-002291", "text": "이 분의 성함은 나라 씨라고 하시네요. 혹시 다른 별명이 있나요?", "pi": [{"type": "NAME", "text": "나라", "start": 9, "end": 11}], "meta": {"domain": "회의록", "style": "짧은 단답", "obfuscation": ["self_correction"], "hard_case": "homonym_name"}}

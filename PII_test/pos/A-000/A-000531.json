@@ -1,0 +1,1 @@
+{"id": "A-000531", "text": "저 혹시 김철수한테 연락 가능한 이메일 주소 아시는 분 계신가요?", "pi": [{"type": "NAME", "text": "김철수", "start": 5, "end": 8}], "meta": {"domain": "이메일 본문", "style": "오타 많은 채팅", "obfuscation": ["jamo_split"], "hard_case": "none"}}

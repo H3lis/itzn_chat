@@ -1,0 +1,1 @@
+{"id": "A-003027", "text": "혹시 '장미' 님께 맡기신 물건 있나요? 그쪽으로 '장미' 씨가 찾으신다고 하던데.", "pi": [{"type": "NAME", "text": "장미", "start": 4, "end": 6}, {"type": "NAME", "text": "장미", "start": 29, "end": 31}], "meta": {"domain": "중고거래 채팅", "style": "반말 대화", "obfuscation": ["jamo_split", "romanized"], "hard_case": "none"}}

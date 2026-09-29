@@ -1,0 +1,1 @@
+{"id": "A-005111", "text": "제 주민등록번호는 950315-1xxxxxxxxx로 시작하는데요, 혹시 다시 한번 확인 부탁드릴게요.", "pi": [{"type": "RRN", "text": "950315-1xxxxxxxxx", "start": 10, "end": 27}], "meta": {"domain": "커뮤니티 게시글", "style": "길고 장황한 설명", "obfuscation": ["separator_noise"], "hard_case": "none"}}

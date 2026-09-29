@@ -1,0 +1,1 @@
+{"id": "A-002116", "text": "김민지 선생님께서 진료를 원하시는데, 예전에 병원에 등록된 성함이 혹시 다른 건 없으실까요?", "pi": [{"type": "NAME", "text": "김민지", "start": 0, "end": 3}], "meta": {"domain": "병원 접수", "style": "존댓말 상담", "obfuscation": ["honorific_ref", "romanized"], "hard_case": "none"}}

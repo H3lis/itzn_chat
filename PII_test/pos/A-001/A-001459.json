@@ -1,0 +1,1 @@
+{"id": "A-001459", "text": "차량 번호가 '1가2다3' 맞으세요? 그리고 제 이메일은 'a1b2(at)c3d.com'이에요.", "pi": [{"type": "CAR_PLATE", "text": "1가2다3", "start": 8, "end": 13}, {"type": "EMAIL", "text": "a1b2(at)c3d.com", "start": 33, "end": 48}], "meta": {"domain": "온라인 강의 Q&A", "style": "반말 대화", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

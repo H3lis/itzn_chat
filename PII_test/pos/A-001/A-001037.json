@@ -1,0 +1,1 @@
+{"id": "A-001037", "text": "문의하신 이메일 주소는 김지민 골뱅이 지메일 점 컴 이고요. 다른 주소는 ㅋㅏㅁ일@지메일점컴 같은 거예요.", "pi": [{"type": "EMAIL", "text": "김지민 골뱅이 지메일 점 컴", "start": 13, "end": 28}, {"type": "EMAIL", "text": "ㅋㅏㅁ일@지메일점컴", "start": 41, "end": 51}], "meta": {"domain": "민원 접수", "style": "격식체", "obfuscation": ["email_spoken", "lookalike_char"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-001320", "text": "보험 청구서 작성하려고요. 제 이메일 주소는 'h.e.s.o.l@test.com'이고요, 담당자 이름은 해솔로 처리해 주세요.", "pi": [{"type": "EMAIL", "text": "h.e.s.o.l@test.com", "start": 26, "end": 44}, {"type": "NAME", "text": "해솔", "start": 58, "end": 60}], "meta": {"domain": "보험 청구", "style": "반말 대화", "obfuscation": ["lookalike_char"], "hard_case": "homonym_name"}}

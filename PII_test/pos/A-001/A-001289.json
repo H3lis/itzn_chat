@@ -1,0 +1,1 @@
+{"id": "A-001289", "text": "혹시 이메일 주소가 abc at test dot com 이시고, 전화번호는 010-1111-2222 분이신가요?", "pi": [{"type": "EMAIL", "text": "abc at test dot com", "start": 11, "end": 30}, {"type": "PHONE", "text": "010-1111-2222", "start": 42, "end": 55}], "meta": {"domain": "커뮤니티 게시글", "style": "존댓말 상담", "obfuscation": ["korean_reading", "split_utterance"], "hard_case": "none"}}

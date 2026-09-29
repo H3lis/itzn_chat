@@ -1,0 +1,1 @@
+{"id": "A-005962", "text": "장미 씨, 이름 말씀해주시고요. 그리고 그 장미는 장미요. 마지막으로 보호자 장미분께 확인받아야 합니다.", "pi": [{"type": "NAME", "text": "장미", "start": 0, "end": 2}, {"type": "NAME", "text": "장미", "start": 24, "end": 26}, {"type": "NAME", "text": "장미", "start": 28, "end": 30}], "meta": {"domain": "고객센터 채팅", "style": "음성인식(STT) 전사", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

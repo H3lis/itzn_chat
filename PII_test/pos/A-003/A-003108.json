@@ -1,0 +1,1 @@
+{"id": "A-003108", "text": "제 주민등록번호가 991210-2222222는 맞는데, 혹시 이전에 말씀하신 부분이 좀 다르지 않나요?", "pi": [{"type": "RRN", "text": "991210-2222222", "start": 10, "end": 24}], "meta": {"domain": "쇼핑몰 문의", "style": "구어체", "obfuscation": ["korean_reading", "stt_error"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-002015", "text": "주소가 어디신가요? 혹시 경기도 용인시 수지구 보정로 77-22 같은 곳에요.", "pi": [{"type": "ADDRESS", "text": "경기도 용인시 수지구 보정로 77-22", "start": 14, "end": 35}], "meta": {"domain": "민원 접수", "style": "오타 많은 채팅", "obfuscation": ["jamo_split"], "hard_case": "none"}}

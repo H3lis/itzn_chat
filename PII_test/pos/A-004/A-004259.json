@@ -1,0 +1,1 @@
+{"id": "A-004259", "text": "보내주실 주소는 부산광역시 해운대구 마린시티라 적어주시고요.", "pi": [{"type": "ADDRESS", "text": "부산광역시 해운대구 마린시티", "start": 9, "end": 24}], "meta": {"domain": "배달 요청사항", "style": "격식체", "obfuscation": ["jamo_split", "stt_error"], "hard_case": "none"}}

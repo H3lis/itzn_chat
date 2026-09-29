@@ -1,0 +1,1 @@
+{"id": "A-003025", "text": "저는 김민준이고요, 다른 분은 박서준이고, 마지막으로 이지은이에요.", "pi": [{"type": "NAME", "text": "김민준", "start": 3, "end": 6}, {"type": "NAME", "text": "박서준", "start": 17, "end": 20}, {"type": "NAME", "text": "이지은", "start": 30, "end": 33}], "meta": {"domain": "커뮤니티 게시글", "style": "구어체", "obfuscation": ["plain"], "hard_case": "none"}}

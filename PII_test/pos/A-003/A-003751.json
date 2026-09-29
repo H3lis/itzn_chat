@@ -1,0 +1,1 @@
+{"id": "A-003751", "text": "슬기님, 혹시 생년월일 알려주실 수 있나요? 성함은 슬기 씨로 하시면 돼요.", "pi": [{"type": "BIRTH", "text": "슬기", "start": 0, "end": 2}, {"type": "NAME", "text": "슬기", "start": 29, "end": 31}], "meta": {"domain": "금융 상담", "style": "메신저 줄임말", "obfuscation": ["mixed_reading"], "hard_case": "homonym_name"}}

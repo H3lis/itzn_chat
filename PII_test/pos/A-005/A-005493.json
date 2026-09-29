@@ -1,0 +1,1 @@
+{"id": "A-005493", "text": "저희가 확인해 보니 생년월일이 92년 3월 15일로 잘못 입력되셨네요. 혹시 정확하게 다시 알려주시겠어요?", "pi": [{"type": "BIRTH", "text": "92년 3월 15일", "start": 17, "end": 27}], "meta": {"domain": "콜센터 상담 요약", "style": "오타 많은 채팅", "obfuscation": ["stt_error"], "hard_case": "none"}}

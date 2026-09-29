@@ -1,0 +1,1 @@
+{"id": "A-003468", "text": "문의사항은 support@example.co.kr 로 메일을 주시면 제가 확인해 보겠습니다.", "pi": [{"type": "EMAIL", "text": "support@example.co.kr", "start": 6, "end": 27}], "meta": {"domain": "온라인 강의 Q&A", "style": "격식체", "obfuscation": ["separator_noise"], "hard_case": "none"}}

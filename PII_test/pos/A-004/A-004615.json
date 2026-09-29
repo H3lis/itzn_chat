@@ -1,0 +1,1 @@
+{"id": "A-004615", "text": "고객님, 이용에 불편을 드려 정말 죄송합니다. 연락받으신 번호가 070-9876-5432가 맞는지 다시 한번 확인 부탁드립니다.", "pi": [{"type": "PHONE", "text": "070-9876-5432", "start": 36, "end": 49}], "meta": {"domain": "고객센터 채팅", "style": "격식체", "obfuscation": ["self_correction"], "hard_case": "none"}}

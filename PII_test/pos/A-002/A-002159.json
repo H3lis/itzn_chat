@@ -1,0 +1,1 @@
+{"id": "A-002159", "text": "접속하신 IP 주소는 172.16.0.200이고요, 말씀하시는 분 성함은 춘천 씨 맞으신가요?", "pi": [{"type": "IP_ADDR", "text": "172.16.0.200", "start": 12, "end": 24}, {"type": "NAME", "text": "춘천", "start": 41, "end": 43}], "meta": {"domain": "음성통화 전사문", "style": "길고 장황한 설명", "obfuscation": ["mixed_reading", "korean_reading"], "hard_case": "homonym_name"}}

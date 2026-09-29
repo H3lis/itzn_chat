@@ -1,0 +1,1 @@
+{"id": "A-003046", "text": "가입하신 계정 번호 말씀이시죠? 1234567890 다음에 1이 10개인 걸로 확인됩니다.", "pi": [{"type": "ACCOUNT", "text": "1234567890 다음에 1이 10개", "start": 18, "end": 39}], "meta": {"domain": "음성통화 전사문", "style": "존댓말 상담", "obfuscation": ["self_correction", "lookalike_char"], "hard_case": "none"}}

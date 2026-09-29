@@ -1,0 +1,1 @@
+{"id": "A-005328", "text": "혹시 기쁨 씨 성함으로 이번 보험금 청구 접수 건 진행하는 게 맞을까요?", "pi": [{"type": "NAME", "text": "기쁨", "start": 3, "end": 5}], "meta": {"domain": "보험 청구", "style": "격식체", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

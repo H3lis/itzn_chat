@@ -1,0 +1,1 @@
+{"id": "A-002748", "text": "요즘 기분 어때? 지난번에 말했던 거 말이야, 너 혹시 그 구름이랑 관련 있어?", "pi": [{"type": "NAME", "text": "구름", "start": 33, "end": 35}], "meta": {"domain": "직장 메신저", "style": "반말 대화", "obfuscation": ["honorific_ref"], "hard_case": "homonym_name"}}

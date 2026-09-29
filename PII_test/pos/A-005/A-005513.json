@@ -1,0 +1,1 @@
+{"id": "A-005513", "text": "차량 번호가 '서울 에스 오 원'이셨고, 성함은 김민준 씨로 확인됐습니다.", "pi": [{"type": "CAR_PLATE", "text": "서울 에스 오 원", "start": 8, "end": 17}, {"type": "NAME", "text": "김민준", "start": 27, "end": 30}], "meta": {"domain": "병원 접수", "style": "존댓말 상담", "obfuscation": ["self_correction", "split_utterance", "romanized"], "hard_case": "none"}}

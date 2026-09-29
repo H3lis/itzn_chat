@@ -1,0 +1,1 @@
+{"id": "A-000334", "text": "접속하신 IP 주소가 192.168.0.100 같은데, 혹시 이 부분이 192.168.0.100으로 다시 말씀해 주실 수 있나요?", "pi": [{"type": "IP_ADDR", "text": "192.168.0.100", "start": 12, "end": 25}], "meta": {"domain": "금융 상담", "style": "존댓말 상담", "obfuscation": ["repeat_expr", "korean_reading"], "hard_case": "none"}}

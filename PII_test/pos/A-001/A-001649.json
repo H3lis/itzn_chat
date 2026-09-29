@@ -1,0 +1,1 @@
+{"id": "A-001649", "text": "교수님, 이 부분은 제가 재점검한 결과가 아니라, 김 교수님께서 직접 확인하신 내용이라서요. 그리고 이 학원장님도 같은 말씀을 하셨어요.", "pi": [{"type": "NAME", "text": "김 교수님", "start": 28, "end": 33}, {"type": "NAME", "text": "학원장님", "start": 58, "end": 62}], "meta": {"domain": "온라인 강의 Q&A", "style": "메신저 줄임말", "obfuscation": ["honorific_ref"], "hard_case": "none"}}

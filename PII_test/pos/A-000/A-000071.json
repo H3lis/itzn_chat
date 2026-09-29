@@ -1,0 +1,1 @@
+{"id": "A-000071", "text": "하루야, 결제하신 카드 번호가 4567 9988 1122이요? 아, 이거 네 번으로 되어 있어요.", "pi": [{"type": "NAME", "text": "하루", "start": 0, "end": 2}, {"type": "CARD", "text": "4567 9988 1122", "start": 17, "end": 31}], "meta": {"domain": "온라인 강의 Q&A", "style": "반말 대화", "obfuscation": ["mixed_reading"], "hard_case": "homonym_name"}}

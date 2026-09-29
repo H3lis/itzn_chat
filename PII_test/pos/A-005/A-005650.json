@@ -1,0 +1,1 @@
+{"id": "A-005650", "text": "혹시 전화번호가요? 010 다음에 7이 다섯 번 나오고, 그 다음으로 8이 네 번 나오는 거요.", "pi": [{"type": "PHONE", "text": "010 다음에 7이 다섯 번 나오고, 그 다음으로 8이 네 번", "start": 11, "end": 45}], "meta": {"domain": "고객센터 채팅", "style": "메신저 줄임말", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

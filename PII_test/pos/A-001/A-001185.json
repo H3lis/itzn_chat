@@ -1,0 +1,1 @@
+{"id": "A-001185", "text": "신분증을 다시 한번 확인해 주시겠어요? 아, 네, 주민등록번호는 910101-1******으로 말씀해주시면 되고요.", "pi": [{"type": "DRIVER_LICENSE", "text": "910101-1", "start": 36, "end": 44}], "meta": {"domain": "민원 접수", "style": "존댓말 상담", "obfuscation": ["separator_noise", "mixed_reading"], "hard_case": "none"}}

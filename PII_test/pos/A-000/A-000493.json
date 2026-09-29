@@ -1,0 +1,1 @@
+{"id": "A-000493", "text": "장미 씨 오늘 저녁 식사 메뉴는 뭘로 할까요?", "pi": [{"type": "NAME", "text": "장미", "start": 0, "end": 2}], "meta": {"domain": "배달 요청사항", "style": "짧은 단답", "obfuscation": ["honorific_ref"], "hard_case": "none"}}

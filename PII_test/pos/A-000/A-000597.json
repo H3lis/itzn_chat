@@ -1,0 +1,1 @@
+{"id": "A-000597", "text": "제 이름은 박지은이고, 접수 시 기록 부탁드려요. 혹시 김민지 씨 정보도 있을까요?", "pi": [{"type": "NAME", "text": "박지은", "start": 6, "end": 9}], "meta": {"domain": "보험 청구", "style": "오타 많은 채팅", "obfuscation": ["jamo_split"], "hard_case": "none"}}

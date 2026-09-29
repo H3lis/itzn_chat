@@ -1,0 +1,1 @@
+{"id": "A-005172", "text": "혹시 그 패스포트 번호가요? 아까 말씀하신 'A1B2C3D4E5F6'랑 오늘 또 확인 부탁드려요, 그리고 우리 학원은 '서울교육연구소' 맞죠?", "pi": [{"type": "PASSPORT", "text": "A1B2C3D4E5F6", "start": 25, "end": 37}, {"type": "ORG", "text": "서울교육연구소", "start": 67, "end": 74}], "meta": {"domain": "쇼핑몰 문의", "style": "반말 대화", "obfuscation": ["stt_error", "repeat_expr"], "hard_case": "org_person"}}

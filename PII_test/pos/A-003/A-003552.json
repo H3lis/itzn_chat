@@ -1,0 +1,1 @@
+{"id": "A-003552", "text": "담당자분 성함이 진주 씨 맞으신가요? 그리고 개인 SNS 아이디는 ㅅㅁㅁㅁㅁㅁㅁㅁㅁ입니다. 다시 확인해 드릴게요.", "pi": [{"type": "NAME", "text": "진주", "start": 9, "end": 11}, {"type": "SNS", "text": "ㅅㅁㅁㅁㅁㅁㅁㅁㅁ", "start": 37, "end": 46}], "meta": {"domain": "민원 접수", "style": "음성인식(STT) 전사", "obfuscation": ["lookalike_char"], "hard_case": "homonym_name"}}

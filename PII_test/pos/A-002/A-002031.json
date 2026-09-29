@@ -1,0 +1,1 @@
+{"id": "A-002031", "text": "저희 집 주소는 경기도 수원시 팔달구 효원로에 있는데, 정확한 건 '경기도 수원시' 라고 다시 말해주시겠어요?", "pi": [{"type": "ADDRESS", "text": "경기도 수원시", "start": 9, "end": 16}], "meta": {"domain": "학교 행정 문의", "style": "메신저 줄임말", "obfuscation": ["split_utterance"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-001183", "text": "구매자: 지혜님, 혹시 사용감은 어떤가요? 판매자: 네, 사용한 지 얼마 안 돼서요. 이름은 지혜로 기억해주시면 됩니다.", "pi": [{"type": "NAME", "text": "지혜", "start": 5, "end": 7}, {"type": "OTHER_ID", "text": "지혜", "start": 52, "end": 54}], "meta": {"domain": "중고거래 채팅", "style": "음성인식(STT) 전사", "obfuscation": ["korean_reading", "romanized"], "hard_case": "homonym_name"}}

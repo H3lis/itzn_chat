@@ -1,0 +1,1 @@
+{"id": "A-005836", "text": "대표님, 성함이 라임 부장님이 맞으신가요? 그리고 주민등록번호는 901231-2222333으로 확인됩니다.", "pi": [{"type": "NAME", "text": "라임", "start": 9, "end": 11}, {"type": "RRN", "text": "901231-2222333", "start": 36, "end": 50}], "meta": {"domain": "고객센터 채팅", "style": "존댓말 상담", "obfuscation": ["self_correction"], "hard_case": "homonym_name"}}

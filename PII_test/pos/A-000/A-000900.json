@@ -1,0 +1,1 @@
+{"id": "A-000900", "text": "택배 물품이 도착하는 날짜를 다시 한번 확인 부탁드립니다. 오늘 오후 다섯 시부터 다음 날 오전 열 시까지 도착 예정이래요.", "pi": [{"type": "PHONE", "text": "오후 다섯 시부터 다음 날 오전 열 시", "start": 36, "end": 57}], "meta": {"domain": "택배 문의", "style": "길고 장황한 설명", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

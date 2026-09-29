@@ -1,0 +1,1 @@
+{"id": "A-005810", "text": "고객님의 성함은 박지성이고요, 연락 가능한 번호는 010-2222-3333으로 돼 있는데요.", "pi": [{"type": "NAME", "text": "박지성", "start": 9, "end": 12}, {"type": "PHONE", "text": "010-2222-3333", "start": 28, "end": 41}], "meta": {"domain": "금융 상담", "style": "음성인식(STT) 전사", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

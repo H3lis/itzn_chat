@@ -1,0 +1,1 @@
+{"id": "A-003076", "text": "고객님께서 남겨주신 대표 전화번호가 010 1234 5678입니다. 이 번호가 맞을까요?", "pi": [{"type": "PHONE", "text": "010 1234 5678", "start": 20, "end": 33}], "meta": {"domain": "부동산 상담", "style": "격식체", "obfuscation": ["separator_noise"], "hard_case": "none"}}

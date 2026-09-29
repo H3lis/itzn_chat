@@ -1,0 +1,1 @@
+{"id": "A-003396", "text": "환자분 성함이 아침이시군요. 그리고 이메일 주소가 아침.kim@corp.co.kr 맞으신가요?", "pi": [{"type": "NAME", "text": "아침", "start": 8, "end": 10}, {"type": "EMAIL", "text": "아침.kim@corp.co.kr", "start": 28, "end": 45}], "meta": {"domain": "병원 접수", "style": "격식체", "obfuscation": ["romanized"], "hard_case": "homonym_name"}}

@@ -1,0 +1,1 @@
+{"id": "A-001952", "text": "저의 계정 아이디는 라이브챗이고요, 소셜 미디어는 트위터로 되어 있어요.", "pi": [{"type": "NAME", "text": "라이브챗", "start": 11, "end": 15}, {"type": "SNS", "text": "트위터", "start": 28, "end": 31}], "meta": {"domain": "SNS 댓글", "style": "존댓말 상담", "obfuscation": ["romanized", "separator_noise"], "hard_case": "nickname_id"}}

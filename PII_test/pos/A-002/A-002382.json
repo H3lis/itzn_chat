@@ -1,0 +1,1 @@
+{"id": "A-002382", "text": "그쪽 번호는요, 010-5555-4444 맞으신가요?", "pi": [{"type": "PHONE", "text": "010-5555-4444", "start": 9, "end": 22}], "meta": {"domain": "민원 접수", "style": "구어체", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

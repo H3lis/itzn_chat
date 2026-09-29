@@ -1,0 +1,1 @@
+{"id": "A-003352", "text": "주문하신 상품이 혹시 배송이 늦어지게 되면, 이 메일 주소 ０10-1111-2222@g마일 점 컴 쪽으로 다시 연락 주시면 돼요.", "pi": [{"type": "EMAIL", "text": "０10-1111-2222@g마일 점 컴", "start": 33, "end": 54}], "meta": {"domain": "쇼핑몰 문의", "style": "반말 대화", "obfuscation": ["lookalike_char", "separator_noise", "email_spoken"], "hard_case": "none"}}

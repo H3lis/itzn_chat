@@ -1,0 +1,1 @@
+{"id": "A-000621", "text": "여권 번호가요? 저기요, ABC-12345-XYZ-99예요. 그리고 휴대폰은 010-5555-4444입니다.", "pi": [{"type": "PASSPORT", "text": "ABC-12345-XYZ-99", "start": 14, "end": 30}, {"type": "PHONE", "text": "010-5555-4444", "start": 43, "end": 56}], "meta": {"domain": "부동산 상담", "style": "존댓말 상담", "obfuscation": ["korean_reading"], "hard_case": "none"}}

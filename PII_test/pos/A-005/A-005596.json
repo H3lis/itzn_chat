@@ -1,0 +1,1 @@
+{"id": "A-005596", "text": "네, 담당자님 이름은 하늘 씨시고, 회사명은 대성건축이라는 곳이에요. 혹시 연락처도 좀 알고 계신가요?", "pi": [{"type": "NAME", "text": "하늘", "start": 12, "end": 14}, {"type": "ORG", "text": "대성건축", "start": 25, "end": 29}], "meta": {"domain": "부동산 상담", "style": "짧은 단답", "obfuscation": ["self_correction"], "hard_case": "homonym_name"}}

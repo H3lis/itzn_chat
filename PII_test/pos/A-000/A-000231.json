@@ -1,0 +1,1 @@
+{"id": "A-000231", "text": "전화번호가 010-3333-4444인데요, 혹시 다시 한번 확인해 주시겠어요?", "pi": [{"type": "PHONE", "text": "010-3333-4444", "start": 6, "end": 19}], "meta": {"domain": "음성통화 전사문", "style": "존댓말 상담", "obfuscation": ["stt_error", "repeat_expr"], "hard_case": "none"}}

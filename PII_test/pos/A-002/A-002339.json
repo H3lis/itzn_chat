@@ -1,0 +1,1 @@
+{"id": "A-002339", "text": "이사 갈 주소는 경기도 가상의 아파트 7동 805호이고, 연락받을 비상 ID는 SKY_MEMBER_9900으로 해주시고요.", "pi": [{"type": "ADDRESS", "text": "경기도 가상의 아파트 7동 805호", "start": 9, "end": 28}, {"type": "OTHER_ID", "text": "SKY_MEMBER_9900", "start": 44, "end": 59}], "meta": {"domain": "음성통화 전사문", "style": "메신저 줄임말", "obfuscation": ["plain"], "hard_case": "none"}}

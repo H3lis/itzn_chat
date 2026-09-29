@@ -1,0 +1,1 @@
+{"id": "A-000059", "text": "안양이요? 거기가 어디쯤에 있어요? 혹시 정확한 주소를 알려줄 수 있어?", "pi": [{"type": "NAME", "text": "안양", "start": 0, "end": 2}], "meta": {"domain": "부동산 상담", "style": "반말 대화", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

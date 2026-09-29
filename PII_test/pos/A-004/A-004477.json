@@ -1,0 +1,1 @@
+{"id": "A-004477", "text": "김민준 님, 저희 측에서 보내드린 자료 확인하셨나요? passport 번호 잊어버리신 것 같아서 다시 알려드릴게요.", "pi": [{"type": "NAME", "text": "김민준", "start": 0, "end": 3}, {"type": "PASSPORT", "text": "passport", "start": 30, "end": 38}], "meta": {"domain": "이메일 본문", "style": "메신저 줄임말", "obfuscation": ["stt_error", "honorific_ref"], "hard_case": "none"}}

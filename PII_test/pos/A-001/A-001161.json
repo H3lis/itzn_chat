@@ -1,0 +1,1 @@
+{"id": "A-001161", "text": "어떤 분이신지 성함을 여쭤봐도 될까요? 혹시 이름이 '김민준'으로 되어 있던가요?", "pi": [{"type": "NAME", "text": "김민준", "start": 30, "end": 33}], "meta": {"domain": "부동산 상담", "style": "오타 많은 채팅", "obfuscation": ["jamo_split"], "hard_case": "none"}}

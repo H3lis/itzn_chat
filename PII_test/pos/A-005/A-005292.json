@@ -1,0 +1,1 @@
+{"id": "A-005292", "text": "저 학생은 김지민 학생이고요, 박서연 학생이라고 다시 불러주시면 감사하겠습니다.", "pi": [{"type": "NAME", "text": "김지민", "start": 6, "end": 9}, {"type": "NAME", "text": "박서연", "start": 17, "end": 20}], "meta": {"domain": "학교 행정 문의", "style": "격식체", "obfuscation": ["jamo_split", "romanized"], "hard_case": "none"}}

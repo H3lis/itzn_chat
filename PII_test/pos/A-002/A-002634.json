@@ -1,0 +1,1 @@
+{"id": "A-002634", "text": "저 담당자님 성함이 장미 과장님이고, SNS는 @my_love_diary 같은 거로 알고 있습니다.", "pi": [{"type": "NAME", "text": "장미", "start": 11, "end": 13}, {"type": "SNS", "text": "@my_love_diary", "start": 26, "end": 40}], "meta": {"domain": "병원 접수", "style": "길고 장황한 설명", "obfuscation": ["lookalike_char", "honorific_ref"], "hard_case": "nickname_id"}}

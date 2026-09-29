@@ -1,0 +1,1 @@
+{"id": "A-001906", "text": "환자분 되실까요? 접수하실 분의 전화번호가 혹시 이거예요? ０１０ ㅂ2ㅂ ㄷㄹㅁ 그리고 저희 SNS 주소가 여기 있으니까 꼭 확인해보세요.", "pi": [{"type": "PHONE", "text": "０１０ ㅂ2ㅂ ㄷㄹㅁ", "start": 33, "end": 44}, {"type": "SNS", "text": "저희 SNS 주소가 여기", "start": 49, "end": 62}], "meta": {"domain": "병원 접수", "style": "길고 장황한 설명", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

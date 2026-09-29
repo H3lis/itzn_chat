@@ -1,0 +1,1 @@
+{"id": "A-001439", "text": "저 장미가 말이에요, 사실은 저는 좀 더 다른 이름으로 불리고 싶은데, 장미라는 별명이 좀 별로예요.", "pi": [{"type": "NAME", "text": "장미", "start": 2, "end": 4}], "meta": {"domain": "SNS 댓글", "style": "길고 장황한 설명", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

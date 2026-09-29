@@ -1,0 +1,1 @@
+{"id": "A-003312", "text": "예약하신 분 성함이 김민지 씨 맞으시고요, 도착 예정 날짜는 다음 달 15일로 잡아드릴까요?", "pi": [{"type": "NAME", "text": "김민지", "start": 11, "end": 14}], "meta": {"domain": "여행 예약", "style": "길고 장황한 설명", "obfuscation": ["plain"], "hard_case": "none"}}

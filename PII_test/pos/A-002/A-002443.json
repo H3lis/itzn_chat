@@ -1,0 +1,1 @@
+{"id": "A-002443", "text": "대표님 성함은 박진호 씨시고, 담당자 이름도 박진호 씨셨어요. 둘 다 같은 분이신가요?", "pi": [{"type": "NAME", "text": "박진호", "start": 8, "end": 11}, {"type": "NAME", "text": "박진호", "start": 25, "end": 28}], "meta": {"domain": "고객센터 채팅", "style": "공문서풍", "obfuscation": ["jamo_split"], "hard_case": "none"}}

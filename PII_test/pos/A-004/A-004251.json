@@ -1,0 +1,1 @@
+{"id": "A-004251", "text": "담당자님 성함은 미소 씨시고, 연락 가능한 전화번호는 010-2222-1111입니다.", "pi": [{"type": "NAME", "text": "미소", "start": 9, "end": 11}, {"type": "PHONE", "text": "010-2222-1111", "start": 30, "end": 43}], "meta": {"domain": "부동산 상담", "style": "존댓말 상담", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

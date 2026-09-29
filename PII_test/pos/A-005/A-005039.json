@@ -1,0 +1,1 @@
+{"id": "A-005039", "text": "고객님, 연결 가능한 전화번호가 010-9999-1111이신가요? 아니면 혹시 010-9999-2222 쪽이 맞을까요?", "pi": [{"type": "PHONE", "text": "010-9999-2222", "start": 44, "end": 57}], "meta": {"domain": "민원 접수", "style": "존댓말 상담", "obfuscation": ["self_correction"], "hard_case": "none"}}

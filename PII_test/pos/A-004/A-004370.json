@@ -1,0 +1,1 @@
+{"id": "A-004370", "text": "저기요, 택배 어디쯤 왔어? 번호가 010-2222-3333이니까 그거 체크해 봐.", "pi": [{"type": "PHONE", "text": "010-2222-3333", "start": 20, "end": 33}], "meta": {"domain": "쇼핑몰 문의", "style": "반말 대화", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

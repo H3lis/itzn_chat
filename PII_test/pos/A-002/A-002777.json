@@ -1,0 +1,1 @@
+{"id": "A-002777", "text": "주소는 '서울시 강남구 역삼로 123' 같은데, 주민번호는 991122로 되어 있나요? 좀 더 정확하게 알려주세요.", "pi": [{"type": "ADDRESS", "text": "서울시 강남구 역삼로 123", "start": 5, "end": 20}, {"type": "RRN", "text": "991122", "start": 33, "end": 39}], "meta": {"domain": "중고거래 채팅", "style": "존댓말 상담", "obfuscation": ["lookalike_char", "repeat_expr"], "hard_case": "none"}}

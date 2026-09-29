@@ -1,0 +1,1 @@
+{"id": "A-004025", "text": "네, 제 메일 주소는 ajks@edu.ac.kr인데, 혹시 이게 맞나요? 자꾸 자꾸 오류가 나요.", "pi": [{"type": "EMAIL", "text": "ajks@edu.ac.kr", "start": 12, "end": 26}], "meta": {"domain": "학교 행정 문의", "style": "오타 많은 채팅", "obfuscation": ["separator_noise"], "hard_case": "none"}}

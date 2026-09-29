@@ -1,0 +1,1 @@
+{"id": "A-000504", "text": "저 너무 급해서요. 푸름 님 아이디는 'Puru_User'로, SNS는 인스타로 부탁드려요.", "pi": [{"type": "NAME", "text": "푸름", "start": 11, "end": 13}, {"type": "SNS", "text": "인스타", "start": 40, "end": 43}], "meta": {"domain": "쇼핑몰 문의", "style": "메신저 줄임말", "obfuscation": ["jamo_split", "honorific_ref"], "hard_case": "nickname_id"}}

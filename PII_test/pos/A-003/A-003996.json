@@ -1,0 +1,1 @@
+{"id": "A-003996", "text": "고객님 댁 주소는 경기도 성남시 분당구 정자동 아파트 몇 층에 거주하고 계신가요? 정확한 주소를 다시 한번 확인 부탁드립니다.", "pi": [{"type": "ADDRESS", "text": "경기도 성남시 분당구 정자동 아파트", "start": 10, "end": 29}], "meta": {"domain": "금융 상담", "style": "음성인식(STT) 전사", "obfuscation": ["split_utterance"], "hard_case": "none"}}

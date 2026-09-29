@@ -1,0 +1,1 @@
+{"id": "A-005750", "text": "저희가 지금 010-5555-6666으로 등록된 번호로 연락드리겠습니다. 인스타그램은 @real_client_kya에요.", "pi": [{"type": "PHONE", "text": "010-5555-6666", "start": 7, "end": 20}, {"type": "SNS", "text": "@real_client_kya", "start": 48, "end": 64}], "meta": {"domain": "부동산 상담", "style": "반말 대화", "obfuscation": ["plain"], "hard_case": "none"}}

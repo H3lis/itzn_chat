@@ -1,0 +1,1 @@
+{"id": "A-003644", "text": "김 원장님께서는 어제 오신 고객님과 이야기 나누셨습니다. 편안한 하루 보내세요.", "pi": [{"type": "NAME", "text": "김 원장님", "start": 0, "end": 5}], "meta": {"domain": "이메일 본문", "style": "짧은 단답", "obfuscation": ["honorific_ref"], "hard_case": "none"}}

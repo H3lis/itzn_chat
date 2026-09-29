@@ -1,0 +1,1 @@
+{"id": "A-001674", "text": "차량 번호는 98가라 5555로 기억하는데, 혹시 성남 쪽에 거주하시는 분이신가요?", "pi": [{"type": "CAR_PLATE", "text": "98가라 5555", "start": 7, "end": 16}, {"type": "NAME", "text": "성남", "start": 28, "end": 30}], "meta": {"domain": "부동산 상담", "style": "메신저 줄임말", "obfuscation": ["self_correction"], "hard_case": "homonym_name"}}

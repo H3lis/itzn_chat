@@ -1,0 +1,1 @@
+{"id": "A-005765", "text": "구름 씨, 접수하실 민원 내용 관련해서는 담당 부서로 확인이 필요하며, 연락처는 010-9999-8888로 남겨주시면 됩니다.", "pi": [{"type": "NAME", "text": "구름", "start": 0, "end": 2}, {"type": "PHONE", "text": "010-9999-8888", "start": 45, "end": 58}], "meta": {"domain": "민원 접수", "style": "공문서풍", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

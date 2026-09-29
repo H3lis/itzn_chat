@@ -1,0 +1,1 @@
+{"id": "A-005204", "text": "고객님 성함은 박지영 님이시고, 계좌번호는 하나은행 1002-3-4567입니다.", "pi": [{"type": "NAME", "text": "박지영", "start": 8, "end": 11}, {"type": "ACCOUNT", "text": "1002-3-4567", "start": 29, "end": 40}], "meta": {"domain": "금융 상담", "style": "격식체", "obfuscation": ["korean_reading", "romanized"], "hard_case": "none"}}

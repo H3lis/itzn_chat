@@ -1,0 +1,1 @@
+{"id": "A-005116", "text": "저희 예약 건은 회원 아이디가 Z1982입니다. 이것만 알려주시면 되나요?", "pi": [{"type": "OTHER_ID", "text": "Z1982", "start": 17, "end": 22}], "meta": {"domain": "여행 예약", "style": "반말 대화", "obfuscation": ["plain"], "hard_case": "none"}}

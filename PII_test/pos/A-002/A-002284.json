@@ -1,0 +1,1 @@
+{"id": "A-002284", "text": "저의 이름은 자두인데요, 자두라고 말씀해주시면 돼요.", "pi": [{"type": "NAME", "text": "자두", "start": 14, "end": 16}], "meta": {"domain": "SNS 댓글", "style": "음성인식(STT) 전사", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

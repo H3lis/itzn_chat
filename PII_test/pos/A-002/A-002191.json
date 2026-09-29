@@ -1,0 +1,1 @@
+{"id": "A-002191", "text": "만 15세 4월 20일이요. 그리고 연락처는 010 5555 1234로 되어 있네요.", "pi": [{"type": "BIRTH", "text": "만 15세 4월 20일", "start": 0, "end": 12}, {"type": "PHONE", "text": "010 5555 1234", "start": 25, "end": 38}], "meta": {"domain": "콜센터 상담 요약", "style": "메신저 줄임말", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

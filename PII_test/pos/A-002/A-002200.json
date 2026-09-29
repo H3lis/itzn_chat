@@ -1,0 +1,1 @@
+{"id": "A-002200", "text": "담당자님 이름이 뭐라고 하셨죠? 아, 네. 이정우요. 한국식으로 풀면 리정우라고 하시면 됩니다.", "pi": [{"type": "NAME", "text": "이정우", "start": 24, "end": 27}], "meta": {"domain": "콜센터 상담 요약", "style": "구어체", "obfuscation": ["jamo_split", "romanized"], "hard_case": "none"}}

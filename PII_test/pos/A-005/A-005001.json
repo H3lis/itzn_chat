@@ -1,0 +1,1 @@
+{"id": "A-005001", "text": "저, 김도윤이라는 애인데, 이름이 'ㄱㅏㅁ'으로 되나요? 그리고 성은 'ㄷㅗㅇ'이라고만 해주세요.", "pi": [{"type": "NAME", "text": "김도윤", "start": 3, "end": 6}, {"type": "NAME", "text": "ㄱㅏㅁ", "start": 20, "end": 23}], "meta": {"domain": "병원 접수", "style": "반말 대화", "obfuscation": ["romanized", "jamo_split"], "hard_case": "none"}}

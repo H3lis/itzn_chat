@@ -1,0 +1,1 @@
+{"id": "A-000402", "text": "김 선생님, 주소는 서울시 서초구 반포동 555-66번지에 거주하시는 게 맞으신가요? 성함이 정확히 김민지님이시죠?", "pi": [{"type": "ADDRESS", "text": "서울시 서초구 반포동 555-66번지", "start": 11, "end": 31}, {"type": "NAME", "text": "김민지", "start": 56, "end": 59}], "meta": {"domain": "회의록", "style": "존댓말 상담", "obfuscation": ["self_correction"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-003799", "text": "네, 저는 박 선생님께 문의드리는데요, 담당 부서가 어디예요? 그리고 저희 학교는 OO고등학교예요.", "pi": [{"type": "NAME", "text": "박", "start": 6, "end": 7}, {"type": "ORG", "text": "OO고등학교", "start": 46, "end": 52}], "meta": {"domain": "학교 행정 문의", "style": "짧은 단답", "obfuscation": ["honorific_ref"], "hard_case": "org_person"}}

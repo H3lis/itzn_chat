@@ -1,0 +1,1 @@
+{"id": "A-001008", "text": "학생 등록번호는 9999-8888-7777이 맞나요? 다시 한번 말씀해 주시겠어요?", "pi": [{"type": "RRN", "text": "9999-8888-7777", "start": 9, "end": 23}], "meta": {"domain": "학교 행정 문의", "style": "짧은 단답", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

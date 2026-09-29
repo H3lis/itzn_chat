@@ -1,0 +1,1 @@
+{"id": "A-002288", "text": "따님분 생년월일이요? 음, 99년 5월 12일이라고 하셨는데, 다시 한번 말씀해주시겠어요?", "pi": [{"type": "BIRTH", "text": "99년 5월 12일", "start": 15, "end": 25}], "meta": {"domain": "민원 접수", "style": "존댓말 상담", "obfuscation": ["korean_reading"], "hard_case": "none"}}

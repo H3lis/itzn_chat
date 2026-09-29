@@ -1,0 +1,1 @@
+{"id": "A-000571", "text": "저희가 확인해보니 차량 번호가 12가 아닌 21입니다. 그리고 연락은 070-8888-9999 주세요.", "pi": [{"type": "CAR_PLATE", "text": "12", "start": 17, "end": 19}, {"type": "PHONE", "text": "070-8888-9999", "start": 39, "end": 52}], "meta": {"domain": "민원 접수", "style": "오타 많은 채팅", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

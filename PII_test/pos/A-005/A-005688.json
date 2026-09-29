@@ -1,0 +1,1 @@
+{"id": "A-005688", "text": "수강료 결제하신 카드 번호가 3700...이 맞으신가요? 이름은 구름 학생 맞으신가요? 혹시 등본 상의 이름이 다르게 기재된 적이 있으신지 확인 부탁드립니다.", "pi": [{"type": "CARD", "text": "3700", "start": 16, "end": 20}, {"type": "NAME", "text": "구름", "start": 36, "end": 38}], "meta": {"domain": "온라인 강의 Q&A", "style": "공문서풍", "obfuscation": ["self_correction", "repeat_expr"], "hard_case": "homonym_name"}}

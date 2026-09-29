@@ -1,0 +1,1 @@
+{"id": "A-004496", "text": "결제는 신용카드로 부탁드려요. 비자 카드구요. 혹시 예약하신 전화번호가 010 3333 4444 맞으실까요?", "pi": [{"type": "CARD", "text": "비자", "start": 17, "end": 19}, {"type": "PHONE", "text": "010 3333 4444", "start": 40, "end": 53}], "meta": {"domain": "학교 행정 문의", "style": "존댓말 상담", "obfuscation": ["split_utterance"], "hard_case": "none"}}

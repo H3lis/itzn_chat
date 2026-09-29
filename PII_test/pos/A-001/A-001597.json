@@ -1,0 +1,1 @@
+{"id": "A-001597", "text": "소나무 선생님, 혹시 지난번 질문자님의 성함이 어떻게 되셨는지 다시 한번 알려주실 수 있나요?", "pi": [{"type": "NAME", "text": "소나무", "start": 0, "end": 3}], "meta": {"domain": "온라인 강의 Q&A", "style": "오타 많은 채팅", "obfuscation": ["honorific_ref"], "hard_case": "homonym_name"}}

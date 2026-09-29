@@ -1,0 +1,1 @@
+{"id": "A-002942", "text": "이메일 주소는 사용자님께서 입력하신 's@a.scool.edu'가 맞을까요? 혹시 잘못 들으셨다면 다시 말씀해주세요.", "pi": [{"type": "EMAIL", "text": "s@a.scool.edu", "start": 21, "end": 34}], "meta": {"domain": "학교 행정 문의", "style": "음성인식(STT) 전사", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

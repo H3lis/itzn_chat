@@ -1,0 +1,1 @@
+{"id": "A-000452", "text": "참고로 담당자분 성함은 '우주' 씨이고요, 혹시 본인 확인을 위해 이름 말씀해주실 수 있을까요?", "pi": [{"type": "NAME", "text": "우주", "start": 14, "end": 16}], "meta": {"domain": "콜센터 상담 요약", "style": "공문서풍", "obfuscation": ["romanized", "self_correction"], "hard_case": "homonym_name"}}

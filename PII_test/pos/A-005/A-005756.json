@@ -1,0 +1,1 @@
+{"id": "A-005756", "text": "택배는 010-1111-2222로 보내주시고, 차량 번호는 가나다 1234예요.", "pi": [{"type": "PHONE", "text": "010-1111-2222", "start": 4, "end": 17}, {"type": "RRN", "text": "가나다 1234", "start": 33, "end": 41}], "meta": {"domain": "배달 요청사항", "style": "길고 장황한 설명", "obfuscation": ["lookalike_char", "mixed_reading"], "hard_case": "none"}}

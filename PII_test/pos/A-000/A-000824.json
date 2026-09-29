@@ -1,0 +1,1 @@
+{"id": "A-000824", "text": "와, 소나무 씨가 이사 온 거 맞아요? 새 주소는 종로구 효자로 501호로 알고 있는데요.", "pi": [{"type": "NAME", "text": "소나무", "start": 3, "end": 6}, {"type": "ADDRESS", "text": "종로구 효자로 501호", "start": 28, "end": 40}], "meta": {"domain": "SNS 댓글", "style": "반말 대화", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

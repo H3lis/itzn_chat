@@ -1,0 +1,1 @@
+{"id": "A-000245", "text": "결제하신 카드는 1234-5678-9012로 확인되었고, 당시 연락처는 010-3333-4444였습니다.", "pi": [{"type": "CARD", "text": "1234-5678-9012", "start": 9, "end": 23}, {"type": "PHONE", "text": "010-3333-4444", "start": 40, "end": 53}], "meta": {"domain": "직장 메신저", "style": "구어체", "obfuscation": ["self_correction"], "hard_case": "none"}}

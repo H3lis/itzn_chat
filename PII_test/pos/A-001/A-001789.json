@@ -1,0 +1,1 @@
+{"id": "A-001789", "text": "질문자님께서는 성함이 김지수 님이신가요? 주민등록번호는 920515-1xxxxxxx까지 말씀해주시면 되고요.", "pi": [{"type": "NAME", "text": "김지수", "start": 12, "end": 15}, {"type": "RRN", "text": "920515-1xxxxxxx", "start": 31, "end": 46}], "meta": {"domain": "온라인 강의 Q&A", "style": "존댓말 상담", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

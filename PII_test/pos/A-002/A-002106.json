@@ -1,0 +1,1 @@
+{"id": "A-002106", "text": "저희 팀원 닉네임이 '짱짱맨'인데, 제 인스타그램은 @jang_jang_man이에요. 혹시 따로 연락할 곳 있나요?", "pi": [{"type": "ADDRESS", "text": "짱짱맨", "start": 12, "end": 15}, {"type": "SNS", "text": "@jang_jang_man", "start": 29, "end": 43}], "meta": {"domain": "회의록", "style": "반말 대화", "obfuscation": ["plain"], "hard_case": "nickname_id"}}

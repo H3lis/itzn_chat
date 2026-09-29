@@ -1,0 +1,1 @@
+{"id": "A-002905", "text": "호텔 주소요? 서울 강북구 미아동 123-456 빌라인데, 이쪽으로 오는 게 편할까요?", "pi": [{"type": "ADDRESS", "text": "서울 강북구 미아동 123-456 빌라", "start": 8, "end": 29}], "meta": {"domain": "여행 예약", "style": "짧은 단답", "obfuscation": ["korean_reading", "split_utterance"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-001272", "text": "저희가 지원하는 부서는 고객 서비스팀이고, 이쪽 부서에서는 담당 부장님이 계십니다.", "pi": [{"type": "ORG", "text": "고객 서비스팀", "start": 13, "end": 20}], "meta": {"domain": "금융 상담", "style": "공문서풍", "obfuscation": ["jamo_split"], "hard_case": "org_person"}}

@@ -1,0 +1,1 @@
+{"id": "A-000224", "text": "연락처는 010-5555-1234요? 그리고 오픈카톡 아이디가 냠냠쓰에요?", "pi": [{"type": "PHONE", "text": "010-5555-1234", "start": 5, "end": 18}, {"type": "SNS", "text": "냠냠쓰", "start": 35, "end": 38}], "meta": {"domain": "민원 접수", "style": "메신저 줄임말", "obfuscation": ["self_correction"], "hard_case": "nickname_id"}}

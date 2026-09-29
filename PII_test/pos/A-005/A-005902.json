@@ -1,0 +1,1 @@
+{"id": "A-005902", "text": "학생증이랑 같이 주신 거 봤는데요. 혹시 주민등록번호는 900115-2****** 맞나요? 아니면 그때 말씀해주셨던 900115 그대로 말씀해주시겠어요?", "pi": [{"type": "ADDRESS", "text": "900115", "start": 31, "end": 37}, {"type": "BIRTH", "text": "900115", "start": 65, "end": 71}], "meta": {"domain": "학교 행정 문의", "style": "메신저 줄임말", "obfuscation": ["plain"], "hard_case": "none"}}

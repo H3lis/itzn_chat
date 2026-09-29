@@ -1,0 +1,1 @@
+{"id": "A-000287", "text": "저 수원 지역 거주하는데, 주민번호가 901234-1234567 말씀드립니다.", "pi": [{"type": "NAME", "text": "수원", "start": 2, "end": 4}, {"type": "RRN", "text": "901234-1234567", "start": 21, "end": 35}], "meta": {"domain": "온라인 강의 Q&A", "style": "구어체", "obfuscation": ["stt_error"], "hard_case": "homonym_name"}}

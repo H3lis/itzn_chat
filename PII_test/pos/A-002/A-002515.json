@@ -1,0 +1,1 @@
+{"id": "A-002515", "text": "제가 병원 치료를 받았는데요. 이름이 홍길동이라고 하셨는데, 성함이 좀 다르다고 하더라고요.", "pi": [{"type": "NAME", "text": "홍길동", "start": 21, "end": 24}], "meta": {"domain": "보험 청구", "style": "짧은 단답", "obfuscation": ["jamo_split"], "hard_case": "none"}}

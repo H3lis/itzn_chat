@@ -1,0 +1,1 @@
+{"id": "A-004931", "text": "보람 씨한테 연락할게요. 전화번호는 010-1111-2222로 돼 있나요? 맞나요?", "pi": [{"type": "NAME", "text": "보람", "start": 0, "end": 2}, {"type": "PHONE", "text": "010-1111-2222", "start": 20, "end": 33}], "meta": {"domain": "콜센터 상담 요약", "style": "짧은 단답", "obfuscation": ["korean_reading"], "hard_case": "homonym_name"}}

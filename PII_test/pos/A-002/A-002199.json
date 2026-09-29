@@ -1,0 +1,1 @@
+{"id": "A-002199", "text": "계좌번호는 지엠이티가 아니고, 주소는 서울 종로구 인사동이고요. 이름은 홍길동입니다.", "pi": [{"type": "ACCOUNT", "text": "지엠이티", "start": 6, "end": 10}, {"type": "ADDRESS", "text": "서울 종로구 인사동", "start": 21, "end": 31}, {"type": "NAME", "text": "홍길동", "start": 40, "end": 43}], "meta": {"domain": "보험 청구", "style": "짧은 단답", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

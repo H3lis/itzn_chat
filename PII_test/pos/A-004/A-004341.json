@@ -1,0 +1,1 @@
+{"id": "A-004341", "text": "제 여권 번호는 칠팔오칠 다시 칠팔오칠, 그리고 소셜 미디어는 엣지넷이에요.", "pi": [{"type": "PASSPORT", "text": "칠팔오칠 다시 칠팔오칠", "start": 9, "end": 21}, {"type": "SNS", "text": "엣지넷", "start": 35, "end": 38}], "meta": {"domain": "커뮤니티 게시글", "style": "짧은 단답", "obfuscation": ["korean_reading", "split_utterance"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-005710", "text": "주소는 서울시 강남구 테헤란로 123고요. 요청하신 분 성함은 '꽃님' 씨로 기억합니다.", "pi": [{"type": "ADDRESS", "text": "서울시 강남구 테헤란로 123", "start": 4, "end": 20}, {"type": "NAME", "text": "꽃님", "start": 36, "end": 38}], "meta": {"domain": "배달 요청사항", "style": "오타 많은 채팅", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

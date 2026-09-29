@@ -1,0 +1,1 @@
+{"id": "A-003145", "text": "네, 이메일 주소가 노을이 아니고, 아닐 거예요. 정확하게 노을.사용자@abcd.com 맞으신가요?", "pi": [{"type": "NAME", "text": "노을", "start": 11, "end": 13}, {"type": "EMAIL", "text": "노을.사용자@abcd.com", "start": 33, "end": 48}], "meta": {"domain": "부동산 상담", "style": "길고 장황한 설명", "obfuscation": ["self_correction"], "hard_case": "homonym_name"}}

@@ -1,0 +1,1 @@
+{"id": "A-003823", "text": "김철수 선생님 말씀이신가요? 아니면 김철수 선생님의 어머니께서 문의주신 건가요?", "pi": [{"type": "NAME", "text": "김철수", "start": 0, "end": 3}, {"type": "NAME", "text": "김철수", "start": 20, "end": 23}], "meta": {"domain": "음성통화 전사문", "style": "존댓말 상담", "obfuscation": ["self_correction", "honorific_ref"], "hard_case": "none"}}

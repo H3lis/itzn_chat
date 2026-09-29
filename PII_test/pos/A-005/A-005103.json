@@ -1,0 +1,1 @@
+{"id": "A-005103", "text": "결제는 이 카드로 하시면 되고, 말씀해주신 카드번호는 5500 1122 3344 5566 맞으신가요?", "pi": [{"type": "CARD", "text": "5500 1122 3344 5566", "start": 30, "end": 49}], "meta": {"domain": "부동산 상담", "style": "음성인식(STT) 전사", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-005824", "text": "제 이름은 김민준이고 여권번호는 AB12C3D4E5F6 입니다.", "pi": [{"type": "NAME", "text": "김민준", "start": 6, "end": 9}, {"type": "PASSPORT", "text": "AB12C3D4E5F6", "start": 18, "end": 30}], "meta": {"domain": "온라인 강의 Q&A", "style": "음성인식(STT) 전사", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

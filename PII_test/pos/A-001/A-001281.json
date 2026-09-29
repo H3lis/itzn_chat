@@ -1,0 +1,1 @@
+{"id": "A-001281", "text": "제가 확인해 보니 고객님의 전화번호는 070-1111-2222이고, 주민등록번호는 900101-1234567이네요.", "pi": [{"type": "PHONE", "text": "070-1111-2222", "start": 21, "end": 34}, {"type": "RRN", "text": "900101-1234567", "start": 46, "end": 60}], "meta": {"domain": "고객센터 채팅", "style": "음성인식(STT) 전사", "obfuscation": ["korean_reading"], "hard_case": "none"}}

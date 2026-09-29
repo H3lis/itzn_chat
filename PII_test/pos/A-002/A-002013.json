@@ -1,0 +1,1 @@
+{"id": "A-002013", "text": "저희 집 주소는 서울시 강남구 테헤란로 123-45이고요, 아파트 동은 501호예요.", "pi": [{"type": "ADDRESS", "text": "서울시 강남구 테헤란로 123-45", "start": 9, "end": 28}], "meta": {"domain": "이메일 본문", "style": "메신저 줄임말", "obfuscation": ["split_utterance"], "hard_case": "none"}}

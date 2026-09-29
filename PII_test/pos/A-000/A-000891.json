@@ -1,0 +1,1 @@
+{"id": "A-000891", "text": "제 이메일은 chulsoo@gmail.com이고요, 제가 사용한 IP는 118.214.10.5입니다. 확인 부탁드립니다.", "pi": [{"type": "EMAIL", "text": "chulsoo@gmail.com", "start": 7, "end": 24}, {"type": "IP_ADDR", "text": "118.214.10.5", "start": 40, "end": 52}], "meta": {"domain": "중고거래 채팅", "style": "짧은 단답", "obfuscation": ["korean_reading", "stt_error"], "hard_case": "none"}}

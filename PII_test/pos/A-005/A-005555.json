@@ -1,0 +1,1 @@
+{"id": "A-005555", "text": "홍길동님 아이디가 user99예요? 아니면 김 과장님 성함이 홍길동이신가요?", "pi": [{"type": "NAME", "text": "홍길동", "start": 0, "end": 3}, {"type": "ID", "text": "user99", "start": 10, "end": 16}], "meta": {"domain": "금융 상담", "style": "존댓말 상담", "obfuscation": ["honorific_ref", "self_correction"], "hard_case": "nickname_id"}}

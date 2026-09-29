@@ -1,0 +1,1 @@
+{"id": "A-003228", "text": "소나무 씨 건에 대해 말씀드리는데, 이름은 박소나무이고 SNS 주소는 taro.s.tree@email.com으로 부탁드립니다.", "pi": [{"type": "NAME", "text": "박소나무", "start": 24, "end": 28}, {"type": "SNS", "text": "taro.s.tree@email.com", "start": 39, "end": 60}], "meta": {"domain": "이메일 본문", "style": "메신저 줄임말", "obfuscation": ["separator_noise"], "hard_case": "homonym_name"}}

@@ -1,0 +1,1 @@
+{"id": "A-002875", "text": "주소는 강남구 테헤란로 555-6666이야. 근데 잠깐, 아니지. 우리 집은 2222-3333으로 다시 불러줘.", "pi": [{"type": "ADDRESS", "text": "강남구 테헤란로 555-6666", "start": 4, "end": 21}, {"type": "PHONE", "text": "2222-3333", "start": 43, "end": 52}], "meta": {"domain": "배달 요청사항", "style": "반말 대화", "obfuscation": ["repeat_expr", "self_correction"], "hard_case": "none"}}

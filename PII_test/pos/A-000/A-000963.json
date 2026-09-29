@@ -1,0 +1,1 @@
+{"id": "A-000963", "text": "제출 서류에 기재된 생년월일은 9. 15. 1985 이고, 신분증 번호는 1234567890 입니다.", "pi": [{"type": "BIRTH", "text": "9. 15. 1985", "start": 17, "end": 28}, {"type": "ID", "text": "1234567890", "start": 41, "end": 51}], "meta": {"domain": "회의록", "style": "격식체", "obfuscation": ["separator_noise", "korean_reading"], "hard_case": "none"}}

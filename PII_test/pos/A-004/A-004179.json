@@ -1,0 +1,1 @@
+{"id": "A-004179", "text": "네, 첫 번째 주소는 강남구 테헤란로 303이고요, 다른 건은 잠실동 롯데백화점 앞에서 말씀하시면 됩니다.", "pi": [{"type": "ADDRESS", "text": "강남구 테헤란로 303", "start": 12, "end": 24}, {"type": "ADDRESS", "text": "잠실동 롯데백화점", "start": 35, "end": 44}], "meta": {"domain": "음성통화 전사문", "style": "오타 많은 채팅", "obfuscation": ["plain"], "hard_case": "none"}}

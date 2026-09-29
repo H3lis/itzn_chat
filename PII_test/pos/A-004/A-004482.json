@@ -1,0 +1,1 @@
+{"id": "A-004482", "text": "저 미소 씨가 연락 왔는데, 번호가 010-3333-4444래요. 이거 혹시 제가 잘못 들은 건가요? 다시 확인해 볼게요.", "pi": [{"type": "NAME", "text": "미소", "start": 2, "end": 4}, {"type": "PHONE", "text": "010-3333-4444", "start": 20, "end": 33}], "meta": {"domain": "SNS 댓글", "style": "구어체", "obfuscation": ["split_utterance"], "hard_case": "homonym_name"}}

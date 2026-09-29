@@ -1,0 +1,1 @@
+{"id": "A-005194", "text": "안녕하세요. 제 이름은 박지수라고 합니다.", "pi": [{"type": "NAME", "text": "박지수", "start": 13, "end": 16}], "meta": {"domain": "여행 예약", "style": "구어체", "obfuscation": ["jamo_split"], "hard_case": "none"}}

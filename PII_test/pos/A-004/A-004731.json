@@ -1,0 +1,1 @@
+{"id": "A-004731", "text": "이 글에서 말한 그 사람 이름은 민재예요.", "pi": [{"type": "NAME", "text": "민재", "start": 18, "end": 20}], "meta": {"domain": "SNS 댓글", "style": "격식체", "obfuscation": ["jamo_split"], "hard_case": "none"}}

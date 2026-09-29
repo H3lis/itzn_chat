@@ -1,0 +1,1 @@
+{"id": "A-004361", "text": "네, 장미 씨요. 성함이 장미라서요, 로마자 표기는 Jasmine이 맞을까요?", "pi": [{"type": "NAME", "text": "장미", "start": 3, "end": 5}], "meta": {"domain": "부동산 상담", "style": "음성인식(STT) 전사", "obfuscation": ["romanized", "honorific_ref"], "hard_case": "homonym_name"}}

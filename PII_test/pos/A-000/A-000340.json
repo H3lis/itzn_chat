@@ -1,0 +1,1 @@
+{"id": "A-000340", "text": "회원 ID는 기쁨001이고, 성함은 기쁨 씨로 등록해 주시면 되고요. 혹시 영문명은 KIPPEUM이라고 해주시겠어요?", "pi": [{"type": "ID", "text": "기쁨001", "start": 7, "end": 12}, {"type": "NAME", "text": "기쁨", "start": 20, "end": 22}], "meta": {"domain": "이메일 본문", "style": "공문서풍", "obfuscation": ["self_correction", "romanized"], "hard_case": "homonym_name"}}

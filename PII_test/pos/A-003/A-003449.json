@@ -1,0 +1,1 @@
+{"id": "A-003449", "text": "생년월일은 92년 12월 25일로 말씀해 주시고요. 연락처는 010 1111 9999 맞나요?", "pi": [{"type": "BIRTH", "text": "92년 12월 25일", "start": 6, "end": 17}, {"type": "PHONE", "text": "010 1111 9999", "start": 34, "end": 47}], "meta": {"domain": "쇼핑몰 문의", "style": "공문서풍", "obfuscation": ["stt_error", "self_correction", "lookalike_char"], "hard_case": "none"}}

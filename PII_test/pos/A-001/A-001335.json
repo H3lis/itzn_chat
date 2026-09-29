@@ -1,0 +1,1 @@
+{"id": "A-001335", "text": "자두 학생이시군요. 연락처는 혹시 010-5555-1234 맞나요? 아닙니다, 010-5555-9999로 다시 부탁드려요.", "pi": [{"type": "NAME", "text": "자두", "start": 0, "end": 2}, {"type": "PHONE", "text": "010-5555-9999", "start": 44, "end": 57}], "meta": {"domain": "온라인 강의 Q&A", "style": "존댓말 상담", "obfuscation": ["self_correction"], "hard_case": "homonym_name"}}

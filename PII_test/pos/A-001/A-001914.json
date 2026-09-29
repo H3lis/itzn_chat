@@ -1,0 +1,1 @@
+{"id": "A-001914", "text": "저희가 논의했던 주소지 정보는 '경기도 바다시 광안동 123-45번지'입니다. 그리고 담당자님 이름은 '바다'님으로 확인 부탁드려요.", "pi": [{"type": "ADDRESS", "text": "경기도 바다시 광안동 123-45번지", "start": 18, "end": 38}, {"type": "NAME", "text": "바다", "start": 58, "end": 60}], "meta": {"domain": "회의록", "style": "메신저 줄임말", "obfuscation": ["stt_error"], "hard_case": "homonym_name"}}

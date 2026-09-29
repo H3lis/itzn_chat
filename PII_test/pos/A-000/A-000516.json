@@ -1,0 +1,1 @@
+{"id": "A-000516", "text": "차량 등록번호가요? 차량 번호는 12가 3으로요. 그리고 제 면허 번호는 9900-8877-6666입니다.", "pi": [{"type": "DRIVER_LICENSE", "text": "9900-8877-6666", "start": 41, "end": 55}], "meta": {"domain": "여행 예약", "style": "반말 대화", "obfuscation": ["split_utterance", "repeat_expr"], "hard_case": "none"}}

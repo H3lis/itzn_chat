@@ -1,0 +1,1 @@
+{"id": "A-003609", "text": "대표님께서는 신분증 사본을 보내주셨는데, 여권 정보도 같이 확인해 주실 수 있을까요? 이름은 새벽 김민준으로 적어주세요.", "pi": [{"type": "NAME", "text": "새벽", "start": 52, "end": 54}, {"type": "PASSPORT", "text": "김민준", "start": 55, "end": 58}], "meta": {"domain": "회의록", "style": "존댓말 상담", "obfuscation": ["mixed_reading"], "hard_case": "homonym_name"}}

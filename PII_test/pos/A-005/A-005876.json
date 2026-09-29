@@ -1,0 +1,1 @@
+{"id": "A-005876", "text": "요청하신 계정 번호는 998877-55입니다. 그리고 주소는 서울특별시 강남구 역삼동이에요.", "pi": [{"type": "ACCOUNT", "text": "998877-55", "start": 12, "end": 21}, {"type": "ADDRESS", "text": "서울특별시 강남구 역삼동", "start": 34, "end": 47}], "meta": {"domain": "콜센터 상담 요약", "style": "공문서풍", "obfuscation": ["self_correction"], "hard_case": "none"}}

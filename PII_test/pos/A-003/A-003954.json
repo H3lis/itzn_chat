@@ -1,0 +1,1 @@
+{"id": "A-003954", "text": "꽃님, 고객님의 주소는 부산광역시 해운대구 마린시티 123-45이고, 성함은 '꽃님'씨라고 하셨죠?", "pi": [{"type": "ADDRESS", "text": "부산광역시 해운대구 마린시티 123-45", "start": 13, "end": 35}, {"type": "NAME", "text": "꽃님", "start": 44, "end": 46}], "meta": {"domain": "금융 상담", "style": "공문서풍", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

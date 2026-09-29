@@ -1,0 +1,1 @@
+{"id": "A-005254", "text": "안녕하세요, 제 이름은 김민준이라고 합니다. 저는 웹 개발 분야에 관심이 많아서 공부를 시작하게 되었습니다.", "pi": [{"type": "NAME", "text": "김민준", "start": 13, "end": 16}], "meta": {"domain": "커뮤니티 게시글", "style": "길고 장황한 설명", "obfuscation": ["jamo_split", "romanized"], "hard_case": "none"}}

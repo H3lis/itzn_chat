@@ -1,0 +1,1 @@
+{"id": "A-002055", "text": "배달 받을 주소는 서울특별시 강남구 역삼동 123-45이고, 받는 분 성함은 이지훈 씨로 해 주세요.", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 역삼동 123-45", "start": 10, "end": 30}, {"type": "NAME", "text": "이지훈", "start": 43, "end": 46}], "meta": {"domain": "배달 요청사항", "style": "구어체", "obfuscation": ["romanized"], "hard_case": "none"}}

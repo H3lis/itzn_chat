@@ -1,0 +1,1 @@
+{"id": "A-002772", "text": "학생 주소는 서울특별시 강남구 역삼동 123-4 거주하고, 이메일은 myid@test.com으로 알고 있습니다.", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 역삼동 123-4", "start": 7, "end": 26}, {"type": "EMAIL", "text": "myid@test.com", "start": 38, "end": 51}], "meta": {"domain": "학교 행정 문의", "style": "반말 대화", "obfuscation": ["plain"], "hard_case": "none"}}

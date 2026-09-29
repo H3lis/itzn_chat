@@ -1,0 +1,1 @@
+{"id": "A-003611", "text": "제 이름은 박지민이라고 하고, 다른 분은 최서연이에요. 두 분 다 성함이 정확하겠죠?", "pi": [{"type": "NAME", "text": "박지민", "start": 6, "end": 9}, {"type": "NAME", "text": "최서연", "start": 23, "end": 26}], "meta": {"domain": "중고거래 채팅", "style": "공문서풍", "obfuscation": ["romanized", "jamo_split"], "hard_case": "none"}}

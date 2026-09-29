@@ -1,0 +1,1 @@
+{"id": "A-001434", "text": "도착 주소는 경기 경기도 성남시 분당구 판교역 근처구요, 연락처는 010 2222 3333으로 부탁드립니다.", "pi": [{"type": "ADDRESS", "text": "경기 경기도 성남시 분당구 판교역", "start": 7, "end": 25}, {"type": "PHONE", "text": "010 2222 3333", "start": 37, "end": 50}], "meta": {"domain": "여행 예약", "style": "음성인식(STT) 전사", "obfuscation": ["mixed_reading", "self_correction"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-003226", "text": "학생회 담당자님께는 김준혁이라는 분이 있고, 연락처는 010-3333-4444예요.", "pi": [{"type": "NAME", "text": "김준혁", "start": 11, "end": 14}, {"type": "SNS", "text": "010-3333-4444", "start": 30, "end": 43}], "meta": {"domain": "학교 행정 문의", "style": "존댓말 상담", "obfuscation": ["honorific_ref", "jamo_split"], "hard_case": "nickname_id"}}

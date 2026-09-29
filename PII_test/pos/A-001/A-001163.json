@@ -1,0 +1,1 @@
+{"id": "A-001163", "text": "이메일 주소는 bangnim@testmail.com 이고요, 연락 가능한 전화번호는 010-9999-8888로 해주시면 됩니다.", "pi": [{"type": "EMAIL", "text": "bangnim@testmail.com", "start": 8, "end": 28}, {"type": "PHONE", "text": "010-9999-8888", "start": 47, "end": 60}], "meta": {"domain": "학교 행정 문의", "style": "존댓말 상담", "obfuscation": ["korean_reading"], "hard_case": "none"}}

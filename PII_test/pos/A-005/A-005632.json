@@ -1,0 +1,1 @@
+{"id": "A-005632", "text": "제 메일이 chulsoo(at)gmail(dot)com이에요. 그리고 제 이름은 별이에요.", "pi": [{"type": "EMAIL", "text": "chulsoo(at)gmail(dot)com", "start": 6, "end": 30}, {"type": "NAME", "text": "별", "start": 45, "end": 46}], "meta": {"domain": "여행 예약", "style": "메신저 줄임말", "obfuscation": ["self_correction", "jamo_split", "email_spoken"], "hard_case": "homonym_name"}}

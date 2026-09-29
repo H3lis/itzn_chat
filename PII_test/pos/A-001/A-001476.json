@@ -1,0 +1,1 @@
+{"id": "A-001476", "text": "환자분 성함은 안양철수 씨 맞으신가요? 그 김철수 환자분은 언제 오셨나요? 정말 헷갈리네요.", "pi": [{"type": "NAME", "text": "안양철수", "start": 8, "end": 12}, {"type": "NAME", "text": "김철수", "start": 24, "end": 27}], "meta": {"domain": "병원 접수", "style": "짧은 단답", "obfuscation": ["romanized", "honorific_ref"], "hard_case": "homonym_name"}}

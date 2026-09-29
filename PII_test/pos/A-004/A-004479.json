@@ -1,0 +1,1 @@
+{"id": "A-004479", "text": "보험 접수하신 분은 연락 주셔야 합니다. 번호는 070 다음에 5가 다섯 번이고 6이 네 번으로 되어 있어요.", "pi": [{"type": "PHONE", "text": "070 다음에 5가 다섯 번이고 6이 네 번", "start": 27, "end": 51}], "meta": {"domain": "보험 청구", "style": "격식체", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

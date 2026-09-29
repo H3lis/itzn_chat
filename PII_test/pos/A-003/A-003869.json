@@ -1,0 +1,1 @@
+{"id": "A-003869", "text": "네, 확인한 IP 주소는 공일공 점 하나 점 하나 점 이이 점 삼삼 입니다.", "pi": [{"type": "IP_ADDR", "text": "공일공 점 하나 점 하나 점 이이 점 삼삼", "start": 14, "end": 37}], "meta": {"domain": "고객센터 채팅", "style": "짧은 단답", "obfuscation": ["repeat_expr", "split_utterance"], "hard_case": "none"}}

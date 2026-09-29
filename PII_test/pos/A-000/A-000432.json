@@ -1,0 +1,1 @@
+{"id": "A-000432", "text": "이메일 주소가 chulsoo(at)gmail(dot)com 이 아니라, 쿨슈@gmai.com 이거예요. 이거로 예약해주세요.", "pi": [{"type": "EMAIL", "text": "쿨슈@gmai.com", "start": 40, "end": 51}], "meta": {"domain": "여행 예약", "style": "반말 대화", "obfuscation": ["email_spoken", "lookalike_char", "separator_noise"], "hard_case": "none"}}

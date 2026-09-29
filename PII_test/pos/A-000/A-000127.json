@@ -1,0 +1,1 @@
+{"id": "A-000127", "text": "사랑 고객님, 이메일은 sarang.user@mail.co.kr이고, 성함은 사랑진주로 예약 부탁드려요.", "pi": [{"type": "EMAIL", "text": "sarang.user@mail.co.kr", "start": 13, "end": 35}, {"type": "NAME", "text": "사랑진주", "start": 43, "end": 47}], "meta": {"domain": "여행 예약", "style": "구어체", "obfuscation": ["honorific_ref", "separator_noise"], "hard_case": "homonym_name"}}

@@ -1,0 +1,1 @@
+{"id": "A-000429", "text": "제 이름은 김민준이에요. 발음이 좀 헷갈리실 수도 있는데, 'ㄱㅏㅇㄴㅏㅁ'처럼요.", "pi": [{"type": "NAME", "text": "ㄱㅏㅇㄴㅏㅁ", "start": 34, "end": 40}], "meta": {"domain": "금융 상담", "style": "오타 많은 채팅", "obfuscation": ["jamo_split"], "hard_case": "none"}}

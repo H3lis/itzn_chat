@@ -1,0 +1,1 @@
+{"id": "A-001988", "text": "배송받으실 주소가 경기도 용인시 수지구 반월동 789번지 맞으신가요? 여기로 보내주시면 됩니다.", "pi": [{"type": "ADDRESS", "text": "경기도 용인시 수지구 반월동 789번지", "start": 10, "end": 31}], "meta": {"domain": "택배 문의", "style": "메신저 줄임말", "obfuscation": ["plain"], "hard_case": "none"}}

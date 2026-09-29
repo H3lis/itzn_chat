@@ -1,0 +1,1 @@
+{"id": "A-000956", "text": "전화번호 말씀드리니까 010-2222-3333이요.", "pi": [{"type": "PHONE", "text": "010-2222-3333", "start": 12, "end": 25}], "meta": {"domain": "금융 상담", "style": "반말 대화", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

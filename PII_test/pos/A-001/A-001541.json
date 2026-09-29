@@ -1,0 +1,1 @@
+{"id": "A-001541", "text": "병원에 오실 때 전화번호가 070-5555-1234 맞으신가요? 다시 한번 말씀해 주세요.", "pi": [{"type": "PHONE", "text": "070-5555-1234", "start": 15, "end": 28}], "meta": {"domain": "병원 접수", "style": "반말 대화", "obfuscation": ["separator_noise"], "hard_case": "none"}}

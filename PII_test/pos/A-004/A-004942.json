@@ -1,0 +1,1 @@
+{"id": "A-004942", "text": "혹시 문의 주신 이메일 주소, 겨울원.지메일.닷컴? 아니요, 맞아요. 겨울 팀장님한테 바로 전달해 주세요.", "pi": [{"type": "EMAIL", "text": "겨울원.지메일.닷컴", "start": 17, "end": 27}, {"type": "NAME", "text": "겨울", "start": 39, "end": 41}], "meta": {"domain": "쇼핑몰 문의", "style": "공문서풍", "obfuscation": ["self_correction", "email_spoken"], "hard_case": "homonym_name"}}

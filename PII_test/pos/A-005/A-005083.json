@@ -1,0 +1,1 @@
+{"id": "A-005083", "text": "신분증 말씀이시군요. 운전면허 번호는 999-8888-7777이고, 성함은 박지훈 님으로 확인됩니다.", "pi": [{"type": "DRIVER_LICENSE", "text": "999-8888-7777", "start": 21, "end": 34}, {"type": "NAME", "text": "박지훈", "start": 42, "end": 45}], "meta": {"domain": "콜센터 상담 요약", "style": "공문서풍", "obfuscation": ["plain"], "hard_case": "none"}}

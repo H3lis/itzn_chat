@@ -1,0 +1,1 @@
+{"id": "A-002476", "text": "고객님의 이메일은 testuser(at)naver(dot)com 이고, 성함은 박지윤 님이시죠? 혹시 성함이 어떻게 되실까요?", "pi": [{"type": "EMAIL", "text": "testuser(at)naver(dot)com", "start": 10, "end": 35}, {"type": "NAME", "text": "박지윤", "start": 44, "end": 47}], "meta": {"domain": "금융 상담", "style": "존댓말 상담", "obfuscation": ["self_correction"], "hard_case": "none"}}

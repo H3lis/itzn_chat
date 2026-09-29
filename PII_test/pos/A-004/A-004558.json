@@ -1,0 +1,1 @@
+{"id": "A-004558", "text": "슬기야, 여기 주소는 '서울특별시 강남구 역삼동 5길 12'가 맞지? 너 성함은 슬기라고 했지? 오늘 회의는 거기서 하자.", "pi": [{"type": "NAME", "text": "슬기", "start": 0, "end": 2}, {"type": "ADDRESS", "text": "서울특별시 강남구 역삼동 5길 12", "start": 13, "end": 32}], "meta": {"domain": "회의록", "style": "반말 대화", "obfuscation": ["stt_error"], "hard_case": "homonym_name"}}

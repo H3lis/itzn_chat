@@ -1,0 +1,1 @@
+{"id": "A-001724", "text": "이사할 주소는 일단 '서초구 강남로 777'으로 되어 있고, 연락은 '010 다시 네 넷'으로 부탁드려요.", "pi": [{"type": "ADDRESS", "text": "서초구 강남로 777", "start": 12, "end": 23}, {"type": "PHONE", "text": "010 다시 네 넷", "start": 39, "end": 49}], "meta": {"domain": "고객센터 채팅", "style": "메신저 줄임말", "obfuscation": ["repeat_expr", "jamo_split"], "hard_case": "none"}}

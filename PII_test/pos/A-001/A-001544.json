@@ -1,0 +1,1 @@
+{"id": "A-001544", "text": "김민준 씨랑 부산행 KTX표 끊었는데, 결제는 카드로 됐어요. 카드번호는 1234로 시작해요.", "pi": [{"type": "NAME", "text": "김민준", "start": 0, "end": 3}, {"type": "CARD", "text": "1234", "start": 41, "end": 45}], "meta": {"domain": "여행 예약", "style": "메신저 줄임말", "obfuscation": ["romanized"], "hard_case": "none"}}

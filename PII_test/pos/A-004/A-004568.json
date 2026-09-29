@@ -1,0 +1,1 @@
+{"id": "A-004568", "text": "도착하실 때 차량 번호 말씀해주시고요, 도착하시면 바로 연락드릴 테니, 휴대폰은 070-9999-8888로 부탁드립니다.", "pi": [{"type": "PHONE", "text": "070-9999-8888", "start": 45, "end": 58}], "meta": {"domain": "배달 요청사항", "style": "존댓말 상담", "obfuscation": ["split_utterance"], "hard_case": "none"}}

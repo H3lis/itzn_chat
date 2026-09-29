@@ -1,0 +1,1 @@
+{"id": "A-002280", "text": "제가 원래는 최지훈이라고 했는데, 아 아니에요. 정확하게는 최지훈이에요.", "pi": [{"type": "NAME", "text": "최지훈", "start": 7, "end": 10}], "meta": {"domain": "병원 접수", "style": "구어체", "obfuscation": ["self_correction"], "hard_case": "none"}}

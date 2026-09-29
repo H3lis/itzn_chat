@@ -1,0 +1,1 @@
+{"id": "A-004058", "text": "환자분 성함은 박지수 씨고, 생년월일은 90년 5월 10일로 확인되었습니다.", "pi": [{"type": "NAME", "text": "박지수", "start": 8, "end": 11}, {"type": "BIRTH", "text": "90년 5월 10일", "start": 22, "end": 32}], "meta": {"domain": "병원 접수", "style": "짧은 단답", "obfuscation": ["separator_noise"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-004471", "text": "혹시 예약하신 주소가 '서울특별시 서초구 강남대로 400'이 맞으실까요? 아니면 다른 곳으로 변경이 필요하신가요?", "pi": [{"type": "ADDRESS", "text": "서울특별시 서초구 강남대로 400", "start": 13, "end": 31}], "meta": {"domain": "병원 접수", "style": "존댓말 상담", "obfuscation": ["korean_reading"], "hard_case": "none"}}

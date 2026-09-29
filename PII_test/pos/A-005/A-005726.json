@@ -1,0 +1,1 @@
+{"id": "A-005726", "text": "제 운전면허증 번호가 999-888-7777이고요. 혹시 제가 기억하는 게 맞는지 다시 한번 확인 부탁드립니다.", "pi": [{"type": "DRIVER_LICENSE", "text": "999-888-7777", "start": 12, "end": 24}], "meta": {"domain": "커뮤니티 게시글", "style": "길고 장황한 설명", "obfuscation": ["self_correction"], "hard_case": "none"}}

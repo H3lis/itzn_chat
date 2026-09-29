@@ -1,0 +1,1 @@
+{"id": "A-002540", "text": "택배 조회 건인데요, 송장 번호가 010-5555-9999라고 하셨는데, 이거 혹시 010.5555.9999가 맞나요?", "pi": [{"type": "PHONE", "text": "010.5555.9999", "start": 47, "end": 60}], "meta": {"domain": "택배 문의", "style": "공문서풍", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-003187", "text": "요청하신 계좌의 주소는 서울시 강남구 테헤란로 456으로 확인되는데요.", "pi": [{"type": "ADDRESS", "text": "서울시 강남구 테헤란로 456", "start": 13, "end": 29}], "meta": {"domain": "금융 상담", "style": "격식체", "obfuscation": ["split_utterance"], "hard_case": "none"}}

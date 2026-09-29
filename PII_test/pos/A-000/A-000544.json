@@ -1,0 +1,1 @@
+{"id": "A-000544", "text": "판매자분 성함이 김과장님이라고 하셨죠? 혹시 성함이 '서울'이 아닐까요?", "pi": [{"type": "NAME", "text": "김과장님", "start": 9, "end": 13}, {"type": "NAME", "text": "서울", "start": 30, "end": 32}], "meta": {"domain": "중고거래 채팅", "style": "공문서풍", "obfuscation": ["honorific_ref"], "hard_case": "homonym_name"}}

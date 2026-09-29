@@ -1,0 +1,1 @@
+{"id": "A-003772", "text": "주소는 경기도 수원시 영통구 삼성로에 거주하시는 것이 맞을까요? 그리고 회사명이 ㈜미래테크라 하셨죠?", "pi": [{"type": "ADDRESS", "text": "경기도 수원시 영통구 삼성로", "start": 4, "end": 19}, {"type": "ORG", "text": "㈜미래테크", "start": 45, "end": 50}], "meta": {"domain": "금융 상담", "style": "오타 많은 채팅", "obfuscation": ["jamo_split", "romanized"], "hard_case": "org_person"}}

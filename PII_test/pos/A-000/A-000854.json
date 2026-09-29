@@ -1,0 +1,1 @@
+{"id": "A-000854", "text": "받으실 주소는 '서울특별시 강남구 테헤란로'로 해 주시고, 수령자 아이디는 'user1234'로 되어있습니다.", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 테헤란로", "start": 9, "end": 23}, {"type": "ID", "text": "user1234", "start": 43, "end": 51}], "meta": {"domain": "배달 요청사항", "style": "구어체", "obfuscation": ["romanized"], "hard_case": "nickname_id"}}

@@ -1,0 +1,1 @@
+{"id": "A-005890", "text": "슬기 씨가 찾는 제품이 혹시 따로 있나요? 슬기 이름으로 검색해 드릴게요.", "pi": [{"type": "NAME", "text": "슬기", "start": 0, "end": 2}], "meta": {"domain": "쇼핑몰 문의", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

@@ -1,0 +1,1 @@
+{"id": "A-004627", "text": "네, 차량 번호는 12가로 3456이에요.", "pi": [{"type": "CAR_PLATE", "text": "12가로 3456", "start": 10, "end": 19}], "meta": {"domain": "병원 접수", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "none"}}

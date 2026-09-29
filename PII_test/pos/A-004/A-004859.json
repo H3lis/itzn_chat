@@ -1,0 +1,1 @@
+{"id": "A-004859", "text": "가장 먼저 연락 가능한 분의 성함은 김철수 씨요. 번호는 010 2222 3333이라고 하셨어요.", "pi": [{"type": "NAME", "text": "김철수", "start": 20, "end": 23}, {"type": "PHONE", "text": "010 2222 3333", "start": 32, "end": 45}], "meta": {"domain": "여행 예약", "style": "음성인식(STT) 전사", "obfuscation": ["stt_error", "split_utterance"], "hard_case": "none"}}

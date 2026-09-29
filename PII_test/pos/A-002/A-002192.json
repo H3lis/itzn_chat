@@ -1,0 +1,1 @@
+{"id": "A-002192", "text": "아, 한결 씨가 말씀하시는 그 매물이요? 혹시 이 지역에서 가장 인기 좋은 곳이 어떤 건가요?", "pi": [{"type": "NAME", "text": "한결", "start": 3, "end": 5}], "meta": {"domain": "부동산 상담", "style": "음성인식(STT) 전사", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

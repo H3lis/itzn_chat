@@ -1,0 +1,1 @@
+{"id": "A-001666", "text": "거주하시는 주소지는 경기도 광주시 자흥동 777번지고요. 이름은 김미영 과장님께 말씀해주시겠어요?", "pi": [{"type": "ADDRESS", "text": "경기도 광주시 자흥동 777번지", "start": 11, "end": 28}, {"type": "NAME", "text": "김미영", "start": 36, "end": 39}], "meta": {"domain": "보험 청구", "style": "공문서풍", "obfuscation": ["honorific_ref"], "hard_case": "none"}}

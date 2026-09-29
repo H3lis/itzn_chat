@@ -1,0 +1,1 @@
+{"id": "A-002426", "text": "혹시 제 인스타 아이디, _lovely_dream_ 같은 거 맞나요? 그쪽으로 확인해 보시는 게 좋을 것 같아요.", "pi": [{"type": "SNS", "text": "_lovely_dream_", "start": 14, "end": 28}], "meta": {"domain": "택배 문의", "style": "반말 대화", "obfuscation": ["separator_noise", "lookalike_char"], "hard_case": "none"}}

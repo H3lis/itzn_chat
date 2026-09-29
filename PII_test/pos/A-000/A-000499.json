@@ -1,0 +1,1 @@
+{"id": "A-000499", "text": "첨부된 신용카드 번호는 4111-2222-3333-4444입니다. 이대로 처리 부탁드립니다.", "pi": [{"type": "CARD", "text": "4111-2222-3333-4444", "start": 13, "end": 32}], "meta": {"domain": "SNS 댓글", "style": "공문서풍", "obfuscation": ["stt_error"], "hard_case": "none"}}

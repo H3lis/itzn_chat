@@ -1,0 +1,1 @@
+{"id": "A-003781", "text": "주소지 정보가 2222-3333-4444 이고요, 이메일 주소는 aaa(at)mail점com 으로 적어주세요.", "pi": [{"type": "ADDRESS", "text": "2222-3333-4444", "start": 8, "end": 22}, {"type": "EMAIL", "text": "aaa(at)mail점com", "start": 36, "end": 51}], "meta": {"domain": "이메일 본문", "style": "음성인식(STT) 전사", "obfuscation": ["jamo_split"], "hard_case": "none"}}

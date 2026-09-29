@@ -1,0 +1,1 @@
+{"id": "A-003063", "text": "귀하의 거주지 주소는 '서울특별시 진주구 중앙로 101'로 확인되며, 성함은 '진주' 님으로 되어 있습니까?", "pi": [{"type": "ADDRESS", "text": "서울특별시 진주구 중앙로 101", "start": 13, "end": 30}, {"type": "NAME", "text": "진주", "start": 44, "end": 46}], "meta": {"domain": "이메일 본문", "style": "공문서풍", "obfuscation": ["romanized", "honorific_ref"], "hard_case": "homonym_name"}}

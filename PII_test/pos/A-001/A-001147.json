@@ -1,0 +1,1 @@
+{"id": "A-001147", "text": "위치 알려주세요. 저희 집 주소는 경기도 성남시 분당구 판교역로 500-1이고, 제가 사는 분은 박대리예요.", "pi": [{"type": "ADDRESS", "text": "경기도 성남시 분당구 판교역로 500-1", "start": 19, "end": 41}, {"type": "NAME", "text": "박대리", "start": 54, "end": 57}], "meta": {"domain": "중고거래 채팅", "style": "메신저 줄임말", "obfuscation": ["plain"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-000979", "text": "김대리님 계정 비밀번호 바꿨어? 네 새 계정은 이거야. 그리고 김대리님 이름이 맞지?", "pi": [{"type": "NAME", "text": "김대리", "start": 0, "end": 3}, {"type": "ACCOUNT", "text": "이거야", "start": 26, "end": 29}], "meta": {"domain": "택배 문의", "style": "반말 대화", "obfuscation": ["honorific_ref"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-002402", "text": "담당자분 이메일 주소는 chulsoo(at)gmail(dot)com 으로 확인됐고요. 연락처는 따로 없으신가요?", "pi": [{"type": "EMAIL", "text": "chulsoo(at)gmail(dot)com", "start": 13, "end": 37}], "meta": {"domain": "콜센터 상담 요약", "style": "구어체", "obfuscation": ["separator_noise", "lookalike_char"], "hard_case": "none"}}

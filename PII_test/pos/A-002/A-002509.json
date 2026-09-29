@@ -1,0 +1,1 @@
+{"id": "A-002509", "text": "안녕하세요, 혹시 사랑 씨 맞으신가요? 확인 부탁드려도 될까요?", "pi": [{"type": "NAME", "text": "사랑", "start": 10, "end": 12}], "meta": {"domain": "음성통화 전사문", "style": "존댓말 상담", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

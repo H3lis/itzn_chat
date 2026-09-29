@@ -1,0 +1,1 @@
+{"id": "A-001105", "text": "김 과장님께서는 오늘 새로운 프로젝트에 대해 논의해주셨습니다.", "pi": [{"type": "NAME", "text": "김 과장님", "start": 0, "end": 5}], "meta": {"domain": "회의록", "style": "짧은 단답", "obfuscation": ["jamo_split", "honorific_ref"], "hard_case": "none"}}

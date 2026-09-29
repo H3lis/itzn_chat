@@ -1,0 +1,1 @@
+{"id": "A-005451", "text": "제 이름은 민수이고요, 주민등록번호는 000101으로 되어있어요.", "pi": [{"type": "NAME", "text": "민수", "start": 6, "end": 8}, {"type": "RRN", "text": "000101", "start": 21, "end": 27}], "meta": {"domain": "쇼핑몰 문의", "style": "반말 대화", "obfuscation": ["romanized"], "hard_case": "none"}}

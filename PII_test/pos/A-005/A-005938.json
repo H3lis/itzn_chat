@@ -1,0 +1,1 @@
+{"id": "A-005938", "text": "저희 학원 공지사항 같은 건 복잡해서요. 민준이한테 다시 전화 부탁드립니다. 공지사항이요.", "pi": [{"type": "ORG", "text": "저희 학원", "start": 0, "end": 5}], "meta": {"domain": "학교 행정 문의", "style": "길고 장황한 설명", "obfuscation": ["jamo_split", "romanized"], "hard_case": "none"}}

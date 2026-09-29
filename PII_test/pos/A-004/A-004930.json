@@ -1,0 +1,1 @@
+{"id": "A-004930", "text": "택배 기사님, 제가 받는 분은 박지수인데요. 아, 아니요. 받는 분 이름이 ㅃㅏㄱㅈㅣㅅㅜ예요. 제발 주의해서 배달해주세요.", "pi": [{"type": "NAME", "text": "ㅃㅏㄱㅈㅣㅅㅜ", "start": 42, "end": 49}], "meta": {"domain": "배달 요청사항", "style": "격식체", "obfuscation": ["jamo_split", "self_correction"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-000094", "text": "고객님 성함은 김철수 님이시죠? 혹시 생년월일 말씀해주시겠어요?", "pi": [{"type": "NAME", "text": "김철수", "start": 8, "end": 11}], "meta": {"domain": "금융 상담", "style": "음성인식(STT) 전사", "obfuscation": ["plain"], "hard_case": "none"}}

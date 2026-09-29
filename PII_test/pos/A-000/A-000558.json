@@ -1,0 +1,1 @@
+{"id": "A-000558", "text": "안녕하세요, 저 닉네임이 '봄날감성'인 사람이에요. 저의 진짜 이름은 홍길동이라고 불러주시면 돼요.", "pi": [{"type": "ID", "text": "봄날감성", "start": 15, "end": 19}, {"type": "NAME", "text": "홍길동", "start": 39, "end": 42}], "meta": {"domain": "SNS 댓글", "style": "존댓말 상담", "obfuscation": ["honorific_ref"], "hard_case": "nickname_id"}}

@@ -1,0 +1,1 @@
+{"id": "A-003034", "text": "이메일 주소는 test.user@example.com 이고, 전화번호는 010-1234-5678 입니다.", "pi": [{"type": "EMAIL", "text": "test.user@example.com", "start": 8, "end": 29}, {"type": "PHONE", "text": "010-1234-5678", "start": 40, "end": 53}], "meta": {"domain": "민원 접수", "style": "짧은 단답", "obfuscation": ["separator_noise"], "hard_case": "none"}}

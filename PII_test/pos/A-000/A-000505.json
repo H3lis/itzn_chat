@@ -1,0 +1,1 @@
+{"id": "A-000505", "text": "제 메일은 prium_user@mail.co.kr이고, 이름은 푸름이 맞아요. 혹시 다른 거 있나요?", "pi": [{"type": "EMAIL", "text": "prium_user@mail.co.kr", "start": 6, "end": 27}, {"type": "NAME", "text": "푸름", "start": 35, "end": 37}], "meta": {"domain": "커뮤니티 게시글", "style": "오타 많은 채팅", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

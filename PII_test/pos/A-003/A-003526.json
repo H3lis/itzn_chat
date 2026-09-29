@@ -1,0 +1,1 @@
+{"id": "A-003526", "text": "접수 도와드리겠습니다. 이메일 주소는 aaaaaaa@@@@.com으로 되어있는데, 맞으실까요?", "pi": [{"type": "EMAIL", "text": "aaaaaaa@@@@.com", "start": 21, "end": 36}], "meta": {"domain": "병원 접수", "style": "음성인식(STT) 전사", "obfuscation": ["lookalike_char", "separator_noise", "email_spoken"], "hard_case": "none"}}

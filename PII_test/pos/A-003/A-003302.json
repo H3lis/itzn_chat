@@ -1,0 +1,1 @@
+{"id": "A-003302", "text": "네, 고객님. 생년월일 말씀해주시겠어요? 90년 5월 15일 말씀하신 게 맞으신가요?", "pi": [{"type": "BIRTH", "text": "90년 5월 15일", "start": 23, "end": 33}], "meta": {"domain": "부동산 상담", "style": "격식체", "obfuscation": ["self_correction"], "hard_case": "none"}}

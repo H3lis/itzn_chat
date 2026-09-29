@@ -1,0 +1,1 @@
+{"id": "A-002648", "text": "혹시 기쁨 학생 분이신가요? 성함이 '기쁨'이라고 말씀해주셨는데, 맞나요?", "pi": [{"type": "NAME", "text": "기쁨", "start": 3, "end": 5}], "meta": {"domain": "학교 행정 문의", "style": "구어체", "obfuscation": ["jamo_split", "romanized"], "hard_case": "homonym_name"}}

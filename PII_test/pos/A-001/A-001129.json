@@ -1,0 +1,1 @@
+{"id": "A-001129", "text": "저희 팀의 신입 사원 김민정 씨는 1990년 5월 15일생이고, 성함은 김민정이라고 등록되어 있습니다.", "pi": [{"type": "BIRTH", "text": "1990년 5월 15일", "start": 19, "end": 31}, {"type": "NAME", "text": "김민정", "start": 40, "end": 43}], "meta": {"domain": "직장 메신저", "style": "길고 장황한 설명", "obfuscation": ["honorific_ref"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-005781", "text": "혹시 배달해주실 분이 민지 씨 집 앞에서 잠깐 기다려 주실 수 있을까요? 번호는 010-2345-6789예요.", "pi": [{"type": "NAME", "text": "민지", "start": 12, "end": 14}, {"type": "PHONE", "text": "010-2345-6789", "start": 45, "end": 58}], "meta": {"domain": "배달 요청사항", "style": "길고 장황한 설명", "obfuscation": ["split_utterance"], "hard_case": "none"}}

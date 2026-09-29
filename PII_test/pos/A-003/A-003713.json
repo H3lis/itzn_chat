@@ -1,0 +1,1 @@
+{"id": "A-003713", "text": "고객님께서 등록하신 전화번호가 010 2222 3333이 맞는지 한글로 불러주실 수 있을까요?", "pi": [{"type": "PHONE", "text": "010 2222 3333", "start": 17, "end": 30}], "meta": {"domain": "보험 청구", "style": "존댓말 상담", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

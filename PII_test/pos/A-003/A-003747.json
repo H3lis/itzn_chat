@@ -1,0 +1,1 @@
+{"id": "A-003747", "text": "담당자분께서는 이메일 주소가 chulsoo(at)gmail(dot)com 이시고, 성함은 김민준 선생님이십니다.", "pi": [{"type": "EMAIL", "text": "chulsoo(at)gmail(dot)com", "start": 16, "end": 40}, {"type": "NAME", "text": "김민준", "start": 50, "end": 53}], "meta": {"domain": "음성통화 전사문", "style": "존댓말 상담", "obfuscation": ["honorific_ref", "romanized", "separator_noise"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-002252", "text": "저희가 확인해보니 주소는 경기도 가상시 신축동 502호이고, 신청하신 분 성함은 단비 님이 맞으신가요?", "pi": [{"type": "ADDRESS", "text": "경기도 가상시 신축동 502호", "start": 14, "end": 30}, {"type": "NAME", "text": "단비", "start": 45, "end": 47}], "meta": {"domain": "민원 접수", "style": "오타 많은 채팅", "obfuscation": ["split_utterance"], "hard_case": "homonym_name"}}

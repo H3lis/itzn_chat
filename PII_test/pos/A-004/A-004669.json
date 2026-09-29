@@ -1,0 +1,1 @@
+{"id": "A-004669", "text": "주민등록번호가 되게 중요하니까, 981231 다음에 2가 여덟 번 나올 거예요.", "pi": [{"type": "RRN", "text": "981231 다음에 2가 여덟 번", "start": 18, "end": 36}], "meta": {"domain": "보험 청구", "style": "짧은 단답", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-005588", "text": "혹시 제가 적은 이름이 맞나요? 아니면 '정우성'이 맞을까요? 제 주민번호는 921225-1******이에요.", "pi": [{"type": "NAME", "text": "정우성", "start": 23, "end": 26}, {"type": "RRN", "text": "921225-1******", "start": 43, "end": 57}], "meta": {"domain": "중고거래 채팅", "style": "오타 많은 채팅", "obfuscation": ["split_utterance", "self_correction"], "hard_case": "none"}}

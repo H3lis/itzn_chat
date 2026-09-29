@@ -1,0 +1,1 @@
+{"id": "A-003024", "text": "제가 받았던 주소지가, 김포시 와일드 플라자 302호에 있는 거 맞나요?", "pi": [{"type": "ADDRESS", "text": "김포시 와일드 플라자 302호", "start": 13, "end": 29}], "meta": {"domain": "보험 청구", "style": "오타 많은 채팅", "obfuscation": ["stt_error", "korean_reading"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-004648", "text": "다음 회의록에 따르면, 박민준이라는 분이 참석하셨습니다.", "pi": [{"type": "NAME", "text": "박민준", "start": 13, "end": 16}], "meta": {"domain": "회의록", "style": "오타 많은 채팅", "obfuscation": ["jamo_split"], "hard_case": "none"}}

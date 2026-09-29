@@ -1,0 +1,1 @@
+{"id": "A-000801", "text": "수험번호는 12345678901234라는 게 맞습니다. 별다른 문제는 없고요.", "pi": [{"type": "RRN", "text": "12345678901234", "start": 6, "end": 20}], "meta": {"domain": "민원 접수", "style": "음성인식(STT) 전사", "obfuscation": ["plain"], "hard_case": "none"}}

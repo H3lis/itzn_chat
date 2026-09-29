@@ -1,0 +1,1 @@
+{"id": "A-005834", "text": "저희가 확인해보니, 주소는 경기도 수원시 장안구 삼성로 1234번지 쪽으로 오셨다고 하더라고요. 정확히 읽어주시겠어요?", "pi": [{"type": "ADDRESS", "text": "경기도 수원시 장안구 삼성로 1234번지", "start": 15, "end": 37}], "meta": {"domain": "부동산 상담", "style": "길고 장황한 설명", "obfuscation": ["korean_reading", "stt_error", "jamo_split"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-001120", "text": "계좌번호 관련해서는 support.bank-info(골뱅이) 네이버 점 컴으로 문의하시면 됩니다.", "pi": [{"type": "EMAIL", "text": "support.bank-info(골뱅이) 네이버 점 컴", "start": 11, "end": 41}], "meta": {"domain": "금융 상담", "style": "구어체", "obfuscation": ["separator_noise", "email_spoken"], "hard_case": "none"}}

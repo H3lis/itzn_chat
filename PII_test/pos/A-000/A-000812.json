@@ -1,0 +1,1 @@
+{"id": "A-000812", "text": "김철수 과장님, 담당자분 성함이 김철수님이 맞으신가요? 아니면 김 ㅊㅓㄹㅅㅜ 님으로 되어있던가요?", "pi": [{"type": "ID", "text": "김철수", "start": 0, "end": 3}, {"type": "NAME", "text": "김철수", "start": 18, "end": 21}], "meta": {"domain": "직장 메신저", "style": "존댓말 상담", "obfuscation": ["lookalike_char", "jamo_split"], "hard_case": "none"}}

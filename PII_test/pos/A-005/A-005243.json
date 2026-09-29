@@ -1,0 +1,1 @@
+{"id": "A-005243", "text": "저희 집 주소는 서울특별시 강남구 테헤란로 123이고, 연락 가능한 이메일은 test@example.co.kr 입니다.", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 테헤란로 123", "start": 9, "end": 27}, {"type": "EMAIL", "text": "test@example.co.kr", "start": 43, "end": 61}], "meta": {"domain": "커뮤니티 게시글", "style": "공문서풍", "obfuscation": ["korean_reading"], "hard_case": "none"}}

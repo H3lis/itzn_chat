@@ -1,0 +1,1 @@
+{"id": "A-005052", "text": "접수하시려는 아이디는 kims123이고, 주민등록번호는 900101-2XXXXXXX예요.", "pi": [{"type": "ID", "text": "kims123", "start": 12, "end": 19}, {"type": "RRN", "text": "900101-2XXXXXXX", "start": 31, "end": 46}], "meta": {"domain": "민원 접수", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "none"}}

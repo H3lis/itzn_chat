@@ -1,0 +1,1 @@
+{"id": "A-005641", "text": "운전면허증은 111-2222-3333으로 하셨고, 메일은 user@example.com이에요.", "pi": [{"type": "DRIVER_LICENSE", "text": "111-2222-3333", "start": 7, "end": 20}, {"type": "EMAIL", "text": "user@example.com", "start": 32, "end": 48}], "meta": {"domain": "병원 접수", "style": "구어체", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

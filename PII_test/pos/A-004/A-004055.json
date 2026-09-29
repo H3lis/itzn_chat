@@ -1,0 +1,1 @@
+{"id": "A-004055", "text": "저기, 혹시 단비 씨 거 맞아요? 전에 연락드렸던 010-3333-4444 번호로 거래해도 될까요? 맞나요?", "pi": [{"type": "NAME", "text": "단비", "start": 7, "end": 9}, {"type": "PHONE", "text": "010-3333-4444", "start": 28, "end": 41}], "meta": {"domain": "중고거래 채팅", "style": "반말 대화", "obfuscation": ["separator_noise"], "hard_case": "homonym_name"}}

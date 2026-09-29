@@ -1,0 +1,1 @@
+{"id": "A-004638", "text": "운전면허증 번호는 951122334455요? 다시 확인해 볼게요. 951122334455가 맞아요.", "pi": [{"type": "DRIVER_LICENSE", "text": "951122334455", "start": 10, "end": 22}], "meta": {"domain": "금융 상담", "style": "메신저 줄임말", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

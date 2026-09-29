@@ -1,0 +1,1 @@
+{"id": "A-002251", "text": "카드 정보는 9999.xxxx.xxxx.1234로 보이는데, 혹시 이게 맞을까요? 따로 문자 메시지로 확인 부탁드려요.", "pi": [{"type": "CARD", "text": "9999.xxxx.xxxx.1234", "start": 7, "end": 26}], "meta": {"domain": "학교 행정 문의", "style": "메신저 줄임말", "obfuscation": ["separator_noise", "korean_reading"], "hard_case": "none"}}

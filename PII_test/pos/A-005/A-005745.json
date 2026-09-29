@@ -1,0 +1,1 @@
+{"id": "A-005745", "text": "아니요, 제가 처음에 알려드린 계정 번호가 이게 아닌 것 같아요. 다시 확인해 볼게요.", "pi": [{"type": "ACCOUNT", "text": "계정 번호", "start": 17, "end": 22}], "meta": {"domain": "택배 문의", "style": "반말 대화", "obfuscation": ["self_correction"], "hard_case": "none"}}

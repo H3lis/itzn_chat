@@ -1,0 +1,1 @@
+{"id": "A-005100", "text": "박과장님과 최부장님께서 문의 주셨어요. 그리고 저희는 신대덕 교육원에서 일하고 있습니다.", "pi": [{"type": "NAME", "text": "박과장", "start": 0, "end": 3}, {"type": "NAME", "text": "최부장", "start": 6, "end": 9}, {"type": "ORG", "text": "신대덕 교육원", "start": 30, "end": 37}], "meta": {"domain": "학교 행정 문의", "style": "공문서풍", "obfuscation": ["honorific_ref"], "hard_case": "none"}}

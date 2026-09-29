@@ -1,0 +1,1 @@
+{"id": "A-000873", "text": "연락 가능한 전화번호는 010-3456-7890이니, 이 번호로 꼭 연락 주세요.", "pi": [{"type": "PHONE", "text": "010-3456-7890", "start": 13, "end": 26}], "meta": {"domain": "콜센터 상담 요약", "style": "공문서풍", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

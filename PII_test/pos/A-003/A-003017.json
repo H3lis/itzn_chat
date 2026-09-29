@@ -1,0 +1,1 @@
+{"id": "A-003017", "text": "안녕하세요. 박지영 선생님, 접수하려고 합니다. 주민번호는 901231-1234567입니다.", "pi": [{"type": "NAME", "text": "박지영", "start": 7, "end": 10}, {"type": "RRN", "text": "901231-1234567", "start": 33, "end": 47}], "meta": {"domain": "병원 접수", "style": "공문서풍", "obfuscation": ["honorific_ref"], "hard_case": "none"}}

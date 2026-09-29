@@ -1,0 +1,1 @@
+{"id": "A-003188", "text": "연락 주신 번호가 010 3333 4444 인가요? 아, 아니에요. 010 1111 2222이요.", "pi": [{"type": "PHONE", "text": "010 3333 4444", "start": 10, "end": 23}, {"type": "PHONE", "text": "010 1111 2222", "start": 38, "end": 51}], "meta": {"domain": "여행 예약", "style": "구어체", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

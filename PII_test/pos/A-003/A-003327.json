@@ -1,0 +1,1 @@
+{"id": "A-003327", "text": "문제가 있어서요. 운전면허증 번호가 9876-12-3456이 맞나요?", "pi": [{"type": "DRIVER_LICENSE", "text": "9876-12-3456", "start": 20, "end": 32}], "meta": {"domain": "택배 문의", "style": "오타 많은 채팅", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

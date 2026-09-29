@@ -1,0 +1,1 @@
+{"id": "A-004262", "text": "배송받으실 주소는 서울시 강남구 역삼동 105예요? 그리고 회원번호가 920815로 기억하는데 맞으실까요?", "pi": [{"type": "ADDRESS", "text": "서울시 강남구 역삼동 105", "start": 10, "end": 25}, {"type": "RRN", "text": "920815", "start": 39, "end": 45}], "meta": {"domain": "쇼핑몰 문의", "style": "음성인식(STT) 전사", "obfuscation": ["stt_error"], "hard_case": "none"}}

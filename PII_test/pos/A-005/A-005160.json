@@ -1,0 +1,1 @@
+{"id": "A-005160", "text": "청구서 상의 고객명은 '수원'이라고 되어 있는데요. 제가 말씀드린 게 맞을까요?", "pi": [{"type": "NAME", "text": "수원", "start": 13, "end": 15}], "meta": {"domain": "보험 청구", "style": "길고 장황한 설명", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

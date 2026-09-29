@@ -1,0 +1,1 @@
+{"id": "A-001168", "text": "혹시 배달 받으실 주소가 경기도 부산광역시 해운대구 마린시티 123-45번지 맞으신가요? 123, 가나다, 마지막은 45네요.", "pi": [{"type": "ADDRESS", "text": "경기도 부산광역시 해운대구 마린시티 123-45번지", "start": 14, "end": 42}], "meta": {"domain": "배달 요청사항", "style": "구어체", "obfuscation": ["korean_reading", "jamo_split"], "hard_case": "none"}}

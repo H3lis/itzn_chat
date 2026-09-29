@@ -1,0 +1,1 @@
+{"id": "A-005500", "text": "저는 정우예요. 서울대 병원에 왔다. 신원이 확인됐어.", "pi": [{"type": "NAME", "text": "정우", "start": 3, "end": 5}, {"type": "ORG", "text": "서울대 병원", "start": 9, "end": 15}], "meta": {"domain": "병원 접수", "style": "반말 대화", "obfuscation": ["romanized"], "hard_case": "none"}}

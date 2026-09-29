@@ -1,0 +1,1 @@
+{"id": "A-002726", "text": "거주하시는 주소는 33333 서울로이시고, 주민등록번호는 950515-1xxxxxxx로 되어 있어요.", "pi": [{"type": "ADDRESS", "text": "33333 서울로이", "start": 10, "end": 20}, {"type": "RRN", "text": "950515-1xxxxxxx", "start": 32, "end": 47}], "meta": {"domain": "학교 행정 문의", "style": "짧은 단답", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

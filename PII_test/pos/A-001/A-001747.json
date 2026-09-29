@@ -1,0 +1,1 @@
+{"id": "A-001747", "text": "운전면허증은 KxL1234567로 되어있고요, 이름은 Christopher라고 말씀드렸습니다.", "pi": [{"type": "DRIVER_LICENSE", "text": "KxL1234567", "start": 7, "end": 17}, {"type": "NAME", "text": "Christopher", "start": 30, "end": 41}], "meta": {"domain": "SNS 댓글", "style": "음성인식(STT) 전사", "obfuscation": ["lookalike_char", "romanized", "mixed_reading"], "hard_case": "none"}}

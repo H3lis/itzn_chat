@@ -1,0 +1,1 @@
+{"id": "A-000572", "text": "저희가 원래 주소는 서울시 강남구 역삼동 123-4였는데요, 아, 그게 아니고요, 자두님 성함이 맞으세요?", "pi": [{"type": "ADDRESS", "text": "서울시 강남구 역삼동 123-4", "start": 11, "end": 28}, {"type": "NAME", "text": "자두", "start": 46, "end": 48}], "meta": {"domain": "커뮤니티 게시글", "style": "존댓말 상담", "obfuscation": ["self_correction"], "hard_case": "homonym_name"}}

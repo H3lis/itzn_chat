@@ -1,0 +1,1 @@
+{"id": "A-003746", "text": "제 핸드폰 번호는 010 1234 5678 이고, 인스타그램은 @abc_user 로 알고 있어요.", "pi": [{"type": "PHONE", "text": "010 1234 5678", "start": 10, "end": 23}, {"type": "SNS", "text": "@abc_user", "start": 35, "end": 44}], "meta": {"domain": "고객센터 채팅", "style": "구어체", "obfuscation": ["plain"], "hard_case": "none"}}

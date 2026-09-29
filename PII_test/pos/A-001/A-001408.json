@@ -1,0 +1,1 @@
+{"id": "A-001408", "text": "저희 고객님 주소는 부산시 해운대구 마린시티로 700동 501호고요, 이메일 주소는 abc(at)test.com이 맞을까요?", "pi": [{"type": "ADDRESS", "text": "부산시 해운대구 마린시티로 700동 501호", "start": 11, "end": 35}, {"type": "EMAIL", "text": "abc(at)test.com", "start": 47, "end": 62}], "meta": {"domain": "음성통화 전사문", "style": "구어체", "obfuscation": ["split_utterance", "lookalike_char"], "hard_case": "none"}}

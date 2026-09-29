@@ -1,0 +1,1 @@
+{"id": "A-003182", "text": "예약 건으로 전화 주셨는데요, 전화번호가 010-9999-8888 맞으신가요?", "pi": [{"type": "PHONE", "text": "010-9999-8888", "start": 23, "end": 36}], "meta": {"domain": "여행 예약", "style": "구어체", "obfuscation": ["self_correction"], "hard_case": "none"}}

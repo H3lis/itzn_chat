@@ -1,0 +1,1 @@
+{"id": "A-001825", "text": "주문하신 상품, 배송 예정일이 언제인지 확인 부탁드립니다. 제 생년월일이 90.05.15거든요.", "pi": [{"type": "BIRTH", "text": "90.05.15", "start": 41, "end": 49}], "meta": {"domain": "택배 문의", "style": "존댓말 상담", "obfuscation": ["separator_noise"], "hard_case": "none"}}

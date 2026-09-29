@@ -1,0 +1,1 @@
+{"id": "A-004136", "text": "고객님, 상담이신 번호는 010 백구십삼 사오육칠팔구예요. 다시 한번 확인 부탁드립니다.", "pi": [{"type": "PHONE", "text": "010 백구십삼 사오육칠팔구", "start": 14, "end": 29}], "meta": {"domain": "콜센터 상담 요약", "style": "구어체", "obfuscation": ["korean_reading"], "hard_case": "none"}}

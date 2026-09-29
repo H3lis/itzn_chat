@@ -1,0 +1,1 @@
+{"id": "A-000929", "text": "차량 번호는 '12가 3333' 맞고요. 사용자 아이디는 'user123-user123'으로 수정해야 할 것 같아요.", "pi": [{"type": "CAR_PLATE", "text": "12가 3333", "start": 8, "end": 16}, {"type": "ID", "text": "user123-user123", "start": 33, "end": 48}], "meta": {"domain": "중고거래 채팅", "style": "짧은 단답", "obfuscation": ["repeat_expr", "stt_error"], "hard_case": "none"}}

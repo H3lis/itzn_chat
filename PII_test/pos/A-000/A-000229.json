@@ -1,0 +1,1 @@
+{"id": "A-000229", "text": "제 이메일은 a******@gmai.net이고, 닉네임은 달님이에요.", "pi": [{"type": "EMAIL", "text": "a******@gmai.net", "start": 7, "end": 23}, {"type": "NAME", "text": "달님", "start": 32, "end": 34}], "meta": {"domain": "SNS 댓글", "style": "짧은 단답", "obfuscation": ["separator_noise", "lookalike_char"], "hard_case": "homonym_name"}}

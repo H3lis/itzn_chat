@@ -1,0 +1,1 @@
+{"id": "A-000732", "text": "제 이름은 김현우입니다. 저한테는 어떤 호칭을 붙여주셔도 괜찮아요.", "pi": [{"type": "NAME", "text": "김현우", "start": 6, "end": 9}], "meta": {"domain": "음성통화 전사문", "style": "반말 대화", "obfuscation": ["honorific_ref"], "hard_case": "none"}}

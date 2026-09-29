@@ -1,0 +1,1 @@
+{"id": "A-002087", "text": "혹시 고객님 성함이 라임 님 맞으신가요? 그리고 연락처는 010 9999 8888 이신가요?", "pi": [{"type": "NAME", "text": "라임", "start": 11, "end": 13}, {"type": "PHONE", "text": "010 9999 8888", "start": 32, "end": 45}], "meta": {"domain": "금융 상담", "style": "음성인식(STT) 전사", "obfuscation": ["honorific_ref"], "hard_case": "homonym_name"}}

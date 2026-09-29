@@ -1,0 +1,1 @@
+{"id": "A-000053", "text": "카드번호는 9999-1111-3333이에요. 그리고 고객님 성함이 '노을'이 맞으신가요?", "pi": [{"type": "CARD", "text": "9999-1111-3333", "start": 6, "end": 20}, {"type": "NAME", "text": "노을", "start": 38, "end": 40}], "meta": {"domain": "금융 상담", "style": "오타 많은 채팅", "obfuscation": ["lookalike_char"], "hard_case": "homonym_name"}}

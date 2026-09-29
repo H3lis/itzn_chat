@@ -1,0 +1,1 @@
+{"id": "A-003875", "text": "저 사람 맞지? 아니, 그게 아니고 나 이름은 김태형이거든.", "pi": [{"type": "NAME", "text": "김태형", "start": 26, "end": 29}], "meta": {"domain": "SNS 댓글", "style": "반말 대화", "obfuscation": ["self_correction"], "hard_case": "none"}}

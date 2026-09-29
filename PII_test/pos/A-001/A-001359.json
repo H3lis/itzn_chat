@@ -1,0 +1,1 @@
+{"id": "A-001359", "text": "청구서가 누락되었어요. 카드 번호가 4444 저희가 처음에 말씀드렸던 거랑 다른 것 같네요.", "pi": [{"type": "CARD", "text": "4444", "start": 20, "end": 24}], "meta": {"domain": "배달 요청사항", "style": "오타 많은 채팅", "obfuscation": ["stt_error"], "hard_case": "none"}}

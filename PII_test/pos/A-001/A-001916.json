@@ -1,0 +1,1 @@
+{"id": "A-001916", "text": "회원님 정보는 test@naver.com 으로 되어 있고요, 추가로 밴드 계정은 'naver_user123' 이니까 확인 부탁드립니다.", "pi": [{"type": "EMAIL", "text": "test@naver.com", "start": 8, "end": 22}, {"type": "SNS", "text": "naver_user123", "start": 46, "end": 59}], "meta": {"domain": "이메일 본문", "style": "길고 장황한 설명", "obfuscation": ["separator_noise", "email_spoken"], "hard_case": "nickname_id"}}

@@ -1,0 +1,1 @@
+{"id": "A-004018", "text": "이메일 주소는 user@example.com 이구요, 전화번호는 02-1111-2222로 다시 말씀드리겠습니다.", "pi": [{"type": "EMAIL", "text": "user@example.com", "start": 8, "end": 24}, {"type": "PHONE", "text": "02-1111-2222", "start": 36, "end": 48}], "meta": {"domain": "온라인 강의 Q&A", "style": "구어체", "obfuscation": ["repeat_expr", "stt_error"], "hard_case": "none"}}

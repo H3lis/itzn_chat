@@ -1,0 +1,1 @@
+{"id": "A-002030", "text": "상담해주신 분 성함이 박과장님 맞으신가요? 그리고 연락처는 010-9999-8888이시죠?", "pi": [{"type": "NAME", "text": "박과장님", "start": 12, "end": 16}], "meta": {"domain": "콜센터 상담 요약", "style": "음성인식(STT) 전사", "obfuscation": ["honorific_ref"], "hard_case": "none"}}

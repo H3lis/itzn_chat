@@ -1,0 +1,1 @@
+{"id": "A-000155", "text": "저기요, 김민준 님께 여쭤볼 게 있는데요. 그분이 담당자이신가요?", "pi": [{"type": "NAME", "text": "김민준", "start": 5, "end": 8}], "meta": {"domain": "음성통화 전사문", "style": "길고 장황한 설명", "obfuscation": ["honorific_ref", "jamo_split"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-003675", "text": "제 이름이 도토리인데요. 연락처가 010-2222-3333이니 이 번호로 다시 한번 확인 부탁드려요.", "pi": [{"type": "NAME", "text": "도토리", "start": 6, "end": 9}, {"type": "PHONE", "text": "010-2222-3333", "start": 19, "end": 32}], "meta": {"domain": "금융 상담", "style": "길고 장황한 설명", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

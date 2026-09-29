@@ -1,0 +1,1 @@
+{"id": "A-003832", "text": "고객님의 회원번호는 B9876입니다. 그리고 연락 가능한 번호는 010 9999 8888이에요. 이 정보가 맞는지 한 번만 확인 부탁드립니다.", "pi": [{"type": "OTHER_ID", "text": "B9876", "start": 11, "end": 16}, {"type": "PHONE", "text": "010 9999 8888", "start": 36, "end": 49}], "meta": {"domain": "보험 청구", "style": "존댓말 상담", "obfuscation": ["split_utterance", "self_correction"], "hard_case": "none"}}

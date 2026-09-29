@@ -1,0 +1,1 @@
+{"id": "A-000502", "text": "해솔 님 말씀으로는, 전화번호가 공일공-1111-2222가 맞다고 하셨고요.", "pi": [{"type": "NAME", "text": "해솔", "start": 0, "end": 2}, {"type": "PHONE", "text": "공일공-1111-2222", "start": 18, "end": 31}], "meta": {"domain": "직장 메신저", "style": "음성인식(STT) 전사", "obfuscation": ["mixed_reading"], "hard_case": "homonym_name"}}

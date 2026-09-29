@@ -1,0 +1,1 @@
+{"id": "A-002689", "text": "운전면허는 123-45-6789-00이고, SNS는 인스타 아이디 'happy_user_k'로 돼 있어요.", "pi": [{"type": "DRIVER_LICENSE", "text": "123-45-6789-00", "start": 6, "end": 20}, {"type": "SNS", "text": "happy_user_k", "start": 38, "end": 50}], "meta": {"domain": "직장 메신저", "style": "메신저 줄임말", "obfuscation": ["separator_noise"], "hard_case": "nickname_id"}}

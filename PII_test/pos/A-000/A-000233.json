@@ -1,0 +1,1 @@
+{"id": "A-000233", "text": "나라님, 저희가 신청서 작성하려고 하는데, 번호는 010으로 시작하고요, 이름은 나라 맞으신가요?", "pi": [{"type": "NAME", "text": "나라", "start": 0, "end": 2}, {"type": "PHONE", "text": "010", "start": 28, "end": 31}], "meta": {"domain": "쇼핑몰 문의", "style": "메신저 줄임말", "obfuscation": ["repeat_expr"], "hard_case": "homonym_name"}}

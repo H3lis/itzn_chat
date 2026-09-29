@@ -1,0 +1,1 @@
+{"id": "A-004763", "text": "지혜 씨가 상담 내용을 다시 확인해 주시겠어요? 죄송해요, 제가 뭘 잘못 말했는지 모르겠네요.", "pi": [{"type": "NAME", "text": "지혜", "start": 0, "end": 2}], "meta": {"domain": "금융 상담", "style": "오타 많은 채팅", "obfuscation": ["self_correction"], "hard_case": "homonym_name"}}

@@ -1,0 +1,1 @@
+{"id": "A-001549", "text": "담당자 분 성함이 박지수 씨라고 하셨는데, 혹시 이름이 이서윤 씨가 아니셨나요? 아니, 박지수 씨가 맞으신가요?", "pi": [{"type": "NAME", "text": "박지수", "start": 10, "end": 13}, {"type": "NAME", "text": "이서윤", "start": 31, "end": 34}], "meta": {"domain": "보험 청구", "style": "음성인식(STT) 전사", "obfuscation": ["self_correction"], "hard_case": "none"}}

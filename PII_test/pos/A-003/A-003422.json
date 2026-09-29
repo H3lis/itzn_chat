@@ -1,0 +1,1 @@
+{"id": "A-003422", "text": "혹시 예약하신 분 성함이 박지민 님이신가요? 제 인스타는 @jimin_pk_insta 이예요.", "pi": [{"type": "NAME", "text": "박지민", "start": 14, "end": 17}, {"type": "SNS", "text": "@jimin_pk_insta", "start": 32, "end": 47}], "meta": {"domain": "여행 예약", "style": "오타 많은 채팅", "obfuscation": ["separator_noise"], "hard_case": "nickname_id"}}

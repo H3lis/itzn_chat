@@ -1,0 +1,1 @@
+{"id": "A-003291", "text": "한결 학생은 오늘 일정에 대한 추가 문의사항 있으신가요? 혹시 사용자 ID가 '한결_ㅇㅇ' 인가요?", "pi": [{"type": "NAME", "text": "한결", "start": 0, "end": 2}, {"type": "OTHER_ID", "text": "한결_ㅇㅇ", "start": 44, "end": 49}], "meta": {"domain": "SNS 댓글", "style": "짧은 단답", "obfuscation": ["jamo_split", "honorific_ref", "lookalike_char"], "hard_case": "homonym_name"}}

@@ -1,0 +1,1 @@
+{"id": "A-001915", "text": "차량 번호는 12가 아닌, 1-2-34입니다. 신분증상으로는 'S123456789'로 등록 부탁드립니다.", "pi": [{"type": "DRIVER_LICENSE", "text": "S123456789", "start": 35, "end": 45}], "meta": {"domain": "콜센터 상담 요약", "style": "격식체", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

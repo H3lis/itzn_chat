@@ -1,0 +1,1 @@
+{"id": "A-003114", "text": "제가 번호가 010 9876 5432 맞나요? 이거 다시 확인 부탁드려요.", "pi": [{"type": "PHONE", "text": "010 9876 5432", "start": 7, "end": 20}], "meta": {"domain": "커뮤니티 게시글", "style": "오타 많은 채팅", "obfuscation": ["plain"], "hard_case": "none"}}

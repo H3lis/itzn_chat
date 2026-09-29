@@ -1,0 +1,1 @@
+{"id": "A-000261", "text": "저희가 안내해 드린 주소는 서울시 강남구 테헤란로 123이고요, 혹시 다른 곳이 있으신가요?", "pi": [{"type": "ADDRESS", "text": "서울시 강남구 테헤란로 123", "start": 15, "end": 31}], "meta": {"domain": "민원 접수", "style": "존댓말 상담", "obfuscation": ["split_utterance"], "hard_case": "none"}}

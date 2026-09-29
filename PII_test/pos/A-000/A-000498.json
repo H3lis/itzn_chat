@@ -1,0 +1,1 @@
+{"id": "A-000498", "text": "야, 너 이름이 김민준 맞지? 혹시 옛날에 쓰던 아이디가 'lionheart99' 같은 거 아니야?", "pi": [{"type": "NAME", "text": "김민준", "start": 9, "end": 12}, {"type": "OTHER_ID", "text": "lionheart99", "start": 33, "end": 44}], "meta": {"domain": "이메일 본문", "style": "반말 대화", "obfuscation": ["separator_noise"], "hard_case": "none"}}

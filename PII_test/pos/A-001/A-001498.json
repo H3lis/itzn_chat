@@ -1,0 +1,1 @@
+{"id": "A-001498", "text": "문의하신 분 성함이 바다 씨 맞으신가요? 네, 확인되셨습니다.", "pi": [{"type": "NAME", "text": "바다", "start": 11, "end": 13}], "meta": {"domain": "콜센터 상담 요약", "style": "길고 장황한 설명", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

@@ -1,0 +1,1 @@
+{"id": "A-003907", "text": "혹시 고객님 생일이 언제신지 여쭤봐도 될까요? 네, 2000년 12월 15일이요.", "pi": [{"type": "BIRTH", "text": "2000년 12월 15일", "start": 29, "end": 42}], "meta": {"domain": "배달 요청사항", "style": "존댓말 상담", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

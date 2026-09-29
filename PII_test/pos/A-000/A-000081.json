@@ -1,0 +1,1 @@
+{"id": "A-000081", "text": "저희가 예약하신 숙소 주소는 서울특별시 강남구 테헤란로 123번지입니다. 전화번호는 010-5555-1234로 연락 부탁드립니다.", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 테헤란로 123번지", "start": 16, "end": 36}, {"type": "PHONE", "text": "010-5555-1234", "start": 47, "end": 60}], "meta": {"domain": "여행 예약", "style": "격식체", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

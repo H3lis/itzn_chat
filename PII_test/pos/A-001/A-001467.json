@@ -1,0 +1,1 @@
+{"id": "A-001467", "text": "아니요, '이슬' 씨는 연락처가 010-2222-1111이라고 들었는데요, 이게 맞나요?", "pi": [{"type": "NAME", "text": "이슬", "start": 6, "end": 8}, {"type": "PHONE", "text": "010-2222-1111", "start": 18, "end": 31}], "meta": {"domain": "부동산 상담", "style": "반말 대화", "obfuscation": ["jamo_split", "stt_error", "lookalike_char"], "hard_case": "homonym_name"}}

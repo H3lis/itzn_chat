@@ -1,0 +1,1 @@
+{"id": "A-004812", "text": "네, 고객님. 혹시 고객님 성함이 '은행' 씨 맞으신가요? 신분증으로 확인 부탁드립니다.", "pi": [{"type": "NAME", "text": "은행", "start": 20, "end": 22}], "meta": {"domain": "민원 접수", "style": "길고 장황한 설명", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

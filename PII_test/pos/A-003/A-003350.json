@@ -1,0 +1,1 @@
+{"id": "A-003350", "text": "이사 갈 주소는 123번지인데요. 그 전에 저희 담당자는 최민지 님이라고 확인해 주세요.", "pi": [{"type": "ADDRESS", "text": "123번지", "start": 9, "end": 14}, {"type": "NAME", "text": "최민지", "start": 32, "end": 35}], "meta": {"domain": "회의록", "style": "존댓말 상담", "obfuscation": ["split_utterance"], "hard_case": "none"}}

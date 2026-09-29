@@ -1,0 +1,1 @@
+{"id": "A-004362", "text": "계좌번호가 010 다음에 1이 네 번 그리고 2가 네 번이요, 그리고 이메일은 user@example.com입니다.", "pi": [{"type": "ACCOUNT", "text": "010 다음에 1이 네 번 그리고 2가 네 번", "start": 6, "end": 31}, {"type": "EMAIL", "text": "user@example.com", "start": 44, "end": 60}], "meta": {"domain": "회의록", "style": "존댓말 상담", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

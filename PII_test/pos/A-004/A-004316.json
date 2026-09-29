@@ -1,0 +1,1 @@
+{"id": "A-004316", "text": "혹시 연락 가능한 전화번호 알려줄 수 있어? 010-9999-8888 같은 거.", "pi": [{"type": "PHONE", "text": "010-9999-8888", "start": 25, "end": 38}], "meta": {"domain": "이메일 본문", "style": "반말 대화", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

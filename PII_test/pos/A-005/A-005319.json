@@ -1,0 +1,1 @@
+{"id": "A-005319", "text": "혹시 김민지 씨네 집은 어느 쪽으로 많이 거래가 되나요? 아니면 박준호는요?", "pi": [{"type": "NAME", "text": "김민지", "start": 3, "end": 6}, {"type": "NAME", "text": "박준호", "start": 36, "end": 39}], "meta": {"domain": "부동산 상담", "style": "반말 대화", "obfuscation": ["plain"], "hard_case": "none"}}

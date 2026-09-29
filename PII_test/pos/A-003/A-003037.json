@@ -1,0 +1,1 @@
+{"id": "A-003037", "text": "이번 프로젝트는 김민준님과 이서연님 두 분이 핵심 인력으로 참여하게 됐어요.", "pi": [{"type": "NAME", "text": "김민준", "start": 9, "end": 12}, {"type": "NAME", "text": "이서연", "start": 15, "end": 18}], "meta": {"domain": "직장 메신저", "style": "메신저 줄임말", "obfuscation": ["romanized", "jamo_split"], "hard_case": "none"}}

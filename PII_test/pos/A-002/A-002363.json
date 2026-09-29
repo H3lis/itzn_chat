@@ -1,0 +1,1 @@
+{"id": "A-002363", "text": "운전면허증 번호가 1234abcd이고, 제가 쓰는 닉네임이 'choco_lover'입니다.", "pi": [{"type": "DRIVER_LICENSE", "text": "1234abcd", "start": 10, "end": 18}, {"type": "SNS", "text": "choco_lover", "start": 34, "end": 45}], "meta": {"domain": "SNS 댓글", "style": "짧은 단답", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

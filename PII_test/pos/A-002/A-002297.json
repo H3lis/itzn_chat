@@ -1,0 +1,1 @@
+{"id": "A-002297", "text": "환자분 생년월일로 다시 확인해보겠습니다. 주민등록번호는 900101-1******이에요.", "pi": [{"type": "RRN", "text": "900101-1******", "start": 31, "end": 45}], "meta": {"domain": "금융 상담", "style": "길고 장황한 설명", "obfuscation": ["self_correction", "stt_error"], "hard_case": "none"}}

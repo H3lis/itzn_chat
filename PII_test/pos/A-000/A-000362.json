@@ -1,0 +1,1 @@
+{"id": "A-000362", "text": "저희 고객님께서는 010-1234-5678 같은 번호가 아닌, ０１０-１２３４-５６７８처럼 된 번호를 사용하셨나요?", "pi": [{"type": "PHONE", "text": "010-1234-5678", "start": 10, "end": 23}], "meta": {"domain": "온라인 강의 Q&A", "style": "길고 장황한 설명", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

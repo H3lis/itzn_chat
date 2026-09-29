@@ -1,0 +1,1 @@
+{"id": "A-001842", "text": "진료 예약자 분 성함이요? 김민준이요... 아니에요, 김민준은 아닌 것 같은데요.", "pi": [{"type": "NAME", "text": "김민준", "start": 15, "end": 18}], "meta": {"domain": "병원 접수", "style": "오타 많은 채팅", "obfuscation": ["self_correction", "romanized"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-003914", "text": "차량 번호는 12가 아니라 3456으로 확인 부탁드려요.", "pi": [{"type": "CAR_PLATE", "text": "3456", "start": 15, "end": 19}], "meta": {"domain": "이메일 본문", "style": "짧은 단답", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-005327", "text": "지금 전화번호가 010-1111-2222 맞나요? 그리고 주민등록번호도 확인해야 해서요.", "pi": [{"type": "PHONE", "text": "010-1111-2222", "start": 9, "end": 22}, {"type": "RRN", "text": "주민등록번호", "start": 32, "end": 38}], "meta": {"domain": "금융 상담", "style": "반말 대화", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

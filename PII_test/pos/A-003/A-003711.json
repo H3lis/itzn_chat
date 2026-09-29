@@ -1,0 +1,1 @@
+{"id": "A-003711", "text": "고객님, 연결된 휴대폰 번호가 070-9999-8888 쪽으로 변경된 건이 맞으신가요? 다시 한 번 확인 부탁드립니다.", "pi": [{"type": "PHONE", "text": "070-9999-8888", "start": 17, "end": 30}], "meta": {"domain": "콜센터 상담 요약", "style": "구어체", "obfuscation": ["split_utterance"], "hard_case": "none"}}

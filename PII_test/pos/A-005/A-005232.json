@@ -1,0 +1,1 @@
+{"id": "A-005232", "text": "회원님께서 문의하신 이메일 주소는 wrong@example.com으로 확인되는데, 맞으신가요?", "pi": [{"type": "EMAIL", "text": "wrong@example.com", "start": 19, "end": 36}], "meta": {"domain": "회의록", "style": "오타 많은 채팅", "obfuscation": ["plain"], "hard_case": "none"}}

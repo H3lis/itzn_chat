@@ -1,0 +1,1 @@
+{"id": "A-005124", "text": "저희 커뮤니티에 계정 만드신 거 맞으신가요? 아이디가 'awesome_user123'이라고 하셨던 것 같은데, 이건 진짜 계정 맞나요? 다시 확인해 주시겠어요?", "pi": [{"type": "ACCOUNT", "text": "awesome_user123", "start": 31, "end": 46}], "meta": {"domain": "SNS 댓글", "style": "길고 장황한 설명", "obfuscation": ["korean_reading", "repeat_expr"], "hard_case": "none"}}

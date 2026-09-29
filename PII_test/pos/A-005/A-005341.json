@@ -1,0 +1,1 @@
+{"id": "A-005341", "text": "삼성전자 건물 10층에 있는, 김민준 팀장님 연락처가 010-9999-8888입니다.", "pi": [{"type": "ORG", "text": "삼성전자", "start": 0, "end": 4}, {"type": "PHONE", "text": "010-9999-8888", "start": 30, "end": 43}], "meta": {"domain": "SNS 댓글", "style": "메신저 줄임말", "obfuscation": ["mixed_reading", "korean_reading"], "hard_case": "org_person"}}

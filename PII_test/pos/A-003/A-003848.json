@@ -1,0 +1,1 @@
+{"id": "A-003848", "text": "저희 아이가 생일이 2005년 12월 15일인데, 이름은 서윤이 맞는지 다시 한번요.", "pi": [{"type": "BIRTH", "text": "2005년 12월 15일", "start": 11, "end": 24}, {"type": "NAME", "text": "서윤", "start": 32, "end": 34}], "meta": {"domain": "회의록", "style": "오타 많은 채팅", "obfuscation": ["plain"], "hard_case": "none"}}

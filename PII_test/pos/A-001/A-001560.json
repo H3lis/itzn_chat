@@ -1,0 +1,1 @@
+{"id": "A-001560", "text": "카드 번호는 4111로 시작하고, SNS 계정은 zero one two 세 번으로 말씀해 주시겠어요?", "pi": [{"type": "CARD", "text": "4111", "start": 7, "end": 11}, {"type": "SNS", "text": "zero one two 세 번", "start": 27, "end": 43}], "meta": {"domain": "보험 청구", "style": "음성인식(STT) 전사", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

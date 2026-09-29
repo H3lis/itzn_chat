@@ -1,0 +1,1 @@
+{"id": "A-001613", "text": "첫 번째 주소는 서울특별시 강남구 역삼동 555-22 라구요. 그리고 두 번째 거주지 주소는 경기도 수원시 팔달구 효원로 77이에요.", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 역삼동 555-22", "start": 9, "end": 29}, {"type": "ADDRESS", "text": "경기도 수원시 팔달구 효원로 77", "start": 52, "end": 70}], "meta": {"domain": "부동산 상담", "style": "존댓말 상담", "obfuscation": ["jamo_split"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-004001", "text": "아이디는 user123이고요, 전화번호는 010/1111-2222 이 맞을까요?", "pi": [{"type": "ID", "text": "user123", "start": 5, "end": 12}, {"type": "PHONE", "text": "010/1111-2222", "start": 23, "end": 36}], "meta": {"domain": "온라인 강의 Q&A", "style": "짧은 단답", "obfuscation": ["separator_noise"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-005388", "text": "차량 번호는 15가 아니라, 네이비 에스에이프 에프, 그리고 연락처는 010 다음에 1이 네 번 그리고 2가 네 번 맞습니까?", "pi": [{"type": "DRIVER_LICENSE", "text": "네이비 에스에이프 에프", "start": 16, "end": 28}, {"type": "PHONE", "text": "010 다음에 1이 네 번 그리고 2가 네 번", "start": 39, "end": 64}], "meta": {"domain": "택배 문의", "style": "짧은 단답", "obfuscation": ["mixed_reading", "stt_error"], "hard_case": "none"}}

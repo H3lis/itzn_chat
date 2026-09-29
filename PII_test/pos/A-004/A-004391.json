@@ -1,0 +1,1 @@
+{"id": "A-004391", "text": "제 계정명은 자두001이고, 생일은 2000년 5월 10일이에요. 이름이 자두예요.", "pi": [{"type": "ACCOUNT", "text": "자두001", "start": 7, "end": 12}, {"type": "BIRTH", "text": "2000년 5월 10일", "start": 20, "end": 32}, {"type": "NAME", "text": "자두", "start": 41, "end": 43}], "meta": {"domain": "커뮤니티 게시글", "style": "오타 많은 채팅", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

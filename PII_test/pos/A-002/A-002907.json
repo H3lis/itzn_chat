@@ -1,0 +1,1 @@
+{"id": "A-002907", "text": "여권 번호 말씀이시죠? 99.12.34-5678901 이건 확인이 안 되는데요.", "pi": [{"type": "PASSPORT", "text": "99.12.34-5678901", "start": 13, "end": 29}], "meta": {"domain": "이메일 본문", "style": "구어체", "obfuscation": ["separator_noise"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-004943", "text": "배달 부탁드리는 곳이요? 아, ㅇㄴ빌딩 5층 구역입니다. 아무것도요, 특별한 요청사항은 없습니다.", "pi": [{"type": "NAME", "text": "ㅇㄴ빌딩", "start": 17, "end": 21}], "meta": {"domain": "배달 요청사항", "style": "짧은 단답", "obfuscation": ["romanized"], "hard_case": "none"}}

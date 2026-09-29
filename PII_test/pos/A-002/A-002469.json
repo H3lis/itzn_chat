@@ -1,0 +1,1 @@
+{"id": "A-002469", "text": "신청하신 주민등록번호는 900101-1XXXXXX로 확인되었습니다. 다시 한번 말씀드리겠습니다.", "pi": [{"type": "RRN", "text": "900101-1XXXXXX", "start": 13, "end": 27}], "meta": {"domain": "음성통화 전사문", "style": "공문서풍", "obfuscation": ["stt_error"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-003838", "text": "저희가 원하는 주소지는 강남구 역삼동 123-45예요. 이쪽으로 배송이 가능한가요?", "pi": [{"type": "ADDRESS", "text": "강남구 역삼동 123-45", "start": 13, "end": 27}], "meta": {"domain": "고객센터 채팅", "style": "구어체", "obfuscation": ["jamo_split", "korean_reading"], "hard_case": "none"}}

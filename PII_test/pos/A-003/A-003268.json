@@ -1,0 +1,1 @@
+{"id": "A-003268", "text": "OO님 성함이 봄민준 씨시고, 연락처가 010-3333-4444 맞으신가요?", "pi": [{"type": "NAME", "text": "봄민준", "start": 8, "end": 11}, {"type": "PHONE", "text": "010-3333-4444", "start": 22, "end": 35}], "meta": {"domain": "금융 상담", "style": "음성인식(STT) 전사", "obfuscation": ["repeat_expr"], "hard_case": "homonym_name"}}

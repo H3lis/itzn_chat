@@ -1,0 +1,1 @@
+{"id": "A-003816", "text": "사장님, 이 건물에 거주하는 김민지 씨는 여권 번호가 어떻게 되나요? 신분증은 안 되나요?", "pi": [{"type": "NAME", "text": "김민지", "start": 16, "end": 19}, {"type": "PASSPORT", "text": "여권 번호", "start": 23, "end": 28}], "meta": {"domain": "부동산 상담", "style": "음성인식(STT) 전사", "obfuscation": ["honorific_ref"], "hard_case": "none"}}

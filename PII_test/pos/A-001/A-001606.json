@@ -1,0 +1,1 @@
+{"id": "A-001606", "text": "안녕하세요. 제 이메일 주소는 user.name(at)example(dot)com 입니다. 확인 부탁드립니다.", "pi": [{"type": "EMAIL", "text": "user.name(at)example(dot)com", "start": 17, "end": 45}], "meta": {"domain": "이메일 본문", "style": "격식체", "obfuscation": ["separator_noise", "email_spoken"], "hard_case": "none"}}

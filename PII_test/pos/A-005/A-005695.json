@@ -1,0 +1,1 @@
+{"id": "A-005695", "text": "여권 번호는 ABC1234-DEF5678이고요, 연락 가능한 전화번호는 02-987-6543입니다.", "pi": [{"type": "PASSPORT", "text": "ABC1234-DEF5678", "start": 7, "end": 22}, {"type": "PHONE", "text": "02-987-6543", "start": 40, "end": 51}], "meta": {"domain": "온라인 강의 Q&A", "style": "격식체", "obfuscation": ["split_utterance"], "hard_case": "none"}}

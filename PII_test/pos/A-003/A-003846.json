@@ -1,0 +1,1 @@
+{"id": "A-003846", "text": "고객센터 측에서 확인 부탁드린 계정 아이디가 'kjh7701' 같은 건가요? 정확히 알려주시겠어요?", "pi": [{"type": "ID", "text": "kjh7701", "start": 26, "end": 33}], "meta": {"domain": "고객센터 채팅", "style": "길고 장황한 설명", "obfuscation": ["romanized", "lookalike_char"], "hard_case": "none"}}

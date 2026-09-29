@@ -1,0 +1,1 @@
+{"id": "A-004143", "text": "예약 확인 도와드릴게요. 메일 주소를 다시 한번 알려주시겠어요? customer.trip@example.co.kr", "pi": [{"type": "EMAIL", "text": "customer.trip@example.co.kr", "start": 36, "end": 63}], "meta": {"domain": "여행 예약", "style": "구어체", "obfuscation": ["separator_noise", "email_spoken"], "hard_case": "none"}}

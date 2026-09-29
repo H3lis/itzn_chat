@@ -1,0 +1,1 @@
+{"id": "A-004600", "text": "네, 고객님. 가입하신 계정은 1234567890이고, 성함은 홍길동 님 맞으신가요?", "pi": [{"type": "ACCOUNT", "text": "1234567890", "start": 17, "end": 27}], "meta": {"domain": "배달 요청사항", "style": "오타 많은 채팅", "obfuscation": ["stt_error"], "hard_case": "none"}}

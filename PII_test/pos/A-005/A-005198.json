@@ -1,0 +1,1 @@
+{"id": "A-005198", "text": "회원 계정은 testaccount@abc.com 이고요, 병원 이름은 중앙의료원에서 등록 부탁드립니다.", "pi": [{"type": "ACCOUNT", "text": "testaccount@abc.com", "start": 7, "end": 26}, {"type": "ORG", "text": "중앙의료원", "start": 39, "end": 44}], "meta": {"domain": "병원 접수", "style": "격식체", "obfuscation": ["self_correction"], "hard_case": "org_person"}}

@@ -1,0 +1,1 @@
+{"id": "A-003494", "text": "혹시 주소 변경이 필요하신가요? 저희는 이쪽으로 좀 옮기는 게 좋을 것 같고요. 고객님 성함은 어떻게 되시나요?", "pi": [{"type": "ADDRESS", "text": "이쪽", "start": 22, "end": 24}, {"type": "NAME", "text": "고객님", "start": 45, "end": 48}], "meta": {"domain": "배달 요청사항", "style": "존댓말 상담", "obfuscation": ["self_correction"], "hard_case": "none"}}

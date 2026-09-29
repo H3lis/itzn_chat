@@ -1,0 +1,1 @@
+{"id": "A-001784", "text": "전화번호는 010-1234-5678 이 맞으실까요? 제가 제대로 들었는지 확인 부탁드려요.", "pi": [{"type": "PHONE", "text": "010-1234-5678", "start": 6, "end": 19}], "meta": {"domain": "배달 요청사항", "style": "격식체", "obfuscation": ["stt_error"], "hard_case": "none"}}

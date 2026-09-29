@@ -1,0 +1,1 @@
+{"id": "A-003247", "text": "이메일 주소는 abc점com@test.net으로 등록 부탁드립니다.", "pi": [{"type": "EMAIL", "text": "abc점com@test.net", "start": 8, "end": 24}], "meta": {"domain": "병원 접수", "style": "구어체", "obfuscation": ["separator_noise"], "hard_case": "none"}}

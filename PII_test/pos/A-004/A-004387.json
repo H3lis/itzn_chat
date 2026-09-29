@@ -1,0 +1,1 @@
+{"id": "A-004387", "text": "학번은 20201001입니다. 그리고 학생분 성함은 박민수라고 다시 불러주시겠어요?", "pi": [{"type": "ACCOUNT", "text": "20201001", "start": 4, "end": 12}, {"type": "NAME", "text": "박민수", "start": 29, "end": 32}], "meta": {"domain": "학교 행정 문의", "style": "존댓말 상담", "obfuscation": ["split_utterance", "mixed_reading", "self_correction"], "hard_case": "none"}}

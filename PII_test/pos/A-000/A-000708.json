@@ -1,0 +1,1 @@
+{"id": "A-000708", "text": "연락하실 전화번호는 010-5555-1212 입니다.", "pi": [{"type": "PHONE", "text": "010-5555-1212", "start": 11, "end": 24}], "meta": {"domain": "고객센터 채팅", "style": "공문서풍", "obfuscation": ["separator_noise"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-004159", "text": "학생 이름은 정우고요, 주민등록번호는 900101-1234567이 맞나요?", "pi": [{"type": "NAME", "text": "정우", "start": 7, "end": 9}, {"type": "RRN", "text": "900101-1234567", "start": 21, "end": 35}], "meta": {"domain": "학교 행정 문의", "style": "반말 대화", "obfuscation": ["plain"], "hard_case": "none"}}

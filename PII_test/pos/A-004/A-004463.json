@@ -1,0 +1,1 @@
+{"id": "A-004463", "text": "혹시 계정 아이디 같은 건 666@.net 이런 거 아닌가요?", "pi": [{"type": "SNS", "text": "666@.net", "start": 15, "end": 23}], "meta": {"domain": "부동산 상담", "style": "격식체", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

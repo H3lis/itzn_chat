@@ -1,0 +1,1 @@
+{"id": "A-001648", "text": "요청하신 운전면허증 번호는 112-5544-3322로 되어있고요. 전화번호는 010-9999-1111입니다. 이게 맞을까요?", "pi": [{"type": "DRIVER_LICENSE", "text": "112-5544-3322", "start": 15, "end": 28}, {"type": "PHONE", "text": "010-9999-1111", "start": 43, "end": 56}], "meta": {"domain": "금융 상담", "style": "길고 장황한 설명", "obfuscation": ["repeat_expr", "korean_reading"], "hard_case": "none"}}

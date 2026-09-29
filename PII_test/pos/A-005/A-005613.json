@@ -1,0 +1,1 @@
+{"id": "A-005613", "text": "운전면허증 번호 말씀하시면, 'ㄱㄴㅁㅌ-2024-3333' 이렇게 불러주세요.", "pi": [{"type": "DRIVER_LICENSE", "text": "ㄱㄴㅁㅌ-2024-3333", "start": 17, "end": 31}], "meta": {"domain": "이메일 본문", "style": "메신저 줄임말", "obfuscation": ["stt_error"], "hard_case": "none"}}

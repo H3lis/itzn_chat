@@ -1,0 +1,1 @@
+{"id": "A-001343", "text": "주소는 서울특별시 강남구 역삼동 123-45이고요, 그 근처에 있는 OO빌딩 3층에 위치해 있습니다.", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 역삼동 123-45", "start": 4, "end": 24}], "meta": {"domain": "회의록", "style": "반말 대화", "obfuscation": ["korean_reading"], "hard_case": "none"}}

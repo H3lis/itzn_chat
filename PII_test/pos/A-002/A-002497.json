@@ -1,0 +1,1 @@
+{"id": "A-002497", "text": "운전면허증 재발급을 신청하려고요. 번호는 11시 7777이고 연락처는 010-8888-9999입니다.", "pi": [{"type": "DRIVER_LICENSE", "text": "11시 7777", "start": 23, "end": 31}, {"type": "PHONE", "text": "010-8888-9999", "start": 39, "end": 52}], "meta": {"domain": "음성통화 전사문", "style": "메신저 줄임말", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

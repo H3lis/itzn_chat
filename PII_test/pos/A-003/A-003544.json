@@ -1,0 +1,1 @@
+{"id": "A-003544", "text": "여권 번호가 P123456789012이니 확인해 주세요. 다른 정보는 없습니다.", "pi": [{"type": "PASSPORT", "text": "P123456789012", "start": 7, "end": 20}], "meta": {"domain": "회의록", "style": "오타 많은 채팅", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

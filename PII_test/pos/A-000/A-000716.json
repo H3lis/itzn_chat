@@ -1,0 +1,1 @@
+{"id": "A-000716", "text": "주문하신 분 전화번호는 010 다음에 1이 네 번 그리고 2가 네 번이 맞으신가요? 그 번호로 다시 한 번 확인 부탁드립니다.", "pi": [{"type": "PHONE", "text": "010 다음에 1이 네 번 그리고 2가 네 번", "start": 13, "end": 38}], "meta": {"domain": "배달 요청사항", "style": "반말 대화", "obfuscation": ["lookalike_char", "stt_error", "repeat_expr"], "hard_case": "none"}}

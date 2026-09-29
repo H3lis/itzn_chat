@@ -1,0 +1,1 @@
+{"id": "A-005935", "text": "저기, 저 분은 홍길동 씨가 맞습니다.", "pi": [{"type": "NAME", "text": "홍길동", "start": 9, "end": 12}], "meta": {"domain": "음성통화 전사문", "style": "격식체", "obfuscation": ["plain"], "hard_case": "none"}}

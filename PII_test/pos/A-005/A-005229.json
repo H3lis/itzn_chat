@@ -1,0 +1,1 @@
+{"id": "A-005229", "text": "고객님 성함은 겨울님 맞으신가요? 주소는 부산광역시 동래구로 알고 있는데요.", "pi": [{"type": "NAME", "text": "겨울", "start": 8, "end": 10}, {"type": "ADDRESS", "text": "부산광역시 동래구", "start": 23, "end": 32}], "meta": {"domain": "콜센터 상담 요약", "style": "음성인식(STT) 전사", "obfuscation": ["romanized"], "hard_case": "homonym_name"}}

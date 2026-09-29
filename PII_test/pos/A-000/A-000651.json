@@ -1,0 +1,1 @@
+{"id": "A-000651", "text": "학생 식별 ID가 'S12345'예요. 그런데 주민등록번호는 990101-2222222 입니다.", "pi": [{"type": "ID", "text": "S12345", "start": 11, "end": 17}, {"type": "RRN", "text": "990101-2222222", "start": 34, "end": 48}], "meta": {"domain": "학교 행정 문의", "style": "오타 많은 채팅", "obfuscation": ["split_utterance", "separator_noise"], "hard_case": "nickname_id"}}

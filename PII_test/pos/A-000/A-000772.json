@@ -1,0 +1,1 @@
+{"id": "A-000772", "text": "택배 받으러 올 때 연락 주십시오. 연락처는 010-1234-5678입니다.", "pi": [{"type": "PHONE", "text": "010-1234-5678", "start": 25, "end": 38}], "meta": {"domain": "배달 요청사항", "style": "격식체", "obfuscation": ["plain"], "hard_case": "none"}}

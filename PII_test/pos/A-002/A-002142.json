@@ -1,0 +1,1 @@
+{"id": "A-002142", "text": "제가 들고 온 여권은요, 이름은 김민지, 생년월일도 2000년 10월 1일로 되어있습니다.", "pi": [{"type": "PASSPORT", "text": "김민지", "start": 18, "end": 21}], "meta": {"domain": "보험 청구", "style": "오타 많은 채팅", "obfuscation": ["plain"], "hard_case": "none"}}

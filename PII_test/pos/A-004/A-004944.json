@@ -1,0 +1,1 @@
+{"id": "A-004944", "text": "혹시 온유 차장님 건 문의드리는데요. 전화는 010-9999-8888 쪽으로 해주시고요. 네, 맞아요.", "pi": [{"type": "NAME", "text": "온유", "start": 3, "end": 5}, {"type": "PHONE", "text": "010-9999-8888", "start": 25, "end": 38}], "meta": {"domain": "콜센터 상담 요약", "style": "메신저 줄임말", "obfuscation": ["mixed_reading", "honorific_ref"], "hard_case": "homonym_name"}}

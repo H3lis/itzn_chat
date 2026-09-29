@@ -1,0 +1,1 @@
+{"id": "A-002077", "text": "여권 번호가 ０１０-１１１１-２２２２으로 되어 있는지 확인 부탁드립니다.", "pi": [{"type": "PASSPORT", "text": "０１０-１１１１-２２２２", "start": 7, "end": 20}], "meta": {"domain": "민원 접수", "style": "격식체", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

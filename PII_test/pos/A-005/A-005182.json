@@ -1,0 +1,1 @@
+{"id": "A-005182", "text": "네, 구름 씨는 성함이 '구름' 이시고, 주민등록번호가 910315-******* 입니다.", "pi": [{"type": "NAME", "text": "구름", "start": 14, "end": 16}, {"type": "RRN", "text": "910315-*******", "start": 31, "end": 45}], "meta": {"domain": "부동산 상담", "style": "음성인식(STT) 전사", "obfuscation": ["mixed_reading"], "hard_case": "homonym_name"}}

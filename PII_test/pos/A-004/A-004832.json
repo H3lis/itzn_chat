@@ -1,0 +1,1 @@
+{"id": "A-004832", "text": "제 닉네임은 기쁨이구요, 이름은 기쁨이라고 해주시면 돼요. 이 정보가 맞는지 확인 부탁드립니다.", "pi": [{"type": "ID", "text": "기쁨", "start": 7, "end": 9}, {"type": "NAME", "text": "기쁨", "start": 18, "end": 20}], "meta": {"domain": "SNS 댓글", "style": "격식체", "obfuscation": ["jamo_split", "romanized"], "hard_case": "homonym_name"}}

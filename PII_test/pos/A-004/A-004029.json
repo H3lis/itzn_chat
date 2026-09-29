@@ -1,0 +1,1 @@
+{"id": "A-004029", "text": "혹시 그분 이름이요? 아니, 아니라 '김태희'요. 제가 잘못 기억했나 봐요.", "pi": [{"type": "NAME", "text": "김태희", "start": 21, "end": 24}], "meta": {"domain": "택배 문의", "style": "오타 많은 채팅", "obfuscation": ["self_correction", "jamo_split"], "hard_case": "none"}}

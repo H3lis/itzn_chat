@@ -1,0 +1,1 @@
+{"id": "A-000848", "text": "제 여권 번호 말씀드리면요... (긴장) B/C/D-1234-EFGH-5678입니다.", "pi": [{"type": "PASSPORT", "text": "B/C/D-1234-EFGH-5678", "start": 23, "end": 43}], "meta": {"domain": "직장 메신저", "style": "메신저 줄임말", "obfuscation": ["separator_noise"], "hard_case": "none"}}

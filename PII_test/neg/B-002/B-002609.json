@@ -1,0 +1,1 @@
+{"id": "B-002609", "text": "접수된 접수번호가 12345678 같은 형식의 아이디는 아니죠? 그냥 예약번호만 알려주세요.", "pi": [], "meta": {"domain": "택배 문의", "style": "메신저 줄임말", "obfuscation": [], "hard_case": "handle_like_nonpi"}}

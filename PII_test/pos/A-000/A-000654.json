@@ -1,0 +1,1 @@
+{"id": "A-000654", "text": "받는 이메일 주소는 mytestuser.alpha@mail.com으로 해주세요.", "pi": [{"type": "EMAIL", "text": "mytestuser.alpha@mail.com", "start": 11, "end": 36}], "meta": {"domain": "중고거래 채팅", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "none"}}

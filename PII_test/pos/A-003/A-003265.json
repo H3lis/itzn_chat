@@ -1,0 +1,1 @@
+{"id": "A-003265", "text": "택배 받으신 분이세요? 차량 번호는 12가-3456이요. 저희는 급한데, 배송 조회 좀 해주세요.", "pi": [{"type": "PHONE", "text": "12가-3456", "start": 20, "end": 28}], "meta": {"domain": "택배 문의", "style": "반말 대화", "obfuscation": ["separator_noise", "lookalike_char"], "hard_case": "none"}}

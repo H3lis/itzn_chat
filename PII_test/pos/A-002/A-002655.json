@@ -1,0 +1,1 @@
+{"id": "A-002655", "text": "예약하신 담당자는 김민수 씨고요. 이메일은 minsu.kim@corp.net 이고요. 회사명은 테크놀로지스 그룹입니다.", "pi": [{"type": "EMAIL", "text": "minsu.kim@corp.net", "start": 24, "end": 42}, {"type": "ORG", "text": "테크놀로지스 그룹", "start": 53, "end": 62}], "meta": {"domain": "여행 예약", "style": "구어체", "obfuscation": ["romanized", "email_spoken", "separator_noise"], "hard_case": "org_person"}}

@@ -1,0 +1,1 @@
+{"id": "A-001078", "text": "차량 번호가요? 아, 네. 춘천에서 오셨으니 차 번호는 12가요. 그리고 고객님 성함은요?", "pi": [{"type": "CAR_PLATE", "text": "차량 번호가요?", "start": 0, "end": 8}, {"type": "NAME", "text": "춘천", "start": 15, "end": 17}], "meta": {"domain": "음성통화 전사문", "style": "반말 대화", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

@@ -1,0 +1,1 @@
+{"id": "A-003167", "text": "고객님 성함은 박지수 이시고, 이메일 주소는 pjsu.user@test.co.kr 입니다.", "pi": [{"type": "EMAIL", "text": "pjsu.user@test.co.kr", "start": 25, "end": 45}], "meta": {"domain": "회의록", "style": "공문서풍", "obfuscation": ["separator_noise"], "hard_case": "none"}}

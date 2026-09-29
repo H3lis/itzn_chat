@@ -1,0 +1,1 @@
+{"id": "A-001114", "text": "제가 사는 곳은 서울시 강남구 역삼동 근처인데, 혹시 근처에 파는 물건 있나요?", "pi": [{"type": "ADDRESS", "text": "서울시 강남구 역삼동", "start": 9, "end": 20}], "meta": {"domain": "중고거래 채팅", "style": "구어체", "obfuscation": ["split_utterance", "korean_reading"], "hard_case": "none"}}

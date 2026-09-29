@@ -1,0 +1,1 @@
+{"id": "A-001969", "text": "제 이메일은 chulsoo(at)gmail(dot)com이고, 주민등록번호는 900101-1XXXXXX 입니다.", "pi": [{"type": "EMAIL", "text": "chulsoo(at)gmail(dot)com", "start": 7, "end": 31}, {"type": "RRN", "text": "900101-1XXXXXX", "start": 43, "end": 57}], "meta": {"domain": "금융 상담", "style": "음성인식(STT) 전사", "obfuscation": ["korean_reading"], "hard_case": "none"}}

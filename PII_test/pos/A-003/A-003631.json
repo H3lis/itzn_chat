@@ -1,0 +1,1 @@
+{"id": "A-003631", "text": "신분증 번호가 뭐예요? 아, 이건 칠팔구 이쪽으로 말씀해주시면 돼요.", "pi": [{"type": "OTHER_ID", "text": "칠팔구 이쪽으로", "start": 19, "end": 27}], "meta": {"domain": "병원 접수", "style": "반말 대화", "obfuscation": ["korean_reading"], "hard_case": "none"}}

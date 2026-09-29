@@ -1,0 +1,1 @@
+{"id": "A-004843", "text": "네, 이름은 나무고요. 연락처는 010-3333-4444로 돼 있어요. 다른 건 없으신가요?", "pi": [{"type": "NAME", "text": "나무", "start": 7, "end": 9}, {"type": "PHONE", "text": "010-3333-4444", "start": 18, "end": 31}], "meta": {"domain": "음성통화 전사문", "style": "반말 대화", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

@@ -1,0 +1,1 @@
+{"id": "A-002529", "text": "주소는 경기 성남시 분당구 판교역 근처고요, 연락 가능한 번호는 070-1234-5678입니다.", "pi": [{"type": "ADDRESS", "text": "경기 성남시 분당구 판교역", "start": 4, "end": 18}, {"type": "PHONE", "text": "070-1234-5678", "start": 36, "end": 49}], "meta": {"domain": "병원 접수", "style": "길고 장황한 설명", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

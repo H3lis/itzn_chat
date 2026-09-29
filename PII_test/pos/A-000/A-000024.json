@@ -1,0 +1,1 @@
+{"id": "A-000024", "text": "전화번호는 010 5555 1111이고요, 주민등록번호는 800515-2223333이신가요?", "pi": [{"type": "PHONE", "text": "010 5555 1111", "start": 6, "end": 19}, {"type": "RRN", "text": "800515-2223333", "start": 32, "end": 46}], "meta": {"domain": "금융 상담", "style": "길고 장황한 설명", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-001021", "text": "저희 팀원 중에 김태현 이라는 사람이 있는데, 연락드릴게요.", "pi": [{"type": "NAME", "text": "김태현", "start": 9, "end": 12}], "meta": {"domain": "직장 메신저", "style": "구어체", "obfuscation": ["jamo_split"], "hard_case": "none"}}

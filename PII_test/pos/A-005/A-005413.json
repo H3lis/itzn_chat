@@ -1,0 +1,1 @@
+{"id": "A-005413", "text": "환자분 정보 확인을 위해 이메일 주소는 'aaa@bbbb.net' 이고, 주민등록번호는 '911231-2000000'으로 알고 있는데요.", "pi": [{"type": "EMAIL", "text": "aaa@bbbb.net", "start": 23, "end": 35}, {"type": "RRN", "text": "911231-2000000", "start": 50, "end": 64}], "meta": {"domain": "병원 접수", "style": "격식체", "obfuscation": ["lookalike_char", "mixed_reading"], "hard_case": "none"}}

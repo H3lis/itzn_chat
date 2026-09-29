@@ -1,0 +1,1 @@
+{"id": "A-005471", "text": "배송받을 주소는 경기도 신도시 자립빌라 502호이고, 제 인스타그램 아이디는 travel_lover_01이에요.", "pi": [{"type": "ADDRESS", "text": "경기도 신도시 자립빌라 502호", "start": 9, "end": 26}, {"type": "SNS", "text": "travel_lover_01", "start": 43, "end": 58}], "meta": {"domain": "배달 요청사항", "style": "공문서풍", "obfuscation": ["plain"], "hard_case": "nickname_id"}}

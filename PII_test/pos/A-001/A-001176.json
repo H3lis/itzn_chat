@@ -1,0 +1,1 @@
+{"id": "A-001176", "text": "저기요, 오늘 점심 식사하러 온 사람 이름이 하루 씨예요. 주민번호는 900101 뒤로 생년월일 알려주셔야 해요.", "pi": [{"type": "NAME", "text": "하루", "start": 25, "end": 27}, {"type": "RRN", "text": "900101", "start": 39, "end": 45}], "meta": {"domain": "고객센터 채팅", "style": "짧은 단답", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

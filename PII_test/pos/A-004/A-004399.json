@@ -1,0 +1,1 @@
+{"id": "A-004399", "text": "혹시 예약하신 분 성함이 김철수 대표님 되시나요? 네, 그리고 이메일 주소는 chulsoo(at)gmail(dot)com 입니다.", "pi": [{"type": "NAME", "text": "김철수", "start": 14, "end": 17}, {"type": "EMAIL", "text": "chulsoo(at)gmail(dot)com", "start": 43, "end": 67}], "meta": {"domain": "여행 예약", "style": "존댓말 상담", "obfuscation": ["honorific_ref"], "hard_case": "none"}}

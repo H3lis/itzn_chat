@@ -1,0 +1,1 @@
+{"id": "A-002923", "text": "제 생년월일은 95년 3월 15일이고요, 제 이름은 나무지수 라고 불러주시면 돼요.", "pi": [{"type": "BIRTH", "text": "95년 3월 15일", "start": 8, "end": 18}, {"type": "NAME", "text": "나무지수", "start": 29, "end": 33}], "meta": {"domain": "직장 메신저", "style": "길고 장황한 설명", "obfuscation": ["separator_noise"], "hard_case": "homonym_name"}}

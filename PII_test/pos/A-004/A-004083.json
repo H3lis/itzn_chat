@@ -1,0 +1,1 @@
+{"id": "A-004083", "text": "신청자 성함은 달님 씨로 되어있고요, 거래할 계좌번호는 국민은행 123-456-7890원이에요.", "pi": [{"type": "NAME", "text": "달님", "start": 8, "end": 10}, {"type": "ACCOUNT", "text": "123-456-7890", "start": 36, "end": 48}], "meta": {"domain": "부동산 상담", "style": "음성인식(STT) 전사", "obfuscation": ["honorific_ref"], "hard_case": "homonym_name"}}

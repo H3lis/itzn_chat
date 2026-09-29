@@ -1,0 +1,1 @@
+{"id": "A-000474", "text": "보람 씨랑 이야기 나누는 거라, 별명도 부르기 좀 어색하고... 여권 번호가 9999-XXXX-1234로 되어 있는 거 맞으신가요?", "pi": [{"type": "NAME", "text": "보람", "start": 0, "end": 2}, {"type": "PASSPORT", "text": "9999-XXXX-1234", "start": 43, "end": 57}], "meta": {"domain": "음성통화 전사문", "style": "반말 대화", "obfuscation": ["honorific_ref"], "hard_case": "homonym_name"}}

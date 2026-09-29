@@ -1,0 +1,1 @@
+{"id": "A-003309", "text": "저 분반 담당자님은 노을 씨니까, 문의는 노을 씨에게 하시는 게 좋을 것 같습니다.", "pi": [{"type": "NAME", "text": "노을", "start": 23, "end": 25}], "meta": {"domain": "SNS 댓글", "style": "공문서풍", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

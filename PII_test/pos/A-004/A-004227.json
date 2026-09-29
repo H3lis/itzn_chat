@@ -1,0 +1,1 @@
+{"id": "A-004227", "text": "신청하신 분의 성함은 김성남 씨고, 여권 번호는 에스닉에이비초이스입니다.", "pi": [{"type": "NAME", "text": "김성남", "start": 12, "end": 15}, {"type": "PASSPORT", "text": "에스닉에이비초이스", "start": 27, "end": 36}], "meta": {"domain": "민원 접수", "style": "공문서풍", "obfuscation": ["korean_reading"], "hard_case": "homonym_name"}}

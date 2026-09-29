@@ -1,0 +1,1 @@
+{"id": "A-000959", "text": "저희가 확인해 보니 주소는 서울특별시 마포구 연남동입니다. 신청하신 분 성함은 다솜 씨 맞으신가요?", "pi": [{"type": "ADDRESS", "text": "서울특별시 마포구 연남동", "start": 15, "end": 28}, {"type": "NAME", "text": "다솜", "start": 44, "end": 46}], "meta": {"domain": "SNS 댓글", "style": "공문서풍", "obfuscation": ["jamo_split", "romanized"], "hard_case": "homonym_name"}}

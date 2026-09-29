@@ -1,0 +1,1 @@
+{"id": "A-001883", "text": "저희가 원래는 안양역 근처라서요. 혹시 안양에서 오신 거예요?", "pi": [{"type": "ADDRESS", "text": "안양역 근처", "start": 8, "end": 14}, {"type": "NAME", "text": "안양", "start": 22, "end": 24}], "meta": {"domain": "음성통화 전사문", "style": "반말 대화", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

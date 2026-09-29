@@ -1,0 +1,1 @@
+{"id": "A-002527", "text": "나 지혜한테 메일 보낼게. 지혜는 요즘 어떻게 지내?", "pi": [{"type": "EMAIL", "text": "지혜", "start": 2, "end": 4}, {"type": "NAME", "text": "지혜", "start": 15, "end": 17}], "meta": {"domain": "커뮤니티 게시글", "style": "반말 대화", "obfuscation": ["romanized"], "hard_case": "homonym_name"}}

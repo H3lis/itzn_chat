@@ -1,0 +1,1 @@
+{"id": "A-005840", "text": "카드 번호는 1234-5678-9012로 보이구요. 주민등록번호는 901234-56789로 되어 있어요.", "pi": [{"type": "CARD", "text": "1234-5678-9012", "start": 7, "end": 21}, {"type": "RRN", "text": "901234-56789", "start": 37, "end": 49}], "meta": {"domain": "SNS 댓글", "style": "짧은 단답", "obfuscation": ["separator_noise"], "hard_case": "none"}}

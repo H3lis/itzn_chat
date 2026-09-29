@@ -1,0 +1,1 @@
+{"id": "A-001256", "text": "하늘 과장님은 인스타그램 아이디가 ㅊㄱㄷ_kml 이시고, 이름은 하늘이라고 불러주세요.", "pi": [{"type": "NAME", "text": "하늘", "start": 0, "end": 2}, {"type": "SNS", "text": "ㅊㄱㄷ_kml", "start": 19, "end": 26}], "meta": {"domain": "금융 상담", "style": "반말 대화", "obfuscation": ["honorific_ref", "lookalike_char", "jamo_split"], "hard_case": "homonym_name"}}

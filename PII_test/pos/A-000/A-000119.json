@@ -1,0 +1,1 @@
+{"id": "A-000119", "text": "안녕하세요, 제 이름은 박서준이고, 소속은 한빛테크이며, 연락처는 010-5555-1234입니다.", "pi": [{"type": "NAME", "text": "박서준", "start": 13, "end": 16}, {"type": "ORG", "text": "한빛테크", "start": 24, "end": 28}, {"type": "PHONE", "text": "010-5555-1234", "start": 37, "end": 50}], "meta": {"domain": "온라인 강의 Q&A", "style": "존댓말 상담", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

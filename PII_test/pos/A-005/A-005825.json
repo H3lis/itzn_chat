@@ -1,0 +1,1 @@
+{"id": "A-005825", "text": "제 이름은 David Lee이고 전화번호는 010-9999-8888 이 맞나요?", "pi": [{"type": "NAME", "text": "David Lee", "start": 6, "end": 15}, {"type": "PHONE", "text": "010-9999-8888", "start": 24, "end": 37}], "meta": {"domain": "병원 접수", "style": "격식체", "obfuscation": ["romanized"], "hard_case": "none"}}

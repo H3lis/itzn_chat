@@ -1,0 +1,1 @@
+{"id": "A-002263", "text": "제 사용자 아이디는 123-abc입니다. 접속하신 IP 주소는 192.168.0.100으로 확인됐어요.", "pi": [{"type": "ID", "text": "123-abc", "start": 11, "end": 18}, {"type": "IP_ADDR", "text": "192.168.0.100", "start": 35, "end": 48}], "meta": {"domain": "학교 행정 문의", "style": "오타 많은 채팅", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

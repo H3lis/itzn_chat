@@ -1,0 +1,1 @@
+{"id": "A-004780", "text": "전화번호가요? 010-1111-2222 맞나요?", "pi": [{"type": "PHONE", "text": "010-1111-2222", "start": 8, "end": 21}], "meta": {"domain": "커뮤니티 게시글", "style": "짧은 단답", "obfuscation": ["stt_error"], "hard_case": "none"}}

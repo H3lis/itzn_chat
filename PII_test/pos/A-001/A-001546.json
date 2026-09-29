@@ -1,0 +1,1 @@
+{"id": "A-001546", "text": "다음 강의 수강 신청 관련해서는 홍길동 교수님 성함과 박지수 교수님 성함을 꼭 확인해 주세요.", "pi": [{"type": "NAME", "text": "홍길동", "start": 18, "end": 21}, {"type": "NAME", "text": "박지수", "start": 30, "end": 33}], "meta": {"domain": "여행 예약", "style": "공문서풍", "obfuscation": ["plain"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-003419", "text": "네, 주문하신 상품 정보는 맞습니다. 계정은 user_korea@gmail.com 으로 되어 있고요, 배송지 번호는 15층 302호입니다.", "pi": [{"type": "ACCOUNT", "text": "user_korea@gmail.com", "start": 25, "end": 45}], "meta": {"domain": "음성통화 전사문", "style": "음성인식(STT) 전사", "obfuscation": ["separator_noise"], "hard_case": "none"}}

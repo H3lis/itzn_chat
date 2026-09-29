@@ -1,0 +1,1 @@
+{"id": "A-001132", "text": "제 이름이 구름인데요, 연락처는 이메일이 john.g@test.co.kr 이고요. 아까 말씀하신 거는 아니고, 010-9999-8888 맞아요.", "pi": [{"type": "NAME", "text": "구름", "start": 6, "end": 8}, {"type": "EMAIL", "text": "john.g@test.co.kr", "start": 23, "end": 40}], "meta": {"domain": "병원 접수", "style": "오타 많은 채팅", "obfuscation": ["jamo_split", "separator_noise"], "hard_case": "homonym_name"}}

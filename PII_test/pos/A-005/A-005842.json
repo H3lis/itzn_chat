@@ -1,0 +1,1 @@
+{"id": "A-005842", "text": "수원 명문고등학교에 다니는 수원이랑 같이 상담한 분이에요?", "pi": [{"type": "ADDRESS", "text": "수원", "start": 0, "end": 2}, {"type": "NAME", "text": "수원이", "start": 15, "end": 18}], "meta": {"domain": "콜센터 상담 요약", "style": "반말 대화", "obfuscation": ["honorific_ref"], "hard_case": "homonym_name"}}

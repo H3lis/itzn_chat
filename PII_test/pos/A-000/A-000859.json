@@ -1,0 +1,1 @@
+{"id": "A-000859", "text": "상품 결제 건에 대한 문의입니다. 사용하신 카드가 VISA로 끝나는 5555번이 맞는지 확인 부탁드립니다.", "pi": [{"type": "CARD", "text": "5555", "start": 38, "end": 42}], "meta": {"domain": "쇼핑몰 문의", "style": "존댓말 상담", "obfuscation": ["plain"], "hard_case": "none"}}

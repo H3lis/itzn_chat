@@ -1,0 +1,1 @@
+{"id": "A-003775", "text": "저기요, 제가 이름이 장미예요. 혹시 확인해 주실 수 있나요? 서류상 이름이 맞는지요.", "pi": [{"type": "NAME", "text": "장미", "start": 12, "end": 14}], "meta": {"domain": "민원 접수", "style": "오타 많은 채팅", "obfuscation": ["plain"], "hard_case": "none"}}

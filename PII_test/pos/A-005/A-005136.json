@@ -1,0 +1,1 @@
+{"id": "A-005136", "text": "접수번호는 010-5555-1234이고요. 그리고 신분증상 주소지는 경기도 성남시 분당구에요.", "pi": [{"type": "PHONE", "text": "010-5555-1234", "start": 6, "end": 19}, {"type": "RRN", "text": "경기도 성남시 분당구", "start": 38, "end": 49}], "meta": {"domain": "고객센터 채팅", "style": "길고 장황한 설명", "obfuscation": ["plain"], "hard_case": "none"}}

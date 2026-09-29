@@ -1,0 +1,1 @@
+{"id": "A-000825", "text": "김가을 대표님, 먼저 김가을 씨 연락처부터 말씀해 주시고요. 아니면 로마자로 김가을 영문 표기는 어떻게 되나요?", "pi": [{"type": "NAME", "text": "김가을", "start": 0, "end": 3}, {"type": "NAME", "text": "김가을", "start": 12, "end": 15}], "meta": {"domain": "민원 접수", "style": "음성인식(STT) 전사", "obfuscation": ["honorific_ref", "romanized"], "hard_case": "homonym_name"}}

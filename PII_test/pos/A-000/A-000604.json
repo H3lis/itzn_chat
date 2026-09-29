@@ -1,0 +1,1 @@
+{"id": "A-000604", "text": "배송지 주소는 서울시 강남구 테헤란로 123 이구요, SNS는 @daily_deal_kr 로 알고 있습니다.", "pi": [{"type": "ADDRESS", "text": "서울시 강남구 테헤란로 123", "start": 8, "end": 24}, {"type": "SNS", "text": "@daily_deal_kr", "start": 35, "end": 49}], "meta": {"domain": "쇼핑몰 문의", "style": "공문서풍", "obfuscation": ["split_utterance"], "hard_case": "nickname_id"}}

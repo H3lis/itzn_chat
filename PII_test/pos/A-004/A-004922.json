@@ -1,0 +1,1 @@
+{"id": "A-004922", "text": "제 이름은 박민준이고요, SNS는 인스타 아이디가 minjun_park예요. 혹시 연락 주실 수 있나요?", "pi": [{"type": "NAME", "text": "박민준", "start": 6, "end": 9}, {"type": "SNS", "text": "minjun_park", "start": 28, "end": 39}], "meta": {"domain": "부동산 상담", "style": "공문서풍", "obfuscation": ["self_correction", "lookalike_char"], "hard_case": "none"}}

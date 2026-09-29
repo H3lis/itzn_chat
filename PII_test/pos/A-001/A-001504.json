@@ -1,0 +1,1 @@
+{"id": "A-001504", "text": "김겨울 주임님, 혹시 새로 승인된 계정이라서 그런지 접속에 문제가 생겼는지 확인 부탁드릴 수 있을까요?", "pi": [{"type": "NAME", "text": "김겨울", "start": 0, "end": 3}, {"type": "ACCOUNT", "text": "계정", "start": 19, "end": 21}], "meta": {"domain": "직장 메신저", "style": "길고 장황한 설명", "obfuscation": ["honorific_ref"], "hard_case": "homonym_name"}}

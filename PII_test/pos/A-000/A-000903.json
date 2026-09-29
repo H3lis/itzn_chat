@@ -1,0 +1,1 @@
+{"id": "A-000903", "text": "혹시 고객님 성함이 뭐예요? 그리고 연락처도 다시 한번 불러주시겠어요?", "pi": [{"type": "NAME", "text": "고객님", "start": 3, "end": 6}, {"type": "PHONE", "text": "연락처", "start": 20, "end": 23}], "meta": {"domain": "보험 청구", "style": "반말 대화", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

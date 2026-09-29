@@ -1,0 +1,1 @@
+{"id": "A-004992", "text": "김민준 원장님께서 오셨는데, 예약 시간 3시로 확인 부탁드리고요.", "pi": [{"type": "NAME", "text": "김민준", "start": 0, "end": 3}], "meta": {"domain": "병원 접수", "style": "공문서풍", "obfuscation": ["self_correction", "honorific_ref", "jamo_split"], "hard_case": "none"}}

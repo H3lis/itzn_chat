@@ -1,0 +1,1 @@
+{"id": "A-000943", "text": "혹시 받는 분 성함이 박지훈 씨가 맞으신가요? 꼭 확인 부탁드립니다.", "pi": [{"type": "NAME", "text": "박지훈", "start": 12, "end": 15}], "meta": {"domain": "배달 요청사항", "style": "길고 장황한 설명", "obfuscation": ["jamo_split"], "hard_case": "none"}}

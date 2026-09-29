@@ -1,0 +1,1 @@
+{"id": "A-000451", "text": "계좌번호는 998877으로요.", "pi": [{"type": "ACCOUNT", "text": "998877", "start": 6, "end": 12}], "meta": {"domain": "고객센터 채팅", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "none"}}

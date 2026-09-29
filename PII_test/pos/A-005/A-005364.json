@@ -1,0 +1,1 @@
+{"id": "A-005364", "text": "저기요, 혹시 고객센터로 연결되어 있는지 여쭤봐도 될까요? 보람 씨가 문의했던 상품이 맞는지 확인 부탁드립니다.", "pi": [{"type": "NAME", "text": "보람", "start": 33, "end": 35}], "meta": {"domain": "쇼핑몰 문의", "style": "길고 장황한 설명", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

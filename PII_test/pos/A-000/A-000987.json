@@ -1,0 +1,1 @@
+{"id": "A-000987", "text": "신청하신 보험료에 대해 카드 번호로 처리하고요. 전화번호도 다시 확인이 필요합니다. 1234로 되나요?", "pi": [{"type": "CARD", "text": "카드", "start": 13, "end": 15}, {"type": "PHONE", "text": "전화번호", "start": 27, "end": 31}], "meta": {"domain": "보험 청구", "style": "공문서풍", "obfuscation": ["split_utterance", "self_correction", "korean_reading"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-004432", "text": "바다 씨는 거주지가 경기도 고양시 덕양구인데, 성함이 '바다'가 맞으신가요?", "pi": [{"type": "NAME", "text": "바다", "start": 0, "end": 2}, {"type": "ADDRESS", "text": "경기도 고양시 덕양구", "start": 11, "end": 22}], "meta": {"domain": "부동산 상담", "style": "반말 대화", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

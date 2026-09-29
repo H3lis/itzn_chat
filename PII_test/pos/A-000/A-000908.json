@@ -1,0 +1,1 @@
+{"id": "A-000908", "text": "환자분 성함이 김철수 씨고요. 보호자분 성함은 박영희 씨로요. 예약 확인 부탁드려요.", "pi": [{"type": "NAME", "text": "김철수", "start": 8, "end": 11}, {"type": "NAME", "text": "박영희", "start": 26, "end": 29}], "meta": {"domain": "병원 접수", "style": "구어체", "obfuscation": ["jamo_split"], "hard_case": "none"}}

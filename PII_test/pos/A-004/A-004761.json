@@ -1,0 +1,1 @@
+{"id": "A-004761", "text": "담당자 이름이 '우주'님 맞으신가요? 그리고 저희는 우주(at)sns.co.kr에 가입되어 있습니다.", "pi": [{"type": "NAME", "text": "우주", "start": 9, "end": 11}, {"type": "SNS", "text": "우주", "start": 29, "end": 31}], "meta": {"domain": "보험 청구", "style": "공문서풍", "obfuscation": ["lookalike_char"], "hard_case": "homonym_name"}}

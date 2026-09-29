@@ -1,0 +1,1 @@
+{"id": "A-005506", "text": "담당자 성함은 박지성 씨, 그리고 연락처는 010/1111-2222로 알고 있습니다.", "pi": [{"type": "NAME", "text": "박지성", "start": 8, "end": 11}, {"type": "PHONE", "text": "010/1111-2222", "start": 24, "end": 37}], "meta": {"domain": "커뮤니티 게시글", "style": "공문서풍", "obfuscation": ["separator_noise"], "hard_case": "none"}}

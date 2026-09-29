@@ -1,0 +1,1 @@
+{"id": "A-005517", "text": "차량 번호가 강남시 74비엔엠이고 이메일은 aaaaa(at)gmail(dot)com으로 되어있네요.", "pi": [{"type": "CAR_PLATE", "text": "강남시 74비엔엠", "start": 7, "end": 16}, {"type": "EMAIL", "text": "aaaaa(at)gmail(dot)com", "start": 24, "end": 46}], "meta": {"domain": "이메일 본문", "style": "메신저 줄임말", "obfuscation": ["split_utterance", "korean_reading"], "hard_case": "none"}}

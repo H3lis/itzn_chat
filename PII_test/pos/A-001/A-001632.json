@@ -1,0 +1,1 @@
+{"id": "A-001632", "text": "아이디가 'ShadowKnight'인데, 이걸 로마자로 써서도 인증할 수 있을까?", "pi": [{"type": "ID", "text": "ShadowKnight", "start": 6, "end": 18}], "meta": {"domain": "SNS 댓글", "style": "반말 대화", "obfuscation": ["lookalike_char", "romanized"], "hard_case": "none"}}

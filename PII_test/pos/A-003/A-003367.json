@@ -1,0 +1,1 @@
+{"id": "A-003367", "text": "혹시 전화번호가 어떻게 되시나요? 010-2000-3000 같은 번호로 하시면 될 거예요.", "pi": [{"type": "PHONE", "text": "010-2000-3000", "start": 19, "end": 32}], "meta": {"domain": "여행 예약", "style": "구어체", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

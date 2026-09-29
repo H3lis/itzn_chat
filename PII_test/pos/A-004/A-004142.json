@@ -1,0 +1,1 @@
+{"id": "A-004142", "text": "김철수 대표님께서 홍길동 회원님과 SNS로 교류하셨던 이력이 있습니다.", "pi": [{"type": "NAME", "text": "홍길동", "start": 10, "end": 13}, {"type": "SNS", "text": "SNS", "start": 19, "end": 22}], "meta": {"domain": "음성통화 전사문", "style": "공문서풍", "obfuscation": ["honorific_ref", "romanized"], "hard_case": "none"}}

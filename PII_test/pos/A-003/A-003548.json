@@ -1,0 +1,1 @@
+{"id": "A-003548", "text": "너 이름이 뭐냐? 아, 맞다. 혹시 김민지? 너네 반에 사는 사람 이름이 김민지니?", "pi": [{"type": "NAME", "text": "김민지", "start": 20, "end": 23}, {"type": "NAME", "text": "김민지", "start": 41, "end": 44}], "meta": {"domain": "학교 행정 문의", "style": "반말 대화", "obfuscation": ["jamo_split"], "hard_case": "none"}}

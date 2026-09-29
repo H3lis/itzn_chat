@@ -1,0 +1,1 @@
+{"id": "A-002233", "text": "저기요, 혹시 춘천으로 가는 비행기표가 있나요? 아, 아니에요. 춘천으로 가는 KTX표가 맞는지 다시 확인 부탁드립니다.", "pi": [{"type": "NAME", "text": "춘천", "start": 8, "end": 10}], "meta": {"domain": "여행 예약", "style": "길고 장황한 설명", "obfuscation": ["self_correction"], "hard_case": "none"}}

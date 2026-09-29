@@ -1,0 +1,1 @@
+{"id": "A-003251", "text": "여권 번호는 A1B2-C3D4-E5F6-G7H8이며, 생년월일은 2000년 1월 1일로 확인 가능합니다.", "pi": [{"type": "PASSPORT", "text": "A1B2-C3D4-E5F6-G7H8", "start": 7, "end": 26}, {"type": "BIRTH", "text": "2000년 1월 1일", "start": 36, "end": 47}], "meta": {"domain": "부동산 상담", "style": "존댓말 상담", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

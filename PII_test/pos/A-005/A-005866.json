@@ -1,0 +1,1 @@
+{"id": "A-005866", "text": "수강생의 성함이 김슬기입니다. 여권 번호는 A-12345-B-9876입니다. 발음이 좀 꼬였는지요?", "pi": [{"type": "NAME", "text": "김슬기", "start": 9, "end": 12}, {"type": "PASSPORT", "text": "A-12345-B-9876", "start": 24, "end": 38}], "meta": {"domain": "온라인 강의 Q&A", "style": "공문서풍", "obfuscation": ["stt_error", "separator_noise"], "hard_case": "homonym_name"}}

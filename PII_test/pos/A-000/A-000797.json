@@ -1,0 +1,1 @@
+{"id": "A-000797", "text": "제가 찾던 분은 '달님'이라는 분이시고, 아이디는 달님반짝이예요. 혹시 아세요?", "pi": [{"type": "NAME", "text": "달님", "start": 10, "end": 12}, {"type": "ID", "text": "달님반짝이", "start": 28, "end": 33}], "meta": {"domain": "고객센터 채팅", "style": "길고 장황한 설명", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

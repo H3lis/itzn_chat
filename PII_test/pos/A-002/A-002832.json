@@ -1,0 +1,1 @@
+{"id": "A-002832", "text": "예약 건은 010-2222-3333으로 되어 있는데, 실례지만 회원번호가 9012345678이 맞나요?", "pi": [{"type": "PHONE", "text": "010-2222-3333", "start": 6, "end": 19}, {"type": "RRN", "text": "9012345678", "start": 41, "end": 51}], "meta": {"domain": "콜센터 상담 요약", "style": "반말 대화", "obfuscation": ["korean_reading"], "hard_case": "none"}}

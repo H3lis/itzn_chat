@@ -1,0 +1,1 @@
+{"id": "A-002289", "text": "주소는요? 네, 서울특별시 강남구 삼성동 501-1번지입니다.", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 삼성동 501-1번지", "start": 9, "end": 30}], "meta": {"domain": "고객센터 채팅", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "none"}}

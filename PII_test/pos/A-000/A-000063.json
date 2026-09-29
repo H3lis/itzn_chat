@@ -1,0 +1,1 @@
+{"id": "A-000063", "text": "배송지 주소는 서울시 중구 필라멘트 3가 222호로 부탁드립니다.", "pi": [{"type": "ADDRESS", "text": "서울시 중구 필라멘트 3가 222호", "start": 8, "end": 27}], "meta": {"domain": "고객센터 채팅", "style": "음성인식(STT) 전사", "obfuscation": ["stt_error", "korean_reading"], "hard_case": "none"}}

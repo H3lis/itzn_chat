@@ -1,0 +1,1 @@
+{"id": "A-001806", "text": "프로젝트 리드님의 계정 번호는 8888-xxxx-1234이고, 여권 번호는 A-1111-BBB-2222입니다.", "pi": [{"type": "ACCOUNT", "text": "8888", "start": 17, "end": 21}, {"type": "PASSPORT", "text": "A-1111-BBB-2222", "start": 42, "end": 57}], "meta": {"domain": "회의록", "style": "격식체", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

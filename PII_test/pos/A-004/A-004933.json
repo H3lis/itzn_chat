@@ -1,0 +1,1 @@
+{"id": "A-004933", "text": "저기요, 생일이 언제셨어요? 십일월 십일, 그러니까 열일열일이요.", "pi": [{"type": "BIRTH", "text": "십일월 십일", "start": 16, "end": 22}], "meta": {"domain": "여행 예약", "style": "음성인식(STT) 전사", "obfuscation": ["separator_noise", "stt_error"], "hard_case": "none"}}

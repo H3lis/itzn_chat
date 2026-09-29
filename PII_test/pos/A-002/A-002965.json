@@ -1,0 +1,1 @@
+{"id": "A-002965", "text": "혹시 회원가입 후에 로그인할 때 사용하는 아이디가 어떻게 되시나요? 전화번호도 다시 한번 확인 부탁드려요.", "pi": [{"type": "ID", "text": "회원가입 후에 로그인할 때 사용하는 아이디가", "start": 3, "end": 27}, {"type": "PHONE", "text": "전화번호도 다시 한번 확인", "start": 38, "end": 52}], "meta": {"domain": "쇼핑몰 문의", "style": "구어체", "obfuscation": ["plain"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-000739", "text": "신분 확인을 위해 주민등록번호를 말씀해 주시겠어요? 940101-1234567은 정확히 이대로가 맞을까요?", "pi": [{"type": "RRN", "text": "940101-1234567", "start": 29, "end": 43}], "meta": {"domain": "부동산 상담", "style": "공문서풍", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

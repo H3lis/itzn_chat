@@ -1,0 +1,1 @@
+{"id": "A-003454", "text": "제가 찾던 분은 보람 씨인데요. 전화번호는 010 다음에 1이 네 번 그리고 2가 네 번으로 알고 있고, 성함은 보람이에요.", "pi": [{"type": "NAME", "text": "보람", "start": 9, "end": 11}, {"type": "PHONE", "text": "010 다음에 1이 네 번 그리고 2가 네 번", "start": 24, "end": 49}], "meta": {"domain": "금융 상담", "style": "메신저 줄임말", "obfuscation": ["repeat_expr", "separator_noise"], "hard_case": "homonym_name"}}

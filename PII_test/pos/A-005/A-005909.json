@@ -1,0 +1,1 @@
+{"id": "A-005909", "text": "접속하신 IP 주소는 192 점 168 점 0 점 111 같은데요. 확인 부탁드려요.", "pi": [{"type": "IP_ADDR", "text": "192 점 168 점 0 점 111", "start": 12, "end": 31}], "meta": {"domain": "이메일 본문", "style": "오타 많은 채팅", "obfuscation": ["mixed_reading", "lookalike_char"], "hard_case": "none"}}

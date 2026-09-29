@@ -1,0 +1,1 @@
+{"id": "A-002352", "text": "담당자님, 혹시 제 이름은 겨울인데요. 그리고 전화번호는 이게 맞나요? 010-8888-9999.", "pi": [{"type": "NAME", "text": "겨울", "start": 15, "end": 17}, {"type": "PHONE", "text": "010-8888-9999", "start": 40, "end": 53}], "meta": {"domain": "보험 청구", "style": "반말 대화", "obfuscation": ["split_utterance", "lookalike_char"], "hard_case": "homonym_name"}}

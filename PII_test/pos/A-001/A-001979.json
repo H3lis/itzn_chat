@@ -1,0 +1,1 @@
+{"id": "A-001979", "text": "저희가 예약하신 계정 아이디는 test_user_77 입니다. 혹시 다른 아이디로 접속하셨을까요?", "pi": [{"type": "ACCOUNT", "text": "test_user_77", "start": 17, "end": 29}], "meta": {"domain": "배달 요청사항", "style": "음성인식(STT) 전사", "obfuscation": ["plain"], "hard_case": "none"}}

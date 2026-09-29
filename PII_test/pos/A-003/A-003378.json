@@ -1,0 +1,1 @@
+{"id": "A-003378", "text": "요청하신 회원 아이디는 GHT12345이고, 연락처는 010-5555-6666으로 확인됩니다.", "pi": [{"type": "OTHER_ID", "text": "GHT12345", "start": 13, "end": 21}, {"type": "PHONE", "text": "010-5555-6666", "start": 30, "end": 43}], "meta": {"domain": "고객센터 채팅", "style": "존댓말 상담", "obfuscation": ["korean_reading"], "hard_case": "none"}}

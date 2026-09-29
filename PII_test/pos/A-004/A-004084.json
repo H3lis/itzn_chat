@@ -1,0 +1,1 @@
+{"id": "A-004084", "text": "이쪽 주소는 서울시 종로구 세종대로에 위치하고 있습니다. 담당자님 성함이 김철수 님 맞으시죠?", "pi": [{"type": "ADDRESS", "text": "서울시 종로구 세종대로", "start": 7, "end": 19}, {"type": "NAME", "text": "김철수", "start": 41, "end": 44}], "meta": {"domain": "회의록", "style": "격식체", "obfuscation": ["plain"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-004254", "text": "나라에서 오신 분이신가요? 저는 정말 나라라는 애칭을 많이 들었어요. 진짜 친근하죠?", "pi": [{"type": "SNS", "text": "나라", "start": 0, "end": 2}, {"type": "NAME", "text": "나라", "start": 21, "end": 23}], "meta": {"domain": "SNS 댓글", "style": "길고 장황한 설명", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

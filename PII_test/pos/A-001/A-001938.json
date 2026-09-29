@@ -1,0 +1,1 @@
+{"id": "A-001938", "text": "예약하신 분 성함이 해솔 님 맞으신가요? 그리고 아이디가 'sunshine2024'가 맞는지요?", "pi": [{"type": "NAME", "text": "해솔", "start": 11, "end": 13}, {"type": "ID", "text": "sunshine2024", "start": 33, "end": 45}], "meta": {"domain": "여행 예약", "style": "음성인식(STT) 전사", "obfuscation": ["self_correction"], "hard_case": "homonym_name"}}

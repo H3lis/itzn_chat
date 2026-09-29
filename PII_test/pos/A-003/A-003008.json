@@ -1,0 +1,1 @@
+{"id": "A-003008", "text": "공주 씨가 여기 커뮤니티에 글을 올리셨는데, 주소지가 인천광역시 부평구 통일로 500번지래요. 혹시 그분 성함이 공주님이 맞으신가요?", "pi": [{"type": "NAME", "text": "공주", "start": 0, "end": 2}, {"type": "ADDRESS", "text": "인천광역시 부평구 통일로 500번지", "start": 30, "end": 49}], "meta": {"domain": "커뮤니티 게시글", "style": "메신저 줄임말", "obfuscation": ["stt_error"], "hard_case": "homonym_name"}}

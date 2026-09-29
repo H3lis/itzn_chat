@@ -1,0 +1,1 @@
+{"id": "A-002997", "text": "예약하신 차량은 오늘 바로 발송 가능할까요? 번호는 010 다음에 1이 네 번 그리고 2가 네 번 패턴이에요.", "pi": [{"type": "PHONE", "text": "010 다음에 1이 네 번 그리고 2가 네 번", "start": 29, "end": 54}], "meta": {"domain": "택배 문의", "style": "메신저 줄임말", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

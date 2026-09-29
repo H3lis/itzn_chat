@@ -1,0 +1,1 @@
+{"id": "A-000874", "text": "계좌 번호는 1234-5678로 되어 있고, SNS는 apple_lover_123 같은 아이디를 사용하고 계시나요?", "pi": [{"type": "ACCOUNT", "text": "1234-5678", "start": 7, "end": 16}, {"type": "SNS", "text": "apple_lover_123", "start": 30, "end": 45}], "meta": {"domain": "보험 청구", "style": "구어체", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

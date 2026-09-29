@@ -1,0 +1,1 @@
+{"id": "A-005983", "text": "주소는 경기도 수원시 영통구 매탄동 1104이고, 주민번호는 900101-1XXXXXX로 부탁드려요.", "pi": [{"type": "ADDRESS", "text": "경기도 수원시 영통구 매탄동 1104", "start": 4, "end": 24}, {"type": "RRN", "text": "900101-1XXXXXX", "start": 34, "end": 48}], "meta": {"domain": "택배 문의", "style": "짧은 단답", "obfuscation": ["split_utterance"], "hard_case": "none"}}

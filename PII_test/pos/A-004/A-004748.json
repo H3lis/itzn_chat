@@ -1,0 +1,1 @@
+{"id": "A-004748", "text": "거주지는 세종시 반도라 77번지구요, 여권은 BCD-12345678번입니다. 주소는 좀 길어서요.", "pi": [{"type": "ADDRESS", "text": "세종시 반도라 77번지", "start": 5, "end": 17}, {"type": "PASSPORT", "text": "BCD-12345678", "start": 25, "end": 37}], "meta": {"domain": "회의록", "style": "메신저 줄임말", "obfuscation": ["split_utterance", "self_correction"], "hard_case": "none"}}

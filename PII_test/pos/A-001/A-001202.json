@@ -1,0 +1,1 @@
+{"id": "A-001202", "text": "김현수 님, 문의주셔서 감사합니다. 전화번호는 010-1111-2222가 맞으실까요?", "pi": [{"type": "NAME", "text": "김현수", "start": 0, "end": 3}, {"type": "PHONE", "text": "010-1111-2222", "start": 26, "end": 39}], "meta": {"domain": "고객센터 채팅", "style": "존댓말 상담", "obfuscation": ["jamo_split"], "hard_case": "none"}}

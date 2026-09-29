@@ -1,0 +1,1 @@
+{"id": "A-005215", "text": "혹시 '온유' 님이 판매하신 상품이 맞는지요? 주소지 주소 123-45입니다.", "pi": [{"type": "NAME", "text": "온유", "start": 4, "end": 6}, {"type": "ADDRESS", "text": "주소 123-45", "start": 30, "end": 39}], "meta": {"domain": "중고거래 채팅", "style": "짧은 단답", "obfuscation": ["romanized", "stt_error"], "hard_case": "homonym_name"}}

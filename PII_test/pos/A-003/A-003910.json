@@ -1,0 +1,1 @@
+{"id": "A-003910", "text": "결제에 사용하실 카드는 비자 온리 3333-4444-5555-6666으로 등록해 주시기 바랍니다.", "pi": [{"type": "CARD", "text": "비자 온리 3333-4444-5555-6666", "start": 13, "end": 38}], "meta": {"domain": "고객센터 채팅", "style": "공문서풍", "obfuscation": ["separator_noise"], "hard_case": "none"}}

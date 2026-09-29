@@ -1,0 +1,1 @@
+{"id": "A-001751", "text": "제 운전면허증은 9-12-3456이구요, 제 이름은 수원 학생으로 등록되어 있나요?", "pi": [{"type": "DRIVER_LICENSE", "text": "9-12-3456", "start": 9, "end": 18}, {"type": "NAME", "text": "수원", "start": 29, "end": 31}], "meta": {"domain": "온라인 강의 Q&A", "style": "구어체", "obfuscation": ["separator_noise"], "hard_case": "homonym_name"}}

@@ -1,0 +1,1 @@
+{"id": "A-003640", "text": "고객님 아이디가 무엇인가요? 그리고 주민등록번호는 네, 910515 12345678 같은 거죠?", "pi": [{"type": "ID", "text": "910515", "start": 31, "end": 37}, {"type": "RRN", "text": "12345678", "start": 38, "end": 46}], "meta": {"domain": "고객센터 채팅", "style": "구어체", "obfuscation": ["korean_reading"], "hard_case": "nickname_id"}}

@@ -1,0 +1,1 @@
+{"id": "A-003532", "text": "담당자 분 이름은 김서준 씨고, 연락처는 010-9999-1111 이 맞나요?", "pi": [{"type": "NAME", "text": "김서준", "start": 10, "end": 13}, {"type": "PHONE", "text": "010-9999-1111", "start": 23, "end": 36}], "meta": {"domain": "병원 접수", "style": "짧은 단답", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

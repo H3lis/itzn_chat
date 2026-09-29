@@ -1,0 +1,1 @@
+{"id": "A-003949", "text": "카드 번호는 1234로 시작하고요, 주민번호는 앞자리 90년 5월 1일입니다.", "pi": [{"type": "CARD", "text": "1234", "start": 7, "end": 11}, {"type": "RRN", "text": "90년 5월 1일", "start": 30, "end": 39}], "meta": {"domain": "회의록", "style": "짧은 단답", "obfuscation": ["split_utterance"], "hard_case": "none"}}

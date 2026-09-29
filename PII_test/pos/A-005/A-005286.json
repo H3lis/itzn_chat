@@ -1,0 +1,1 @@
+{"id": "A-005286", "text": "환자분 성함은 아침철수 님이시고, 예전 기록에 따르면 전화번호는 010 3333 4444로 되어 있습니다.", "pi": [{"type": "NAME", "text": "아침철수", "start": 8, "end": 12}, {"type": "PHONE", "text": "010 3333 4444", "start": 36, "end": 49}], "meta": {"domain": "병원 접수", "style": "공문서풍", "obfuscation": ["repeat_expr", "mixed_reading"], "hard_case": "homonym_name"}}

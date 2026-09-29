@@ -1,0 +1,1 @@
+{"id": "A-000488", "text": "계정 비밀번호는 zero 하나 zero, 그다음에 숫자 1이 넷 그리고 2가 넷까지에요.", "pi": [{"type": "ACCOUNT", "text": "zero 하나 zero", "start": 9, "end": 21}], "meta": {"domain": "온라인 강의 Q&A", "style": "메신저 줄임말", "obfuscation": ["korean_reading", "repeat_expr"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-004017", "text": "주소는 서울특별시 강남구 테헤란로 1234호입니다. 그리고 카드번호는 1234부터 시작해요.", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 테헤란로 1234호", "start": 4, "end": 24}, {"type": "CARD", "text": "1234", "start": 39, "end": 43}], "meta": {"domain": "음성통화 전사문", "style": "존댓말 상담", "obfuscation": ["jamo_split"], "hard_case": "none"}}

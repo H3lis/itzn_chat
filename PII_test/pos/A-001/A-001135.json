@@ -1,0 +1,1 @@
+{"id": "A-001135", "text": "학생증 번호는 아침20250615고요, 제 이름은 아침 김민준 학생입니다.", "pi": [{"type": "ID", "text": "아침20250615", "start": 8, "end": 18}, {"type": "NAME", "text": "아침 김민준", "start": 28, "end": 34}], "meta": {"domain": "음성통화 전사문", "style": "길고 장황한 설명", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

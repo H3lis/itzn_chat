@@ -1,0 +1,1 @@
+{"id": "A-001194", "text": "김 과장님께서는 이름이 김민규 팀장님으로 등록되어 있고요, 박 부장님 성함은 박서준입니다.", "pi": [{"type": "NAME", "text": "김민규", "start": 13, "end": 16}, {"type": "NAME", "text": "박서준", "start": 43, "end": 46}], "meta": {"domain": "커뮤니티 게시글", "style": "공문서풍", "obfuscation": ["jamo_split", "honorific_ref"], "hard_case": "none"}}

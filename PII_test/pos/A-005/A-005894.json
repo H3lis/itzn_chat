@@ -1,0 +1,1 @@
+{"id": "A-005894", "text": "봄 씨는요, 원래 활동명이 '봄'이고요, 연락 가능한 전화번호는 010 5555 1234입니다.", "pi": [{"type": "NAME", "text": "봄", "start": 0, "end": 1}], "meta": {"domain": "콜센터 상담 요약", "style": "길고 장황한 설명", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

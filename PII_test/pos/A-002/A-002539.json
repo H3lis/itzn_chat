@@ -1,0 +1,1 @@
+{"id": "A-002539", "text": "여기 주소는 경기도 수원시 영통구 삼성로 100번지이고요, 담당자님은 이서진 님이라고 들었습니다.", "pi": [{"type": "ADDRESS", "text": "경기도 수원시 영통구 삼성로 100번지", "start": 7, "end": 28}, {"type": "NAME", "text": "이서진 님", "start": 39, "end": 44}], "meta": {"domain": "SNS 댓글", "style": "음성인식(STT) 전사", "obfuscation": ["honorific_ref"], "hard_case": "none"}}

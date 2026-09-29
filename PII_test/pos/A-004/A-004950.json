@@ -1,0 +1,1 @@
+{"id": "A-004950", "text": "도착할 주소지가 서울특별시 강남구 테헤란로 112예요. 여기 맞나요?", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 테헤란로 112", "start": 9, "end": 27}], "meta": {"domain": "여행 예약", "style": "격식체", "obfuscation": ["jamo_split", "stt_error"], "hard_case": "none"}}

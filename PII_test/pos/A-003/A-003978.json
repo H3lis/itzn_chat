@@ -1,0 +1,1 @@
+{"id": "A-003978", "text": "신청자 성함은 '김민준'으로 되어 있으며, 자모 분리하면 김 ㅁ ㄴ 준 이 맞나요?", "pi": [{"type": "NAME", "text": "김민준", "start": 9, "end": 12}], "meta": {"domain": "학교 행정 문의", "style": "공문서풍", "obfuscation": ["jamo_split", "romanized"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-001667", "text": "결제하신 카드가 4562로 시작하는 비자 카드인데요. 김현우 님 명의로 되어있습니다. 혹시 다른 분 명의로도 하셨나요?", "pi": [{"type": "CARD", "text": "4562", "start": 9, "end": 13}, {"type": "NAME", "text": "김현우", "start": 30, "end": 33}], "meta": {"domain": "쇼핑몰 문의", "style": "공문서풍", "obfuscation": ["split_utterance"], "hard_case": "none"}}

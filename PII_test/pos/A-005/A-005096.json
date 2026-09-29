@@ -1,0 +1,1 @@
+{"id": "A-005096", "text": "성남 거주하시는 고객님의 고객센터 계정은 Stn123456이고, 성함은 성남민으로 알고 있습니다.", "pi": [{"type": "ACCOUNT", "text": "Stn123456", "start": 23, "end": 32}, {"type": "NAME", "text": "성남민", "start": 40, "end": 43}], "meta": {"domain": "이메일 본문", "style": "길고 장황한 설명", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

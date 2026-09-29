@@ -1,0 +1,1 @@
+{"id": "A-001154", "text": "저의 이름은 푸름이고, 주민등록번호가 900101-1******으로 확인되나요?", "pi": [{"type": "NAME", "text": "푸름", "start": 7, "end": 9}, {"type": "RRN", "text": "900101-1******", "start": 21, "end": 35}], "meta": {"domain": "중고거래 채팅", "style": "짧은 단답", "obfuscation": ["lookalike_char"], "hard_case": "homonym_name"}}

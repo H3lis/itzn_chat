@@ -1,0 +1,1 @@
+{"id": "A-004275", "text": "이사 주소는 경기도 성남시 분당구 정자역로 123이고, 회사명은 ABC 개발원입니다.", "pi": [{"type": "ADDRESS", "text": "경기도 성남시 분당구 정자역로 123", "start": 7, "end": 27}, {"type": "ORG", "text": "ABC 개발원", "start": 36, "end": 43}], "meta": {"domain": "배달 요청사항", "style": "격식체", "obfuscation": ["plain"], "hard_case": "org_person"}}

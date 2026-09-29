@@ -1,0 +1,1 @@
+{"id": "A-002837", "text": "저 어제 본 옷 중에 그 ㅇㅇㅁ 옷 어때요? 핏도 좋고 완전 예쁨.", "pi": [{"type": "NAME", "text": "ㅇㅇㅁ", "start": 14, "end": 17}], "meta": {"domain": "중고거래 채팅", "style": "메신저 줄임말", "obfuscation": ["jamo_split"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-003523", "text": "제가 확인해 보니, 문의하신 메일 주소는 abc.test@gmaill.com 이거예요. 혹시 오타가 있진 않을까요?", "pi": [{"type": "EMAIL", "text": "abc.test@gmaill.com", "start": 23, "end": 42}], "meta": {"domain": "음성통화 전사문", "style": "길고 장황한 설명", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

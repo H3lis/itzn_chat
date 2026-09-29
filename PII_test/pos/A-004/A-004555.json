@@ -1,0 +1,1 @@
+{"id": "A-004555", "text": "본인 성함은 최민준, 영문 이름은 Minjun Choi, 그리고 생년월일은 1990년 1월 1일로 기록되어 있습니다.", "pi": [{"type": "NAME", "text": "최민준", "start": 7, "end": 10}, {"type": "NAME", "text": "Minjun Choi", "start": 19, "end": 30}], "meta": {"domain": "음성통화 전사문", "style": "격식체", "obfuscation": ["romanized"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-005217", "text": "거주지 주소지가 정확히 어느 곳인지, 오타가 많아서 다시 한번 확인이 필요합니다.", "pi": [{"type": "ADDRESS", "text": "주소지", "start": 4, "end": 7}], "meta": {"domain": "학교 행정 문의", "style": "오타 많은 채팅", "obfuscation": ["korean_reading"], "hard_case": "none"}}

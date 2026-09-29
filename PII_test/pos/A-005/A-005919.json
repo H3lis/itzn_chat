@@ -1,0 +1,1 @@
+{"id": "A-005919", "text": "상담자님 성함이 강민호 씨 맞으신가요? 그리고 주민등록번호는 920515-1XXXXXXX요.", "pi": [{"type": "NAME", "text": "강민호", "start": 9, "end": 12}, {"type": "RRN", "text": "920515-1XXXXXXX", "start": 34, "end": 49}], "meta": {"domain": "음성통화 전사문", "style": "음성인식(STT) 전사", "obfuscation": ["jamo_split", "self_correction"], "hard_case": "none"}}

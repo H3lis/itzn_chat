@@ -1,0 +1,1 @@
+{"id": "A-004126", "text": "주문한 건에 대해서요, 이름은 춘천하고 카드가 1234-5678-9012로 되어 있나요? 다시 한번 확인 부탁드려요.", "pi": [{"type": "NAME", "text": "춘천", "start": 17, "end": 19}, {"type": "CARD", "text": "1234-5678-9012", "start": 26, "end": 40}], "meta": {"domain": "민원 접수", "style": "오타 많은 채팅", "obfuscation": ["stt_error"], "hard_case": "homonym_name"}}

@@ -1,0 +1,1 @@
+{"id": "A-004671", "text": "저요, 혹시 진료 기록 같은 거 조회하고 싶은데, 제가 김민지인데요.", "pi": [{"type": "NAME", "text": "김민지", "start": 31, "end": 34}], "meta": {"domain": "병원 접수", "style": "반말 대화", "obfuscation": ["self_correction", "honorific_ref"], "hard_case": "none"}}

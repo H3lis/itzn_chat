@@ -1,0 +1,1 @@
+{"id": "A-001540", "text": "상품 문의드렸던 건인데요. 혹시 주문하신 전화번호가 070-1234-5678 맞으신가요?", "pi": [{"type": "PHONE", "text": "070-1234-5678", "start": 29, "end": 42}], "meta": {"domain": "쇼핑몰 문의", "style": "구어체", "obfuscation": ["separator_noise"], "hard_case": "none"}}

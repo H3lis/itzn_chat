@@ -1,0 +1,1 @@
+{"id": "A-000116", "text": "배송지 주소는 경기도 광교 신도시, 123번지에 오셨어요.", "pi": [{"type": "ADDRESS", "text": "경기도 광교 신도시, 123번지", "start": 8, "end": 25}], "meta": {"domain": "택배 문의", "style": "구어체", "obfuscation": ["jamo_split", "stt_error"], "hard_case": "none"}}

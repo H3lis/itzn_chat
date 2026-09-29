@@ -1,0 +1,1 @@
+{"id": "A-003341", "text": "혹시 아이디는 JHM77을 사용하시나요? 그리고 소속된 조직은 미래기술개발원 맞을까요?", "pi": [{"type": "ID", "text": "JHM77", "start": 8, "end": 13}, {"type": "ORG", "text": "미래기술개발원", "start": 35, "end": 42}], "meta": {"domain": "쇼핑몰 문의", "style": "존댓말 상담", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

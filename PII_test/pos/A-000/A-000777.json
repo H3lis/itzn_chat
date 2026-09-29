@@ -1,0 +1,1 @@
+{"id": "A-000777", "text": "담당자분 성함은 김민준 씨로 되어있고요, 연락은 이메일로 부탁드려요.", "pi": [{"type": "NAME", "text": "김민준", "start": 9, "end": 12}], "meta": {"domain": "이메일 본문", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "none"}}

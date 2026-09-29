@@ -1,0 +1,1 @@
+{"id": "A-001299", "text": "혹시 그 계정으로 연락 주신 거 맞아요? 메일 주소가 user.info@test.com 이거예요.", "pi": [{"type": "EMAIL", "text": "user.info@test.com", "start": 30, "end": 48}], "meta": {"domain": "택배 문의", "style": "반말 대화", "obfuscation": ["email_spoken"], "hard_case": "none"}}

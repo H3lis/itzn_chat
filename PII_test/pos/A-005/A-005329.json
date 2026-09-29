@@ -1,0 +1,1 @@
+{"id": "A-005329", "text": "주소는 경기도 성남시 분당구 판교역로 505이고, 성함은 이지은이라고 하셨는데요.", "pi": [{"type": "ADDRESS", "text": "경기도 성남시 분당구 판교역로 505", "start": 4, "end": 24}, {"type": "NAME", "text": "이지은", "start": 32, "end": 35}], "meta": {"domain": "음성통화 전사문", "style": "음성인식(STT) 전사", "obfuscation": ["plain"], "hard_case": "none"}}

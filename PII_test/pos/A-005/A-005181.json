@@ -1,0 +1,1 @@
+{"id": "A-005181", "text": "저기요, 주문 번호 확인하려고 전화드렸는데, 고객님 전화번호가 ０１０-2222-3333 이시고, sns 아이디는 g_user777 이신가요?", "pi": [{"type": "PHONE", "text": "０１０-2222-3333", "start": 35, "end": 48}, {"type": "SNS", "text": "g_user777", "start": 63, "end": 72}], "meta": {"domain": "쇼핑몰 문의", "style": "메신저 줄임말", "obfuscation": ["lookalike_char", "korean_reading"], "hard_case": "none"}}

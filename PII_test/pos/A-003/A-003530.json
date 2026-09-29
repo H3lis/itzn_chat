@@ -1,0 +1,1 @@
+{"id": "A-003530", "text": "제일 먼저 저한테 연락 주신 분은 정말 친절하셨고, 그분 이름이 최지우 님이었어요. 그리고 OO님도 정말 좋은 분 같았습니다.", "pi": [{"type": "NAME", "text": "최지우", "start": 36, "end": 39}, {"type": "NAME", "text": "OO", "start": 51, "end": 53}], "meta": {"domain": "SNS 댓글", "style": "길고 장황한 설명", "obfuscation": ["plain"], "hard_case": "none"}}

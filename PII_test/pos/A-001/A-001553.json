@@ -1,0 +1,1 @@
+{"id": "A-001553", "text": "이번 이벤트 상품권 번호가 1234-5678 같은데, 혹시 장미님 아이디가 맞아요? 제 이메일은 장미.짱짱@naver.com이에요.", "pi": [{"type": "NAME", "text": "장미", "start": 33, "end": 35}, {"type": "EMAIL", "text": "장미.짱짱@naver.com", "start": 54, "end": 69}], "meta": {"domain": "커뮤니티 게시글", "style": "반말 대화", "obfuscation": ["plain"], "hard_case": "none"}}

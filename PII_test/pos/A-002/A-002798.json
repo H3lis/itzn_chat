@@ -1,0 +1,1 @@
+{"id": "A-002798", "text": "제가 회원가입할 때 쓴 아이디가 'ㄱㅇㅁㅈㄱ' 이었어요. 기억나세요?", "pi": [{"type": "ID", "text": "ㄱㅇㅁㅈㄱ", "start": 19, "end": 24}], "meta": {"domain": "직장 메신저", "style": "구어체", "obfuscation": ["jamo_split"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-000330", "text": "생년월일은 1990년 10월 15일로 확인되는데, 이게 맞을까요?", "pi": [{"type": "BIRTH", "text": "1990년 10월 15일", "start": 6, "end": 19}], "meta": {"domain": "직장 메신저", "style": "오타 많은 채팅", "obfuscation": ["plain"], "hard_case": "none"}}

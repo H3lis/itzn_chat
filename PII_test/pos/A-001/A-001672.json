@@ -1,0 +1,1 @@
+{"id": "A-001672", "text": "혹시 지원하신 분 성함이 나무민주 씨 맞으신가요? 이름 확인 좀 부탁드립니다.", "pi": [{"type": "NAME", "text": "나무민주", "start": 14, "end": 18}], "meta": {"domain": "이메일 본문", "style": "음성인식(STT) 전사", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

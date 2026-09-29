@@ -1,0 +1,1 @@
+{"id": "A-002377", "text": "고객님 주소는 경기도 안양시 동안구 평촌대로 990이고, 성함은 최지우 님 맞으실까요?", "pi": [{"type": "ADDRESS", "text": "경기도 안양시 동안구 평촌대로 990", "start": 8, "end": 28}, {"type": "NAME", "text": "최지우", "start": 36, "end": 39}], "meta": {"domain": "콜센터 상담 요약", "style": "격식체", "obfuscation": ["split_utterance"], "hard_case": "none"}}

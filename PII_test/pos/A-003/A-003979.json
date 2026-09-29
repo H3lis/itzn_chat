@@ -1,0 +1,1 @@
+{"id": "A-003979", "text": "제출해주신 성함은 'Lee Minjun'으로 확인되는데, 자모 분리를 하면 이 ㅁ ㄴ 준 인가요?", "pi": [{"type": "NAME", "text": "Lee Minjun", "start": 11, "end": 21}], "meta": {"domain": "보험 청구", "style": "공문서풍", "obfuscation": ["romanized", "jamo_split"], "hard_case": "none"}}

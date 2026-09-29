@@ -1,0 +1,1 @@
+{"id": "A-003605", "text": "신청자분께서는 출생일이 1990년 5월 10일이시고, 차량 번호는 서울 75가 3491입니다. 확인 부탁드립니다.", "pi": [{"type": "BIRTH", "text": "1990년 5월 10일", "start": 13, "end": 25}, {"type": "CAR_PLATE", "text": "서울 75가 3491", "start": 37, "end": 48}], "meta": {"domain": "콜센터 상담 요약", "style": "공문서풍", "obfuscation": ["split_utterance", "mixed_reading"], "hard_case": "none"}}

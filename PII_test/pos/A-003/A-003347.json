@@ -1,0 +1,1 @@
+{"id": "A-003347", "text": "계정 번호는 abc1234이고요, 사용자 이름은 홍길동이라고 돼 있습니다.", "pi": [{"type": "ACCOUNT", "text": "abc1234", "start": 7, "end": 14}, {"type": "NAME", "text": "홍길동", "start": 27, "end": 30}], "meta": {"domain": "음성통화 전사문", "style": "길고 장황한 설명", "obfuscation": ["split_utterance"], "hard_case": "none"}}

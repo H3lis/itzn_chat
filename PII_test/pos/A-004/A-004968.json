@@ -1,0 +1,1 @@
+{"id": "A-004968", "text": "주민번호는 990101-1234567이고, SNS는 my_secret_id 이거 사용해도 될까요?", "pi": [{"type": "RRN", "text": "990101-1234567", "start": 6, "end": 20}, {"type": "SNS", "text": "my_secret_id", "start": 29, "end": 41}], "meta": {"domain": "콜센터 상담 요약", "style": "메신저 줄임말", "obfuscation": ["plain"], "hard_case": "nickname_id"}}

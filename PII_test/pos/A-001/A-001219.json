@@ -1,0 +1,1 @@
+{"id": "A-001219", "text": "제 이름은 이슬이에요. 주민등록번호는 900101-2XXXXXX로 되어 있는데요, 이게 맞는지 확인 부탁드려요.", "pi": [{"type": "NAME", "text": "이슬", "start": 6, "end": 8}, {"type": "RRN", "text": "900101-2XXXXXX", "start": 21, "end": 35}], "meta": {"domain": "쇼핑몰 문의", "style": "공문서풍", "obfuscation": ["romanized"], "hard_case": "homonym_name"}}

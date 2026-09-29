@@ -1,0 +1,1 @@
+{"id": "A-001855", "text": "배송 주소는 '부산광역시 해운대구 마린시티 101동'이 맞으신가요? 아니면 혹시 '푸름' 거주지 기준으로 다시 확인해 주실 수 있나요?", "pi": [{"type": "ADDRESS", "text": "부산광역시 해운대구 마린시티 101동", "start": 8, "end": 28}, {"type": "NAME", "text": "푸름", "start": 46, "end": 48}], "meta": {"domain": "쇼핑몰 문의", "style": "구어체", "obfuscation": ["romanized", "self_correction"], "hard_case": "homonym_name"}}

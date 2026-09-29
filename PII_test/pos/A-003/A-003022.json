@@ -1,0 +1,1 @@
+{"id": "A-003022", "text": "구름 씨가 말한 주소는 경기도 성남시 분당구 판교역로 550이에요. 이름은 구름 씨가 맞아요?", "pi": [{"type": "NAME", "text": "구름", "start": 0, "end": 2}, {"type": "ADDRESS", "text": "경기도 성남시 분당구 판교역로 550", "start": 13, "end": 33}], "meta": {"domain": "택배 문의", "style": "음성인식(STT) 전사", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

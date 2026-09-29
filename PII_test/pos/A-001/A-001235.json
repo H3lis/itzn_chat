@@ -1,0 +1,1 @@
+{"id": "A-001235", "text": "혹시 제가 사용하는 계정이 김민수 님 계정이랑 같은 건가요? 그거랑 새로 만든 이메일 계정 확인 좀 해주세요.", "pi": [{"type": "ACCOUNT", "text": "김민수", "start": 15, "end": 18}, {"type": "ACCOUNT", "text": "이메일", "start": 44, "end": 47}], "meta": {"domain": "이메일 본문", "style": "반말 대화", "obfuscation": ["korean_reading"], "hard_case": "none"}}

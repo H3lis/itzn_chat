@@ -1,0 +1,1 @@
+{"id": "A-005448", "text": "홍길동 님, 주민번호는 900101부터, 그리고 연락처는 010-1234-5678이에요.", "pi": [{"type": "NAME", "text": "홍길동", "start": 0, "end": 3}, {"type": "RRN", "text": "900101", "start": 13, "end": 19}], "meta": {"domain": "병원 접수", "style": "음성인식(STT) 전사", "obfuscation": ["split_utterance"], "hard_case": "none"}}

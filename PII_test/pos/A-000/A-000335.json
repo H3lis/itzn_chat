@@ -1,0 +1,1 @@
+{"id": "A-000335", "text": "나무 씨께서 사시는 주소는 서울특별시 강남구 역삼동 501호이시고, 성함은 나무 팀장님이시죠?", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 역삼동 501호", "start": 15, "end": 33}, {"type": "NAME", "text": "나무", "start": 42, "end": 44}], "meta": {"domain": "부동산 상담", "style": "존댓말 상담", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

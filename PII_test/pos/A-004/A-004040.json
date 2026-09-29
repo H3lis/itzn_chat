@@ -1,0 +1,1 @@
+{"id": "A-004040", "text": "고객님, 거주지 주소는 부산광역시 해운대구 마린시티로 알고 있으며, 본인 성함은 김민준 님으로 확인됩니다.", "pi": [{"type": "ADDRESS", "text": "부산광역시 해운대구 마린시티", "start": 13, "end": 28}, {"type": "NAME", "text": "김민준", "start": 45, "end": 48}], "meta": {"domain": "금융 상담", "style": "격식체", "obfuscation": ["self_correction"], "hard_case": "none"}}

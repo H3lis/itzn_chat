@@ -1,0 +1,1 @@
+{"id": "A-004258", "text": "저의 아이디는 갤럭시노트이고, 연락처는 010-9999-8888로 변경됐습니다.", "pi": [{"type": "ID", "text": "갤럭시노트", "start": 8, "end": 13}, {"type": "PHONE", "text": "010-9999-8888", "start": 22, "end": 35}], "meta": {"domain": "이메일 본문", "style": "길고 장황한 설명", "obfuscation": ["plain"], "hard_case": "nickname_id"}}

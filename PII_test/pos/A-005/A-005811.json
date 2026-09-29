@@ -1,0 +1,1 @@
+{"id": "A-005811", "text": "차량 번호가 '1가나', 이름은 '김민준' 씨시고, 소속은 '서울은행' 맞으신가요?", "pi": [{"type": "CAR_PLATE", "text": "1가나", "start": 8, "end": 11}, {"type": "NAME", "text": "김민준", "start": 19, "end": 22}, {"type": "ORG", "text": "서울은행", "start": 34, "end": 38}], "meta": {"domain": "금융 상담", "style": "격식체", "obfuscation": ["jamo_split", "repeat_expr"], "hard_case": "org_person"}}

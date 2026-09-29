@@ -1,0 +1,1 @@
+{"id": "A-002021", "text": "고객님 아이디는 'user1234'로 확인되는데요. 혹시 로마자로는 뭐라고 하시겠어요?", "pi": [{"type": "ID", "text": "user1234", "start": 10, "end": 18}], "meta": {"domain": "부동산 상담", "style": "짧은 단답", "obfuscation": ["jamo_split", "lookalike_char", "romanized"], "hard_case": "none"}}

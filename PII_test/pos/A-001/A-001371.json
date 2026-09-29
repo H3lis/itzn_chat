@@ -1,0 +1,1 @@
+{"id": "A-001371", "text": "제 아이디는 Auser777이고요, 저는 김민지라고 합니다!", "pi": [{"type": "ID", "text": "Auser777", "start": 7, "end": 15}, {"type": "NAME", "text": "김민지", "start": 23, "end": 26}], "meta": {"domain": "SNS 댓글", "style": "메신저 줄임말", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

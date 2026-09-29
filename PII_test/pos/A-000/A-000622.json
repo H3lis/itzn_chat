@@ -1,0 +1,1 @@
+{"id": "A-000622", "text": "혹시 제가 예약한 김민지 예약을 취소할 수 있나요? 메일로 확인해봐 주세요. <k0.m@l0ok.co> 이거 맞고요, 다른 메일로도 보내주실 수 있나요?", "pi": [{"type": "EMAIL", "text": "k0.m@l0ok.co", "start": 44, "end": 56}, {"type": "EMAIL", "text": "다른 메일", "start": 66, "end": 71}], "meta": {"domain": "여행 예약", "style": "메신저 줄임말", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

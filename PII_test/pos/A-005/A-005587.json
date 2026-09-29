@@ -1,0 +1,1 @@
+{"id": "A-005587", "text": "네, 학생 본인 확인을 위해 학번 '20231024'와 성함 '이예진' 말씀해주시고요. 소속 학과는 공과대학이에요.", "pi": [{"type": "ID", "text": "20231024", "start": 20, "end": 28}, {"type": "NAME", "text": "이예진", "start": 35, "end": 38}, {"type": "ORG", "text": "공과대학", "start": 56, "end": 60}], "meta": {"domain": "학교 행정 문의", "style": "존댓말 상담", "obfuscation": ["plain"], "hard_case": "org_person"}}

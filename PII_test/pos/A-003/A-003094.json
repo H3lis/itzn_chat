@@ -1,0 +1,1 @@
+{"id": "A-003094", "text": "그 사람 이름이 장미라는 거 알고 있어요? 장미라는 별명으로도 많이 불리잖아요. 혹시 성함은 어떻게 되시나요?", "pi": [{"type": "NAME", "text": "장미", "start": 9, "end": 11}, {"type": "NAME", "text": "장미", "start": 24, "end": 26}], "meta": {"domain": "커뮤니티 게시글", "style": "길고 장황한 설명", "obfuscation": ["jamo_split"], "hard_case": "none"}}

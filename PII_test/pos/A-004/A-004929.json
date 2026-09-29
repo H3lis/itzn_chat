@@ -1,0 +1,1 @@
+{"id": "A-004929", "text": "김과장님, 이 부분 관련해서 제 개인 SNS는 at.naver.com/kimjh 이니 참고 부탁드립니다.", "pi": [{"type": "NAME", "text": "김과장", "start": 0, "end": 3}, {"type": "SNS", "text": "at.naver.com/kimjh", "start": 26, "end": 44}], "meta": {"domain": "고객센터 채팅", "style": "공문서풍", "obfuscation": ["separator_noise", "honorific_ref"], "hard_case": "none"}}

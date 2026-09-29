@@ -1,0 +1,1 @@
+{"id": "A-004879", "text": "신청자 아이디는 ㄴㄱㅁ입니다. 이름은 ㄱㅁ이고 주민등록번호는 901234가 맞으신가요?", "pi": [{"type": "ID", "text": "ㄴㄱㅁ", "start": 9, "end": 12}, {"type": "NAME", "text": "ㄱㅁ", "start": 21, "end": 23}, {"type": "RRN", "text": "901234", "start": 34, "end": 40}], "meta": {"domain": "배달 요청사항", "style": "음성인식(STT) 전사", "obfuscation": ["jamo_split"], "hard_case": "none"}}

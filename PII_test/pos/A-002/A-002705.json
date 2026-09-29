@@ -1,0 +1,1 @@
+{"id": "A-002705", "text": "라임님, 이번 신곡 정말 좋아요! 제 연락처는 010-5555-6666이고, 라임님도 혹시 계정으로 연락 주실 수 있나요?", "pi": [{"type": "NAME", "text": "라임", "start": 0, "end": 2}, {"type": "PHONE", "text": "010-5555-6666", "start": 26, "end": 39}], "meta": {"domain": "SNS 댓글", "style": "격식체", "obfuscation": ["lookalike_char"], "hard_case": "homonym_name"}}

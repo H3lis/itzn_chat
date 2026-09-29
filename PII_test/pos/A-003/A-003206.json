@@ -1,0 +1,1 @@
+{"id": "A-003206", "text": "OOO 여행은 성수기에 인기가 많아서요, 이 날짜로는 어렵고, 혹시 제 인스타 계정으로 다시 확인 부탁드려도 될까요?", "pi": [{"type": "PHONE", "text": "OOO", "start": 0, "end": 3}, {"type": "SNS", "text": "인스타 계정", "start": 40, "end": 46}], "meta": {"domain": "여행 예약", "style": "길고 장황한 설명", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

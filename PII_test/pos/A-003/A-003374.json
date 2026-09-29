@@ -1,0 +1,1 @@
+{"id": "A-003374", "text": "성함이 온유 님 맞으신가요? 그리고 주민등록번호는 950321-1234567이시죠?", "pi": [{"type": "NAME", "text": "온유", "start": 4, "end": 6}, {"type": "RRN", "text": "950321-1234567", "start": 28, "end": 42}], "meta": {"domain": "부동산 상담", "style": "음성인식(STT) 전사", "obfuscation": ["mixed_reading"], "hard_case": "homonym_name"}}

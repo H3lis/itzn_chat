@@ -1,0 +1,1 @@
+{"id": "A-000441", "text": "문의하신 메일 주소는 chulsoo(at)gmail(dot)com입니다. 이것 말고 또 다른 이메일 주소도 있습니다.", "pi": [{"type": "EMAIL", "text": "chulsoo(at)gmail(dot)com", "start": 12, "end": 36}], "meta": {"domain": "회의록", "style": "길고 장황한 설명", "obfuscation": ["email_spoken", "separator_noise"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-000412", "text": "저희 아파트 주소는 경기도 가상의 번지 505호예요. 그리고 주민번호는 880808-1xxxxxxx 라고 돼 있어요.", "pi": [{"type": "ADDRESS", "text": "경기도 가상의 번지 505호", "start": 11, "end": 26}, {"type": "RRN", "text": "880808-1xxxxxxx", "start": 40, "end": 55}], "meta": {"domain": "커뮤니티 게시글", "style": "오타 많은 채팅", "obfuscation": ["repeat_expr", "split_utterance"], "hard_case": "none"}}

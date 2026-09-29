@@ -1,0 +1,1 @@
+{"id": "A-001702", "text": "야, 나라한테 연락했어? 어제 보내준 게 아직 안 왔다고. 번호가 010-5555-1234 맞냐?", "pi": [{"type": "NAME", "text": "나라", "start": 3, "end": 5}, {"type": "PHONE", "text": "010-5555-1234", "start": 37, "end": 50}], "meta": {"domain": "택배 문의", "style": "반말 대화", "obfuscation": ["separator_noise", "stt_error"], "hard_case": "homonym_name"}}

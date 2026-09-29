@@ -1,0 +1,1 @@
+{"id": "A-003486", "text": "운전면허증 번호가 7321-9988-5432구요, 주민번호는 900101-1234567이 맞나요?", "pi": [{"type": "DRIVER_LICENSE", "text": "7321-9988-5432", "start": 10, "end": 24}, {"type": "RRN", "text": "900101-1234567", "start": 34, "end": 48}], "meta": {"domain": "직장 메신저", "style": "존댓말 상담", "obfuscation": ["split_utterance"], "hard_case": "none"}}

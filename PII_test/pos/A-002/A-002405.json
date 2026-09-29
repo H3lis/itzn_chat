@@ -1,0 +1,1 @@
+{"id": "A-002405", "text": "저의 회원 ID가 '나라77' 맞는지요? 그리고 제 이름은 '나라지우'로 등록되어 있습니다.", "pi": [{"type": "ID", "text": "나라77", "start": 11, "end": 15}, {"type": "NAME", "text": "나라지우", "start": 34, "end": 38}], "meta": {"domain": "민원 접수", "style": "존댓말 상담", "obfuscation": ["lookalike_char", "romanized"], "hard_case": "homonym_name"}}

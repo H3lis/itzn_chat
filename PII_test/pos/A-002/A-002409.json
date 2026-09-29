@@ -1,0 +1,1 @@
+{"id": "A-002409", "text": "주소는 강남구 역삼동이고요, 이름은 최민지 씨와 김서준 씨 두 분이신가요?", "pi": [{"type": "ADDRESS", "text": "강남구 역삼동", "start": 4, "end": 11}, {"type": "NAME", "text": "최민지", "start": 20, "end": 23}, {"type": "NAME", "text": "김서준", "start": 27, "end": 30}], "meta": {"domain": "금융 상담", "style": "음성인식(STT) 전사", "obfuscation": ["jamo_split"], "hard_case": "none"}}

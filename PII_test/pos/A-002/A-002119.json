@@ -1,0 +1,1 @@
+{"id": "A-002119", "text": "보험 청구에 필요한 계좌번호는 보통 10자리 숫자 조합으로 되어 있습니다.", "pi": [{"type": "ACCOUNT", "text": "10자리 숫자 조합", "start": 20, "end": 30}], "meta": {"domain": "보험 청구", "style": "공문서풍", "obfuscation": ["plain"], "hard_case": "none"}}

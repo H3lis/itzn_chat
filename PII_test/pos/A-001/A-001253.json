@@ -1,0 +1,1 @@
+{"id": "A-001253", "text": "혹시 제 이름이 가 ㅇ ㅁ 이요? 그리고 연락처는 로마자 표기로 말씀드릴게요. 010-1111-2222예요.", "pi": [{"type": "NAME", "text": "가 ㅇ ㅁ", "start": 9, "end": 14}, {"type": "PHONE", "text": "010-1111-2222", "start": 44, "end": 57}], "meta": {"domain": "부동산 상담", "style": "반말 대화", "obfuscation": ["jamo_split", "romanized"], "hard_case": "none"}}

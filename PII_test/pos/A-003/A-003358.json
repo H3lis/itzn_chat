@@ -1,0 +1,1 @@
+{"id": "A-003358", "text": "등록하신 생년월일은 2000년 3월 1일이고, 신분증 번호는 ㄱㄴㄷ 123456입니다.", "pi": [{"type": "BIRTH", "text": "2000년 3월 1일", "start": 11, "end": 22}, {"type": "ID", "text": "ㄱㄴㄷ 123456", "start": 34, "end": 44}], "meta": {"domain": "병원 접수", "style": "존댓말 상담", "obfuscation": ["split_utterance"], "hard_case": "none"}}

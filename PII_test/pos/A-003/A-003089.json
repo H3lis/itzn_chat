@@ -1,0 +1,1 @@
+{"id": "A-003089", "text": "네, 진료 예약은 다음 주 화요일 오후로 잡아주시면 되고요. 환자분 성함은 봄 씨 맞으실까요? 그리고 저희 집 주소는 서울 강남구 봄로에 있습니다.", "pi": [{"type": "NAME", "text": "봄", "start": 42, "end": 43}, {"type": "ADDRESS", "text": "서울 강남구 봄로", "start": 66, "end": 75}], "meta": {"domain": "병원 접수", "style": "길고 장황한 설명", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

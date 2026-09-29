@@ -1,0 +1,1 @@
+{"id": "A-001539", "text": "대표님께 문의드리는데, 이 지혜 씨분 연락처가 변경된 것 같아요. 이전 번호가 010-9999-8888이 아니고요.", "pi": [{"type": "NAME", "text": "지혜", "start": 15, "end": 17}, {"type": "PHONE", "text": "010-9999-8888", "start": 44, "end": 57}], "meta": {"domain": "부동산 상담", "style": "격식체", "obfuscation": ["self_correction"], "hard_case": "homonym_name"}}

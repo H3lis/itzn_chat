@@ -1,0 +1,1 @@
+{"id": "A-001095", "text": "문의하신 회원님 ID는 998877이고, 성함은 박지수 님이시며, 이사님께 연락 주신 겁니다.", "pi": [{"type": "ID", "text": "998877", "start": 13, "end": 19}, {"type": "NAME", "text": "박지수", "start": 27, "end": 30}], "meta": {"domain": "음성통화 전사문", "style": "길고 장황한 설명", "obfuscation": ["plain"], "hard_case": "none"}}

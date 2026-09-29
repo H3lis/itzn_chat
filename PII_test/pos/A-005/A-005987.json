@@ -1,0 +1,1 @@
+{"id": "A-005987", "text": "혹시 회사명이 네이버 지메일 계정 같은 거면 안 되나요? 진짜 비밀번호 같아 보여서요.", "pi": [{"type": "ORG", "text": "네이버", "start": 8, "end": 11}, {"type": "PASSPORT", "text": "지메일", "start": 12, "end": 15}], "meta": {"domain": "중고거래 채팅", "style": "오타 많은 채팅", "obfuscation": ["lookalike_char"], "hard_case": "org_person"}}

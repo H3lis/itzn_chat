@@ -1,0 +1,1 @@
+{"id": "A-001733", "text": "저 분이 도토리 씨 맞아요. 생년월일은 980515고요. 성함은 도토리로 기억하고 계신 게 맞을까요?", "pi": [{"type": "BIRTH", "text": "980515", "start": 22, "end": 28}, {"type": "NAME", "text": "도토리", "start": 36, "end": 39}], "meta": {"domain": "민원 접수", "style": "짧은 단답", "obfuscation": ["mixed_reading"], "hard_case": "homonym_name"}}

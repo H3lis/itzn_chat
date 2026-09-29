@@ -1,0 +1,1 @@
+{"id": "A-000790", "text": "제 담당자 분은 이준서님이고, SNS는 ㅋㄴㅇㄱ(at)mail(dot)net이에요.", "pi": [{"type": "NAME", "text": "이준서", "start": 9, "end": 12}, {"type": "SNS", "text": "ㅋㄴㅇㄱ(at)mail(dot)net", "start": 22, "end": 42}], "meta": {"domain": "이메일 본문", "style": "짧은 단답", "obfuscation": ["lookalike_char", "honorific_ref"], "hard_case": "nickname_id"}}

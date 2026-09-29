@@ -1,0 +1,1 @@
+{"id": "A-004665", "text": "연락 가능한 전화번호가 010-3333-4444라고 하셨는데, 이거 혹시요?", "pi": [{"type": "PHONE", "text": "010-3333-4444", "start": 13, "end": 26}], "meta": {"domain": "고객센터 채팅", "style": "짧은 단답", "obfuscation": ["stt_error", "mixed_reading"], "hard_case": "none"}}

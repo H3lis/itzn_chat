@@ -1,0 +1,1 @@
+{"id": "A-000095", "text": "숙소는 서울시 종로구 인사동 근처로 부탁드려요. 제 이름은 라임이에요.", "pi": [{"type": "ADDRESS", "text": "서울시 종로구 인사동", "start": 4, "end": 15}, {"type": "NAME", "text": "라임", "start": 33, "end": 35}], "meta": {"domain": "여행 예약", "style": "메신저 줄임말", "obfuscation": ["split_utterance", "jamo_split"], "hard_case": "homonym_name"}}

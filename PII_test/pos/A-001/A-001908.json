@@ -1,0 +1,1 @@
+{"id": "A-001908", "text": "차량 번호는 12가-34가-56가네요. 혹시 차대번호가 따로 있으신가요?", "pi": [{"type": "CAR_PLATE", "text": "12가-34가-56가", "start": 7, "end": 18}], "meta": {"domain": "민원 접수", "style": "격식체", "obfuscation": ["plain"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-000450", "text": "제 이메일 주소가 chulsoo(at)gmail(dot)com인데요, 이름은 장미예요.", "pi": [{"type": "EMAIL", "text": "chulsoo(at)gmail(dot)com", "start": 10, "end": 34}, {"type": "NAME", "text": "장미", "start": 43, "end": 45}], "meta": {"domain": "중고거래 채팅", "style": "존댓말 상담", "obfuscation": ["email_spoken"], "hard_case": "none"}}

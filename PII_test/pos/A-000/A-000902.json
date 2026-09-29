@@ -1,0 +1,1 @@
+{"id": "A-000902", "text": "고객님, 메일 주소가 정확한가요? ㄴㅣㅇㄱㅓㅁ ㅇㅣㅁㅔㅇㅣㄹ 주소는 g.o.b.a.n@ji.com으로 되어 있는데요.", "pi": [{"type": "NAME", "text": "ㄴㅣㅇㄱㅓㅁ", "start": 19, "end": 25}, {"type": "EMAIL", "text": "g.o.b.a.n@ji.com", "start": 38, "end": 54}], "meta": {"domain": "보험 청구", "style": "존댓말 상담", "obfuscation": ["jamo_split"], "hard_case": "none"}}

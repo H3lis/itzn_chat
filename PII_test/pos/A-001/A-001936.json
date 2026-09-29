@@ -1,0 +1,1 @@
+{"id": "A-001936", "text": "네, 고객님. 사랑이라는 감정은 참 어렵죠. 연락처는 010-9999-8888로 되시겠어요?", "pi": [{"type": "NAME", "text": "사랑", "start": 8, "end": 10}, {"type": "PHONE", "text": "010-9999-8888", "start": 30, "end": 43}], "meta": {"domain": "콜센터 상담 요약", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

@@ -1,0 +1,1 @@
+{"id": "A-004860", "text": "생년월일이 90년 3월 1일이고, 제 이름은 박서진이고, 그리고 부장님 성함은 최지훈입니다.", "pi": [{"type": "BIRTH", "text": "90년 3월 1일", "start": 6, "end": 15}, {"type": "NAME", "text": "박서진", "start": 25, "end": 28}, {"type": "NAME", "text": "최지훈", "start": 44, "end": 47}], "meta": {"domain": "SNS 댓글", "style": "공문서풍", "obfuscation": ["plain"], "hard_case": "none"}}

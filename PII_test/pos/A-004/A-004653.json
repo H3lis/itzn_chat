@@ -1,0 +1,1 @@
+{"id": "A-004653", "text": "청구서 주소지가 서울시 강남구 논현동 123-45고요, 김대리님께 보내드려야 할 것 같습니다.", "pi": [{"type": "ADDRESS", "text": "서울시 강남구 논현동 123-45", "start": 9, "end": 27}, {"type": "NAME", "text": "김대리", "start": 31, "end": 34}], "meta": {"domain": "보험 청구", "style": "길고 장황한 설명", "obfuscation": ["jamo_split", "honorific_ref"], "hard_case": "none"}}

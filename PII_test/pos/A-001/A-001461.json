@@ -1,0 +1,1 @@
+{"id": "A-001461", "text": "혹시 사용자 아이디가 'skysky'가 맞으신가요? 그리고 성함은 김지훈으로 등록되어 있는데요.", "pi": [{"type": "ID", "text": "skysky", "start": 13, "end": 19}, {"type": "NAME", "text": "김지훈", "start": 37, "end": 40}], "meta": {"domain": "학교 행정 문의", "style": "메신저 줄임말", "obfuscation": ["romanized"], "hard_case": "none"}}

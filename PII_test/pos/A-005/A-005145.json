@@ -1,0 +1,1 @@
+{"id": "A-005145", "text": "회원 번호는 123456이고, 결제는 카드번호 4444로 진행하면 되나요?", "pi": [{"type": "ACCOUNT", "text": "123456", "start": 7, "end": 13}, {"type": "CARD", "text": "4444", "start": 26, "end": 30}], "meta": {"domain": "직장 메신저", "style": "짧은 단답", "obfuscation": ["korean_reading"], "hard_case": "none"}}

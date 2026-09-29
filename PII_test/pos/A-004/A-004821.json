@@ -1,0 +1,1 @@
+{"id": "A-004821", "text": "저 생년월일은 99. 11. 11이구요, 전화번호는 010 - 2222 - 3333이에요.", "pi": [{"type": "BIRTH", "text": "99. 11. 11", "start": 8, "end": 18}, {"type": "PHONE", "text": "010 - 2222 - 3333", "start": 29, "end": 46}], "meta": {"domain": "SNS 댓글", "style": "음성인식(STT) 전사", "obfuscation": ["separator_noise", "lookalike_char", "stt_error"], "hard_case": "none"}}

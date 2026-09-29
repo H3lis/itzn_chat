@@ -1,0 +1,1 @@
+{"id": "A-003753", "text": "혹시 연락드릴게요. 제가 생년월일이 850515이고, 메일은 user.test@naver.com으로 되어있어요.", "pi": [{"type": "BIRTH", "text": "850515", "start": 20, "end": 26}, {"type": "EMAIL", "text": "user.test@naver.com", "start": 34, "end": 53}], "meta": {"domain": "금융 상담", "style": "구어체", "obfuscation": ["split_utterance"], "hard_case": "none"}}

@@ -1,0 +1,1 @@
+{"id": "A-000087", "text": "계정 확인을 위해 이메일은 my.user@example.com으로 등록되어 있는데요. 성함은 소나무 님으로 되어 있네요.", "pi": [{"type": "EMAIL", "text": "my.user@example.com", "start": 15, "end": 34}, {"type": "NAME", "text": "소나무", "start": 52, "end": 55}], "meta": {"domain": "보험 청구", "style": "메신저 줄임말", "obfuscation": ["romanized"], "hard_case": "homonym_name"}}

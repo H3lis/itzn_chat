@@ -1,0 +1,1 @@
+{"id": "A-005835", "text": "네, 봄 학생이신가요? 그리고 학부모님 연락처는 010-9999-8888이 맞는지요?", "pi": [{"type": "NAME", "text": "봄", "start": 3, "end": 4}, {"type": "PHONE", "text": "010-9999-8888", "start": 27, "end": 40}], "meta": {"domain": "학교 행정 문의", "style": "길고 장황한 설명", "obfuscation": ["mixed_reading"], "hard_case": "homonym_name"}}

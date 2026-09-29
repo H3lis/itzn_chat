@@ -1,0 +1,1 @@
+{"id": "A-000487", "text": "가을님, 이메일은 aa@bbbb.com 이고, 제 주민번호는 99990101 같은 거예요.", "pi": [{"type": "NAME", "text": "가을", "start": 0, "end": 2}, {"type": "EMAIL", "text": "aa@bbbb.com", "start": 10, "end": 21}, {"type": "RRN", "text": "99990101", "start": 34, "end": 42}], "meta": {"domain": "SNS 댓글", "style": "구어체", "obfuscation": ["lookalike_char"], "hard_case": "homonym_name"}}

@@ -1,0 +1,1 @@
+{"id": "A-005793", "text": "네, 사비요. 고객님 아이디는 8800번대시고 주민등록번호는 90년생으로 확인됩니다.", "pi": [{"type": "ID", "text": "8800번대", "start": 17, "end": 23}, {"type": "RRN", "text": "90년생", "start": 34, "end": 38}], "meta": {"domain": "부동산 상담", "style": "음성인식(STT) 전사", "obfuscation": ["repeat_expr"], "hard_case": "nickname_id"}}

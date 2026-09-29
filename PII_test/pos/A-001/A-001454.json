@@ -1,0 +1,1 @@
+{"id": "A-001454", "text": "저기요, 저희가 속한 곳이 'GSIT'이라는 회사인데요. 혹시 그쪽 계정으로 상담하시면 되나요?", "pi": [{"type": "ORG", "text": "GSIT", "start": 16, "end": 20}], "meta": {"domain": "금융 상담", "style": "메신저 줄임말", "obfuscation": ["romanized", "jamo_split"], "hard_case": "none"}}

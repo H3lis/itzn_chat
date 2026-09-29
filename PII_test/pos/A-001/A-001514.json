@@ -1,0 +1,1 @@
+{"id": "A-001514", "text": "고객님, 주소지는 '서울특별시 강남구 삼성동'으로 변경하시는 것이 맞을까요?", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 삼성동", "start": 11, "end": 24}], "meta": {"domain": "고객센터 채팅", "style": "격식체", "obfuscation": ["jamo_split"], "hard_case": "none"}}

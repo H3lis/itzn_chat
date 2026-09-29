@@ -1,0 +1,1 @@
+{"id": "A-001045", "text": "이 방의 소유주분은 아이디가 아크라이트, 그리고 주민등록번호가 940115-21112222로 되어 있습니다.", "pi": [{"type": "ID", "text": "아크라이트", "start": 16, "end": 21}, {"type": "RRN", "text": "940115-21112222", "start": 35, "end": 50}], "meta": {"domain": "부동산 상담", "style": "존댓말 상담", "obfuscation": ["mixed_reading", "romanized"], "hard_case": "nickname_id"}}

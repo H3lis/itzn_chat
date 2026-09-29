@@ -1,0 +1,1 @@
+{"id": "A-003868", "text": "카드번호는 이거예요, 1234-5678-9012-3456! 저번에 말했던 그 거요.", "pi": [{"type": "CARD", "text": "1234-5678-9012-3456", "start": 12, "end": 31}], "meta": {"domain": "SNS 댓글", "style": "메신저 줄임말", "obfuscation": ["lookalike_char", "korean_reading"], "hard_case": "none"}}

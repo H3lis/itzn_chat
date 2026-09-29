@@ -1,0 +1,1 @@
+{"id": "A-001098", "text": "주소지는 경기도 고양시 일산동 756-22고요. 제가 다니는 회사는 SK텔레콤입니다.", "pi": [{"type": "ADDRESS", "text": "경기도 고양시 일산동 756-22", "start": 5, "end": 23}, {"type": "ORG", "text": "SK텔레콤", "start": 38, "end": 43}], "meta": {"domain": "보험 청구", "style": "메신저 줄임말", "obfuscation": ["korean_reading"], "hard_case": "org_person"}}

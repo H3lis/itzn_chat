@@ -1,0 +1,1 @@
+{"id": "A-005072", "text": "제가 쓰는 아이디는 alphauser이고요, 성함은 박지훈 씨예요.", "pi": [{"type": "ID", "text": "alphauser", "start": 11, "end": 20}, {"type": "NAME", "text": "박지훈", "start": 29, "end": 32}], "meta": {"domain": "쇼핑몰 문의", "style": "존댓말 상담", "obfuscation": ["plain"], "hard_case": "none"}}

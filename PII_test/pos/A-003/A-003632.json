@@ -1,0 +1,1 @@
+{"id": "A-003632", "text": "예약하신 전화번호가 맞는지 다시 한번 확인 부탁드립니다. 010-2222-3333 말씀해주시겠어요?", "pi": [{"type": "PHONE", "text": "010-2222-3333", "start": 32, "end": 45}], "meta": {"domain": "이메일 본문", "style": "짧은 단답", "obfuscation": ["korean_reading"], "hard_case": "none"}}

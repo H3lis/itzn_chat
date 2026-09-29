@@ -1,0 +1,1 @@
+{"id": "A-003073", "text": "저희 고객님 성함은 새벽 씨시고, 연락처는 010-9999-1111이고요.", "pi": [{"type": "NAME", "text": "새벽", "start": 11, "end": 13}, {"type": "PHONE", "text": "010-9999-1111", "start": 24, "end": 37}], "meta": {"domain": "민원 접수", "style": "짧은 단답", "obfuscation": ["lookalike_char", "repeat_expr"], "hard_case": "homonym_name"}}

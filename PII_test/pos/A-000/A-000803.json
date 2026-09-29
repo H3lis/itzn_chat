@@ -1,0 +1,1 @@
+{"id": "A-000803", "text": "김민준 환자분 자료 확인하셔야 하고, 등록번호는 9876543210이에요. 바로 전산에 입력해 주세요.", "pi": [{"type": "NAME", "text": "김민준", "start": 0, "end": 3}, {"type": "RRN", "text": "9876543210", "start": 27, "end": 37}], "meta": {"domain": "병원 접수", "style": "메신저 줄임말", "obfuscation": ["plain"], "hard_case": "none"}}

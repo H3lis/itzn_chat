@@ -1,0 +1,1 @@
+{"id": "A-004733", "text": "아니요, 이름은 김태준이 아니라 진짜 이름은 박지훈이에요.", "pi": [{"type": "NAME", "text": "박지훈", "start": 25, "end": 28}], "meta": {"domain": "SNS 댓글", "style": "짧은 단답", "obfuscation": ["self_correction", "jamo_split"], "hard_case": "none"}}
