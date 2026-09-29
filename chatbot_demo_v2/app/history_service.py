@@ -120,14 +120,15 @@ class HistoryService:
         """대화 턴 완료 시 자동 PII 비식별화 후 DB에 안전 적재."""
         from .pii_service import MaskResult
 
+        is_scenario = (route == "scenario")
         try:
-            mask_q_res = self.pii_masker.mask_text(raw_question or "")
+            mask_q_res = self.pii_masker.mask_text(raw_question or "", skip_sllm=is_scenario)
         except Exception as e:
             logger.warning("질문 PII 비식별화 실패 (원문 안전 fallback): %s", e)
             mask_q_res = MaskResult(masked_text=raw_question or "", detected_types=[], has_pii=False)
 
         try:
-            mask_ans_res = self.pii_masker.mask_text(final_answer or "")
+            mask_ans_res = self.pii_masker.mask_text(final_answer or "", skip_sllm=is_scenario)
         except Exception as e:
             logger.warning("답변 PII 비식별화 실패 (원문 안전 fallback): %s", e)
             mask_ans_res = MaskResult(masked_text=final_answer or "", detected_types=[], has_pii=False)

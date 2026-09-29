@@ -236,14 +236,17 @@ def load_settings(env: Mapping[str, str] | None = None) -> Settings:
         web_search_timeout_s=_get_int(env, "WEB_SEARCH_TIMEOUT_S", 30),
         web_search_max_sources=_get_int(env, "WEB_SEARCH_MAX_SOURCES", 5),
         web_search_daily_budget=_get_int(env, "WEB_SEARCH_DAILY_BUDGET", 100),
-        pii_backend=_get(env, "PII_BACKEND", "sllm"),
+        pii_backend=_get(env, "PII_BACKEND", "rule"),
         pii_sllm_model=_get(env, "PII_SLLM_MODEL", "qwen2.5:1.5b"),
         pii_sllm_host=_get(env, "PII_SLLM_HOST", "http://127.0.0.1:11434"),
-        pii_sllm_timeout_s=_get_float(env, "PII_SLLM_TIMEOUT_S", 8.0),
+        pii_sllm_timeout_s=_get_float(env, "PII_SLLM_TIMEOUT_S", 3.0),
         langsmith_tracing=_get_bool(env, "LANGSMITH_TRACING", False),
         langsmith_project=_get(env, "LANGSMITH_PROJECT", "school-network-chatbot-demo-v2"),
         langsmith_endpoint=_get(env, "LANGSMITH_ENDPOINT", ""),
-        langsmith_api_key_present=bool(env.get("LANGSMITH_API_KEY")),
+        langsmith_api_key_present=bool(
+            (env.get("LANGSMITH_API_KEY") or "").strip()
+            and (env.get("LANGSMITH_API_KEY") or "").strip() not in ("lsv2_newKeyReplaced", "placeholder", "your_key_here")
+        ),
         demo_port=_get_int(env, "DEMO_PORT", 8002),
         data_dir=data_dir,
         static_dir=static_dir,

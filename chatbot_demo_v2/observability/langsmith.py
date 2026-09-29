@@ -29,11 +29,13 @@ def configure_langsmith(settings: Settings) -> dict:
     if settings.langsmith_endpoint:
         os.environ.setdefault("LANGSMITH_ENDPOINT", settings.langsmith_endpoint)
 
-    key_present = bool(os.environ.get("LANGSMITH_API_KEY")) or settings.langsmith_api_key_present
+    raw_key = (os.environ.get("LANGSMITH_API_KEY") or "").strip()
+    is_dummy = not raw_key or raw_key in ("lsv2_newKeyReplaced", "placeholder", "your_key_here")
+    key_present = bool(not is_dummy and (raw_key or settings.langsmith_api_key_present))
 
     if settings.langsmith_tracing and not key_present:
         logger.warning(
-            "LangSmith tracing 이 요청되었으나 LANGSMITH_API_KEY 가 설정되지 않았습니다. "
+            "LangSmith tracing 이 요청되었으나 유효한 LANGSMITH_API_KEY 가 설정되지 않았습니다. "
             "tracing 을 비활성화합니다."
         )
         os.environ["LANGSMITH_TRACING"] = "false"

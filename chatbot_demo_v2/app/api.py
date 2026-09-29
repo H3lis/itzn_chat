@@ -228,35 +228,42 @@ def chat(request: Request, body: ChatRequest) -> ChatResponse:
 
 
 def _safe_record_history(ctx: AppContext, session_id: str, run_id: str, body: ChatRequest, result: dict) -> None:
-    """대화 결과를 비식별화 후 chat_history.db 에 즉시 안전 저장."""
+    """대화 결과를 비식별화 후 chat_history.db 에 비동기 백그라운드 안전 적재 (사용자 응답 0ms 지연 보장)."""
     if not ctx or not getattr(ctx, "history_service", None):
         return
 
-    try:
-        raw_q = (body.message or (body.action.label if body.action else "") or
-                 (f"선택: {body.clarify_response.choice}" if body.clarify_response else "") or "")
-        final_ans = str(result.get("final_answer") or "")
-        route = str(result.get("route") or "none")
-        timings = result.get("timings") or {}
-        latency_s = float(timings.get("total_s") or 0.0)
-        confidence = str(result.get("confidence") or "unknown")
+    def _task():
+        try:
+            raw_q = (body.message or (body.action.label if body.action else "") or
+                     (f"선택: {body.clarify_response.choice}" if body.clarify_response else "") or "")
+            final_ans = str(result.get("final_answer") or "")
+            route = str(result.get("route") or "none")
+            timings = result.get("timings") or {}
+            latency_s = float(timings.get("total_s") or 0.0)
+            confidence = str(result.get("confidence") or "unknown")
 
-        # 사용자 요청: AI 추론 및 라우팅 판단 근거는 저장하지 않고 질의/답변만 적재
-        ctx.history_service.record_turn(
-            session_id=session_id,
-            run_id=run_id,
-            raw_question=raw_q,
-            final_answer=final_ans,
-            route=route,
-            route_reason="",
-            latency_s=latency_s,
-            confidence=confidence,
-            source_meta=None,
-            evidence=None,
-        )
-        logger.info("대화 이력 DB 적재 성공: run_id=%s, route=%s, q=%s", run_id, route, raw_q[:20])
+            # 사용자 요청: AI 추론 및 라우팅 판단 근거는 저장하지 않고 질의/답변만 적재
+            ctx.history_service.record_turn(
+                session_id=session_id,
+                run_id=run_id,
+                raw_question=raw_q,
+                final_answer=final_ans,
+                route=route,
+                route_reason="",
+                latency_s=latency_s,
+                confidence=confidence,
+                source_meta=None,
+                evidence=None,
+            )
+            logger.info("대화 이력 DB 적재 성공: run_id=%s, route=%s, q=%s", run_id, route, raw_q[:20])
+        except Exception as e:
+            logger.error("대화 이력 적재 실패: run_id=%s, error=%s", run_id, e, exc_info=True)
+
+    try:
+        _history_executor.submit(_task)
     except Exception as e:
-        logger.error("대화 이력 적재 실패: run_id=%s, error=%s", run_id, e, exc_info=True)
+        logger.warning("대화 이력 백그라운드 태스크 등록 실패, 동기 폴백: %s", e)
+        _task()
 
 
 def _sse(event: str, data: dict) -> str:
@@ -308,36 +315,37 @@ def chat_stream(request: Request, body: ChatRequest):
                         yield _sse("node", {"node": node_name})
 
             if interrupt_payload is not None:
-                _safe_record_history(ctx, session_id, run_id, body, {
-                    "route": "clarify", "route_reason": "모호 질의 되묻기",
-                    "final_answer": "어떤 상황인지 확인이 필요해요 (후보 제시)"
-                })
                 yield _sse("clarify", {
                     "session_id": session_id,
                     "run_id": run_id,
                     "candidates": interrupt_payload.get("candidates") or [],
                 })
+                _safe_record_history(ctx, session_id, run_id, body, {
+                    "route": "clarify", "route_reason": "모호 질의 되묻기",
+                    "final_answer": "어떤 상황인지 확인이 필요해요 (후보 제시)"
+                })
                 return
 
             result = ctx.graph.get_state(config).values
+            resp_payload = _shape_response(session_id, run_id, result).model_dump()
+            yield _sse("final", resp_payload)
             _safe_record_history(ctx, session_id, run_id, body, result)
-            yield _sse("final", _shape_response(session_id, run_id, result).model_dump())
         except (RagBusyError, RagUnavailableError) as exc:
             status = 429 if isinstance(exc, RagBusyError) else 503
             detail = ("이미 다른 질문을 처리 중입니다. 잠시 후 다시 시도해 주세요."
                       if status == 429 else "RAG 엔진을 사용할 수 없습니다.")
+            yield _sse("error", {"detail": detail, "status": status})
             _safe_record_history(ctx, session_id, run_id, body, {
                 "route": "busy" if status == 429 else "unavailable",
                 "final_answer": detail,
             })
-            yield _sse("error", {"detail": detail, "status": status})
         except Exception as exc:  # noqa: BLE001 - 내부 정보 노출 금지
             logger.error("대화 스트리밍 처리 중 예외 발생: %s", exc, exc_info=True)
+            yield _sse("error", {"detail": "처리 중 오류가 발생했습니다.", "status": 500})
             _safe_record_history(ctx, session_id, run_id, body, {
                 "route": "error",
                 "final_answer": "처리 중 오류가 발생했습니다.",
             })
-            yield _sse("error", {"detail": "처리 중 오류가 발생했습니다.", "status": 500})
 
     return StreamingResponse(
         gen(),

@@ -181,6 +181,7 @@ def build_context(
         sllm_host=settings.pii_sllm_host,
         timeout_s=settings.pii_sllm_timeout_s,
     )
+    pii_masker.warmup()
     history_service = HistoryService(settings, pii_masker=pii_masker)
 
     ctx = AppContext(

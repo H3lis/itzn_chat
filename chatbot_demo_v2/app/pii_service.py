@@ -267,10 +267,10 @@ class PiiMasker:
 
     def __init__(
         self,
-        backend: str = "sllm",
+        backend: str = "rule",
         sllm_model: str = "qwen2.5:1.5b",
         sllm_host: str = "http://127.0.0.1:11434",
-        timeout_s: float = 8.0,
+        timeout_s: float = 3.0,
     ):
         self.backend = backend
         self.sllm_model = sllm_model
@@ -278,6 +278,10 @@ class PiiMasker:
         self.timeout_s = float(timeout_s)
         self._kiwi = None
         self._kiwi_checked = False
+
+    def warmup(self) -> None:
+        """Kiwi 형태소 분석기를 사전 로드하여 런타임 콜드스타트(1.8s)를 제거."""
+        self._get_kiwi()
 
     def _get_kiwi(self):
         """Kiwi 형태소 분석기를 싱글톤으로 안전 로드."""
@@ -466,7 +470,7 @@ class PiiMasker:
 
         return masked, detected
 
-    def mask_text(self, text: str) -> MaskResult:
+    def mask_text(self, text: str, skip_sllm: bool = False) -> MaskResult:
         """주어진 텍스트 내 개인정보(전화, IP, 주민번호, 이메일, 기기 시리얼, MAC, 성명)를 마스킹."""
         if not text:
             return MaskResult(masked_text="", detected_types=[], has_pii=False)
@@ -654,7 +658,7 @@ class PiiMasker:
             detected.add("name")
 
         # 2-2. sLLM 추가 문맥 인명 가명화 (sLLM 모드일 때 비정형 문맥 인명 추가 보강)
-        if self.backend == "sllm":
+        if self.backend == "sllm" and not skip_sllm:
             try:
                 masked, sllm_detected = self._mask_names_with_sllm(masked)
                 if sllm_detected:
