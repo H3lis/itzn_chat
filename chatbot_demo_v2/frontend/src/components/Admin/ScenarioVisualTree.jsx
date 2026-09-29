@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import {
   ZoomIn, ZoomOut, Maximize2, RotateCcw, Move, Plus, Edit2, Trash2,
-  ArrowRight, CheckCircle2, HelpCircle, ChevronRight, ChevronDown,
+  ArrowRight, CheckCircle2, AlertTriangle, HelpCircle, ChevronRight, ChevronDown,
   Layers, Search, Compass, Eye, EyeOff, Sparkles, Filter, X
 } from 'lucide-react';
 
