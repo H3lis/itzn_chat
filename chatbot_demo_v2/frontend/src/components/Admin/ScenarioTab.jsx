@@ -1,11 +1,16 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { GitFork, Plus, Edit2, Trash2, CheckCircle2, AlertTriangle, RefreshCw, Search, Folder } from 'lucide-react';
+import {
+  GitFork, Plus, Edit2, Trash2, CheckCircle2, AlertTriangle, RefreshCw, Search, Folder,
+  LayoutGrid, List, Eye
+} from 'lucide-react';
+import { ScenarioVisualTree } from './ScenarioVisualTree';
 
 export function ScenarioTab({ onUpdateBadge }) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState('');
   const [selectedNodeId, setSelectedNodeId] = useState(null);
+  const [viewMode, setViewMode] = useState('canvas'); // 'canvas' | 'list'
 
   const nodes = data?.nodes || {};
   const groups = data?.groups || {};
@@ -61,6 +66,25 @@ export function ScenarioTab({ onUpdateBadge }) {
     setNodeForm({
       node_id: '',
       scenario_id: selectedNode?.scenario_id || 'general',
+      type: 'question',
+      text: '',
+      options: [{ label: '', next_node: '' }],
+      answer_text: ''
+    });
+    setModalOpen(true);
+  };
+
+  // 하위 자식 노드 추가 모달
+  const handleOpenCreateChild = (parentNode) => {
+    if (!parentNode) {
+      handleOpenCreate();
+      return;
+    }
+    const parentId = parentNode.node_id || parentNode.id || 'node';
+    setModalMode('create');
+    setNodeForm({
+      node_id: `${parentId}.step`,
+      scenario_id: parentNode.scenario_id || 'general',
       type: 'question',
       text: '',
       options: [{ label: '', next_node: '' }],
@@ -197,7 +221,41 @@ export function ScenarioTab({ onUpdateBadge }) {
           )}
         </div>
 
-        <div style={{ display: 'flex', gap: '0.5rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', flexWrap: 'wrap' }}>
+          {/* 뷰 모드 전환 버튼 */}
+          <div style={{ display: 'inline-flex', padding: '3px', background: '#f1f5f9', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
+            <button
+              type="button"
+              className={`btn btn-sm ${viewMode === 'canvas' ? 'btn-primary' : 'btn-ghost'}`}
+              onClick={() => setViewMode('canvas')}
+              style={{
+                padding: '0.35rem 0.75rem',
+                fontSize: '0.8rem',
+                fontWeight: viewMode === 'canvas' ? 700 : 500,
+                borderRadius: '6px'
+              }}
+              title="인터랙티브 캔버스에서 노드를 클릭하고 드래그하며 시각적으로 편집"
+            >
+              <LayoutGrid size={13} style={{ marginRight: '0.3rem' }} />
+              <span>비주얼 캔버스</span>
+            </button>
+            <button
+              type="button"
+              className={`btn btn-sm ${viewMode === 'list' ? 'btn-primary' : 'btn-ghost'}`}
+              onClick={() => setViewMode('list')}
+              style={{
+                padding: '0.35rem 0.75rem',
+                fontSize: '0.8rem',
+                fontWeight: viewMode === 'list' ? 700 : 500,
+                borderRadius: '6px'
+              }}
+              title="그룹별 트리 목록과 상세 에디터 2분할 뷰"
+            >
+              <List size={13} style={{ marginRight: '0.3rem' }} />
+              <span>목록 뷰</span>
+            </button>
+          </div>
+
           <button className="btn btn-secondary btn-sm" onClick={fetchTree} title="새로고침">
             <RefreshCw size={14} className={loading ? 'spin' : ''} />
             <span>새로고침</span>
@@ -209,233 +267,307 @@ export function ScenarioTab({ onUpdateBadge }) {
         </div>
       </div>
 
-      {/* 3. 메인 2분할 레이아웃 (좌: 그룹별 트리 목록, 우: 노드 상세) */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(340px, 420px) minmax(0, 1fr)', gap: '1.25rem', width: '100%', minWidth: 0, alignItems: 'start' }}>
-        {/* 좌측: 그룹별 노드 탐색기 */}
-        <div style={{ background: 'var(--bg-card)', padding: '1.25rem', borderRadius: '12px', border: '1px solid var(--border-color)', height: '680px', display: 'flex', flexDirection: 'column', minWidth: 0, boxSizing: 'border-box' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
-            <div style={{ position: 'relative', flex: 1 }}>
-              <Search size={15} style={{ position: 'absolute', left: '10px', top: '10px', color: 'var(--text-muted)' }} />
-              <input
-                type="text"
-                className="faq-search-input"
-                style={{ width: '100%', paddingLeft: '32px' }}
-                placeholder="노드 ID 또는 질문 검색…"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
+      {/* 3. 뷰 모드에 따른 렌더링: 비주얼 캔버스 뷰 vs 그룹 목록 뷰 */}
+      {viewMode === 'canvas' ? (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          {/* 캔버스 상단: 선택 노드 인스펙터 바 */}
+          {selectedNode && (
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                padding: '0.75rem 1.25rem',
+                background: '#ffffff',
+                border: '1px solid var(--border-color)',
+                borderRadius: '10px',
+                boxShadow: '0 1px 3px rgba(0, 0, 0, 0.04)',
+                gap: '1rem',
+                flexWrap: 'wrap'
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', overflow: 'hidden', minWidth: 0 }}>
+                <span style={{
+                  fontSize: '0.72rem',
+                  fontWeight: 700,
+                  padding: '0.15rem 0.5rem',
+                  borderRadius: '4px',
+                  background: selectedNode.type === 'terminal' ? 'rgba(5, 150, 105, 0.15)' : 'rgba(37, 99, 235, 0.15)',
+                  color: selectedNode.type === 'terminal' ? 'var(--emerald)' : 'var(--primary)',
+                  border: selectedNode.type === 'terminal' ? '1px solid var(--emerald)' : '1px solid var(--primary)',
+                  flexShrink: 0
+                }}>
+                  {selectedNode.type === 'terminal' ? '답변 노드' : '질문 노드'}
+                </span>
+                <strong style={{ fontFamily: 'var(--font-mono)', fontSize: '0.9rem', color: 'var(--text-main)', flexShrink: 0 }}>
+                  {selectedNode.node_id || selectedNode.id}
+                </strong>
+                <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '460px' }}>
+                  {selectedNode.text || selectedNode.answer?.text || ''}
+                </span>
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flexShrink: 0 }}>
+                <button
+                  className="btn btn-primary btn-sm"
+                  onClick={() => handleOpenEdit(selectedNode)}
+                  title="선택된 노드 내용 및 분기 옵션 수정"
+                >
+                  <Edit2 size={13} />
+                  <span>이 노드 수정</span>
+                </button>
+                <button
+                  className="btn btn-secondary btn-sm"
+                  onClick={() => handleOpenCreateChild(selectedNode)}
+                  title="이 노드의 하위 분기 노드 생성"
+                >
+                  <Plus size={13} />
+                  <span>하위 노드 추가</span>
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* 메인 인터랙티브 비주얼 노드 트리 캔버스 */}
+          <ScenarioVisualTree
+            nodes={nodes}
+            rootId={rootId}
+            selectedNodeId={selectedNodeId}
+            onSelectNode={setSelectedNodeId}
+            onEditNode={handleOpenEdit}
+            onDeleteNode={handleDeleteNode}
+            onCreateChildNode={handleOpenCreateChild}
+          />
+        </div>
+      ) : (
+        /* 기존 2분할 목록 뷰 */
+        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(340px, 420px) minmax(0, 1fr)', gap: '1.25rem', width: '100%', minWidth: 0, alignItems: 'start' }}>
+          {/* 좌측: 그룹별 노드 탐색기 */}
+          <div style={{ background: 'var(--bg-card)', padding: '1.25rem', borderRadius: '12px', border: '1px solid var(--border-color)', height: '680px', display: 'flex', flexDirection: 'column', minWidth: 0, boxSizing: 'border-box' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
+              <div style={{ position: 'relative', flex: 1 }}>
+                <Search size={15} style={{ position: 'absolute', left: '10px', top: '10px', color: 'var(--text-muted)' }} />
+                <input
+                  type="text"
+                  className="faq-search-input"
+                  style={{ width: '100%', paddingLeft: '32px' }}
+                  placeholder="노드 ID 또는 질문 검색…"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div style={{ flex: 1, overflowY: 'auto', paddingRight: '0.35rem' }}>
+              {loading ? (
+                <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>시나리오 데이터를 불러오는 중…</div>
+              ) : Object.keys(groups).length === 0 ? (
+                <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>등록된 시나리오 노드가 없습니다.</div>
+              ) : (
+                Object.entries(groups).map(([grpName, nodeIds]) => {
+                  const filtered = nodeIds.filter((nid) => {
+                    const n = nodes[nid];
+                    if (!n) return false;
+                    if (!filterLower) return true;
+                    const text = (n.text || '').toLowerCase();
+                    return nid.toLowerCase().includes(filterLower) || text.includes(filterLower);
+                  });
+
+                  if (filtered.length === 0) return null;
+
+                  return (
+                    <div key={grpName} style={{ marginBottom: '1rem' }}>
+                      <div style={{
+                        fontSize: '0.78rem',
+                        fontWeight: 700,
+                        color: 'var(--text-muted)',
+                        textTransform: 'uppercase',
+                        padding: '0.3rem 0.5rem',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.4rem',
+                        borderBottom: '1px solid var(--border-color)',
+                        marginBottom: '0.4rem'
+                      }}>
+                        <Folder size={13} color="var(--primary)" />
+                        <span>{grpName}</span>
+                        <span style={{ marginLeft: 'auto', fontSize: '0.72rem' }}>{filtered.length}개</span>
+                      </div>
+
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+                        {filtered.map((nid) => {
+                          const n = nodes[nid];
+                          const isSelected = selectedNodeId === nid;
+                          const isRoot = nid === rootId;
+                          const isTerminal = n?.type === 'terminal';
+
+                          return (
+                            <div
+                              key={nid}
+                              onClick={() => setSelectedNodeId(nid)}
+                              style={{
+                                padding: '0.6rem 0.75rem',
+                                borderRadius: '8px',
+                                background: isSelected ? '#eff6ff' : '#f8fafc',
+                                border: isSelected ? '1.5px solid var(--primary)' : '1px solid var(--border-color)',
+                                cursor: 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                transition: 'all 0.15s',
+                                minWidth: 0
+                              }}
+                            >
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', overflow: 'hidden', minWidth: 0 }}>
+                                <span style={{
+                                  fontSize: '0.7rem',
+                                  fontWeight: 700,
+                                  padding: '0.15rem 0.4rem',
+                                  borderRadius: '4px',
+                                  background: isRoot ? 'var(--primary)' : (isTerminal ? 'var(--emerald)' : '#e2e8f0'),
+                                  color: isRoot || isTerminal ? '#fff' : 'var(--text-main)',
+                                  flexShrink: 0
+                                }}>
+                                  {isRoot ? 'ROOT' : (isTerminal ? '답변' : '질문')}
+                                </span>
+                                <div style={{ overflow: 'hidden', minWidth: 0 }}>
+                                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: isSelected ? 'var(--primary)' : 'var(--text-main)', fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                    {nid}
+                                  </div>
+                                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                    {n?.text || (n?.answer?.text ? `답변: ${n.answer.text}` : '(내용 없음)')}
+                                  </div>
+                                </div>
+                              </div>
+
+                              {n?.options && n.options.length > 0 && (
+                                <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', flexShrink: 0, paddingLeft: '0.5rem', whiteSpace: 'nowrap' }}>
+                                  분기 {n.options.length}
+                                </span>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                })
+              )}
             </div>
           </div>
 
-          <div style={{ flex: 1, overflowY: 'auto', paddingRight: '0.35rem' }}>
-            {loading ? (
-              <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>시나리오 데이터를 불러오는 중…</div>
-            ) : Object.keys(groups).length === 0 ? (
-              <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>등록된 시나리오 노드가 없습니다.</div>
-            ) : (
-              Object.entries(groups).map(([grpName, nodeIds]) => {
-                const filtered = nodeIds.filter((nid) => {
-                  const n = nodes[nid];
-                  if (!n) return false;
-                  if (!filterLower) return true;
-                  const text = (n.text || '').toLowerCase();
-                  return nid.toLowerCase().includes(filterLower) || text.includes(filterLower);
-                });
-
-                if (filtered.length === 0) return null;
-
-                return (
-                  <div key={grpName} style={{ marginBottom: '1rem' }}>
-                    <div style={{
-                      fontSize: '0.78rem',
-                      fontWeight: 700,
-                      color: 'var(--text-muted)',
-                      textTransform: 'uppercase',
-                      padding: '0.3rem 0.5rem',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '0.4rem',
-                      borderBottom: '1px solid var(--border-color)',
-                      marginBottom: '0.4rem'
-                    }}>
-                      <Folder size={13} color="var(--primary)" />
-                      <span>{grpName}</span>
-                      <span style={{ marginLeft: 'auto', fontSize: '0.72rem' }}>{filtered.length}개</span>
+          {/* 우측: 선택 노드 상세 정보 & 분기 뷰어 */}
+          <div style={{ background: 'var(--bg-card)', padding: '1.5rem', borderRadius: '12px', border: '1px solid var(--border-color)', height: '680px', overflowY: 'auto', minWidth: 0, boxSizing: 'border-box' }}>
+            {selectedNode ? (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.75rem', flexWrap: 'wrap', gap: '0.5rem' }}>
+                  <div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+                      <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--text-main)', margin: 0 }}>
+                        <code>{selectedNode.node_id || selectedNode.id}</code>
+                      </h3>
+                      <span style={{
+                        fontSize: '0.72rem',
+                        fontWeight: 700,
+                        padding: '0.15rem 0.55rem',
+                        borderRadius: '4px',
+                        background: selectedNode.type === 'terminal' ? 'rgba(5, 150, 105, 0.15)' : 'rgba(37, 99, 235, 0.15)',
+                        color: selectedNode.type === 'terminal' ? 'var(--emerald)' : 'var(--primary)',
+                        border: selectedNode.type === 'terminal' ? '1px solid var(--emerald)' : '1px solid var(--primary)'
+                      }}>
+                        {selectedNode.type === 'terminal' ? '최종 답변 노드' : '질문/분기 노드'}
+                      </span>
                     </div>
+                    <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>
+                      시나리오 그룹: <strong style={{ color: 'var(--text-main)' }}>{selectedNode.scenario_id || '미지정'}</strong>
+                    </div>
+                  </div>
 
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
-                      {filtered.map((nid) => {
-                        const n = nodes[nid];
-                        const isSelected = selectedNodeId === nid;
-                        const isRoot = nid === rootId;
-                        const isTerminal = n?.type === 'terminal';
+                  <div style={{ display: 'flex', gap: '0.4rem' }}>
+                    <button className="btn btn-secondary btn-sm" onClick={() => handleOpenEdit(selectedNode)}>
+                      <Edit2 size={13} />
+                      <span>수정</span>
+                    </button>
+                    {selectedNode.node_id !== rootId && (
+                      <button className="btn btn-danger btn-sm" onClick={() => handleDeleteNode(selectedNode.node_id || selectedNode.id)}>
+                        <Trash2 size={13} />
+                      </button>
+                    )}
+                  </div>
+                </div>
 
-                        return (
-                          <div
-                            key={nid}
-                            onClick={() => setSelectedNodeId(nid)}
-                            style={{
-                              padding: '0.6rem 0.75rem',
-                              borderRadius: '8px',
-                              background: isSelected ? '#eff6ff' : '#f8fafc',
-                              border: isSelected ? '1.5px solid var(--primary)' : '1px solid var(--border-color)',
-                              cursor: 'pointer',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'space-between',
-                              transition: 'all 0.15s',
-                              minWidth: 0
-                            }}
-                          >
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', overflow: 'hidden', minWidth: 0 }}>
-                              <span style={{
-                                fontSize: '0.7rem',
-                                fontWeight: 700,
-                                padding: '0.15rem 0.4rem',
-                                borderRadius: '4px',
-                                background: isRoot ? 'var(--primary)' : (isTerminal ? 'var(--emerald)' : '#e2e8f0'),
-                                color: isRoot || isTerminal ? '#fff' : 'var(--text-main)',
-                                flexShrink: 0
-                              }}>
-                                {isRoot ? 'ROOT' : (isTerminal ? '답변' : '질문')}
-                              </span>
-                              <div style={{ overflow: 'hidden', minWidth: 0 }}>
-                                <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: isSelected ? 'var(--primary)' : 'var(--text-main)', fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                                  {nid}
-                                </div>
-                                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                  {n?.text || (n?.answer?.text ? `답변: ${n.answer.text}` : '(내용 없음)')}
-                                </div>
-                              </div>
-                            </div>
+                <div>
+                  <label className="form-label" style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-sub)', marginBottom: '0.4rem', display: 'block' }}>
+                    💬 안내 및 질문 문구
+                  </label>
+                  <div style={{ background: '#f8fafc', border: '1px solid var(--border-color)', padding: '1rem', borderRadius: '8px', fontSize: '0.92rem', color: 'var(--text-main)', lineHeight: 1.6, wordBreak: 'break-word', whiteSpace: 'pre-wrap' }}>
+                    {selectedNode.text || '(안내 텍스트 없음)'}
+                  </div>
+                </div>
 
-                            {n?.options && n.options.length > 0 && (
-                              <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', flexShrink: 0, paddingLeft: '0.5rem', whiteSpace: 'nowrap' }}>
-                                분기 {n.options.length}
+                {selectedNode.type === 'terminal' && (selectedNode.answer || selectedNode.answer_text) && (
+                  <div>
+                    <label className="form-label" style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--emerald)', marginBottom: '0.4rem', display: 'block' }}>
+                      ✅ 최종 조치 가이드 답변
+                    </label>
+                    <div style={{ background: 'rgba(5, 150, 105, 0.05)', border: '1px solid rgba(5, 150, 105, 0.25)', padding: '1rem', borderRadius: '8px', fontSize: '0.9rem', color: 'var(--text-main)', lineHeight: 1.6, wordBreak: 'break-word', whiteSpace: 'pre-wrap' }}>
+                      {selectedNode.answer?.text || selectedNode.answer_text || '(상세 조치 답변 없음)'}
+                    </div>
+                  </div>
+                )}
+
+                <div>
+                  <label className="form-label" style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-sub)', marginBottom: '0.4rem', display: 'block' }}>
+                    🔀 하위 분기 선택지 ({selectedNode.options?.length || 0}개)
+                  </label>
+                  {selectedNode.options && selectedNode.options.length > 0 ? (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '0.25rem' }}>
+                      {selectedNode.options.map((opt, i) => (
+                        <div
+                          key={i}
+                          onClick={() => opt.next_node && setSelectedNodeId(opt.next_node)}
+                          style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            background: '#f8fafc',
+                            padding: '0.75rem 1rem',
+                            borderRadius: '8px',
+                            fontSize: '0.88rem',
+                            border: '1px solid var(--border-color)',
+                            cursor: opt.next_node ? 'pointer' : 'default',
+                            transition: 'all 0.15s'
+                          }}
+                        >
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', overflow: 'hidden' }}>
+                            <span style={{ fontWeight: 600, color: 'var(--text-main)' }}>{opt.label}</span>
+                            {opt.action && (
+                              <span className="badge-pill" style={{ fontSize: '0.7rem' }}>
+                                액션: {opt.action}
                               </span>
                             )}
                           </div>
-                        );
-                      })}
+                          <div style={{ color: opt.next_node ? 'var(--primary)' : 'var(--text-muted)', fontSize: '0.82rem', fontFamily: 'var(--font-mono)', fontWeight: 600, flexShrink: 0, paddingLeft: '0.5rem' }}>
+                            ➔ {opt.next_node || '종료'}
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                  </div>
-                );
-              })
-            )}
-          </div>
-        </div>
-
-        {/* 우측: 선택 노드 상세 정보 & 분기 뷰어 */}
-        <div style={{ background: 'var(--bg-card)', padding: '1.5rem', borderRadius: '12px', border: '1px solid var(--border-color)', height: '680px', overflowY: 'auto', minWidth: 0, boxSizing: 'border-box' }}>
-          {selectedNode ? (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.75rem', flexWrap: 'wrap', gap: '0.5rem' }}>
-                <div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
-                    <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--text-main)', margin: 0 }}>
-                      <code>{selectedNode.node_id || selectedNode.id}</code>
-                    </h3>
-                    <span style={{
-                      fontSize: '0.72rem',
-                      fontWeight: 700,
-                      padding: '0.15rem 0.55rem',
-                      borderRadius: '4px',
-                      background: selectedNode.type === 'terminal' ? 'rgba(5, 150, 105, 0.15)' : 'rgba(37, 99, 235, 0.15)',
-                      color: selectedNode.type === 'terminal' ? 'var(--emerald)' : 'var(--primary)',
-                      border: selectedNode.type === 'terminal' ? '1px solid var(--emerald)' : '1px solid var(--primary)'
-                    }}>
-                      {selectedNode.type === 'terminal' ? '최종 답변 노드' : '질문/분기 노드'}
-                    </span>
-                  </div>
-                  <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>
-                    시나리오 그룹: <strong style={{ color: 'var(--text-main)' }}>{selectedNode.scenario_id || '미지정'}</strong>
-                  </div>
-                </div>
-
-                <div style={{ display: 'flex', gap: '0.4rem' }}>
-                  <button className="btn btn-secondary btn-sm" onClick={() => handleOpenEdit(selectedNode)}>
-                    <Edit2 size={13} />
-                    <span>수정</span>
-                  </button>
-                  {selectedNode.node_id !== rootId && (
-                    <button className="btn btn-danger btn-sm" onClick={() => handleDeleteNode(selectedNode.node_id || selectedNode.id)}>
-                      <Trash2 size={13} />
-                    </button>
+                  ) : (
+                    <div style={{ background: '#f8fafc', border: '1px solid var(--border-color)', padding: '1.25rem', borderRadius: '8px', fontSize: '0.85rem', color: 'var(--text-muted)', textAlign: 'center' }}>
+                      {selectedNode.type === 'terminal' ? '🎉 상담 종결 리프(Leaf) 노드입니다.' : '설정된 하위 선택지가 없습니다.'}
+                    </div>
                   )}
                 </div>
               </div>
-
-              <div>
-                <label className="form-label" style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-sub)', marginBottom: '0.4rem', display: 'block' }}>
-                  💬 안내 및 질문 문구
-                </label>
-                <div style={{ background: '#f8fafc', border: '1px solid var(--border-color)', padding: '1rem', borderRadius: '8px', fontSize: '0.92rem', color: 'var(--text-main)', lineHeight: 1.6, wordBreak: 'break-word', whiteSpace: 'pre-wrap' }}>
-                  {selectedNode.text || '(안내 텍스트 없음)'}
-                </div>
+            ) : (
+              <div style={{ textAlign: 'center', padding: '6rem 1rem', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
+                좌측 목록에서 노드를 클릭하면 상세 안내 문구와 하위 분기 내역을 확인할 수 있습니다.
               </div>
-
-              {selectedNode.type === 'terminal' && (selectedNode.answer || selectedNode.answer_text) && (
-                <div>
-                  <label className="form-label" style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--emerald)', marginBottom: '0.4rem', display: 'block' }}>
-                    ✅ 최종 조치 가이드 답변
-                  </label>
-                  <div style={{ background: 'rgba(5, 150, 105, 0.05)', border: '1px solid rgba(5, 150, 105, 0.25)', padding: '1rem', borderRadius: '8px', fontSize: '0.9rem', color: 'var(--text-main)', lineHeight: 1.6, wordBreak: 'break-word', whiteSpace: 'pre-wrap' }}>
-                    {selectedNode.answer?.text || selectedNode.answer_text || '(상세 조치 답변 없음)'}
-                  </div>
-                </div>
-              )}
-
-              <div>
-                <label className="form-label" style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-sub)', marginBottom: '0.4rem', display: 'block' }}>
-                  🔀 하위 분기 선택지 ({selectedNode.options?.length || 0}개)
-                </label>
-                {selectedNode.options && selectedNode.options.length > 0 ? (
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '0.25rem' }}>
-                    {selectedNode.options.map((opt, i) => (
-                      <div
-                        key={i}
-                        onClick={() => opt.next_node && setSelectedNodeId(opt.next_node)}
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          alignItems: 'center',
-                          background: '#f8fafc',
-                          padding: '0.75rem 1rem',
-                          borderRadius: '8px',
-                          fontSize: '0.88rem',
-                          border: '1px solid var(--border-color)',
-                          cursor: opt.next_node ? 'pointer' : 'default',
-                          transition: 'all 0.15s'
-                        }}
-                      >
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', overflow: 'hidden' }}>
-                          <span style={{ fontWeight: 600, color: 'var(--text-main)' }}>{opt.label}</span>
-                          {opt.action && (
-                            <span className="badge-pill" style={{ fontSize: '0.7rem' }}>
-                              액션: {opt.action}
-                            </span>
-                          )}
-                        </div>
-                        <div style={{ color: opt.next_node ? 'var(--primary)' : 'var(--text-muted)', fontSize: '0.82rem', fontFamily: 'var(--font-mono)', fontWeight: 600, flexShrink: 0, paddingLeft: '0.5rem' }}>
-                          ➔ {opt.next_node || '종료'}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div style={{ background: '#f8fafc', border: '1px solid var(--border-color)', padding: '1.25rem', borderRadius: '8px', fontSize: '0.85rem', color: 'var(--text-muted)', textAlign: 'center' }}>
-                    {selectedNode.type === 'terminal' ? '🎉 상담 종결 리프(Leaf) 노드입니다.' : '설정된 하위 선택지가 없습니다.'}
-                  </div>
-                )}
-              </div>
-            </div>
-          ) : (
-            <div style={{ textAlign: 'center', padding: '6rem 1rem', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-              좌측 목록에서 노드를 클릭하면 상세 안내 문구와 하위 분기 내역을 확인할 수 있습니다.
-            </div>
-          )}
+            )}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* 노드 생성/수정 모달 */}
       {modalOpen && (
