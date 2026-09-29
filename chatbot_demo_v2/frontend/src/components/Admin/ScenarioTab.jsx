@@ -304,9 +304,13 @@ export function ScenarioTab({ onUpdateBadge }) {
       scenario_id: nodeForm.scenario_id.trim() || cleanId.split('.')[0] || 'general',
       type: nodeForm.type,
       text: cleanText,
-      options: cleanOptions,
+      options: nodeForm.type === 'terminal' && cleanOptions.length === 0
+        ? [{ option_id: '__restart__', label: '처음으로', next_node_id: rootId || 'root' }]
+        : cleanOptions,
       answer_text: nodeForm.type === 'terminal' ? (nodeForm.answer_text || '').trim() : undefined,
-      answer: nodeForm.type === 'terminal' ? { text: (nodeForm.answer_text || '').trim() } : undefined
+      answer: nodeForm.type === 'terminal'
+        ? { source: 'scenario_ppt', text: (nodeForm.answer_text || '').trim() || '최종 조치 및 가이드 내용입니다.' }
+        : undefined
     };
 
     setDraftNodes((prev) => {
@@ -412,9 +416,11 @@ export function ScenarioTab({ onUpdateBadge }) {
       scenario_id: flow,
       type,
       text: type === 'terminal' ? '해결 조치 가이드 내용을 입력해주세요.' : '상세 안내 또는 추가 질문을 입력해주세요.',
-      options: type === 'question' ? [{ label: '다음 단계', next_node: '', next_node_id: '' }] : [],
+      options: type === 'terminal'
+        ? [{ option_id: '__restart__', label: '처음으로', next_node_id: rootId || 'root' }]
+        : [{ label: '다음 단계', next_node: '', next_node_id: '' }],
       answer_text: type === 'terminal' ? '최종 조치 및 가이드 내용입니다.' : undefined,
-      answer: type === 'terminal' ? { text: '최종 조치 및 가이드 내용입니다.' } : undefined
+      answer: type === 'terminal' ? { source: 'scenario_ppt', text: '최종 조치 및 가이드 내용입니다.' } : undefined
     };
 
     setDraftNodes((prev) => {
@@ -425,7 +431,7 @@ export function ScenarioTab({ onUpdateBadge }) {
     setSelectedNodeId(nodeId);
     setIsDirty(true);
     return nodeId;
-  }, [validateDraft]);
+  }, [rootId, validateDraft]);
 
   // ★ 4. 새로운 플로우 생성 핸들러 (루트 분기 연결 + 첫 질문 노드 동시 생성)
   const handleCreateFlow = useCallback((flowKey, flowName, firstQuestion) => {
@@ -509,9 +515,26 @@ export function ScenarioTab({ onUpdateBadge }) {
 
     setSavingTree(true);
     try {
+      // 전송 전 모든 노드 정규화 (터미널 노드의 answer.source = 'scenario_ppt' 보장)
+      const cleanNodes = {};
+      Object.keys(draftNodes).forEach((nid) => {
+        const n = { ...draftNodes[nid] };
+        if (n.type === 'terminal') {
+          const ansText = n.answer?.text || n.answer_text || '최종 조치 및 가이드 내용입니다.';
+          n.answer = {
+            source: 'scenario_ppt',
+            text: ansText
+          };
+          if (!n.options || n.options.length === 0) {
+            n.options = [{ option_id: '__restart__', label: '처음으로', next_node_id: rootId || 'root' }];
+          }
+        }
+        cleanNodes[nid] = n;
+      });
+
       const payload = {
         root_node_id: rootId,
-        nodes: draftNodes
+        nodes: cleanNodes
       };
 
       const res = await fetch('/api/admin/scenarios/tree', {

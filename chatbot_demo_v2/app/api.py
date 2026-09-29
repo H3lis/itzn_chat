@@ -764,11 +764,17 @@ def admin_validate_scenario_draft(request: Request, body: dict) -> ScenarioValid
 
 @router.put("/api/admin/scenarios/tree")
 def admin_save_scenario_tree(request: Request, body: dict) -> dict:
-    """비주얼 에디터에서 완성된 전체 시나리오 트리를 무결성 검증 후 원자적 일괄 저장."""
+    """비주얼 에디터에서 완성된 전체 시나리오 트리를 무결성 검증 후 원자적 일괄 저장 (실패 시 원자적 롤백)."""
     ctx = _ctx(request)
+    backup_data = ctx.scenario_manager._read_data()
     try:
         saved = ctx.scenario_manager.save_entire_tree(body)
-        ctx.scenario_manager.reload_runtime(ctx)
+        try:
+            ctx.scenario_manager.reload_runtime(ctx)
+        except Exception as re:
+            ctx.scenario_manager._write_data(backup_data)
+            logger.error("런타임 핫리로드 실패로 트리 일괄 저장 자동 롤백: %s", re)
+            raise ValueError(f"시나리오 런타임 핫리로드 실패 (자동 롤백됨): {re}")
         return {"success": True, "total_nodes": len(saved.get("nodes", {}))}
     except ValueError as ve:
         raise HTTPException(status_code=400, detail=str(ve))

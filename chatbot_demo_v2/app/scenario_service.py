@@ -148,6 +148,32 @@ class ScenarioManager:
         if not isinstance(tree_data, dict) or "nodes" not in tree_data:
             raise ValueError("유효하지 않은 시나리오 트리 데이터 형식입니다.")
 
+        nodes = tree_data.get("nodes", {})
+        root_id = tree_data.get("root_node_id", "root")
+
+        # 각 노드의 옵션 및 터미널 답변 정규화 (source: scenario_ppt 누락 방지)
+        for nid, n in nodes.items():
+            ntype = n.get("type", "question")
+            if ntype == "terminal":
+                ans = n.get("answer")
+                ans_text = n.get("answer_text") or (ans.get("text") if isinstance(ans, dict) else "")
+                if not ans or not isinstance(ans, dict):
+                    n["answer"] = {
+                        "source": "scenario_ppt",
+                        "text": ans_text.strip() if ans_text else "해결 조치 가이드 내용입니다.",
+                    }
+                else:
+                    ans.setdefault("source", "scenario_ppt")
+                    if not ans.get("text") and ans_text:
+                        ans["text"] = ans_text.strip()
+                    n["answer"] = ans
+
+                if not n.get("options"):
+                    n["options"] = [{"option_id": "__restart__", "label": "처음으로", "next_node_id": root_id}]
+            elif ntype != "terminal":
+                n.pop("answer", None)
+                n.pop("answer_text", None)
+
         # 무결성 검증 (오류가 있으면 저장 거부)
         val = self.validate_integrity(tree_data)
         if not val["is_valid"]:

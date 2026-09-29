@@ -81,7 +81,7 @@ def load_scenarios(path: Path, faq: FaqStore) -> ScenarioTree:
             answer = raw.get("answer")
             if not answer:
                 raise ValueError(f"terminal 노드 {node_id} 에 answer 없음")
-            answer_source = answer.get("source")
+            answer_source = answer.get("source") or ("scenario_ppt" if answer.get("text") else None)
             if answer_source == "scenario_ppt":
                 answer_text = answer.get("text")
                 if not answer_text:
