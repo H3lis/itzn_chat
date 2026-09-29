@@ -40,12 +40,11 @@
     <!-- ==================== 4대 핵심 기능 탭 네비게이션 ==================== -->
     <nav class="admin-nav-tabs" id="admin-tabs">
       <button class="nav-tab-btn active" data-tab="tab-faq" id="tab-btn-faq">
-        <span>💬 FAQ 관리 (CRUD)</span>
+        <span>💬 FAQ관리</span>
         <span class="tab-badge" id="tab-badge-faq">-</span>
       </button>
       <button class="nav-tab-btn" data-tab="tab-rag" id="tab-btn-rag">
-        <span>📂 RAG 문서 & 재색인</span>
-        <span class="tab-badge" id="tab-badge-docs">-</span>
+        <span>📂 RAG 문서관리</span>
       </button>
       <button class="nav-tab-btn" data-tab="tab-scenario" id="tab-btn-scenario">
         <span>🌳 시나리오 에디터</span>
@@ -125,32 +124,26 @@
 
     <!-- ==================== [탭 2] RAG 문서 관리 & 5단계 재색인 섹션 ==================== -->
     <div id="tab-rag" class="tab-pane">
+      <!-- RAG 문서 관리 헤더 및 메뉴 설명 -->
+      <div class="admin-page-header">
+        <div class="admin-page-header-top">
+          <h2 class="admin-page-title">RAG 문서관리</h2>
+        </div>
+        <p class="admin-page-desc">
+          챗봇이 답변 근거로 참고하는 PDF·HWP·엑셀 등 장애 대응 매뉴얼 원본을 업로드하는 공간입니다. 
+          업로드 즉시 내용이 자동 분석되어 챗봇 검색에 반영됩니다. 문서를 수정하거나 새로 올린 경우 '색인' 버튼을 눌러 
+          다시 분석해야 최신 내용이 답변에 반영됩니다.
+        </p>
+      </div>
+
       <!-- 통계 대시보드 카드 -->
       <section class="stats-grid">
         <div class="stat-card">
           <div class="stat-icon-wrapper blue">📄</div>
           <div class="stat-info">
-            <div class="stat-label">등록 원본 문서</div>
+            <div class="stat-label">전체 관리 문서</div>
             <div id="stat-docs" class="stat-value">-</div>
             <div id="stat-raw-size" class="stat-sub">용량: -</div>
-          </div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-icon-wrapper purple">📑</div>
-          <div class="stat-info">
-            <div class="stat-label">총 문서 페이지</div>
-            <div id="stat-pages" class="stat-value">-</div>
-            <div class="stat-sub">PDF 파싱 기준</div>
-          </div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-icon-wrapper emerald">🧩</div>
-          <div class="stat-info">
-            <div class="stat-label">활성 색인 청크</div>
-            <div id="stat-chunks" class="stat-value">-</div>
-            <div id="stat-index-pages" class="stat-sub">색인 페이지: -</div>
           </div>
         </div>
 

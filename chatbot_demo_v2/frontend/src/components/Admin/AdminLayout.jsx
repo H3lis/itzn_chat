@@ -145,8 +145,7 @@ export function AdminLayout({ onNavigate }) {
             className={`nav-tab-btn ${activeTab === 'rag' ? 'active' : ''}`}
             onClick={() => setActiveTab('rag')}
           >
-            <span>📂 RAG 문서 & 재색인</span>
-            <span className="tab-badge">{badges.docs}</span>
+            <span>📂 RAG 문서관리</span>
           </button>
 
           <button

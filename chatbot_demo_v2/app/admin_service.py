@@ -142,14 +142,21 @@ class DocumentManager:
 
         return {
             "total_documents": total_docs,
+            "documents": total_docs,
             "total_pdf_documents": total_pdf_docs,
             "total_raw_size_formatted": _format_size(total_bytes),
+            "raw_size_mb": round(total_bytes / (1024 * 1024), 2),
             "total_pages_approx": total_pages,
+            "pages": total_pages,
             "index_exists": index_exists,
             "index_last_modified": index_mod_time,
+            "index_time": index_mod_time,
             "active_chunks_count": active_chunks,
+            "chunks": active_chunks,
             "active_pages_count": active_pages,
+            "index_pages": active_pages,
             "embedding_backend": self.settings.rag_backend,
+            "backend": self.settings.rag_backend,
         }
 
     async def save_uploaded_file(self, upload_file: UploadFile, subfolder: str = "") -> dict[str, Any]:

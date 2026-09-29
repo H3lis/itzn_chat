@@ -542,14 +542,14 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!res.ok) return;
       const data = await res.json();
 
-      statDocs.textContent = `${data.total_documents}개`;
-      tabBadgeDocs.textContent = `${data.total_documents}`;
-      statRawSize.textContent = `용량: ${data.total_raw_size_formatted || "-"}`;
-      statPages.textContent = data.total_pages_approx ? `약 ${data.total_pages_approx}쪽` : "-";
-      statChunks.textContent = `${data.active_chunks_count.toLocaleString()}개`;
-      statIndexPages.textContent = `색인 페이지: ${data.active_pages_count}쪽`;
-      statBackend.textContent = data.embedding_backend || "embeddinggemma";
-      statIndexTime.textContent = data.index_last_modified ? `최근 갱신: ${data.index_last_modified}` : "색인 미생성";
+      if (statDocs) statDocs.textContent = `${data.total_documents}개`;
+      if (tabBadgeDocs) tabBadgeDocs.textContent = `${data.total_documents}`;
+      if (statRawSize) statRawSize.textContent = `용량: ${data.total_raw_size_formatted || "-"}`;
+      if (statPages) statPages.textContent = data.total_pages_approx ? `약 ${data.total_pages_approx}쪽` : "-";
+      if (statChunks) statChunks.textContent = `${data.active_chunks_count.toLocaleString()}개`;
+      if (statIndexPages) statIndexPages.textContent = `색인 페이지: ${data.active_pages_count}쪽`;
+      if (statBackend) statBackend.textContent = data.embedding_backend || "embeddinggemma";
+      if (statIndexTime) statIndexTime.textContent = data.index_last_modified ? `최근 갱신: ${data.index_last_modified}` : "색인 미생성";
 
       connStatus.querySelector(".text").textContent = "서버 정상 연결";
       connStatus.querySelector(".dot").style.backgroundColor = "var(--emerald)";

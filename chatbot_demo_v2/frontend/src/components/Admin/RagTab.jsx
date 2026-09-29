@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   FileText, UploadCloud, RefreshCw, Trash2, Edit3, Sparkles, Play, Terminal, Copy,
-  Clock, Database, Layers, Zap, Loader2
+  Clock, Database, Zap, Loader2
 } from 'lucide-react';
 
 export function RagTab({ onUpdateBadge }) {
@@ -9,10 +9,11 @@ export function RagTab({ onUpdateBadge }) {
   const [stats, setStats] = useState({
     documents: 0,
     raw_size_mb: 0,
+    raw_size_formatted: '',
     pages: 0,
     chunks: 0,
     index_pages: 0,
-    backend: 'ollama',
+    backend: 'EmbeddingGemma',
     index_time: '-'
   });
   const [docs, setDocs] = useState([]);
@@ -64,7 +65,16 @@ export function RagTab({ onUpdateBadge }) {
       const res = await fetch('/api/admin/stats');
       if (res.ok) {
         const data = await res.json();
-        setStats(data);
+        setStats({
+          documents: data.total_documents ?? data.documents ?? 0,
+          raw_size_mb: data.raw_size_mb ?? 0,
+          raw_size_formatted: data.total_raw_size_formatted || (data.raw_size_mb ? `${data.raw_size_mb} MB` : ''),
+          pages: data.total_pages_approx ?? data.pages ?? 0,
+          chunks: data.active_chunks_count ?? data.chunks ?? 0,
+          index_pages: data.active_pages_count ?? data.index_pages ?? 0,
+          backend: data.embedding_backend || data.backend || 'EmbeddingGemma',
+          index_time: data.index_last_modified || data.index_time || '색인 미생성'
+        });
       }
     } catch (e) {
       console.error('RAG 통계 로드 실패:', e);
@@ -390,29 +400,29 @@ export function RagTab({ onUpdateBadge }) {
 
   return (
     <div className="tab-pane active" id="tab-rag">
+      {/* RAG 문서 관리 헤더 및 메뉴 설명 */}
+      <div className="admin-page-header">
+        <div className="admin-page-header-top">
+          <h2 className="admin-page-title">RAG 문서관리</h2>
+        </div>
+        <p className="admin-page-desc">
+          챗봇이 답변 근거로 참고하는 PDF·HWP·엑셀 등 장애 대응 매뉴얼 원본을 업로드하는 공간입니다. 
+          업로드 즉시 내용이 자동 분석되어 챗봇 검색에 반영됩니다. 문서를 수정하거나 새로 올린 경우 '색인' 버튼을 눌러 
+          다시 분석해야 최신 내용이 답변에 반영됩니다.
+        </p>
+      </div>
+
       {/* 1. RAG 상단 통계 대시보드 */}
-      <div className="rag-stat-cards" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1rem', marginBottom: '1.5rem' }}>
+      <div className="rag-stat-cards" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem', marginBottom: '1.5rem' }}>
         <div className="stat-card" style={{ background: 'var(--bg-card)', padding: '1.25rem', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-muted)', fontSize: '0.85rem' }}>
-            <FileText size={16} /> <span>관리 문서</span>
+            <FileText size={16} /> <span>전체 관리 문서</span>
           </div>
           <div style={{ fontSize: '1.75rem', fontWeight: 800, marginTop: '0.5rem', color: 'var(--primary)' }}>
-            {stats.documents} <span style={{ fontSize: '1rem', fontWeight: 400 }}>개</span>
+            {stats.documents || docs.length} <span style={{ fontSize: '1rem', fontWeight: 400 }}>개</span>
           </div>
           <div style={{ fontSize: '0.8rem', color: 'var(--text-sub)', marginTop: '0.25rem' }}>
-            총 원본 크기: {stats.raw_size_mb} MB
-          </div>
-        </div>
-
-        <div className="stat-card" style={{ background: 'var(--bg-card)', padding: '1.25rem', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-muted)', fontSize: '0.85rem' }}>
-            <Layers size={16} /> <span>색인 청크 / 페이지</span>
-          </div>
-          <div style={{ fontSize: '1.75rem', fontWeight: 800, marginTop: '0.5rem', color: 'var(--emerald)' }}>
-            {stats.chunks} <span style={{ fontSize: '1rem', fontWeight: 400 }}>개</span>
-          </div>
-          <div style={{ fontSize: '0.8rem', color: 'var(--text-sub)', marginTop: '0.25rem' }}>
-            색인 페이지: {stats.index_pages} / {stats.pages} P
+            총 원본 크기: {stats.raw_size_formatted || (stats.raw_size_mb ? `${stats.raw_size_mb} MB` : '-')}
           </div>
         </div>
 
