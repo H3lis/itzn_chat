@@ -143,6 +143,21 @@ class ScenarioManager:
         logger.info("시나리오 노드 저장 완료 [Node ID: %s]", node_id)
         return node
 
+    def save_entire_tree(self, tree_data: dict[str, Any]) -> dict[str, Any]:
+        """전체 시나리오 트리를 무결성 검증 후 일괄 저장."""
+        if not isinstance(tree_data, dict) or "nodes" not in tree_data:
+            raise ValueError("유효하지 않은 시나리오 트리 데이터 형식입니다.")
+
+        # 무결성 검증 (오류가 있으면 저장 거부)
+        val = self.validate_integrity(tree_data)
+        if not val["is_valid"]:
+            err_msg = "; ".join(val["errors"])
+            raise ValueError(f"시나리오 무결성 검증 실패: {err_msg}")
+
+        self._write_data(tree_data)
+        logger.info("시나리오 트리 전체 일괄 저장 완료 [총 노드 수: %d]", len(tree_data.get("nodes", {})))
+        return tree_data
+
     def create_node(self, payload: dict[str, Any]) -> dict[str, Any]:
         """새로운 시나리오 노드 추가."""
         node_id = (payload.get("node_id") or "").strip()

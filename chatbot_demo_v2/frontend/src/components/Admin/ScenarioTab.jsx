@@ -12,10 +12,31 @@ export function ScenarioTab({ onUpdateBadge }) {
   const [selectedNodeId, setSelectedNodeId] = useState(null);
   const [viewMode, setViewMode] = useState('canvas'); // 'canvas' | 'list'
 
-  const nodes = data?.nodes || {};
+  // ★ 비주얼 에디터용 드래프트 노드 맵 & 변경사항(isDirty) 상태
+  const [draftNodes, setDraftNodes] = useState({});
+  const [isDirty, setIsDirty] = useState(false);
+  const [savingTree, setSavingTree] = useState(false);
+
+  // 실시간 무결성 검증 상태
+  const [validationResult, setValidationResult] = useState({
+    is_valid: true,
+    errors: [],
+    warnings: [],
+    unreachable_count: 0
+  });
+
+  // 새 플로우 생성 모달
+  const [createFlowModalOpen, setCreateFlowModalOpen] = useState(false);
+  const [newFlowForm, setNewFlowForm] = useState({
+    flow_key: '',
+    flow_name: '',
+    first_question: ''
+  });
+
+  const nodes = draftNodes && Object.keys(draftNodes).length > 0 ? draftNodes : (data?.nodes || {});
   const groups = data?.groups || {};
   const validation = data?.validation;
-  const rootId = data?.root_node_id;
+  const rootId = data?.root_node_id || 'root';
   const selectedNode = selectedNodeId ? nodes[selectedNodeId] : null;
 
   // 노드 생성/수정 모달
@@ -36,6 +57,74 @@ export function ScenarioTab({ onUpdateBadge }) {
     badgeRef.current = onUpdateBadge;
   }, [onUpdateBadge]);
 
+  // 로컬 트리 무결성 검증 함수
+  const validateDraft = useCallback((nodesMap, targetRootId = rootId) => {
+    if (!nodesMap || Object.keys(nodesMap).length === 0) {
+      return { is_valid: true, errors: [], warnings: [], unreachable_count: 0 };
+    }
+    const errors = [];
+    const warnings = [];
+
+    // 1. 루트 존재
+    if (!nodesMap[targetRootId]) {
+      errors.push(`루트 노드 '${targetRootId}'가 존재하지 않습니다.`);
+    }
+
+    // 2. 개별 노드 검증
+    for (const [nid, node] of Object.entries(nodesMap)) {
+      if (node.type === 'terminal') {
+        const hasText = node.answer?.text || node.answer_text;
+        if (!hasText) {
+          errors.push(`답변 노드 [${nid}]에 최종 답변 내용이 없습니다.`);
+        }
+      }
+
+      // 옵션 링크 검사
+      (node.options || []).forEach((opt, idx) => {
+        const nxt = opt.next_node_id || opt.next_node;
+        if (!nxt) {
+          errors.push(`노드 [${nid}]의 선택지 "${opt.label || `#${idx + 1}`}"에 연결된 대상 노드가 없습니다.`);
+        } else if (!nodesMap[nxt]) {
+          errors.push(`노드 [${nid}]의 선택지가 미존재 노드 '${nxt}'를 가리킵니다.`);
+        }
+      });
+    }
+
+    // 3. 도달 가능성 검사
+    const reachable = new Set();
+    if (nodesMap[targetRootId]) {
+      const q = [targetRootId];
+      reachable.add(targetRootId);
+      while (q.length > 0) {
+        const curr = q.shift();
+        const currNode = nodesMap[curr];
+        if (!currNode) continue;
+        for (const opt of currNode.options || []) {
+          const nxt = opt.next_node_id || opt.next_node;
+          if (nxt && nodesMap[nxt] && !reachable.has(nxt)) {
+            reachable.add(nxt);
+            q.push(nxt);
+          }
+        }
+      }
+    }
+
+    const unreachable = Object.keys(nodesMap).filter((nid) => !reachable.has(nid));
+    if (unreachable.length > 0) {
+      warnings.push(`시작(루트)에서 도달할 수 없는 고립 노드가 ${unreachable.length}개 있습니다.`);
+    }
+
+    const result = {
+      is_valid: errors.length === 0,
+      errors,
+      warnings,
+      unreachable_count: unreachable.length,
+      reachable_count: reachable.size
+    };
+    setValidationResult(result);
+    return result;
+  }, [rootId]);
+
   const fetchTree = useCallback(async () => {
     setLoading(true);
     try {
@@ -43,8 +132,13 @@ export function ScenarioTab({ onUpdateBadge }) {
       if (res.ok) {
         const json = await res.json();
         setData(json);
+        setDraftNodes(json.nodes || {});
+        setIsDirty(false);
         if (badgeRef.current) badgeRef.current(json.total_nodes || 0);
         setSelectedNodeId((prev) => prev || json.root_node_id || null);
+        if (json.validation) {
+          setValidationResult(json.validation);
+        }
       }
     } catch (e) {
       console.error('시나리오 트리 로드 실패:', e);
@@ -170,6 +264,199 @@ export function ScenarioTab({ onUpdateBadge }) {
       setSubmitting(false);
     }
   };
+
+  // ★ 1. 노드 간 연결 핸들러 (선 잇기 Port-to-Port Snap)
+  const handleConnectNodes = useCallback((sourceId, optionIndex, targetId) => {
+    setDraftNodes((prev) => {
+      const srcNode = prev[sourceId];
+      if (!srcNode || !srcNode.options || !srcNode.options[optionIndex]) return prev;
+      const updatedOpts = [...srcNode.options];
+      updatedOpts[optionIndex] = {
+        ...updatedOpts[optionIndex],
+        next_node_id: targetId,
+        next_node: targetId
+      };
+      const nextMap = {
+        ...prev,
+        [sourceId]: {
+          ...srcNode,
+          options: updatedOpts
+        }
+      };
+      validateDraft(nextMap);
+      return nextMap;
+    });
+    setIsDirty(true);
+  }, [validateDraft]);
+
+  // ★ 2. 옵션 연결 해제 핸들러
+  const handleDisconnectOption = useCallback((sourceId, optionIndex) => {
+    setDraftNodes((prev) => {
+      const srcNode = prev[sourceId];
+      if (!srcNode || !srcNode.options || !srcNode.options[optionIndex]) return prev;
+      const updatedOpts = [...srcNode.options];
+      updatedOpts[optionIndex] = {
+        ...updatedOpts[optionIndex],
+        next_node_id: '',
+        next_node: ''
+      };
+      const nextMap = {
+        ...prev,
+        [sourceId]: {
+          ...srcNode,
+          options: updatedOpts
+        }
+      };
+      validateDraft(nextMap);
+      return nextMap;
+    });
+    setIsDirty(true);
+  }, [validateDraft]);
+
+  // ★ 3. 비주얼 캔버스 전용 빠른 노드 생성 핸들러 (질문/답변)
+  const handleCreateVisualNode = useCallback((type = 'question', targetFlowKey = 'general') => {
+    const randomSuffix = Math.random().toString(36).substring(2, 6);
+    const flow = targetFlowKey === 'ALL' || !targetFlowKey ? 'custom' : targetFlowKey;
+    const nodeId = type === 'terminal' ? `${flow}.ans_${randomSuffix}` : `${flow}.step_${randomSuffix}`;
+
+    const newNode = {
+      node_id: nodeId,
+      scenario_id: flow,
+      type,
+      text: type === 'terminal' ? '해결 조치 가이드 내용을 입력해주세요.' : '상세 안내 또는 추가 질문을 입력해주세요.',
+      options: type === 'question' ? [{ label: '다음 단계', next_node: '', next_node_id: '' }] : [],
+      answer_text: type === 'terminal' ? '최종 조치 및 가이드 내용입니다.' : undefined,
+      answer: type === 'terminal' ? { text: '최종 조치 및 가이드 내용입니다.' } : undefined
+    };
+
+    setDraftNodes((prev) => {
+      const nextMap = { ...prev, [nodeId]: newNode };
+      validateDraft(nextMap);
+      return nextMap;
+    });
+    setSelectedNodeId(nodeId);
+    setIsDirty(true);
+    return nodeId;
+  }, [validateDraft]);
+
+  // ★ 4. 새로운 플로우 생성 핸들러 (루트 분기 연결 + 첫 질문 노드 동시 생성)
+  const handleCreateFlow = useCallback((flowKey, flowName, firstQuestion) => {
+    const cleanKey = flowKey.trim().toLowerCase().replace(/[^a-z0-9_]/g, '_');
+    if (!cleanKey) {
+      alert('플로우 영문 키(영문 소문자, 숫자, 언더스코어)를 입력해주세요.');
+      return false;
+    }
+    const cleanName = flowName.trim();
+    if (!cleanName) {
+      alert('플로우 명칭(라벨)을 입력해주세요.');
+      return false;
+    }
+    const cleanQ = firstQuestion?.trim() || `${cleanName} 관련 질문입니다. 어떤 문제가 발생했나요?`;
+
+    const startNodeId = `${cleanKey}.start`;
+
+    setDraftNodes((prev) => {
+      const targetRoot = rootId || 'root';
+      const actualRoot = prev[targetRoot] || { node_id: targetRoot, options: [] };
+
+      // 1. 루트 노드의 옵션에 신규 플로우 시작 버튼 추가
+      const newRootOptions = [
+        ...(actualRoot.options || []),
+        {
+          option_id: cleanKey,
+          label: cleanName,
+          next_node: startNodeId,
+          next_node_id: startNodeId
+        }
+      ];
+
+      // 2. 신규 플로우의 첫 시작 질문 노드 생성
+      const startNode = {
+        node_id: startNodeId,
+        scenario_id: cleanKey,
+        type: 'question',
+        text: cleanQ,
+        options: [
+          {
+            option_id: 'choice_1',
+            label: '상세 점검 1',
+            next_node: '',
+            next_node_id: ''
+          }
+        ]
+      };
+
+      const nextMap = {
+        ...prev,
+        [targetRoot]: {
+          ...actualRoot,
+          options: newRootOptions
+        },
+        [startNodeId]: startNode
+      };
+
+      validateDraft(nextMap, targetRoot);
+      return nextMap;
+    });
+
+    setSelectedNodeId(startNodeId);
+    setIsDirty(true);
+    setCreateFlowModalOpen(false);
+    setNewFlowForm({ flow_key: '', flow_name: '', first_question: '' });
+    return true;
+  }, [rootId, validateDraft]);
+
+  // ★ 5. 무결성 정상 판정 후 전체 트리 일괄 최종 저장 핸들러
+  const handleSaveTree = useCallback(async () => {
+    const val = validateDraft(draftNodes, rootId);
+    if (!val.is_valid) {
+      alert(`[저장 불가] 트리에 해결되지 않은 무결성 결함이 있습니다.\n\n오류 목록:\n• ${val.errors.join('\n• ')}\n\n모든 노드와 분기를 올바르게 연결한 후 다시 저장해주세요.`);
+      return;
+    }
+
+    if (val.unreachable_count > 0) {
+      const proceed = window.confirm(`주의: 시작(루트)에서 도달할 수 없는 고립 노드가 ${val.unreachable_count}개 있습니다.\n이대로 저장을 진행하시겠습니까?`);
+      if (!proceed) return;
+    }
+
+    setSavingTree(true);
+    try {
+      const payload = {
+        root_node_id: rootId,
+        nodes: draftNodes
+      };
+
+      const res = await fetch('/api/admin/scenarios/tree', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (res.ok) {
+        const json = await res.json();
+        alert(`🎉 시나리오 트리가 성공적으로 저장 및 즉시 반영되었습니다!\n(총 ${json.total_nodes || Object.keys(draftNodes).length}개 노드 가동 중)`);
+        setIsDirty(false);
+        fetchTree();
+      } else {
+        const err = await res.json();
+        alert(`저장 실패: ${err.detail || '오류가 발생했습니다.'}`);
+      }
+    } catch (e) {
+      alert(`저장 통신 실패: ${e.message}`);
+    } finally {
+      setSavingTree(false);
+    }
+  }, [draftNodes, rootId, validateDraft, fetchTree]);
+
+  // ★ 6. 변경사항 취소 및 서버 원본 리셋
+  const handleResetDraft = useCallback(() => {
+    if (window.confirm('작업 중인 변경사항을 모두 취소하고 서버의 원래 시나리오 트리 상태로 되돌리시겠습니까?')) {
+      const originalNodes = data?.nodes || {};
+      setDraftNodes(originalNodes);
+      setIsDirty(false);
+      validateDraft(originalNodes, rootId);
+    }
+  }, [data, rootId, validateDraft]);
 
   // 검색 필터링된 노드
   const filterLower = search.trim().toLowerCase();
@@ -334,6 +621,15 @@ export function ScenarioTab({ onUpdateBadge }) {
             onEditNode={handleOpenEdit}
             onDeleteNode={handleDeleteNode}
             onCreateChildNode={handleOpenCreateChild}
+            isDirty={isDirty}
+            validationResult={validationResult}
+            savingTree={savingTree}
+            onConnectNodes={handleConnectNodes}
+            onDisconnectOption={handleDisconnectOption}
+            onCreateVisualNode={handleCreateVisualNode}
+            onOpenCreateFlow={() => setCreateFlowModalOpen(true)}
+            onSaveTree={handleSaveTree}
+            onResetDraft={handleResetDraft}
           />
         </div>
       ) : (
@@ -691,6 +987,96 @@ export function ScenarioTab({ onUpdateBadge }) {
                 <button type="button" className="btn btn-secondary" onClick={() => setModalOpen(false)}>취소</button>
                 <button type="submit" className="btn btn-primary" disabled={submitting}>
                   {submitting ? '저장 중…' : '저장 완료'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* 5. 신규 플로우 생성 모달 */}
+      {createFlowModalOpen && (
+        <div className="modal-backdrop" onClick={() => setCreateFlowModalOpen(false)}>
+          <div className="modal-content" style={{ maxWidth: '520px' }} onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3 className="modal-title">✨ 새로운 대화 플로우 생성</h3>
+              <button
+                type="button"
+                className="btn btn-ghost btn-sm"
+                onClick={() => setCreateFlowModalOpen(false)}
+                style={{ fontSize: '1.2rem', lineHeight: 1 }}
+              >
+                ×
+              </button>
+            </div>
+
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleCreateFlow(newFlowForm.flow_key, newFlowForm.flow_name, newFlowForm.first_question);
+              }}
+            >
+              <div className="modal-body" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', lineHeight: 1.5, margin: 0 }}>
+                  새로운 상담 주제(플로우)를 생성하면 <strong>시작 루트 노드에 바로가기 분기 버튼</strong>과
+                  <strong>첫 번째 시작 질문 노드</strong>가 자동으로 생성되어 캔버스에 배치됩니다.
+                </p>
+
+                <div className="form-group">
+                  <label className="form-label" style={{ fontWeight: 600 }}>
+                    플로우 영문 식별 키 <span style={{ color: 'var(--rose)' }}>*</span>
+                  </label>
+                  <input
+                    type="text"
+                    className="form-input"
+                    placeholder="예: printer_issue, vpn_connect, payment"
+                    value={newFlowForm.flow_key}
+                    onChange={(e) => setNewFlowForm({ ...newFlowForm, flow_key: e.target.value })}
+                    required
+                    style={{ fontFamily: 'var(--font-mono)' }}
+                  />
+                  <small style={{ fontSize: '0.74rem', color: 'var(--text-muted)' }}>
+                    노드 ID의 접두사로 사용됩니다. (영문 소문자, 숫자, 언더스코어 권장)
+                  </small>
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label" style={{ fontWeight: 600 }}>
+                    플로우 표시 명칭 (라벨) <span style={{ color: 'var(--rose)' }}>*</span>
+                  </label>
+                  <input
+                    type="text"
+                    className="form-input"
+                    placeholder="예: 🖨️ 프린터 출력 장애 점검"
+                    value={newFlowForm.flow_name}
+                    onChange={(e) => setNewFlowForm({ ...newFlowForm, flow_name: e.target.value })}
+                    required
+                  />
+                  <small style={{ fontSize: '0.74rem', color: 'var(--text-muted)' }}>
+                    루트 질문 노드 및 플로우 탭에 표시될 직관적인 이름입니다.
+                  </small>
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label" style={{ fontWeight: 600 }}>
+                    첫 번째 시작 질문 안내 문구
+                  </label>
+                  <textarea
+                    className="form-textarea"
+                    rows={3}
+                    placeholder="예: 프린터에서 어떤 문제가 발생하나요? 아래 보기 중 해당하는 증상을 선택해주세요."
+                    value={newFlowForm.first_question}
+                    onChange={(e) => setNewFlowForm({ ...newFlowForm, first_question: e.target.value })}
+                  />
+                </div>
+              </div>
+
+              <div className="modal-footer" style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem' }}>
+                <button type="button" className="btn btn-secondary" onClick={() => setCreateFlowModalOpen(false)}>
+                  취소
+                </button>
+                <button type="submit" className="btn btn-primary" style={{ fontWeight: 700 }}>
+                  🚀 플로우 생성 및 캔버스 배치
                 </button>
               </div>
             </form>

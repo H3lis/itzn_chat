@@ -58,10 +58,37 @@ const FLOW_THEMES = {
   }
 };
 
+const FLOW_PALETTE = [
+  { color: '#6366f1', bg: '#eef2ff', border: '#c7d2fe' },
+  { color: '#ec4899', bg: '#fdf2f8', border: '#fbcfe8' },
+  { color: '#0d9488', bg: '#f0fdfa', border: '#99f6e4' },
+  { color: '#ea580c', bg: '#fff7ed', border: '#fed7aa' },
+  { color: '#8b5cf6', bg: '#f5f3ff', border: '#ddd6fe' }
+];
+
+export function getFlowTheme(flowKey = 'default') {
+  if (FLOW_THEMES[flowKey]) return FLOW_THEMES[flowKey];
+  let hash = 0;
+  for (let i = 0; i < flowKey.length; i++) {
+    hash = flowKey.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const colorSet = FLOW_PALETTE[Math.abs(hash) % FLOW_PALETTE.length];
+  return {
+    label: `📁 ${flowKey}`,
+    color: colorSet.color,
+    bg: colorSet.bg,
+    border: colorSet.border,
+    badge: flowKey
+  };
+}
+
 /**
- * 노드 ID 또는 속성으로 소속 플로우 감지
+ * 노드 ID 또는 속성으로 소속 플로우 감지 (신규 커스텀 플로우 포함)
  */
-function detectNodeFlow(nodeId = '') {
+function detectNodeFlow(nodeId = '', nodeData = null) {
+  if (nodeData?.scenario_id && nodeData.scenario_id !== 'general') {
+    return nodeData.scenario_id;
+  }
   if (nodeId.startsWith('internet_down')) return 'internet_down';
   if (nodeId.startsWith('internet_slow')) return 'internet_slow';
   if (nodeId.startsWith('my_pc')) return 'my_pc';
@@ -72,6 +99,9 @@ function detectNodeFlow(nodeId = '') {
     nodeId.startsWith('callcenter')
   ) {
     return 'tablet_nms';
+  }
+  if (nodeId.includes('.')) {
+    return nodeId.split('.')[0];
   }
   return 'default';
 }
@@ -90,7 +120,7 @@ function computeSubtreeLayout(nodes, rootId, activeFlow = 'ALL', collapsedSet = 
   } else {
     targetNodeIds.add(actualRoot);
     Object.keys(nodes).forEach((id) => {
-      if (detectNodeFlow(id) === activeFlow) {
+      if (detectNodeFlow(id, nodes[id]) === activeFlow) {
         targetNodeIds.add(id);
       }
     });
@@ -202,12 +232,43 @@ export function ScenarioVisualTree({
   onSelectNode,
   onEditNode,
   onDeleteNode,
-  onCreateChildNode
+  onCreateChildNode,
+  // ★ 신규 시각적 노드 빌더 Props
+  isDirty = false,
+  validationResult = { is_valid: true, errors: [], warnings: [] },
+  savingTree = false,
+  onConnectNodes,
+  onDisconnectOption,
+  onCreateVisualNode,
+  onOpenCreateFlow,
+  onSaveTree,
+  onResetDraft
 }) {
   const containerRef = useRef(null);
 
-  // 1. 활성 플로우 필터 (ALL | internet_down | internet_slow | my_pc | wifi | tablet_nms)
+  // 1. 활성 플로우 필터 (ALL | internet_down | internet_slow | my_pc | wifi | tablet_nms | 신규 플로우)
   const [activeFlow, setActiveFlow] = useState('ALL');
+
+  // ★ 1-1. 포트 간 선 연결 (Port-to-Port Wiring) 상태
+  // { sourceId, optionIndex, label, startX, startY }
+  const [connectingPort, setConnectingPort] = useState(null);
+  const [mouseWorldPos, setMouseWorldPos] = useState({ x: 0, y: 0 });
+  const [showValidationPopover, setShowValidationPopover] = useState(false);
+
+  // 모든 동적 플로우 목록 추출
+  const allFlowKeys = useMemo(() => {
+    const defaultFlows = ['internet_down', 'internet_slow', 'my_pc', 'wifi', 'tablet_nms'];
+    const keys = new Set(defaultFlows);
+    if (nodes) {
+      Object.entries(nodes).forEach(([nid, node]) => {
+        const flow = detectNodeFlow(nid, node);
+        if (flow && flow !== 'default') {
+          keys.add(flow);
+        }
+      });
+    }
+    return Array.from(keys);
+  }, [nodes]);
 
   // 2. 접기/펼치기 상태 Set
   const [collapsedNodes, setCollapsedNodes] = useState(new Set());
@@ -478,8 +539,12 @@ export function ScenarioVisualTree({
     [zoom, pan]
   );
 
-  // 캔버스 마우스 다운 (패닝 시작)
+  // 캔버스 마우스 다운 (패닝 시작 또는 연결 취소)
   const handleCanvasMouseDown = (e) => {
+    if (connectingPort) {
+      setConnectingPort(null);
+      return;
+    }
     if (
       e.target.closest('.scenario-node-card') ||
       e.target.closest('.canvas-control-btn') ||
@@ -498,9 +563,56 @@ export function ScenarioVisualTree({
     };
   };
 
+  // ★ 출발 포트 클릭 -> 선 잇기(Rubberband Wire) 모드 시작
+  const handleStartConnect = (e, sourceId, optionIndex, optLabel) => {
+    e.stopPropagation();
+    const sourcePos = nodePositions[sourceId];
+    if (!sourcePos) return;
+
+    const optionVerticalOffset = isCompact ? 75 : 85;
+    const startX = sourcePos.x + NODE_WIDTH;
+    const node = nodes[sourceId];
+    const totalOptions = node?.options?.length || 1;
+    const startY = sourcePos.y + optionVerticalOffset + (optionIndex * 24) - ((totalOptions - 1) * 12);
+
+    setConnectingPort({
+      sourceId,
+      optionIndex,
+      label: optLabel || `선택지 #${optionIndex + 1}`,
+      startX,
+      startY
+    });
+    setMouseWorldPos({ x: startX + 40, y: startY });
+  };
+
+  // ★ 타겟 노드 클릭 -> 선 잇기 완료(Snap & Connect)
+  const handleTargetNodeClick = (e, targetId) => {
+    if (connectingPort) {
+      e.stopPropagation();
+      if (connectingPort.sourceId === targetId) {
+        alert('자기 자신 노드로는 바로 연결할 수 없습니다. 다른 분기 노드를 선택해주세요.');
+        return;
+      }
+      if (targetId === rootId) {
+        alert('시작 루트 노드로 역연결할 수 없습니다.');
+        return;
+      }
+      if (onConnectNodes) {
+        onConnectNodes(connectingPort.sourceId, connectingPort.optionIndex, targetId);
+      }
+      setConnectingPort(null);
+      return;
+    }
+    onSelectNode(targetId);
+  };
+
   // 노드 드래그 시작 (줌이나 팬 리셋 절대 없이 오직 해당 노드만 선택 및 드래그 시작)
   const handleNodeMouseDown = (e, nid) => {
     e.stopPropagation();
+    if (connectingPort) {
+      handleTargetNodeClick(e, nid);
+      return;
+    }
     if (e.target.closest('button') || e.target.closest('.option-link-pill')) {
       return;
     }
@@ -516,16 +628,21 @@ export function ScenarioVisualTree({
   };
 
   /**
-   * 글로벌 윈도우 마우스 리스너 & RAF 60fps 부드러운 드래그
+   * 글로벌 윈도우 마우스 리스너 & RAF 60fps 부드러운 드래그 & 선 연결 실시간 추적
    */
   useEffect(() => {
-    if (!isPanning && !draggingNodeId) return;
+    if (!isPanning && !draggingNodeId && !connectingPort) return;
 
     const handleWindowMouseMove = (e) => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
 
       rafRef.current = requestAnimationFrame(() => {
-        if (draggingNodeId) {
+        if (connectingPort && containerRef.current) {
+          const rect = containerRef.current.getBoundingClientRect();
+          const mx = Math.round((e.clientX - rect.left - pan.x) / zoom);
+          const my = Math.round((e.clientY - rect.top - pan.y) / zoom);
+          setMouseWorldPos({ x: mx, y: my });
+        } else if (draggingNodeId) {
           const dx = (e.clientX - dragStartRef.current.mouseX) / zoom;
           const dy = (e.clientY - dragStartRef.current.mouseY) / zoom;
           setNodePositions((prev) => ({
@@ -552,15 +669,24 @@ export function ScenarioVisualTree({
       setDraggingNodeId(null);
     };
 
+    const handleWindowKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setConnectingPort(null);
+        setShowValidationPopover(false);
+      }
+    };
+
     window.addEventListener('mousemove', handleWindowMouseMove, { passive: true });
     window.addEventListener('mouseup', handleWindowMouseUp);
+    window.addEventListener('keydown', handleWindowKeyDown);
 
     return () => {
       window.removeEventListener('mousemove', handleWindowMouseMove);
       window.removeEventListener('mouseup', handleWindowMouseUp);
+      window.removeEventListener('keydown', handleWindowKeyDown);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, [isPanning, draggingNodeId, zoom]);
+  }, [isPanning, draggingNodeId, connectingPort, zoom, pan]);
 
   // 미니맵 바운딩 박스
   const bounds = useMemo(() => {
@@ -594,7 +720,7 @@ export function ScenarioVisualTree({
         boxShadow: 'inset 0 2px 6px rgba(0, 0, 0, 0.02)'
       }}
     >
-      {/* 1. 상단 플로우 필터 탭 바 */}
+      {/* 1. 상단 좌측: 플로우 필터 탭 바 & 새 플로우 추가 버튼 */}
       <div
         className="canvas-filter-bar"
         style={{
@@ -611,7 +737,7 @@ export function ScenarioVisualTree({
           borderRadius: '12px',
           border: '1px solid var(--border-color)',
           boxShadow: '0 4px 16px rgba(0, 0, 0, 0.06)',
-          maxWidth: 'calc(100% - 340px)',
+          maxWidth: 'calc(100% - 580px)',
           overflowX: 'auto'
         }}
       >
@@ -641,9 +767,10 @@ export function ScenarioVisualTree({
           전체 ({Object.keys(nodes || {}).length})
         </button>
 
-        {Object.entries(FLOW_THEMES).filter(([k]) => k !== 'default').map(([key, theme]) => {
+        {allFlowKeys.map((key) => {
+          const theme = getFlowTheme(key);
           const isActive = activeFlow === key;
-          const count = Object.keys(nodes || {}).filter((nid) => detectNodeFlow(nid) === key).length;
+          const count = Object.keys(nodes || {}).filter((nid) => detectNodeFlow(nid, nodes[nid]) === key).length;
           return (
             <button
               key={key}
@@ -680,9 +807,38 @@ export function ScenarioVisualTree({
             </button>
           );
         })}
+
+        <div style={{ width: '1px', height: '16px', background: 'var(--border-color)', margin: '0 0.2rem' }} />
+
+        {/* 🚀 1. 신규 플로우 생성 버튼 */}
+        {onOpenCreateFlow && (
+          <button
+            type="button"
+            onClick={onOpenCreateFlow}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.3rem',
+              padding: '0.3rem 0.7rem',
+              borderRadius: '8px',
+              fontSize: '0.78rem',
+              fontWeight: 700,
+              background: 'linear-gradient(135deg, #4f46e5, #7c3aed)',
+              color: '#ffffff',
+              border: 'none',
+              cursor: 'pointer',
+              whiteSpace: 'nowrap',
+              boxShadow: '0 2px 6px rgba(99, 102, 241, 0.35)'
+            }}
+            title="새로운 대화 주제 플로우 생성 (루트 노드 연동 및 시작 노드 생성)"
+          >
+            <Plus size={13} />
+            <span>+ 새 플로우 추가</span>
+          </button>
+        )}
       </div>
 
-      {/* 2. 상단 우측 퀵 검색 및 뷰 옵션 */}
+      {/* 2. 상단 우측: 캔버스 작업 툴바 (노드 추가, 무결성 배지, 최종 저장) */}
       <div
         className="canvas-filter-bar"
         style={{
@@ -692,7 +848,7 @@ export function ScenarioVisualTree({
           zIndex: 35,
           display: 'flex',
           alignItems: 'center',
-          gap: '0.5rem',
+          gap: '0.45rem',
           background: 'rgba(255, 255, 255, 0.95)',
           backdropFilter: 'blur(12px)',
           padding: '0.4rem 0.6rem',
@@ -701,20 +857,194 @@ export function ScenarioVisualTree({
           boxShadow: '0 4px 16px rgba(0, 0, 0, 0.06)'
         }}
       >
+        {/* 🚀 2. 신규 노드 추가 버튼 (질문 / 답변) */}
+        {onCreateVisualNode && (
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}>
+            <button
+              type="button"
+              className="btn btn-sm btn-ghost"
+              onClick={() => onCreateVisualNode('question', activeFlow)}
+              style={{
+                padding: '0.3rem 0.55rem',
+                fontSize: '0.76rem',
+                fontWeight: 600,
+                color: 'var(--primary)',
+                background: 'rgba(37, 99, 235, 0.08)',
+                border: '1px solid rgba(37, 99, 235, 0.25)',
+                borderRadius: '6px'
+              }}
+              title="현재 플로우에 새 질문 노드 추가"
+            >
+              <Plus size={12} style={{ marginRight: '0.15rem' }} />
+              <span>질문 노드</span>
+            </button>
+
+            <button
+              type="button"
+              className="btn btn-sm btn-ghost"
+              onClick={() => onCreateVisualNode('terminal', activeFlow)}
+              style={{
+                padding: '0.3rem 0.55rem',
+                fontSize: '0.76rem',
+                fontWeight: 600,
+                color: 'var(--emerald)',
+                background: 'rgba(5, 150, 105, 0.08)',
+                border: '1px solid rgba(5, 150, 105, 0.25)',
+                borderRadius: '6px'
+              }}
+              title="현재 플로우에 새 최종 답변 노드 추가"
+            >
+              <Plus size={12} style={{ marginRight: '0.15rem' }} />
+              <span>답변 노드</span>
+            </button>
+          </div>
+        )}
+
+        <div style={{ width: '1px', height: '16px', background: 'var(--border-color)' }} />
+
+        {/* 🚀 3. 실시간 무결성 검증 배지 및 상세 팝오버 */}
+        <div style={{ position: 'relative' }}>
+          <button
+            type="button"
+            onClick={() => setShowValidationPopover((p) => !p)}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.35rem',
+              padding: '0.3rem 0.6rem',
+              borderRadius: '9999px',
+              fontSize: '0.75rem',
+              fontWeight: 700,
+              background: validationResult.is_valid ? 'rgba(16, 185, 129, 0.12)' : 'rgba(244, 63, 94, 0.12)',
+              color: validationResult.is_valid ? 'var(--emerald)' : 'var(--rose)',
+              border: validationResult.is_valid ? '1px solid rgba(16, 185, 129, 0.3)' : '1px solid rgba(244, 63, 94, 0.3)',
+              cursor: 'pointer'
+            }}
+            title="실시간 트리 무결성 검증 상태 (클릭 시 세부 항목 확인)"
+          >
+            {validationResult.is_valid ? <CheckCircle2 size={13} /> : <AlertTriangle size={13} />}
+            <span>
+              {validationResult.is_valid
+                ? '무결성 정상'
+                : `오류 ${validationResult.errors?.length || 0}건`}
+            </span>
+          </button>
+
+          {/* 무결성 결과 팝오버 */}
+          {showValidationPopover && (
+            <div
+              style={{
+                position: 'absolute',
+                top: '100%',
+                right: 0,
+                marginTop: '8px',
+                width: '320px',
+                background: '#ffffff',
+                border: '1px solid var(--border-color)',
+                borderRadius: '10px',
+                boxShadow: '0 10px 25px rgba(0,0,0,0.15)',
+                padding: '0.8rem',
+                zIndex: 60,
+                fontSize: '0.78rem'
+              }}
+            >
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem', fontWeight: 700 }}>
+                <span>트리 무결성 진단 리포트</span>
+                <button
+                  type="button"
+                  onClick={() => setShowValidationPopover(false)}
+                  style={{ border: 'none', background: 'none', cursor: 'pointer', fontSize: '13px' }}
+                >
+                  ×
+                </button>
+              </div>
+
+              {validationResult.is_valid ? (
+                <div style={{ color: 'var(--emerald)', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                  <CheckCircle2 size={16} />
+                  <span>모든 노드와 선택지가 완벽하게 연결되어 있습니다!</span>
+                </div>
+              ) : (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                  <div style={{ color: 'var(--rose)', fontWeight: 600 }}>해결이 필요한 결함 ({validationResult.errors.length}건):</div>
+                  <ul style={{ margin: 0, paddingLeft: '1.2rem', color: '#334155' }}>
+                    {validationResult.errors.map((err, i) => (
+                      <li key={i} style={{ marginBottom: '0.2rem' }}>{err}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {validationResult.warnings && validationResult.warnings.length > 0 && (
+                <div style={{ marginTop: '0.6rem', paddingTop: '0.5rem', borderTop: '1px solid #f1f5f9', color: '#d97706' }}>
+                  <div style={{ fontWeight: 600 }}>참고 사항:</div>
+                  <ul style={{ margin: 0, paddingLeft: '1.2rem' }}>
+                    {validationResult.warnings.map((w, i) => (
+                      <li key={i}>{w}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* 🚀 4. 저장 및 취소 버튼 (드래프트 변경사항 있을 때) */}
+        {isDirty && (
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
+            {onResetDraft && (
+              <button
+                type="button"
+                className="btn btn-sm btn-ghost"
+                onClick={onResetDraft}
+                style={{ padding: '0.3rem 0.5rem', fontSize: '0.76rem', color: 'var(--text-muted)' }}
+                title="서버 원본으로 변경사항 취소"
+              >
+                취소
+              </button>
+            )}
+
+            {onSaveTree && (
+              <button
+                type="button"
+                className="btn btn-sm btn-primary"
+                onClick={onSaveTree}
+                disabled={savingTree}
+                style={{
+                  padding: '0.3rem 0.65rem',
+                  fontSize: '0.76rem',
+                  fontWeight: 700,
+                  background: validationResult.is_valid
+                    ? 'linear-gradient(135deg, #059669, #10b981)'
+                    : 'linear-gradient(135deg, #64748b, #94a3b8)',
+                  borderColor: 'transparent',
+                  boxShadow: validationResult.is_valid ? '0 2px 8px rgba(16, 185, 129, 0.4)' : 'none'
+                }}
+                title={validationResult.is_valid ? '무결성 통과! 전체 트리 저장' : '무결성 오류를 먼저 해결해주세요.'}
+              >
+                {savingTree ? '저장 중…' : '💾 최종 저장'}
+              </button>
+            )}
+          </div>
+        )}
+
+        <div style={{ width: '1px', height: '16px', background: 'var(--border-color)' }} />
+
+        {/* 검색 인풋 */}
         <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
           <Search size={13} style={{ position: 'absolute', left: '8px', color: 'var(--text-muted)' }} />
           <input
             type="text"
-            placeholder="노드·질문 빠른 검색..."
+            placeholder="노드 검색..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             style={{
-              padding: '0.3rem 1.6rem 0.3rem 1.8rem',
-              fontSize: '0.78rem',
+              padding: '0.28rem 1.4rem 0.28rem 1.6rem',
+              fontSize: '0.76rem',
               border: '1px solid var(--border-color)',
-              borderRadius: '8px',
+              borderRadius: '6px',
               outline: 'none',
-              width: '160px',
+              width: '120px',
               background: '#f8fafc'
             }}
           />
@@ -782,24 +1112,71 @@ export function ScenarioVisualTree({
           className="canvas-control-btn btn btn-ghost btn-sm"
           onClick={() => setIsCompact((c) => !c)}
           title={isCompact ? '상세 정보 표시' : '간략히 표시'}
-          style={{ padding: '0.35rem 0.55rem', fontSize: '0.78rem' }}
+          style={{ padding: '0.3rem 0.45rem', fontSize: '0.76rem' }}
         >
-          {isCompact ? <Eye size={13} /> : <EyeOff size={13} />}
-          <span style={{ marginLeft: '0.25rem' }}>{isCompact ? '컴팩트' : '상세'}</span>
+          {isCompact ? <Eye size={12} /> : <EyeOff size={12} />}
+          <span style={{ marginLeft: '0.2rem' }}>{isCompact ? '컴팩트' : '상세'}</span>
         </button>
-
-        <div style={{ width: '1px', height: '16px', background: 'var(--border-color)' }} />
 
         <button
           className="canvas-control-btn btn btn-ghost btn-sm"
           onClick={handleManualAutoLayout}
           title="부모-자식 서브트리 레이아웃으로 완벽 자동 재정렬"
-          style={{ padding: '0.35rem 0.55rem', fontSize: '0.78rem', color: 'var(--primary)', fontWeight: 600 }}
+          style={{ padding: '0.3rem 0.45rem', fontSize: '0.76rem', color: 'var(--primary)', fontWeight: 600 }}
         >
-          <Sparkles size={13} style={{ marginRight: '0.25rem' }} />
-          <span>트리 정렬</span>
+          <Sparkles size={12} style={{ marginRight: '0.2rem' }} />
+          <span>정렬</span>
         </button>
       </div>
+
+      {/* 2-1. 선 잇기(Port-to-Port Wiring) 활성화 플로팅 알림 배너 */}
+      {connectingPort && (
+        <div
+          style={{
+            position: 'absolute',
+            top: '72px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            zIndex: 40,
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.75rem',
+            padding: '0.55rem 1.25rem',
+            borderRadius: '9999px',
+            background: 'linear-gradient(135deg, #1d4ed8, #2563eb)',
+            color: '#ffffff',
+            fontSize: '0.84rem',
+            fontWeight: 600,
+            boxShadow: '0 8px 24px rgba(37, 99, 235, 0.4)',
+            backdropFilter: 'blur(8px)',
+            border: '1px solid rgba(255, 255, 255, 0.3)'
+          }}
+        >
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
+            <span>🔗</span>
+            <span>
+              선택지 <strong>"{connectingPort.label}"</strong>를 연결할 <strong>대상 노드</strong>를 클릭하세요.
+            </span>
+          </span>
+          <button
+            type="button"
+            onClick={() => setConnectingPort(null)}
+            style={{
+              background: 'rgba(255, 255, 255, 0.25)',
+              border: 'none',
+              borderRadius: '9999px',
+              padding: '0.15rem 0.5rem',
+              color: '#ffffff',
+              fontSize: '0.74rem',
+              cursor: 'pointer',
+              fontWeight: 700
+            }}
+            title="연결 취소 (ESC)"
+          >
+            취소 (ESC)
+          </button>
+        </div>
+      )}
 
       {/* 3. 플로팅 줌 컨트롤 바 */}
       <div
@@ -1010,6 +1387,38 @@ export function ScenarioVisualTree({
               </g>
             );
           })}
+
+          {/* 선 잇기(Port-to-Port Wiring) 진행 중일 때 마우스 위치로 뻗는 고무줄 베지에 선 */}
+          {connectingPort && (
+            <g>
+              {(() => {
+                const startX = connectingPort.startX;
+                const startY = connectingPort.startY;
+                const endX = mouseWorldPos.x;
+                const endY = mouseWorldPos.y;
+                const deltaX = Math.abs(endX - startX) * 0.55;
+                const cp1X = startX + Math.max(deltaX, 60);
+                const cp1Y = startY;
+                const cp2X = endX - Math.max(deltaX, 60);
+                const cp2Y = endY;
+                const pathD = `M ${startX} ${startY} C ${cp1X} ${cp1Y}, ${cp2X} ${cp2Y}, ${endX} ${endY}`;
+                return (
+                  <>
+                    <path
+                      d={pathD}
+                      fill="none"
+                      stroke="#2563eb"
+                      strokeWidth="3.2"
+                      strokeDasharray="6,4"
+                      markerEnd="url(#arrow-active)"
+                      filter="url(#edge-glow)"
+                    />
+                    <circle cx={endX} cy={endY} r="5" fill="#2563eb" />
+                  </>
+                );
+              })()}
+            </g>
+          )}
         </svg>
 
         {/* 노드 카드 HTML 레이어 */}
@@ -1031,14 +1440,20 @@ export function ScenarioVisualTree({
           const isHighlighted = pathNodeIds ? pathNodeIds.has(nid) : false;
           const isDimmed = pathNodeIds !== null && !isHighlighted;
 
-          const flowKey = detectNodeFlow(nid);
-          const theme = FLOW_THEMES[flowKey] || FLOW_THEMES.default;
+          const flowKey = detectNodeFlow(nid, node);
+          const theme = getFlowTheme(flowKey);
+          const isConnectTargetCandidate = connectingPort && connectingPort.sourceId !== nid && !isRoot;
 
           return (
             <div
               key={nid}
               className="scenario-node-card"
               onMouseDown={(e) => handleNodeMouseDown(e, nid)}
+              onClick={(e) => {
+                if (isConnectTargetCandidate) {
+                  handleTargetNodeClick(e, nid);
+                }
+              }}
               onMouseEnter={() => setHoveredNodeId(nid)}
               onMouseLeave={() => setHoveredNodeId(null)}
               style={{
@@ -1046,24 +1461,28 @@ export function ScenarioVisualTree({
                 left: `${pos.x}px`,
                 top: `${pos.y}px`,
                 width: `${NODE_WIDTH}px`,
-                background: '#ffffff',
+                background: isConnectTargetCandidate ? '#f0f7ff' : '#ffffff',
                 borderRadius: '14px',
-                border: isSelected
+                border: isConnectTargetCandidate
+                  ? '2px dashed #2563eb'
+                  : isSelected
                   ? '2px solid #2563eb'
                   : isHighlighted
                   ? `2px solid ${theme.color}`
                   : `1px solid ${theme.border}`,
-                boxShadow: isDragging
+                boxShadow: isConnectTargetCandidate
+                  ? '0 0 20px rgba(37, 99, 235, 0.35)'
+                  : isDragging
                   ? '0 16px 36px rgba(0, 0, 0, 0.18)'
                   : isSelected
                   ? '0 10px 28px rgba(37, 99, 235, 0.28), 0 0 0 3px rgba(37, 99, 235, 0.15)'
                   : isHighlighted
                   ? `0 8px 24px ${theme.color}33`
                   : '0 3px 10px rgba(0, 0, 0, 0.05)',
-                cursor: isDragging ? 'grabbing' : 'grab',
+                cursor: isConnectTargetCandidate ? 'pointer' : isDragging ? 'grabbing' : 'grab',
                 opacity: isDimmed ? 0.22 : 1,
                 transform: 'none',
-                transition: isDragging ? 'none' : 'box-shadow 0.15s, border-color 0.15s, opacity 0.15s',
+                transition: isDragging ? 'none' : 'box-shadow 0.15s, border-color 0.15s, opacity 0.15s, background 0.15s',
                 zIndex: isDragging ? 50 : isSelected ? 20 : isHighlighted ? 15 : 10,
                 willChange: isDragging ? 'left, top' : 'auto'
               }}
@@ -1071,19 +1490,26 @@ export function ScenarioVisualTree({
               {/* 타겟 입력 포트 점 (좌측) */}
               {!isRoot && (
                 <div
+                  onClick={(e) => {
+                    if (isConnectTargetCandidate) {
+                      handleTargetNodeClick(e, nid);
+                    }
+                  }}
                   style={{
                     position: 'absolute',
-                    left: '-6px',
-                    top: isCompact ? '42px' : '52px',
-                    width: '12px',
-                    height: '12px',
+                    left: isConnectTargetCandidate ? '-8px' : '-6px',
+                    top: isCompact ? (isConnectTargetCandidate ? '40px' : '42px') : (isConnectTargetCandidate ? '50px' : '52px'),
+                    width: isConnectTargetCandidate ? '16px' : '12px',
+                    height: isConnectTargetCandidate ? '16px' : '12px',
                     borderRadius: '50%',
-                    background: isHighlighted ? '#2563eb' : theme.color,
+                    background: isConnectTargetCandidate ? '#2563eb' : isHighlighted ? '#2563eb' : theme.color,
                     border: '2px solid #ffffff',
-                    boxShadow: '0 1px 4px rgba(0,0,0,0.2)',
-                    zIndex: 25
+                    boxShadow: isConnectTargetCandidate ? '0 0 12px #2563eb' : '0 1px 4px rgba(0,0,0,0.2)',
+                    zIndex: 35,
+                    cursor: isConnectTargetCandidate ? 'pointer' : 'default',
+                    transition: 'all 0.15s ease'
                   }}
-                  title="자식 노드 진입점"
+                  title={isConnectTargetCandidate ? '클릭하여 이 노드로 선 연결' : '자식 노드 진입점'}
                 />
               )}
 
@@ -1324,45 +1750,90 @@ export function ScenarioVisualTree({
                             {opt.label || `옵션 ${optIndex + 1}`}
                           </span>
 
-                          <span
-                            style={{
-                              display: 'inline-flex',
-                              alignItems: 'center',
-                              gap: '0.2rem',
-                              fontFamily: 'var(--font-mono)',
-                              fontSize: '0.68rem',
-                              fontWeight: 700,
-                              color: isReturnToRoot ? 'var(--text-muted)' : hasNext ? 'var(--primary)' : 'var(--rose)'
-                            }}
-                          >
-                            {isReturnToRoot ? (
-                              '↩ 처음으로'
-                            ) : hasNext ? (
-                              <>
-                                <ArrowRight size={10} />
-                                {nextId.split('.').pop()}
-                              </>
-                            ) : (
-                              '미연결'
-                            )}
-                          </span>
+                          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
+                            <span
+                              style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '0.2rem',
+                                fontFamily: 'var(--font-mono)',
+                                fontSize: '0.68rem',
+                                fontWeight: 700,
+                                color: isReturnToRoot ? 'var(--text-muted)' : hasNext ? 'var(--primary)' : 'var(--rose)'
+                              }}
+                            >
+                              {isReturnToRoot ? (
+                                '↩ 처음으로'
+                              ) : hasNext ? (
+                                <>
+                                  <ArrowRight size={10} />
+                                  {nextId.split('.').pop()}
+                                </>
+                              ) : (
+                                '미연결'
+                              )}
+                            </span>
 
-                          {hasNext && !isReturnToRoot && (
-                            <div
+                            {/* 연결 해제 (Disconnect) 버튼 */}
+                            {hasNext && !isReturnToRoot && onDisconnectOption && (
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  onDisconnectOption(nid, optIndex);
+                                }}
+                                style={{
+                                  background: 'none',
+                                  border: 'none',
+                                  color: 'var(--text-muted)',
+                                  cursor: 'pointer',
+                                  padding: '0 2px',
+                                  fontSize: '11px',
+                                  lineHeight: 1,
+                                  borderRadius: '3px'
+                                }}
+                                title="연결 해제"
+                                onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--rose)')}
+                                onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-muted)')}
+                              >
+                                ×
+                              </button>
+                            )}
+                          </div>
+
+                          {/* 출발 포트 (선 잇기 Port 버튼) */}
+                          {!isReturnToRoot && (
+                            <button
+                              type="button"
+                              onClick={(e) => handleStartConnect(e, nid, optIndex, opt.label)}
                               style={{
                                 position: 'absolute',
-                                right: '-7px',
+                                right: '-8px',
                                 top: '50%',
                                 transform: 'translateY(-50%)',
-                                width: '10px',
-                                height: '10px',
+                                width: '16px',
+                                height: '16px',
                                 borderRadius: '50%',
-                                background: '#3b82f6',
+                                background: connectingPort?.sourceId === nid && connectingPort?.optionIndex === optIndex
+                                  ? '#ef4444'
+                                  : hasNext
+                                  ? '#3b82f6'
+                                  : '#f59e0b',
                                 border: '2px solid #ffffff',
-                                boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
-                                zIndex: 25
+                                boxShadow: connectingPort?.sourceId === nid && connectingPort?.optionIndex === optIndex
+                                  ? '0 0 10px #ef4444'
+                                  : '0 1px 4px rgba(0,0,0,0.25)',
+                                zIndex: 30,
+                                cursor: 'crosshair',
+                                padding: 0,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center'
                               }}
-                            />
+                              title={hasNext ? '다른 대상 노드로 선 다시 잇기 (클릭)' : '다음 대상 노드와 선 연결 (클릭)'}
+                            >
+                              <div style={{ width: '4px', height: '4px', borderRadius: '50%', background: '#ffffff' }} />
+                            </button>
                           )}
                         </div>
                       );

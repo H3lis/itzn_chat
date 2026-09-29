@@ -754,6 +754,29 @@ def admin_validate_scenarios(request: Request) -> ScenarioValidationResponse:
     return ScenarioValidationResponse(**val)
 
 
+@router.post("/api/admin/scenarios/validate_draft", response_model=ScenarioValidationResponse)
+def admin_validate_scenario_draft(request: Request, body: dict) -> ScenarioValidationResponse:
+    """프론트엔드에서 작업 중인 임시(Draft) 시나리오 트리의 무결성 사전 검사."""
+    ctx = _ctx(request)
+    val = ctx.scenario_manager.validate_integrity(body)
+    return ScenarioValidationResponse(**val)
+
+
+@router.put("/api/admin/scenarios/tree")
+def admin_save_scenario_tree(request: Request, body: dict) -> dict:
+    """비주얼 에디터에서 완성된 전체 시나리오 트리를 무결성 검증 후 원자적 일괄 저장."""
+    ctx = _ctx(request)
+    try:
+        saved = ctx.scenario_manager.save_entire_tree(body)
+        ctx.scenario_manager.reload_runtime(ctx)
+        return {"success": True, "total_nodes": len(saved.get("nodes", {}))}
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve))
+    except Exception as e:
+        logger.error("시나리오 트리 일괄 저장 실패: %s", e, exc_info=True)
+        raise HTTPException(status_code=500, detail=f"시나리오 트리 일괄 저장 실패: {e}")
+
+
 @router.get("/api/admin/scenarios/nodes/{node_id:path}")
 def admin_get_scenario_node(request: Request, node_id: str) -> dict:
     """특정 시나리오 노드 상세 정보 조회."""
