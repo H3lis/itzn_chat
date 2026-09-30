@@ -19,6 +19,7 @@ export function RagTab({ onUpdateBadge }) {
   const [docs, setDocs] = useState([]);
   const [loadingDocs, setLoadingDocs] = useState(false);
   const [docSearch, setDocSearch] = useState('');
+  const [docSortBy, setDocSortBy] = useState('newest'); // 'newest' | 'oldest' | 'name' | 'size'
 
   // 업로드 상태
   const [uploading, setUploading] = useState(false);
@@ -393,10 +394,31 @@ export function RagTab({ onUpdateBadge }) {
     }
   };
 
-  const filteredDocs = docs.filter((d) =>
-    (d.name || '').toLowerCase().includes(docSearch.toLowerCase()) ||
-    (d.meta_title || '').toLowerCase().includes(docSearch.toLowerCase())
-  );
+  const filteredDocs = docs
+    .filter((d) =>
+      (d.name || '').toLowerCase().includes(docSearch.toLowerCase()) ||
+      (d.meta_title || '').toLowerCase().includes(docSearch.toLowerCase()) ||
+      (d.rel_path || '').toLowerCase().includes(docSearch.toLowerCase())
+    )
+    .sort((a, b) => {
+      if (docSortBy === 'newest') {
+        const tA = a.added_timestamp || (a.created_at ? new Date(a.created_at).getTime() : 0) || (a.modified_at ? new Date(a.modified_at).getTime() : 0);
+        const tB = b.added_timestamp || (b.created_at ? new Date(b.created_at).getTime() : 0) || (b.modified_at ? new Date(b.modified_at).getTime() : 0);
+        return tB - tA;
+      }
+      if (docSortBy === 'oldest') {
+        const tA = a.added_timestamp || (a.created_at ? new Date(a.created_at).getTime() : 0) || (a.modified_at ? new Date(a.modified_at).getTime() : 0);
+        const tB = b.added_timestamp || (b.created_at ? new Date(b.created_at).getTime() : 0) || (b.modified_at ? new Date(b.modified_at).getTime() : 0);
+        return tA - tB;
+      }
+      if (docSortBy === 'name') {
+        return (a.name || '').localeCompare(b.name || '');
+      }
+      if (docSortBy === 'size') {
+        return (b.size_bytes || 0) - (a.size_bytes || 0);
+      }
+      return 0;
+    });
 
   return (
     <div className="tab-pane active" id="tab-rag">
@@ -500,7 +522,19 @@ export function RagTab({ onUpdateBadge }) {
           <span>보유 문서 목록 ({filteredDocs.length}개)</span>
         </h3>
 
-        <div style={{ display: 'flex', gap: '0.5rem' }}>
+        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+          <select
+            className="faq-select"
+            value={docSortBy}
+            onChange={(e) => setDocSortBy(e.target.value)}
+            title="문서 정렬 기준 선택"
+            style={{ minWidth: '140px' }}
+          >
+            <option value="newest">🕒 최신 추가순 (기본)</option>
+            <option value="oldest">⌛ 오래된 순</option>
+            <option value="name">🔤 파일명순</option>
+            <option value="size">📦 파일 크기순</option>
+          </select>
           <input
             type="text"
             className="faq-search-input"
@@ -509,7 +543,7 @@ export function RagTab({ onUpdateBadge }) {
             onChange={(e) => setDocSearch(e.target.value)}
             style={{ width: '220px' }}
           />
-          <button className="btn btn-secondary btn-sm" onClick={() => { fetchStats(); fetchDocs(); }}>
+          <button className="btn btn-secondary btn-sm" onClick={() => { fetchStats(); fetchDocs(); }} title="목록 새로고침">
             <RefreshCw size={14} />
           </button>
         </div>
@@ -520,19 +554,20 @@ export function RagTab({ onUpdateBadge }) {
           <thead>
             <tr>
               <th>파일명 / 상대경로</th>
-              <th style={{ width: '100px' }}>파일 크기</th>
+              <th style={{ width: '140px' }}>추가·수정 일시</th>
+              <th style={{ width: '90px' }}>파일 크기</th>
               <th>지능형 메타데이터 (요약 & 키워드)</th>
-              <th style={{ width: '240px', textAlign: 'center' }}>관리 작업</th>
+              <th style={{ width: '230px', textAlign: 'center' }}>관리 작업</th>
             </tr>
           </thead>
           <tbody>
             {loadingDocs ? (
               <tr>
-                <td colSpan={4} className="text-center muted" style={{ padding: '2rem' }}>문서 목록 로드 중…</td>
+                <td colSpan={5} className="text-center muted" style={{ padding: '2rem' }}>문서 목록 로드 중…</td>
               </tr>
             ) : filteredDocs.length === 0 ? (
               <tr>
-                <td colSpan={4} className="text-center muted" style={{ padding: '2rem' }}>등록된 문서가 없습니다.</td>
+                <td colSpan={5} className="text-center muted" style={{ padding: '2rem' }}>등록된 문서가 없습니다.</td>
               </tr>
             ) : (
               filteredDocs.map((doc) => {
@@ -553,11 +588,21 @@ export function RagTab({ onUpdateBadge }) {
                       </div>
                       <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{doc.rel_path}</div>
                     </td>
-                  <td>
-                    <span style={{ fontSize: '0.85rem' }}>
-                      {((doc.size_bytes || 0) / (1024 * 1024)).toFixed(2)} MB
-                    </span>
-                  </td>
+                    <td>
+                      <div style={{ fontSize: '0.82rem', color: 'var(--text-main)', whiteSpace: 'nowrap' }}>
+                        {doc.created_at || doc.modified_at || '-'}
+                      </div>
+                      {doc.created_at && doc.modified_at && doc.created_at !== doc.modified_at && (
+                        <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
+                          수정: {doc.modified_at}
+                        </div>
+                      )}
+                    </td>
+                    <td>
+                      <span style={{ fontSize: '0.85rem' }}>
+                        {((doc.size_bytes || 0) / (1024 * 1024)).toFixed(2)} MB
+                      </span>
+                    </td>
                   <td>
                     {doc.has_metadata ? (
                       <div>

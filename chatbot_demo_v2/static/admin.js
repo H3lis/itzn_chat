@@ -667,7 +667,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const filtered = docs.filter(d => 
       d.name.toLowerCase().includes(filter) || 
       (d.rel_path && d.rel_path.toLowerCase().includes(filter))
-    );
+    ).sort((a, b) => {
+      const tA = a.added_timestamp || (a.created_at ? new Date(a.created_at).getTime() : 0) || (a.modified_at ? new Date(a.modified_at).getTime() : 0);
+      const tB = b.added_timestamp || (b.created_at ? new Date(b.created_at).getTime() : 0) || (b.modified_at ? new Date(b.modified_at).getTime() : 0);
+      return tB - tA;
+    });
 
     if (filtered.length === 0) {
       docTbody.innerHTML = `<tr><td colspan="6" class="text-center muted" style="padding: 2.5rem;">등록된 문서가 없거나 검색 결과가 없습니다.</td></tr>`;

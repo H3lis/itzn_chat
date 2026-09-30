@@ -120,7 +120,7 @@ class DocumentManager:
 
         indexed_names, indexed_paths, indexed_slugs = self._get_indexed_signatures()
 
-        for p in sorted(self.docs_dir.rglob("*")):
+        for p in self.docs_dir.rglob("*"):
             if not p.is_file():
                 continue
             # 숨김 파일 / 임시 파일 제외
@@ -130,7 +130,11 @@ class DocumentManager:
             rel_path = str(p.relative_to(self.docs_dir)).replace("\\", "/")
             stat = p.stat()
             size_bytes = stat.st_size
-            mod_time = datetime.fromtimestamp(stat.st_mtime).strftime("%Y-%m-%d %H:%M:%S")
+            mod_ts = stat.st_mtime
+            create_ts = getattr(stat, "st_birthtime", None) or stat.st_ctime
+            added_ts = create_ts if create_ts else mod_ts
+            mod_time = datetime.fromtimestamp(mod_ts).strftime("%Y-%m-%d %H:%M:%S")
+            created_time = datetime.fromtimestamp(create_ts).strftime("%Y-%m-%d %H:%M:%S") if create_ts else mod_time
 
             slug = doc_slug(rel_path)
             name_slug = doc_slug(p.name)
@@ -162,6 +166,8 @@ class DocumentManager:
                 "size_bytes": size_bytes,
                 "size_formatted": _format_size(size_bytes),
                 "modified_at": mod_time,
+                "created_at": created_time,
+                "added_timestamp": added_ts,
                 "is_pdf": is_pdf,
                 "extension": ext.lstrip("."),
                 "doc_slug": slug,
@@ -169,6 +175,9 @@ class DocumentManager:
                 "is_indexed": is_indexed,
                 "page_count": page_count,
             })
+
+        # 추가된 시점 기준 최신순 (최신 추가된 문서가 최상단에 위치) 정렬
+        items.sort(key=lambda x: (x.get("added_timestamp") or 0, x.get("name", "")), reverse=True)
         return items
 
     def get_stats(self) -> dict[str, Any]:
