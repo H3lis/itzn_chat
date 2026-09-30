@@ -26,10 +26,11 @@ export function FaqTab({ onUpdateBadge }) {
     sheet: '',
     fault_type: '',
     question: '',
-    q_norm: '',
     answer: '',
     source: ''
   });
+  const [sheetMode, setSheetMode] = useState('select'); // 'select' | 'custom'
+  const [faultTypeMode, setFaultTypeMode] = useState('select'); // 'select' | 'custom'
   const [submitting, setSubmitting] = useState(false);
 
   const badgeRef = useRef(onUpdateBadge);
@@ -96,15 +97,26 @@ export function FaqTab({ onUpdateBadge }) {
     fetchFaqs();
   }, [fetchFaqs]);
 
+  // 사용 가능한 장애 구분 및 장애 유형 목록
+  const availableSheets = (stats.sheets && stats.sheets.length > 0)
+    ? stats.sheets
+    : Object.keys(stats.per_sheet || {});
+  const availableFaultTypes = (stats.fault_types && stats.fault_types.length > 0)
+    ? stats.fault_types
+    : ['일반상담'];
+
   // 신규 등록 모달 열기
   const handleOpenCreate = () => {
     setModalMode('create');
     setEditingItem(null);
+    const defaultSheet = availableSheets[0] || '스쿨넷';
+    const defaultFaultType = availableFaultTypes[0] || '일반상담';
+    setSheetMode('select');
+    setFaultTypeMode('select');
     setFormData({
-      sheet: (stats.sheets && stats.sheets[0]) || Object.keys(stats.per_sheet || {})[0] || '스쿨넷',
-      fault_type: (stats.fault_types && stats.fault_types[0]) || '일반상담',
+      sheet: defaultSheet,
+      fault_type: defaultFaultType,
       question: '',
-      q_norm: '',
       answer: '',
       source: '관리자 수동 등록'
     });
@@ -115,11 +127,17 @@ export function FaqTab({ onUpdateBadge }) {
   const handleOpenEdit = (item) => {
     setModalMode('edit');
     setEditingItem(item);
+    const itemSheet = item.sheet || '';
+    const itemFaultType = item.fault_type || '';
+    const sheetExists = availableSheets.includes(itemSheet);
+    const faultExists = availableFaultTypes.includes(itemFaultType);
+
+    setSheetMode(sheetExists || !itemSheet ? 'select' : 'custom');
+    setFaultTypeMode(faultExists || !itemFaultType ? 'select' : 'custom');
     setFormData({
-      sheet: item.sheet || '',
-      fault_type: item.fault_type || '',
+      sheet: itemSheet || availableSheets[0] || '스쿨넷',
+      fault_type: itemFaultType || availableFaultTypes[0] || '일반상담',
       question: item.question || '',
-      q_norm: item.q_norm || '',
       answer: item.answer || '',
       source: item.source || ''
     });
@@ -151,6 +169,14 @@ export function FaqTab({ onUpdateBadge }) {
   // 폼 제출
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!formData.sheet.trim()) {
+      alert('장애 구분을 선택하거나 입력해 주세요.');
+      return;
+    }
+    if (!formData.fault_type.trim()) {
+      alert('장애 유형을 선택하거나 입력해 주세요.');
+      return;
+    }
     if (!formData.question.trim() || !formData.answer.trim()) {
       alert('질문과 답변은 필수 입력 항목입니다.');
       return;
@@ -201,14 +227,14 @@ export function FaqTab({ onUpdateBadge }) {
             <span className="faq-guide-icon">🔍</span>
             <div className="faq-guide-content">
               <strong>조회 및 실시간 검색</strong>
-              <span>상단의 시트 분류(유선/무선/나이스 등)와 장애유형 필터, 키워드 검색창을 통해 원하는 질답을 빠르게 찾을 수 있습니다.</span>
+              <span>상단의 장애 구분(유선/무선/나이스 등)과 장애유형 필터, 키워드 검색창을 통해 원하는 질답을 빠르게 찾을 수 있습니다.</span>
             </div>
           </div>
           <div className="faq-guide-card">
             <span className="faq-guide-icon">➕</span>
             <div className="faq-guide-content">
               <strong>신규 FAQ 등록</strong>
-              <span>우측 '+ 신규 FAQ 등록' 버튼을 눌러 시트 분류, 장애 유형, 대표 질문 및 정답 내용을 손쉽게 시스템에 추가합니다.</span>
+              <span>우측 '+ 신규 FAQ 등록' 버튼을 눌러 장애 구분, 장애 유형, 대표 질문 및 정답 내용을 손쉽게 시스템에 추가합니다.</span>
             </div>
           </div>
           <div className="faq-guide-card">
@@ -228,14 +254,11 @@ export function FaqTab({ onUpdateBadge }) {
           onClick={() => { setSheetFilter(''); setPage(1); }}
           title="클릭 시 전체 보기"
         >
-          <span>등록된 FAQ :</span>
+          <span>전체 :</span>
           <span className="val">총 {stats.total_count ?? stats.total ?? 0}건</span>
         </div>
         <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-          {(stats.sheets && stats.sheets.length > 0
-            ? stats.sheets
-            : Object.keys(stats.per_sheet || {})
-          ).map((sName) => {
+          {availableSheets.map((sName) => {
             const isSelected = sheetFilter === sName;
             return (
               <div
@@ -260,10 +283,7 @@ export function FaqTab({ onUpdateBadge }) {
             onChange={(e) => { setSheetFilter(e.target.value); setPage(1); }}
           >
             <option value="">장애 구분 (전체)</option>
-            {(stats.sheets && stats.sheets.length > 0
-              ? stats.sheets
-              : Object.keys(stats.per_sheet || {})
-            ).map((s) => (
+            {availableSheets.map((s) => (
               <option key={s} value={s}>{s}</option>
             ))}
           </select>
@@ -292,7 +312,7 @@ export function FaqTab({ onUpdateBadge }) {
           <button
             className="btn btn-secondary btn-sm"
             onClick={() => { fetchStats(); fetchFaqs(); }}
-            title="새로고침"
+            title="FAQ 목록 및 통계 데이터를 최신 상태로 다시 불러옵니다"
           >
             <RefreshCw size={14} />
             <span>새로고침</span>
@@ -311,7 +331,7 @@ export function FaqTab({ onUpdateBadge }) {
           <thead>
             <tr>
               <th style={{ width: '100px' }}>ID</th>
-              <th style={{ width: '110px' }}>분류(시트)</th>
+              <th style={{ width: '120px' }}>장애 구분</th>
               <th style={{ width: '130px' }}>장애 유형</th>
               <th>질문</th>
               <th>답변</th>
@@ -338,14 +358,9 @@ export function FaqTab({ onUpdateBadge }) {
                   <td><span className="badge-pill">{item.sheet || '-'}</span></td>
                   <td><span className="badge-pill">{item.fault_type || '-'}</span></td>
                   <td>
-                    <div style={{ fontWeight: 600, color: 'var(--text-main)', marginBottom: '0.25rem' }}>
+                    <div style={{ fontWeight: 600, color: 'var(--text-main)', lineHeight: 1.4 }}>
                       {item.question}
                     </div>
-                    {item.q_norm && (
-                      <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                        ↳ 정규화: {item.q_norm}
-                      </div>
-                    )}
                   </td>
                   <td>
                     <div style={{
@@ -412,41 +427,118 @@ export function FaqTab({ onUpdateBadge }) {
         </div>
       </div>
 
-      {/* FAQ 등록/수정 모달 */}
+      {/* FAQ 등록/수정 모달 (x 버튼 또는 취소 클릭으로만 닫히도록 설정) */}
       {modalOpen && (
-        <div className="modal-backdrop active" onClick={() => setModalOpen(false)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '640px' }}>
+        <div className="modal-backdrop active">
+          <div className="modal-content" style={{ maxWidth: '640px' }}>
             <div className="modal-header">
               <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <HelpCircle size={20} color="var(--primary)" />
                 <span>{modalMode === 'create' ? '신규 FAQ 항목 등록' : `FAQ 항목 수정 (${editingItem?.id})`}</span>
               </h3>
-              <button className="btn-close" onClick={() => setModalOpen(false)}>×</button>
+              <button className="btn-close" onClick={() => setModalOpen(false)} title="닫기">×</button>
             </div>
             <form onSubmit={handleSubmit}>
               <div className="modal-body" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                  {/* 장애 구분 (구 시트) */}
                   <div className="form-group">
-                    <label className="form-label">시트 (상위 분류)</label>
-                    <input
-                      type="text"
-                      className="form-input"
-                      value={formData.sheet}
-                      onChange={(e) => setFormData({ ...formData, sheet: e.target.value })}
-                      placeholder="예: 유선네트워크"
-                      required
-                    />
+                    <label className="form-label">장애 구분</label>
+                    {sheetMode === 'select' ? (
+                      <select
+                        className="form-select"
+                        value={formData.sheet}
+                        onChange={(e) => {
+                          if (e.target.value === '__custom__') {
+                            setSheetMode('custom');
+                            setFormData((prev) => ({ ...prev, sheet: '' }));
+                          } else {
+                            setFormData((prev) => ({ ...prev, sheet: e.target.value }));
+                          }
+                        }}
+                        required
+                      >
+                        <option value="" disabled>장애 구분을 선택하세요</option>
+                        {availableSheets.map((s) => (
+                          <option key={s} value={s}>{s}</option>
+                        ))}
+                        <option value="__custom__">➕ 직접 입력 (신규 구분)</option>
+                      </select>
+                    ) : (
+                      <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
+                        <input
+                          type="text"
+                          className="form-input"
+                          value={formData.sheet}
+                          onChange={(e) => setFormData((prev) => ({ ...prev, sheet: e.target.value }))}
+                          placeholder="새 장애 구분 입력"
+                          required
+                          autoFocus
+                        />
+                        <button
+                          type="button"
+                          className="btn btn-secondary btn-sm"
+                          style={{ whiteSpace: 'nowrap', padding: '0.5rem 0.7rem' }}
+                          onClick={() => {
+                            setSheetMode('select');
+                            setFormData((prev) => ({ ...prev, sheet: availableSheets[0] || '스쿨넷' }));
+                          }}
+                          title="기존 목록에서 선택하기"
+                        >
+                          목록 선택
+                        </button>
+                      </div>
+                    )}
                   </div>
+
+                  {/* 장애 유형 (기존 목록 드롭다운 + 신규 입력 지원) */}
                   <div className="form-group">
                     <label className="form-label">장애 유형</label>
-                    <input
-                      type="text"
-                      className="form-input"
-                      value={formData.fault_type}
-                      onChange={(e) => setFormData({ ...formData, fault_type: e.target.value })}
-                      placeholder="예: 인터넷 접속 불가"
-                      required
-                    />
+                    {faultTypeMode === 'select' ? (
+                      <select
+                        className="form-select"
+                        value={formData.fault_type}
+                        onChange={(e) => {
+                          if (e.target.value === '__custom__') {
+                            setFaultTypeMode('custom');
+                            setFormData((prev) => ({ ...prev, fault_type: '' }));
+                          } else {
+                            setFormData((prev) => ({ ...prev, fault_type: e.target.value }));
+                          }
+                        }}
+                        required
+                      >
+                        <option value="" disabled>장애 유형을 선택하세요</option>
+                        {availableFaultTypes.map((f) => (
+                          <option key={f} value={f}>{f}</option>
+                        ))}
+                        <option value="__custom__">➕ 직접 입력 (신규 유형)</option>
+                      </select>
+                    ) : (
+                      <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
+                        <input
+                          type="text"
+                          className="form-input"
+                          value={formData.fault_type}
+                          onChange={(e) => setFormData((prev) => ({ ...prev, fault_type: e.target.value }))}
+                          placeholder="새 장애 유형 입력"
+                          required
+                          autoFocus
+                        />
+                        <button
+                          type="button"
+                          className="btn btn-secondary btn-sm"
+                          style={{ whiteSpace: 'nowrap', padding: '0.5rem 0.7rem' }}
+                          onClick={() => {
+                            setFaultTypeMode('select');
+                            setFormData((prev) => ({ ...prev, fault_type: availableFaultTypes[0] || '일반상담' }));
+                          }}
+                          title="기존 목록에서 선택하기"
+                        >
+                          목록 선택
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -459,17 +551,6 @@ export function FaqTab({ onUpdateBadge }) {
                     onChange={(e) => setFormData({ ...formData, question: e.target.value })}
                     placeholder="사용자가 주로 묻는 대표 질문"
                     required
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label className="form-label">정규화 질의 (q_norm, 선택)</label>
-                  <input
-                    type="text"
-                    className="form-input"
-                    value={formData.q_norm}
-                    onChange={(e) => setFormData({ ...formData, q_norm: e.target.value })}
-                    placeholder="형태소/키워드 중심의 정제된 검색 쿼리 (비어있으면 자동 생성)"
                   />
                 </div>
 
@@ -502,7 +583,7 @@ export function FaqTab({ onUpdateBadge }) {
                   취소
                 </button>
                 <button type="submit" className="btn btn-primary" disabled={submitting}>
-                  {submitting ? '저장 중…' : (modalMode === 'create' ? '등록 완료' : '수정 저장')}
+                  {submitting ? '저장 중…' : (modalMode === 'create' ? '등록' : '수정 저장')}
                 </button>
               </div>
             </form>

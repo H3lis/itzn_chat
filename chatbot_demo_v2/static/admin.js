@@ -455,7 +455,7 @@ document.addEventListener("DOMContentLoaded", () => {
       sheet: faqFormSheet.value.trim(),
       fault_type: faqFormFault.value.trim() || "일반",
       question: faqFormQuestion.value.trim(),
-      question_normalized: faqFormQnorm.value.trim() || null,
+      question_normalized: faqFormQnorm ? (faqFormQnorm.value.trim() || null) : null,
       answer: faqFormAnswer.value.trim(),
       source_files: faqFormSource.value.trim() 
         ? faqFormSource.value.split(",").map(s => s.trim()).filter(Boolean)
