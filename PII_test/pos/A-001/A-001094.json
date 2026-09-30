@@ -1,1 +1,0 @@
-{"id": "A-001094", "text": "저희 아이디는 ㅇㅇㅇㅇ이고, 회사명은 에이플러스테크네요. 이거 거래 가능한 건가요?", "pi": [{"type": "ACCOUNT", "text": "ㅇㅇㅇㅇ", "start": 8, "end": 12}, {"type": "ORG", "text": "에이플러스테크", "start": 21, "end": 28}], "meta": {"domain": "중고거래 채팅", "style": "음성인식(STT) 전사", "obfuscation": ["separator_noise"], "hard_case": "org_person"}}

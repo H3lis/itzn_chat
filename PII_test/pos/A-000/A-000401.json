@@ -1,1 +1,0 @@
-{"id": "A-000401", "text": "부동산 계약 관련해서 말씀드리는데, 혹시 아이피 주소가 203.0.113.55 쪽이고, 급한 거라 010-2222-3333으로 연락 주시면 감사하겠습니다.", "pi": [{"type": "IP_ADDR", "text": "203.0.113.55", "start": 31, "end": 43}, {"type": "PHONE", "text": "010-2222-3333", "start": 55, "end": 68}], "meta": {"domain": "부동산 상담", "style": "길고 장황한 설명", "obfuscation": ["self_correction"], "hard_case": "none"}}

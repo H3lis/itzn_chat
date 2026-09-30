@@ -1,1 +1,0 @@
-{"id": "A-002244", "text": "배송 주소는 서울시 강남구 테헤란로 123-45번지고요, 납품 차량 번호는 1가 2ㄴ 3ㄷ로 왔습니다.", "pi": [{"type": "BIRTH", "text": "서울시 강남구 테헤란로 123-45", "start": 7, "end": 26}, {"type": "CAR_PLATE", "text": "1가 2ㄴ 3ㄷ", "start": 42, "end": 50}], "meta": {"domain": "배달 요청사항", "style": "존댓말 상담", "obfuscation": ["separator_noise", "stt_error"], "hard_case": "none"}}

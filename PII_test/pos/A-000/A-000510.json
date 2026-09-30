@@ -1,1 +1,0 @@
-{"id": "A-000510", "text": "노을 씨는 2학년이 맞으신가요? 그리고 학교 인스타그램은 뭐라고 알려주시겠어요?", "pi": [{"type": "NAME", "text": "노을", "start": 0, "end": 2}, {"type": "SNS", "text": "인스타그램", "start": 25, "end": 30}], "meta": {"domain": "학교 행정 문의", "style": "짧은 단답", "obfuscation": ["separator_noise", "jamo_split", "honorific_ref"], "hard_case": "homonym_name"}}

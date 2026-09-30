@@ -1,1 +1,0 @@
-{"id": "A-004964", "text": "서울 강남역 근처 숙소로 예약하려고 하는데, 주소가 잘못 입력된 것 같아요. 다시 한번 확인해 주시겠어요?", "pi": [{"type": "ADDRESS", "text": "서울 강남역 근처 숙소", "start": 0, "end": 12}], "meta": {"domain": "여행 예약", "style": "오타 많은 채팅", "obfuscation": ["stt_error"], "hard_case": "none"}}

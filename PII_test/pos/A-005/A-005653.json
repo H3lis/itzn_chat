@@ -1,1 +1,0 @@
-{"id": "A-005653", "text": "환자분 성함이 김민준 님이시고, 원래 이름이 장민우 님으로 되어있던데, 혹시 김민준으로 정정 부탁드립니다.", "pi": [{"type": "NAME", "text": "김민준", "start": 8, "end": 11}, {"type": "NAME", "text": "장민우", "start": 25, "end": 28}], "meta": {"domain": "병원 접수", "style": "길고 장황한 설명", "obfuscation": ["self_correction", "jamo_split", "romanized"], "hard_case": "none"}}

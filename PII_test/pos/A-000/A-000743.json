@@ -1,1 +1,0 @@
-{"id": "A-000743", "text": "생년월일은 92년생이고, 소속 조직은 개발부서예요.", "pi": [{"type": "BIRTH", "text": "92년생", "start": 6, "end": 10}, {"type": "ORG", "text": "개발부서", "start": 21, "end": 25}], "meta": {"domain": "민원 접수", "style": "짧은 단답", "obfuscation": ["jamo_split", "stt_error"], "hard_case": "org_person"}}

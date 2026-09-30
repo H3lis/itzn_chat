@@ -1,1 +1,0 @@
-{"id": "A-004039", "text": "전화번호가 문의되었어요. 010-5555-6666으로 되어 있는데, 이거 맞나요? 아니면 010.5555.6666 인가요?", "pi": [{"type": "PHONE", "text": "010.5555.6666", "start": 50, "end": 63}], "meta": {"domain": "학교 행정 문의", "style": "짧은 단답", "obfuscation": ["mixed_reading", "lookalike_char"], "hard_case": "none"}}

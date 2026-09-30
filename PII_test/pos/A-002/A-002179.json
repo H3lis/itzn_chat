@@ -1,1 +1,0 @@
-{"id": "A-002179", "text": "운전면허번호는 999-888-7777이구요, 여권 번호는 ABC1234567입니다. 혹시 영문으로 다시 불러드릴까요?", "pi": [{"type": "DRIVER_LICENSE", "text": "999-888-7777", "start": 8, "end": 20}, {"type": "PASSPORT", "text": "ABC1234567", "start": 32, "end": 42}], "meta": {"domain": "보험 청구", "style": "구어체", "obfuscation": ["stt_error", "separator_noise"], "hard_case": "none"}}

@@ -43,3 +43,15 @@ test_2/
 test_3/
 chatbot_demo/
 ask_compare_cli.py
+
+# --- 테스트 데이터셋 및 벤치마크 평가 산출물 (GitHub 미게시) ---
+PII_test/
+**/PII_test/
+test_set/
+validation/
+*split_manifest*.json
+*validation_report*.json
+*val_analysis*.txt
+val3_analysis_summary.txt
+*.db
+!**/data/*.placeholder

@@ -1,1 +1,0 @@
-{"id": "A-005676", "text": "제가 문의하는 건데, 혹시 김하나 씨랑 박지윤 씨 정보가 9012345678 같은데 맞나요?", "pi": [{"type": "NAME", "text": "김하나", "start": 15, "end": 18}, {"type": "NAME", "text": "박지윤", "start": 22, "end": 25}, {"type": "RRN", "text": "9012345678", "start": 32, "end": 42}], "meta": {"domain": "온라인 강의 Q&A", "style": "구어체", "obfuscation": ["separator_noise"], "hard_case": "none"}}

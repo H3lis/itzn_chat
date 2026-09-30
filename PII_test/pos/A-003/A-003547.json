@@ -1,1 +1,0 @@
-{"id": "A-003547", "text": "죄송한데요, 계정 이메일 주소가 ㅈㅣㅁㅇㅓ-ㅎㅐㄴㄴㅐㄱ@지메일(dot)com으로 잘못 적으셨네요. 다시 확인 부탁드립니다.", "pi": [{"type": "EMAIL", "text": "ㅈㅣㅁㅇㅓ-ㅎㅐㄴㄴㅐㄱ@지메일(dot)com", "start": 18, "end": 42}], "meta": {"domain": "콜센터 상담 요약", "style": "오타 많은 채팅", "obfuscation": ["lookalike_char", "separator_noise"], "hard_case": "none"}}

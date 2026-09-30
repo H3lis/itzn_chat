@@ -1,1 +1,0 @@
-{"id": "A-000421", "text": "운전면허번호는 1122-3344-5566입니다. 네, 1122가 세 번 반복되고, 3344가 네 번 반복되는 식으로 말씀하시면 돼요.", "pi": [{"type": "DRIVER_LICENSE", "text": "1122-3344-5566", "start": 8, "end": 22}], "meta": {"domain": "음성통화 전사문", "style": "메신저 줄임말", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

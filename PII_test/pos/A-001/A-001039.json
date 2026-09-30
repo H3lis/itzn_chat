@@ -1,1 +1,0 @@
-{"id": "A-001039", "text": "홍길동 씨는 김ㅁㄴㅇㄹ 에이치이치에스 에이이 지에이 지에이 이고요. 주민등록번호는 99991231입니다.", "pi": [{"type": "NAME", "text": "홍길동", "start": 0, "end": 3}, {"type": "RRN", "text": "99991231", "start": 46, "end": 54}], "meta": {"domain": "민원 접수", "style": "존댓말 상담", "obfuscation": ["jamo_split", "romanized", "lookalike_char"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-002601", "text": "제가 이해하기로는 제출 기한이 다음 주 목요일이 맞을까요? 아, 아니다. 다음 주 수요일이 맞았던 것 같습니다.", "pi": [{"type": "NAME", "text": "다음 주 수요일", "start": 41, "end": 49}], "meta": {"domain": "온라인 강의 Q&A", "style": "구어체", "obfuscation": ["self_correction"], "hard_case": "none"}}

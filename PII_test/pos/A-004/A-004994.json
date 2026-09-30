@@ -1,1 +1,0 @@
-{"id": "A-004994", "text": "제 이름은 이지은이라고 불러주시면 되고요, 예약 부탁해요.", "pi": [{"type": "NAME", "text": "이지은", "start": 6, "end": 9}], "meta": {"domain": "여행 예약", "style": "반말 대화", "obfuscation": ["jamo_split"], "hard_case": "none"}}

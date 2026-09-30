@@ -1,1 +1,0 @@
-{"id": "A-002184", "text": "박은지 부장님께서는 이메일 주소가 'park.eunji@corp.net' 이시고, 성함은 박은지님이 맞으신가요?", "pi": [{"type": "NAME", "text": "박은지", "start": 0, "end": 3}, {"type": "EMAIL", "text": "park.eunji@corp.net", "start": 20, "end": 39}], "meta": {"domain": "음성통화 전사문", "style": "격식체", "obfuscation": ["honorific_ref"], "hard_case": "none"}}

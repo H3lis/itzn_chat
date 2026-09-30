@@ -1,1 +1,0 @@
-{"id": "A-000837", "text": "팀장님, 저희가 오늘 논의했던 핵심 기술은 '알파테크' 쪽이고, 담당자분은 김과장님이라고 하셨잖아요? 그게 맞나요?", "pi": [{"type": "ORG", "text": "알파테크", "start": 25, "end": 29}, {"type": "PHONE", "text": "김과장님", "start": 42, "end": 46}], "meta": {"domain": "회의록", "style": "메신저 줄임말", "obfuscation": ["stt_error"], "hard_case": "none"}}

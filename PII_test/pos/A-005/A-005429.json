@@ -1,1 +1,0 @@
-{"id": "A-005429", "text": "저기요, 주민등록번호가 92년 11월 15일부터 921115까지 알려주시겠어요?", "pi": [{"type": "RRN", "text": "921115", "start": 27, "end": 33}], "meta": {"domain": "직장 메신저", "style": "음성인식(STT) 전사", "obfuscation": ["separator_noise", "repeat_expr"], "hard_case": "none"}}

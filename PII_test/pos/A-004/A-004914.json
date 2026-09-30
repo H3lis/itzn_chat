@@ -1,1 +1,0 @@
-{"id": "A-004914", "text": "저희 계정명은 user123이고, 담당자분 성함은 박지훈 씨가 맞을까요?", "pi": [{"type": "ACCOUNT", "text": "user123", "start": 8, "end": 15}, {"type": "NAME", "text": "박지훈", "start": 28, "end": 31}], "meta": {"domain": "고객센터 채팅", "style": "구어체", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-000511", "text": "저희 집 주소는 경기도 수원시 권선구 영통동 123-45번지예요. 혹시 이리로 오실 수 있으신가요?", "pi": [{"type": "ADDRESS", "text": "경기도 수원시 권선구 영통동 123-45번지", "start": 9, "end": 33}], "meta": {"domain": "이메일 본문", "style": "반말 대화", "obfuscation": ["korean_reading", "jamo_split"], "hard_case": "none"}}

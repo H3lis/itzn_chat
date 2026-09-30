@@ -1,1 +1,0 @@
-{"id": "A-004404", "text": "주소는 서울시 강남구 테헤란로 123-45 건물이구요, 그쪽으로 보내주시면 돼요.", "pi": [{"type": "ADDRESS", "text": "서울시 강남구 테헤란로 123-45", "start": 4, "end": 23}], "meta": {"domain": "여행 예약", "style": "길고 장황한 설명", "obfuscation": ["split_utterance", "jamo_split"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-000345", "text": "예, 미소 고객님께서는 혹시 오늘 점심 메뉴가 어떻게 되는지 여쭤보려고요. 그리고 혹시 김과장님께 전달할 것도 있어요.", "pi": [{"type": "NAME", "text": "미소", "start": 3, "end": 5}, {"type": "NAME", "text": "김과장님", "start": 49, "end": 53}], "meta": {"domain": "배달 요청사항", "style": "짧은 단답", "obfuscation": ["honorific_ref"], "hard_case": "homonym_name"}}

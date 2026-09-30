@@ -1,1 +1,0 @@
-{"id": "A-001264", "text": "운전면허증에 적힌 번호가 12345678901234예요. 이 번호가 맞으신가요?", "pi": [{"type": "DRIVER_LICENSE", "text": "12345678901234", "start": 14, "end": 28}], "meta": {"domain": "음성통화 전사문", "style": "음성인식(STT) 전사", "obfuscation": ["split_utterance"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-004552", "text": "저희가 확인해 보니, 고객님 이메일은 example.com 이시고, 성함은 김철수 님으로 되어 있네요.", "pi": [{"type": "EMAIL", "text": "example.com", "start": 21, "end": 32}, {"type": "NAME", "text": "김철수", "start": 42, "end": 45}], "meta": {"domain": "콜센터 상담 요약", "style": "구어체", "obfuscation": ["honorific_ref", "lookalike_char"], "hard_case": "none"}}

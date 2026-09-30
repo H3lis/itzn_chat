@@ -1,1 +1,0 @@
-{"id": "A-000168", "text": "카드번호는 1234 다음에 5가 네 번이요. 그리고 사용자분 성함은 온유님이 맞으세요?", "pi": [{"type": "CARD", "text": "1234", "start": 6, "end": 10}, {"type": "CARD", "text": "5", "start": 15, "end": 16}, {"type": "NAME", "text": "온유", "start": 38, "end": 40}], "meta": {"domain": "고객센터 채팅", "style": "존댓말 상담", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

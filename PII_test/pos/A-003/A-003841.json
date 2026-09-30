@@ -1,1 +1,0 @@
-{"id": "A-003841", "text": "네, 고객님. 예약하신 예약 번호는 010-5555-1234로 확인됐어요.", "pi": [{"type": "PHONE", "text": "010-5555-1234", "start": 20, "end": 33}], "meta": {"domain": "택배 문의", "style": "음성인식(STT) 전사", "obfuscation": ["stt_error"], "hard_case": "none"}}

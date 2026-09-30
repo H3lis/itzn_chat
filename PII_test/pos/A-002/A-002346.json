@@ -1,1 +1,0 @@
-{"id": "A-002346", "text": "담당자님 성함은 '우주' 씨 맞으신가요? 아니면 '별빛'으로 하시는 게 좋을지 모르겠네요. 이메일은 'star@mail.com'입니다.", "pi": [{"type": "NAME", "text": "우주", "start": 10, "end": 12}, {"type": "EMAIL", "text": "star@mail.com", "start": 57, "end": 70}], "meta": {"domain": "금융 상담", "style": "길고 장황한 설명", "obfuscation": ["separator_noise"], "hard_case": "homonym_name"}}

@@ -1,1 +1,0 @@
-{"id": "A-000331", "text": "차량 번호는 서울 12가 3456이고요.", "pi": [{"type": "CAR_PLATE", "text": "서울 12가 3456", "start": 7, "end": 18}], "meta": {"domain": "병원 접수", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "none"}}

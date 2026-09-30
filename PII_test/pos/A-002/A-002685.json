@@ -1,1 +1,0 @@
-{"id": "A-002685", "text": "학생의 이름은 '가나다'로 적어주시면 되고, 혹시 학번은 202412345678 같은 건가요?", "pi": [{"type": "NAME", "text": "가나다", "start": 9, "end": 12}], "meta": {"domain": "학교 행정 문의", "style": "음성인식(STT) 전사", "obfuscation": ["jamo_split"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-001521", "text": "예약하신 일정에 맞추어 고객님의 회원 번호 12345를 확인하였고, 이름은 홍길동님, 소속 기관은 한국연구원님으로 등록되어 있습니다.", "pi": [{"type": "ID", "text": "12345", "start": 24, "end": 29}, {"type": "NAME", "text": "홍길동", "start": 42, "end": 45}, {"type": "ORG", "text": "한국연구원", "start": 55, "end": 60}], "meta": {"domain": "여행 예약", "style": "격식체", "obfuscation": ["plain"], "hard_case": "org_person"}}

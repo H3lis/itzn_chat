@@ -1,1 +1,0 @@
-{"id": "A-004861", "text": "이거 혹시 오늘 배달 가능한가요? 제 이름이 진호예요.", "pi": [{"type": "NAME", "text": "진호", "start": 25, "end": 27}], "meta": {"domain": "배달 요청사항", "style": "오타 많은 채팅", "obfuscation": ["plain"], "hard_case": "none"}}

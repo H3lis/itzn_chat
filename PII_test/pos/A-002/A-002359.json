@@ -1,1 +1,0 @@
-{"id": "A-002359", "text": "와, 라임님이 쓰신 사진 너무 예쁘다! 근데 혹시 여권 번호가 9999부터 시작하시는 건지, 아니면 완전 다른 번호예요?", "pi": [{"type": "NAME", "text": "라임", "start": 3, "end": 5}, {"type": "PASSPORT", "text": "9999", "start": 35, "end": 39}], "meta": {"domain": "SNS 댓글", "style": "길고 장황한 설명", "obfuscation": ["repeat_expr"], "hard_case": "homonym_name"}}

@@ -1,1 +1,0 @@
-{"id": "A-000258", "text": "고객님 전화번호가 '010-1111-2222' 맞으신가요? 혹시 다른 번호가 있으시면 '010-3333-4444'로 다시 부탁드릴게요.", "pi": [{"type": "PHONE", "text": "010-1111-2222", "start": 11, "end": 24}, {"type": "PHONE", "text": "010-3333-4444", "start": 49, "end": 62}], "meta": {"domain": "고객센터 채팅", "style": "구어체", "obfuscation": ["repeat_expr", "split_utterance"], "hard_case": "none"}}

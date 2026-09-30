@@ -1,1 +1,0 @@
-{"id": "A-001729", "text": "문의하신 메일 주소는 cherry.test.naver(at)com 인가요? 아니면 cherry123@n.com 같은 건가요?", "pi": [{"type": "EMAIL", "text": "cherry.test.naver(at)com", "start": 12, "end": 36}, {"type": "EMAIL", "text": "cherry123@n.com", "start": 46, "end": 61}], "meta": {"domain": "콜센터 상담 요약", "style": "짧은 단답", "obfuscation": ["email_spoken", "lookalike_char"], "hard_case": "none"}}

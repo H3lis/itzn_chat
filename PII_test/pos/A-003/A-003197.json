@@ -1,1 +1,0 @@
-{"id": "A-003197", "text": "고객님은 2000년 5월 15일에 태어나셨고, 성함이 이슬 씨가 맞으신가요?", "pi": [{"type": "BIRTH", "text": "2000년 5월 15일", "start": 5, "end": 17}, {"type": "NAME", "text": "이슬", "start": 30, "end": 32}], "meta": {"domain": "이메일 본문", "style": "존댓말 상담", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

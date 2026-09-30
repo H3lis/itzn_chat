@@ -1,1 +1,0 @@
-{"id": "A-005046", "text": "이메일 주소는 u s a 1 2 3 @ d o t c o m 입니다.", "pi": [{"type": "EMAIL", "text": "u s a 1 2 3 @ d o t c o m", "start": 8, "end": 33}], "meta": {"domain": "음성통화 전사문", "style": "짧은 단답", "obfuscation": ["separator_noise", "lookalike_char"], "hard_case": "none"}}

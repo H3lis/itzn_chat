@@ -1,1 +1,0 @@
-{"id": "A-000230", "text": "김대리님, 오늘 회의 자료는 공유됐어? 아, 계정 비밀번호가 안 보여.", "pi": [{"type": "ACCOUNT", "text": "비밀번호", "start": 28, "end": 32}], "meta": {"domain": "직장 메신저", "style": "반말 대화", "obfuscation": ["plain"], "hard_case": "none"}}

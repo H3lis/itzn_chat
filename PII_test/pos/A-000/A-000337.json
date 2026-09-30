@@ -1,1 +1,0 @@
-{"id": "A-000337", "text": "담당자 이름이 김민정(ㄱㅏㅁㄷㅏㅇㅈㅏ) 씨라고 하셨는데, 그분이 찾으시는 건가요?", "pi": [{"type": "NAME", "text": "김민정", "start": 8, "end": 11}], "meta": {"domain": "콜센터 상담 요약", "style": "오타 많은 채팅", "obfuscation": ["jamo_split"], "hard_case": "none"}}

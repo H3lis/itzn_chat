@@ -1,1 +1,0 @@
-{"id": "A-001567", "text": "네, 고객님 성함이 '김민준' 씨 맞으신가요? 저희가 시스템에 '김 ㅁ ㄴ ㅈ'으로 기록되어 있어서요. 성함이 틀리신 건가요?", "pi": [{"type": "NAME", "text": "김 ㅁ ㄴ ㅈ", "start": 36, "end": 43}], "meta": {"domain": "금융 상담", "style": "길고 장황한 설명", "obfuscation": ["jamo_split", "honorific_ref"], "hard_case": "none"}}

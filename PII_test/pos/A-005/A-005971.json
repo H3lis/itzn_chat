@@ -1,1 +1,0 @@
-{"id": "A-005971", "text": "저희는 웹사이트에서 가입할 때 아이디가 'user_xyz'였고, 이름은 '홍길동'으로 했었어요.", "pi": [{"type": "ID", "text": "user_xyz", "start": 23, "end": 31}, {"type": "NAME", "text": "홍길동", "start": 41, "end": 44}], "meta": {"domain": "배달 요청사항", "style": "구어체", "obfuscation": ["romanized", "jamo_split"], "hard_case": "none"}}

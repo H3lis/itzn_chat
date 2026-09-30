@@ -1,1 +1,0 @@
-{"id": "A-004585", "text": "저희 회사의 주소는 서울특별시 종로구 세종대로 99 그쪽입니다.", "pi": [{"type": "ADDRESS", "text": "서울특별시 종로구 세종대로 99", "start": 11, "end": 28}], "meta": {"domain": "음성통화 전사문", "style": "공문서풍", "obfuscation": ["jamo_split"], "hard_case": "none"}}

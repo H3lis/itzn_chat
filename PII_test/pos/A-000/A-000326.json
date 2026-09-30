@@ -1,1 +1,0 @@
-{"id": "A-000326", "text": "접수하신 번호가 010 다섯 다섯 다섯, 다시 한글로는 영일공 팔이일이구요.", "pi": [{"type": "PHONE", "text": "010 다섯 다섯 다섯", "start": 9, "end": 21}], "meta": {"domain": "민원 접수", "style": "구어체", "obfuscation": ["mixed_reading", "korean_reading"], "hard_case": "none"}}

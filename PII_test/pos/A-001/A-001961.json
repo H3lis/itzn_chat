@@ -1,1 +1,0 @@
-{"id": "A-001961", "text": "차량 번호는 ０１０-①１０-②２２에 해당하며, 운전면허 번호는 ㄷ123456789에 적혀있습니다.", "pi": [{"type": "PHONE", "text": "０１０-①１０-②２２", "start": 7, "end": 18}, {"type": "DRIVER_LICENSE", "text": "ㄷ123456789", "start": 35, "end": 45}], "meta": {"domain": "고객센터 채팅", "style": "격식체", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

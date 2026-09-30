@@ -1,1 +1,0 @@
-{"id": "A-005767", "text": "학생분 학번은 20230815이고요. 이름은 여름이 맞으신지 다시 한번 확인 부탁드립니다.", "pi": [{"type": "ID", "text": "20230815", "start": 8, "end": 16}, {"type": "NAME", "text": "여름", "start": 25, "end": 27}], "meta": {"domain": "학교 행정 문의", "style": "음성인식(STT) 전사", "obfuscation": ["lookalike_char"], "hard_case": "homonym_name"}}

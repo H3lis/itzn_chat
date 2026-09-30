@@ -1,1 +1,0 @@
-{"id": "A-003032", "text": "로그인 아이디가 무엇인가요? 그리고 거주하시는 주소를 다시 한번 말씀해 주시겠어요?", "pi": [{"type": "ACCOUNT", "text": "아이디", "start": 4, "end": 7}, {"type": "ADDRESS", "text": "주소", "start": 26, "end": 28}], "meta": {"domain": "병원 접수", "style": "반말 대화", "obfuscation": ["jamo_split"], "hard_case": "none"}}

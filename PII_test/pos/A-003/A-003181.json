@@ -1,1 +1,0 @@
-{"id": "A-003181", "text": "고객님께서 가입하신 아이디는 'user1234'이고, 문의 전화번호는 010 다음에 3이 네 번 그리고 5가 네 번입니다.", "pi": [{"type": "ACCOUNT", "text": "user1234", "start": 17, "end": 25}, {"type": "PHONE", "text": "010 다음에 3이 네 번 그리고 5가 네 번", "start": 39, "end": 64}], "meta": {"domain": "이메일 본문", "style": "존댓말 상담", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-000942", "text": "저는 미국 시민권자 홍길동이고요, 캘리포니아 주 샌프란시스코에 거주합니다.", "pi": [{"type": "ORG", "text": "미국 시민권자", "start": 3, "end": 10}, {"type": "NAME", "text": "홍길동", "start": 11, "end": 14}, {"type": "ADDRESS", "text": "캘리포니아 주 샌프란시스코", "start": 19, "end": 33}], "meta": {"domain": "학교 행정 문의", "style": "길고 장황한 설명", "obfuscation": ["romanized"], "hard_case": "org_person"}}

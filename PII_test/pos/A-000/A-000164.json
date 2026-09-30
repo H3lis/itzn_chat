@@ -1,1 +1,0 @@
-{"id": "A-000164", "text": "어, 그게 전에 살던 집 주소는 서울 성북구로 알고 있는데, 여기는 좀 다르지 않아?", "pi": [{"type": "ADDRESS", "text": "서울 성북구", "start": 18, "end": 24}], "meta": {"domain": "콜센터 상담 요약", "style": "반말 대화", "obfuscation": ["korean_reading"], "hard_case": "none"}}

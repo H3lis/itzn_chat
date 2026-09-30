@@ -1,1 +1,0 @@
-{"id": "A-005502", "text": "운전면허증 번호는 게이 123456780까지이고요, 발급일자는 2020년 3월 15일이라고 기록되어 있습니다.", "pi": [{"type": "DRIVER_LICENSE", "text": "게이 123456780", "start": 10, "end": 22}], "meta": {"domain": "보험 청구", "style": "길고 장황한 설명", "obfuscation": ["plain"], "hard_case": "none"}}

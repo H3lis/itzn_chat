@@ -1,1 +1,0 @@
-{"id": "A-001589", "text": "혹시 봄 씨가 진행한 프로젝트 자료가 있나요? 봄 팀장님께서 검토하신 내용이 필요합니다.", "pi": [{"type": "NAME", "text": "봄", "start": 3, "end": 4}, {"type": "RRN", "text": "팀장님", "start": 28, "end": 31}], "meta": {"domain": "직장 메신저", "style": "길고 장황한 설명", "obfuscation": ["romanized"], "hard_case": "homonym_name"}}

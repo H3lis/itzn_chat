@@ -1,1 +1,0 @@
-{"id": "A-002865", "text": "네, 고객님. 성함은 김민준이고요, 연락 가능한 번호는 010-3333-4444입니다.", "pi": [{"type": "NAME", "text": "김민준", "start": 12, "end": 15}, {"type": "PHONE", "text": "010-3333-4444", "start": 31, "end": 44}], "meta": {"domain": "콜센터 상담 요약", "style": "음성인식(STT) 전사", "obfuscation": ["plain"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-000626", "text": "접수할 건데요, 아이디는 Gigauser고, 소속은 서울대학교예요.", "pi": [{"type": "ID", "text": "Gigauser", "start": 14, "end": 22}, {"type": "ORG", "text": "서울대학교", "start": 29, "end": 34}], "meta": {"domain": "민원 접수", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "org_person"}}

@@ -1,1 +1,0 @@
-{"id": "A-005813", "text": "거주지는 서울특별시 강남구 삼성동이라고 하셨고, 고객님 성함은 '별'님이시죠?", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 삼성동", "start": 5, "end": 18}, {"type": "NAME", "text": "별", "start": 36, "end": 37}], "meta": {"domain": "콜센터 상담 요약", "style": "메신저 줄임말", "obfuscation": ["romanized", "korean_reading"], "hard_case": "homonym_name"}}

@@ -1,1 +1,0 @@
-{"id": "A-002818", "text": "제가 예전부터 사용하던 계정 번호가 5555-AAAA-1234 라던데, 이걸로 조회가 될지 궁금합니다.", "pi": [{"type": "ACCOUNT", "text": "5555-AAAA-1234", "start": 20, "end": 34}], "meta": {"domain": "병원 접수", "style": "길고 장황한 설명", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

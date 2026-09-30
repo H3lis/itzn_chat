@@ -1,1 +1,0 @@
-{"id": "A-000415", "text": "네, 아이디는 진주고, 계정 번호는 22334455로 이용하고 계신 게 맞으신가요?", "pi": [{"type": "NAME", "text": "진주", "start": 8, "end": 10}, {"type": "ACCOUNT", "text": "22334455", "start": 20, "end": 28}], "meta": {"domain": "직장 메신저", "style": "존댓말 상담", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

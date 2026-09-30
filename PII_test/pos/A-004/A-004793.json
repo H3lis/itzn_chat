@@ -1,1 +1,0 @@
-{"id": "A-004793", "text": "운전면허는 123-45-6789 이고, 성함은 최민준 씨 맞으시죠?", "pi": [{"type": "DRIVER_LICENSE", "text": "123-45-6789", "start": 6, "end": 17}, {"type": "NAME", "text": "최민준", "start": 26, "end": 29}], "meta": {"domain": "여행 예약", "style": "존댓말 상담", "obfuscation": ["self_correction"], "hard_case": "none"}}

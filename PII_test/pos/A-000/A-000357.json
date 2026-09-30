@@ -1,1 +1,0 @@
-{"id": "A-000357", "text": "광주에 계신 거주지 주소는 정확히 어떤 곳인가요? 저희가 확인해 보니 광주광역시 북구 설화동 123-4 건물이요.", "pi": [{"type": "NAME", "text": "광주", "start": 0, "end": 2}, {"type": "ADDRESS", "text": "광주광역시 북구 설화동 123-4", "start": 39, "end": 57}], "meta": {"domain": "금융 상담", "style": "짧은 단답", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

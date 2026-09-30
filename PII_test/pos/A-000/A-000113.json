@@ -1,1 +1,0 @@
-{"id": "A-000113", "text": "네, 성함이 이지은 고객님 맞으신가요? 그리고 연락 가능한 번호도 다시 한번 말씀해 주시겠어요?", "pi": [{"type": "NAME", "text": "이지은", "start": 7, "end": 10}], "meta": {"domain": "쇼핑몰 문의", "style": "음성인식(STT) 전사", "obfuscation": ["plain"], "hard_case": "none"}}

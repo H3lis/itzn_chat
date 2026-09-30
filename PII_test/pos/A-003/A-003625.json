@@ -1,1 +1,0 @@
-{"id": "A-003625", "text": "신청자 성함은 김민재 님이며, 연락 가능한 SNS 주소는 twitter: minjae_kim 입니다.", "pi": [{"type": "NAME", "text": "김민재", "start": 8, "end": 11}, {"type": "SNS", "text": "twitter: minjae_kim", "start": 32, "end": 51}], "meta": {"domain": "쇼핑몰 문의", "style": "공문서풍", "obfuscation": ["separator_noise"], "hard_case": "none"}}

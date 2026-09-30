@@ -1,1 +1,0 @@
-{"id": "A-001734", "text": "주소는 경기도 서울시 강남구 역삼동 123-45이고요, 건물 번지는 5층에요.", "pi": [{"type": "ADDRESS", "text": "경기도 서울시 강남구 역삼동 123-45", "start": 4, "end": 26}], "meta": {"domain": "배달 요청사항", "style": "길고 장황한 설명", "obfuscation": ["stt_error"], "hard_case": "none"}}

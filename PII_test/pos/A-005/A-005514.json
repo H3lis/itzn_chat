@@ -1,1 +1,0 @@
-{"id": "A-005514", "text": "여권을 분실하셨다고요? 아니면 신규 발급을 원하시나요?", "pi": [{"type": "PASSPORT", "text": "여권을", "start": 0, "end": 3}], "meta": {"domain": "쇼핑몰 문의", "style": "구어체", "obfuscation": ["self_correction"], "hard_case": "none"}}

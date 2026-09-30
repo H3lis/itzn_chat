@@ -1,1 +1,0 @@
-{"id": "A-003985", "text": "제가 이름을 김도현이라고 하는데요. 연락처는 010-5555-1234로 변경됐어요.", "pi": [{"type": "NAME", "text": "김도현", "start": 7, "end": 10}, {"type": "PHONE", "text": "010-5555-1234", "start": 25, "end": 38}], "meta": {"domain": "학교 행정 문의", "style": "오타 많은 채팅", "obfuscation": ["korean_reading"], "hard_case": "none"}}

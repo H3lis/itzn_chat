@@ -1,1 +1,0 @@
-{"id": "A-003212", "text": "김민준님 SNS는 @minjun_k입니다. 어머님께서는 많이 좋아하셨어요.", "pi": [{"type": "NAME", "text": "김민준", "start": 0, "end": 3}, {"type": "SNS", "text": "@minjun_k", "start": 10, "end": 19}], "meta": {"domain": "SNS 댓글", "style": "음성인식(STT) 전사", "obfuscation": ["honorific_ref", "separator_noise", "lookalike_char"], "hard_case": "nickname_id"}}

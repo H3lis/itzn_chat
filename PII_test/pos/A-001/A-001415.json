@@ -1,1 +1,0 @@
-{"id": "A-001415", "text": "혹시 주소는 그쪽으로 와서 배달해 줄 수 있어? 아니면 그냥 이름만 알려줘.", "pi": [{"type": "ADDRESS", "text": "그쪽", "start": 7, "end": 9}, {"type": "NAME", "text": "이름", "start": 34, "end": 36}], "meta": {"domain": "배달 요청사항", "style": "반말 대화", "obfuscation": ["stt_error"], "hard_case": "none"}}

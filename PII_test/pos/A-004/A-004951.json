@@ -1,1 +1,0 @@
-{"id": "A-004951", "text": "제 이름은 민지고요, 연락처는 010 1234 5678로 변경 가능할까요?", "pi": [{"type": "NAME", "text": "민지", "start": 6, "end": 8}, {"type": "PHONE", "text": "010 1234 5678", "start": 17, "end": 30}], "meta": {"domain": "쇼핑몰 문의", "style": "반말 대화", "obfuscation": ["stt_error"], "hard_case": "none"}}

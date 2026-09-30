@@ -1,1 +1,0 @@
-{"id": "A-001086", "text": "저희 집 주소가요, 강남대로 123번지 맞으시죠? 혹시 김대리님, 직함이 잘못됐을 수도 있으니 다시 한번 확인해 봐요.", "pi": [{"type": "ADDRESS", "text": "강남대로 123번지", "start": 11, "end": 21}, {"type": "NAME", "text": "김대리님", "start": 31, "end": 35}], "meta": {"domain": "금융 상담", "style": "반말 대화", "obfuscation": ["split_utterance"], "hard_case": "none"}}

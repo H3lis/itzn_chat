@@ -1,1 +1,0 @@
-{"id": "A-000080", "text": "요청하신 주소는 서울시 마포구 월드컵로고요, 보내주신 분 성함은 김현우 님이신가요?", "pi": [{"type": "ADDRESS", "text": "서울시 마포구 월드컵로", "start": 9, "end": 21}, {"type": "NAME", "text": "김현우", "start": 36, "end": 39}], "meta": {"domain": "중고거래 채팅", "style": "격식체", "obfuscation": ["korean_reading"], "hard_case": "none"}}

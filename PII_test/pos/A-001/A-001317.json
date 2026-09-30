@@ -1,1 +1,0 @@
-{"id": "A-001317", "text": "김민준 사원님, 혹시 방금 그 자료 요청하신 거, 'ㄱㅏㅇㄴㅏㅁ'으로 검색해보셨어요? 아니면 'ㅁㅏㄴㄴㅣ'님께 직접 문의해보시는 게 빠를 것 같은데요.", "pi": [{"type": "NAME", "text": "김민준", "start": 0, "end": 3}, {"type": "NAME", "text": "ㅁㅏㄴㄴㅣ", "start": 53, "end": 58}], "meta": {"domain": "직장 메신저", "style": "길고 장황한 설명", "obfuscation": ["jamo_split", "honorific_ref"], "hard_case": "none"}}

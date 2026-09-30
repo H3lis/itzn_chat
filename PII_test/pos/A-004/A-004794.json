@@ -1,1 +1,0 @@
-{"id": "A-004794", "text": "상주동에 위치한 주소인데, 말씀하신 번지는 123가 아니라 삼 사 오번지 쪽이 맞을까요?", "pi": [{"type": "ADDRESS", "text": "상주동에 위치한 주소", "start": 0, "end": 11}], "meta": {"domain": "음성통화 전사문", "style": "격식체", "obfuscation": ["korean_reading", "jamo_split"], "hard_case": "none"}}

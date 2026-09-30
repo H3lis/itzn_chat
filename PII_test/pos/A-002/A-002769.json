@@ -1,1 +1,0 @@
-{"id": "A-002769", "text": "운전면허증 번호는 910328-5555-1122입니다. 그리고 주민등록번호는 750101-1****** 입니다.", "pi": [{"type": "DRIVER_LICENSE", "text": "910328-5555-1122", "start": 10, "end": 26}, {"type": "DRIVER_LICENSE", "text": "750101-1", "start": 43, "end": 51}], "meta": {"domain": "회의록", "style": "공문서풍", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

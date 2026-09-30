@@ -1,1 +1,0 @@
-{"id": "A-001344", "text": "어디로 가려고요? 아이디가 뭐였죠? 그냥 닉네임으로 알려주세요.", "pi": [{"type": "ID", "text": "닉네임", "start": 23, "end": 26}], "meta": {"domain": "여행 예약", "style": "반말 대화", "obfuscation": ["plain"], "hard_case": "nickname_id"}}

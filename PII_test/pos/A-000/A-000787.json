@@ -1,1 +1,0 @@
-{"id": "A-000787", "text": "나무 씨 상품 문의 주셨죠? 고객님 성함이 '나무' 씨 맞으신가요? 전화는 010-1111-2222로 연락 주세요.", "pi": [{"type": "NAME", "text": "나무", "start": 0, "end": 2}, {"type": "PHONE", "text": "010-1111-2222", "start": 42, "end": 55}], "meta": {"domain": "쇼핑몰 문의", "style": "존댓말 상담", "obfuscation": ["mixed_reading"], "hard_case": "homonym_name"}}

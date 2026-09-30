@@ -1,1 +1,0 @@
-{"id": "A-001630", "text": "너희 계정 이름이 'cute_bunny123' 맞지? 그거로 로그아웃하면 안 돼.", "pi": [{"type": "ACCOUNT", "text": "cute_bunny123", "start": 11, "end": 24}], "meta": {"domain": "SNS 댓글", "style": "반말 대화", "obfuscation": ["korean_reading"], "hard_case": "none"}}

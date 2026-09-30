@@ -1,1 +1,0 @@
-{"id": "A-003817", "text": "혹시 이 중고 가전제품을 구매하려면 휴대폰 번호가 어떻게 돼요? 주민등록번호는 900101-2******로 시작하는데, 이게 맞나요?", "pi": [{"type": "PHONE", "text": "휴대폰 번호", "start": 20, "end": 26}, {"type": "RRN", "text": "900101-2", "start": 44, "end": 52}], "meta": {"domain": "중고거래 채팅", "style": "격식체", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-003428", "text": "첫 번째 주민번호는 900101-1******이고, 잠시만요, 아니요, 실제는 850520-2****** 입니다.", "pi": [{"type": "RRN", "text": "900101-1******", "start": 11, "end": 25}, {"type": "RRN", "text": "850520-2******", "start": 44, "end": 58}], "meta": {"domain": "금융 상담", "style": "오타 많은 채팅", "obfuscation": ["split_utterance", "self_correction"], "hard_case": "none"}}

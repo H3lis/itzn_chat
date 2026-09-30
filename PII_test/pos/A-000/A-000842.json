@@ -1,1 +1,0 @@
-{"id": "A-000842", "text": "저희가 찾아본 거로는 박지훈 씨가 가장 적합해 보입니다. 박지훈 씨는 웹사이트에서 영문으로 Kim Jihoon이라고 되어 있더라고요.", "pi": [{"type": "NAME", "text": "박지훈", "start": 12, "end": 15}, {"type": "PHONE", "text": "Kim Jihoon", "start": 51, "end": 61}], "meta": {"domain": "부동산 상담", "style": "음성인식(STT) 전사", "obfuscation": ["romanized"], "hard_case": "none"}}

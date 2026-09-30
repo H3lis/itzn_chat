@@ -1,1 +1,0 @@
-{"id": "A-001228", "text": "소속은 OO대학교이고, 전화번호는 010-9999-1111 입니다.", "pi": [{"type": "ORG", "text": "OO대학교", "start": 4, "end": 9}, {"type": "PHONE", "text": "010-9999-1111", "start": 19, "end": 32}], "meta": {"domain": "병원 접수", "style": "짧은 단답", "obfuscation": ["stt_error"], "hard_case": "org_person"}}

@@ -1,1 +1,0 @@
-{"id": "A-000996", "text": "민원 내용 확인했습니다. 고객님께서 남겨주신 메일 주소는 testuser@work.net으로 처리했습니다.", "pi": [{"type": "EMAIL", "text": "testuser@work.net", "start": 32, "end": 49}], "meta": {"domain": "민원 접수", "style": "메신저 줄임말", "obfuscation": ["plain"], "hard_case": "none"}}

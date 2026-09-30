@@ -1,1 +1,0 @@
-{"id": "A-005462", "text": "제 새 이메일 주소는 abc_xyz.com 으로 바꿨어요. 확인 부탁드려요 ㅠㅠ", "pi": [{"type": "EMAIL", "text": "abc_xyz.com", "start": 12, "end": 23}], "meta": {"domain": "SNS 댓글", "style": "반말 대화", "obfuscation": ["separator_noise", "lookalike_char"], "hard_case": "none"}}

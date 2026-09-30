@@ -1,1 +1,0 @@
-{"id": "A-004281", "text": "저희 프로젝트에 필요한 계정은 구름 씨 거예요. 이름은 김구름으로 되어있습니다.", "pi": [{"type": "ACCOUNT", "text": "구름", "start": 17, "end": 19}, {"type": "NAME", "text": "김구름", "start": 31, "end": 34}], "meta": {"domain": "직장 메신저", "style": "격식체", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

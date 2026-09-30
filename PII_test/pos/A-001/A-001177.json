@@ -1,1 +1,0 @@
-{"id": "A-001177", "text": "문의하신 메일이 'a@지메일점컴'이 맞으실까요? 확인차 다시 여쭤봅니다.", "pi": [{"type": "NAME", "text": "문의", "start": 0, "end": 2}, {"type": "EMAIL", "text": "a@지메일점컴", "start": 10, "end": 17}], "meta": {"domain": "민원 접수", "style": "공문서풍", "obfuscation": ["self_correction", "lookalike_char"], "hard_case": "none"}}

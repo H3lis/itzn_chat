@@ -1,1 +1,0 @@
-{"id": "A-005550", "text": "차량 번호는 서울 12가 3456이고, 회원님 아이디는 'premium_user'로 등록된 건이 맞을까요?", "pi": [{"type": "CAR_PLATE", "text": "서울 12가 3456", "start": 7, "end": 18}, {"type": "ID", "text": "premium_user", "start": 32, "end": 44}], "meta": {"domain": "회의록", "style": "존댓말 상담", "obfuscation": ["repeat_expr"], "hard_case": "nickname_id"}}

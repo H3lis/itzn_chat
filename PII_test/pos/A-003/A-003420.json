@@ -1,1 +1,0 @@
-{"id": "A-003420", "text": "선생님, 제가 이메일을 받으려면 정확한 주소가 필요할 것 같은데, 제 계정은 abc@google.net으로 설정되어 있어요.", "pi": [{"type": "EMAIL", "text": "abc@google.net", "start": 43, "end": 57}], "meta": {"domain": "온라인 강의 Q&A", "style": "격식체", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

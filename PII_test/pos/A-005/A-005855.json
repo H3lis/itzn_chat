@@ -1,1 +1,0 @@
-{"id": "A-005855", "text": "담당 부서는 기획팀이고요, 연락하실 분은 이민규 주임님으로 연결 부탁드립니다.", "pi": [{"type": "ORG", "text": "기획팀", "start": 7, "end": 10}, {"type": "PHONE", "text": "이민규", "start": 23, "end": 26}], "meta": {"domain": "콜센터 상담 요약", "style": "공문서풍", "obfuscation": ["stt_error"], "hard_case": "org_person"}}

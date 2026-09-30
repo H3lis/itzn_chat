@@ -1,1 +1,0 @@
-{"id": "A-001452", "text": "저희 이름은 한결인데요. 혹시 고객님 성함이 한결이 맞으신가요? 이메일 주소는 kyung.han@test.com입니다.", "pi": [{"type": "NAME", "text": "한결", "start": 7, "end": 9}, {"type": "EMAIL", "text": "kyung.han@test.com", "start": 44, "end": 62}], "meta": {"domain": "병원 접수", "style": "구어체", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

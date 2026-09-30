@@ -1,1 +1,0 @@
-{"id": "A-000966", "text": "저, 제가요. 그 기쁨 씨 계좌로 연결되는 거 맞으신가요? 혹시 전화번호가 010-1111-2222 맞으신가요?", "pi": [{"type": "NAME", "text": "기쁨", "start": 10, "end": 12}, {"type": "PHONE", "text": "010-1111-2222", "start": 42, "end": 55}], "meta": {"domain": "금융 상담", "style": "오타 많은 채팅", "obfuscation": ["korean_reading"], "hard_case": "homonym_name"}}

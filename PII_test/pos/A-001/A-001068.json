@@ -1,1 +1,0 @@
-{"id": "A-001068", "text": "제 성함은 김민준인데요. 이전에 등록했던 SNS는 chulsoo(at)gmail(dot)com이 맞나요? 아, 아니에요, 이게 아니라서요.", "pi": [{"type": "NAME", "text": "김민준", "start": 6, "end": 9}, {"type": "SNS", "text": "chulsoo(at)gmail(dot)com", "start": 28, "end": 52}], "meta": {"domain": "콜센터 상담 요약", "style": "존댓말 상담", "obfuscation": ["self_correction", "romanized"], "hard_case": "none"}}

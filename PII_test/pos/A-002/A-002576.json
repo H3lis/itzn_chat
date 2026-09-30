@@ -1,1 +1,0 @@
-{"id": "A-002576", "text": "네, 학부모님께서 요청하신 주소는 경기도 성남시 분당구 판교역로 500이고요. 학생 이름은 '하루'가 맞으신지 다시 한번 확인해 주세요.", "pi": [{"type": "ADDRESS", "text": "경기도 성남시 분당구 판교역로 500", "start": 19, "end": 39}, {"type": "NAME", "text": "하루", "start": 52, "end": 54}], "meta": {"domain": "학교 행정 문의", "style": "짧은 단답", "obfuscation": ["self_correction"], "hard_case": "homonym_name"}}

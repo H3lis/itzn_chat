@@ -1,1 +1,0 @@
-{"id": "A-002902", "text": "혹시 제가 적은 메일 주소, sjh789@test.com 으로 확인 부탁드려요.", "pi": [{"type": "EMAIL", "text": "sjh789@test.com", "start": 16, "end": 31}], "meta": {"domain": "SNS 댓글", "style": "메신저 줄임말", "obfuscation": ["separator_noise"], "hard_case": "none"}}

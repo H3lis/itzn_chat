@@ -1,1 +1,0 @@
-{"id": "A-000057", "text": "혹시 담당자분 이름이 '소나무' 씨 맞으신가요? 제가 잘못 들었는지 다시 한번 확인해 주시겠어요?", "pi": [{"type": "NAME", "text": "소나무", "start": 13, "end": 16}], "meta": {"domain": "민원 접수", "style": "존댓말 상담", "obfuscation": ["self_correction"], "hard_case": "homonym_name"}}

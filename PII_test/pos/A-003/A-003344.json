@@ -1,1 +1,0 @@
-{"id": "A-003344", "text": "거래하시는 분 아이디가 user01k@test-shop.net 메일로 연락드렸어요.", "pi": [{"type": "EMAIL", "text": "user01k@test-shop.net", "start": 13, "end": 34}], "meta": {"domain": "중고거래 채팅", "style": "오타 많은 채팅", "obfuscation": ["separator_noise"], "hard_case": "none"}}

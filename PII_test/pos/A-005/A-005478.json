@@ -1,1 +1,0 @@
-{"id": "A-005478", "text": "푸름 씨, 혹시 주소 좀 알려주시겠어요? 123번지 말고요, 아 아니요, 신천지 777호로 해주세요.", "pi": [{"type": "NAME", "text": "푸름", "start": 0, "end": 2}, {"type": "ADDRESS", "text": "신천지 777호", "start": 41, "end": 49}], "meta": {"domain": "민원 접수", "style": "짧은 단답", "obfuscation": ["self_correction"], "hard_case": "homonym_name"}}

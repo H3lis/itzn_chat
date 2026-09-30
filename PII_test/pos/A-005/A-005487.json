@@ -1,1 +1,0 @@
-{"id": "A-005487", "text": "등록이 안 됐다고요? 그럼 등록하신 메일 주소 다시 한번 말씀해 주시겠어요? g.h.k@test.co.kr 이요.", "pi": [{"type": "EMAIL", "text": "g.h.k@test.co.kr", "start": 43, "end": 59}], "meta": {"domain": "학교 행정 문의", "style": "반말 대화", "obfuscation": ["email_spoken"], "hard_case": "none"}}

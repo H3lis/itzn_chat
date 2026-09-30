@@ -1,1 +1,0 @@
-{"id": "A-003311", "text": "혹시 회원님 계정 확인하려고요. 아이디가 'happyuser123' 맞으신가요? 이거 완전 필수 정보예요.", "pi": [{"type": "ACCOUNT", "text": "happyuser123", "start": 24, "end": 36}], "meta": {"domain": "쇼핑몰 문의", "style": "메신저 줄임말", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

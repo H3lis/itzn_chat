@@ -1,1 +1,0 @@
-{"id": "A-000329", "text": "저희가 확인한 계정은 user123이고, 담당 지점은 강남지점이에요.", "pi": [{"type": "ACCOUNT", "text": "user123", "start": 12, "end": 19}, {"type": "ORG", "text": "강남지점", "start": 30, "end": 34}], "meta": {"domain": "배달 요청사항", "style": "반말 대화", "obfuscation": ["korean_reading"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-001354", "text": "안녕하세요. 제가 지금 연락드리는 이유는 이메일 주소인 user.test@example.com 때문에요. 이름은 최지훈입니다.", "pi": [{"type": "EMAIL", "text": "user.test@example.com", "start": 31, "end": 52}, {"type": "NAME", "text": "최지훈", "start": 63, "end": 66}], "meta": {"domain": "이메일 본문", "style": "반말 대화", "obfuscation": ["separator_noise"], "hard_case": "none"}}

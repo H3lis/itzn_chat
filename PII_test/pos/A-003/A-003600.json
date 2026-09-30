@@ -1,1 +1,0 @@
-{"id": "A-003600", "text": "저번에 문의 주셨던 건데, 혹시 연락처가 010-5555-9999 맞으신가요?", "pi": [{"type": "PHONE", "text": "010-5555-9999", "start": 23, "end": 36}], "meta": {"domain": "커뮤니티 게시글", "style": "반말 대화", "obfuscation": ["stt_error"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-002693", "text": "제 아이디는 ㄱㅏㄴㅏㅁ1234에요. 이거는 '가나ㅁ'처럼 자음만 풀어서 말하는 방식이라서 추측하기 어려울 거예요.", "pi": [{"type": "ID", "text": "ㄱㅏㄴㅏㅁ1234", "start": 7, "end": 16}], "meta": {"domain": "SNS 댓글", "style": "길고 장황한 설명", "obfuscation": ["jamo_split"], "hard_case": "none"}}

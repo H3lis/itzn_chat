@@ -1,1 +1,0 @@
-{"id": "A-001213", "text": "강사님께 여쭤볼 것이 있는데요, 제가 결제할 때 쓰려고 했던 계정은 '여름학원'이고, 제가 이름이 '김여름'인데요. 혹시 이 정보로도 확인이 될까요?", "pi": [{"type": "ACCOUNT", "text": "여름학원", "start": 39, "end": 43}, {"type": "NAME", "text": "김여름", "start": 56, "end": 59}], "meta": {"domain": "온라인 강의 Q&A", "style": "격식체", "obfuscation": ["honorific_ref"], "hard_case": "homonym_name"}}

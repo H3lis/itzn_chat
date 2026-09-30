@@ -1,1 +1,0 @@
-{"id": "A-004290", "text": "프로젝트를 맡으신 분은 봄 대리님이시고, 사번은 B2024-7777입니다.", "pi": [{"type": "NAME", "text": "봄", "start": 13, "end": 14}, {"type": "OTHER_ID", "text": "B2024-7777", "start": 27, "end": 37}], "meta": {"domain": "회의록", "style": "음성인식(STT) 전사", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

@@ -1,1 +1,0 @@
-{"id": "A-002645", "text": "성남 지역에 오신 성남 학생이세요? 성함이 어떻게 되세요?", "pi": [{"type": "NAME", "text": "성남", "start": 0, "end": 2}], "meta": {"domain": "병원 접수", "style": "반말 대화", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

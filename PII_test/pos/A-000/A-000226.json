@@ -1,1 +1,0 @@
-{"id": "A-000226", "text": "로그인 ID는 'user123' 이시고, 메일 주소는 user123@email.com으로 등록 부탁드립니다.", "pi": [{"type": "ACCOUNT", "text": "user123", "start": 9, "end": 16}, {"type": "EMAIL", "text": "user123@email.com", "start": 30, "end": 47}], "meta": {"domain": "학교 행정 문의", "style": "구어체", "obfuscation": ["separator_noise"], "hard_case": "none"}}

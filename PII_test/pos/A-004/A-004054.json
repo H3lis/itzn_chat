@@ -1,1 +1,0 @@
-{"id": "A-004054", "text": "어제 보내주신 물건, 혹시 이거 잘못 온 거 아니야? 여권 번호가 999X1122Y 같은데, 이거 좀 다시 확인해봐.", "pi": [{"type": "PASSPORT", "text": "999X1122Y", "start": 37, "end": 46}], "meta": {"domain": "택배 문의", "style": "반말 대화", "obfuscation": ["stt_error"], "hard_case": "none"}}

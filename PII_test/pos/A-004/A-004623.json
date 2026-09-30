@@ -1,1 +1,0 @@
-{"id": "A-004623", "text": "여권 번호는 영하나영 다시 하나 넷이랑, 연락처는 공일공 1234 5678로 해줘.", "pi": [{"type": "PASSPORT", "text": "영하나영 다시 하나 넷", "start": 7, "end": 19}, {"type": "PHONE", "text": "공일공 1234 5678", "start": 28, "end": 41}], "meta": {"domain": "택배 문의", "style": "반말 대화", "obfuscation": ["korean_reading"], "hard_case": "none"}}

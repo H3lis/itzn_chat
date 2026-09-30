@@ -1,1 +1,0 @@
-{"id": "B-003732", "text": "사용하시는 회원번호가 12345로 되어 있는데, 혹시 1234567 같은 번호가 맞으신가요?", "pi": [], "meta": {"domain": "고객센터 채팅", "style": "메신저 줄임말", "obfuscation": [], "hard_case": "number_like_pi"}}

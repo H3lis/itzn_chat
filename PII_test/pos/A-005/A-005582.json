@@ -1,1 +1,0 @@
-{"id": "A-005582", "text": "작가님은 정말 멋지세요! 프로필에 적힌 별명은 '밤의요정'이에요. 저 친구는 사용자번호 998877이래요.", "pi": [{"type": "NAME", "text": "작가님", "start": 0, "end": 3}, {"type": "NAME", "text": "밤의요정", "start": 27, "end": 31}, {"type": "OTHER_ID", "text": "998877", "start": 49, "end": 55}], "meta": {"domain": "SNS 댓글", "style": "구어체", "obfuscation": ["plain"], "hard_case": "none"}}

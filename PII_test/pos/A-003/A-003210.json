@@ -1,1 +1,0 @@
-{"id": "A-003210", "text": "운전면허 번호는 1122-3344-5566이라고 하셨는데, 혹시 1122에서 1100으로 잘못 기재하신 건 아닐까요?", "pi": [{"type": "DRIVER_LICENSE", "text": "1122-3344-5566", "start": 9, "end": 23}], "meta": {"domain": "민원 접수", "style": "길고 장황한 설명", "obfuscation": ["stt_error", "lookalike_char"], "hard_case": "none"}}

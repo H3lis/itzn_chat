@@ -1,1 +1,0 @@
-{"id": "A-000439", "text": "이거 혹시 재고 있나요? 상세 주소는 서울시 강남구 테헤란로 123이고요. 앞에 301호가요.", "pi": [{"type": "ADDRESS", "text": "서울시 강남구 테헤란로 123", "start": 21, "end": 37}, {"type": "ID", "text": "301", "start": 45, "end": 48}], "meta": {"domain": "중고거래 채팅", "style": "메신저 줄임말", "obfuscation": ["plain"], "hard_case": "none"}}

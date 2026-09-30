@@ -1,1 +1,0 @@
-{"id": "A-003250", "text": "나라 님 성함이 혹시 '나라' 씨 본인이신가요? 메일 주소는 nara(at)mail(dot)com입니다.", "pi": [{"type": "NAME", "text": "나라", "start": 0, "end": 2}, {"type": "EMAIL", "text": "nara(at)mail(dot)com", "start": 34, "end": 54}], "meta": {"domain": "온라인 강의 Q&A", "style": "오타 많은 채팅", "obfuscation": ["email_spoken"], "hard_case": "homonym_name"}}

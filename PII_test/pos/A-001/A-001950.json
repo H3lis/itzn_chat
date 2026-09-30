@@ -1,1 +1,0 @@
-{"id": "A-001950", "text": "청구할 건데 전화번호가 010 하이파이 3333 2222 맞나요?", "pi": [{"type": "PHONE", "text": "010 하이파이 3333 2222", "start": 13, "end": 31}], "meta": {"domain": "보험 청구", "style": "구어체", "obfuscation": ["plain"], "hard_case": "none"}}

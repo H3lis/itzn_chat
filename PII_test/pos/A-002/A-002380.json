@@ -1,1 +1,0 @@
-{"id": "A-002380", "text": "주소는 010-1234-5678이고요, 메일은 chulsoo(at)gmail(dot)com으로 알고 있습니다.", "pi": [{"type": "ADDRESS", "text": "010-1234-5678", "start": 4, "end": 17}, {"type": "EMAIL", "text": "chulsoo(at)gmail(dot)com", "start": 26, "end": 50}], "meta": {"domain": "민원 접수", "style": "짧은 단답", "obfuscation": ["lookalike_char", "email_spoken"], "hard_case": "none"}}

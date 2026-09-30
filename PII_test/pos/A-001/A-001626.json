@@ -1,1 +1,0 @@
-{"id": "A-001626", "text": "연락하실 번호는 010-1111-2222입니다. 제가 메신저로 보내드릴게요.", "pi": [{"type": "PHONE", "text": "010-1111-2222", "start": 9, "end": 22}], "meta": {"domain": "SNS 댓글", "style": "격식체", "obfuscation": ["separator_noise"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-002210", "text": "예약하신 이용객님의 연락처는 010-5555-1234입니다. 변경 사항이 있으시면 말씀해 주십시오.", "pi": [{"type": "PHONE", "text": "010-5555-1234", "start": 16, "end": 29}], "meta": {"domain": "여행 예약", "style": "공문서풍", "obfuscation": ["plain"], "hard_case": "none"}}

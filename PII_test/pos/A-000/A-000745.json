@@ -1,1 +1,0 @@
-{"id": "A-000745", "text": "저의 이름은 보람이고, 연락처는 010-7777-8888이니 참고해주세요.", "pi": [{"type": "NAME", "text": "보람", "start": 7, "end": 9}, {"type": "PHONE", "text": "010-7777-8888", "start": 18, "end": 31}], "meta": {"domain": "커뮤니티 게시글", "style": "구어체", "obfuscation": ["korean_reading"], "hard_case": "homonym_name"}}

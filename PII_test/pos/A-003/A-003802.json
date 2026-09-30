@@ -1,1 +1,0 @@
-{"id": "A-003802", "text": "제 이름은 이준호예요. 혹시 발음이 어려우신가요? Korean으로 말씀드릴까요?", "pi": [{"type": "NAME", "text": "이준호", "start": 6, "end": 9}], "meta": {"domain": "보험 청구", "style": "반말 대화", "obfuscation": ["romanized"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-002850", "text": "강아지 씨요? 네, 성함은 김민지 라고 불러주시면 돼요.", "pi": [{"type": "NAME", "text": "김민지", "start": 15, "end": 18}], "meta": {"domain": "학교 행정 문의", "style": "구어체", "obfuscation": ["jamo_split"], "hard_case": "none"}}

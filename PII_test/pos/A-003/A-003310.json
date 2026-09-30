@@ -1,1 +1,0 @@
-{"id": "A-003310", "text": "문의주신 내용은 고객님 이메일 주소가 'jimin.lee@mail.com'이고, 연락 가능한 번호는 010-2222-3333이 맞으신가요?", "pi": [{"type": "EMAIL", "text": "jimin.lee@mail.com", "start": 22, "end": 40}, {"type": "PHONE", "text": "010-2222-3333", "start": 56, "end": 69}], "meta": {"domain": "부동산 상담", "style": "길고 장황한 설명", "obfuscation": ["email_spoken"], "hard_case": "none"}}

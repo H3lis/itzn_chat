@@ -1,1 +1,0 @@
-{"id": "A-000001", "text": "신분증상에 적힌 주민번호가 910325-1******로 보이는데요, 이게 맞는 건가요?", "pi": [{"type": "RRN", "text": "910325-1", "start": 15, "end": 23}], "meta": {"domain": "부동산 상담", "style": "구어체", "obfuscation": ["stt_error"], "hard_case": "none"}}

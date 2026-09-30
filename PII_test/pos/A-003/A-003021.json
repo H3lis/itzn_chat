@@ -1,1 +1,0 @@
-{"id": "A-003021", "text": "저희가 말씀드린 주민등록번호 말씀드리면, 칠칠팔팔 칠칠칠칠년 월 일부터요.", "pi": [{"type": "RRN", "text": "칠칠팔팔 칠칠칠칠년 월 일", "start": 23, "end": 37}], "meta": {"domain": "쇼핑몰 문의", "style": "격식체", "obfuscation": ["korean_reading", "split_utterance"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-003274", "text": "민원 접수처에 등록하신 주소는 서울시 강남구 테헤란로 1234번지이고, 회원 아이디는 '강남123'으로 확인됩니다.", "pi": [{"type": "ADDRESS", "text": "서울시 강남구 테헤란로 1234번지", "start": 17, "end": 36}, {"type": "ID", "text": "강남123", "start": 49, "end": 54}], "meta": {"domain": "민원 접수", "style": "격식체", "obfuscation": ["plain"], "hard_case": "nickname_id"}}

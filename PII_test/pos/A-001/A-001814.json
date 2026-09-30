@@ -1,1 +1,0 @@
-{"id": "A-001814", "text": "와, 저 차 번호가 ㄱㄴ1234 같은 거 아니냐? 진짜 신기하다.", "pi": [{"type": "CAR_PLATE", "text": "ㄱㄴ1234", "start": 11, "end": 17}], "meta": {"domain": "SNS 댓글", "style": "반말 대화", "obfuscation": ["plain"], "hard_case": "none"}}

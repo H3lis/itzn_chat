@@ -1,1 +1,0 @@
-{"id": "A-004230", "text": "겨울님, 주소는 강남구 역삼동 778번지고요. 담당자분 성함은 겨울 씨요.", "pi": [{"type": "NAME", "text": "겨울", "start": 0, "end": 2}, {"type": "ADDRESS", "text": "강남구 역삼동 778번지", "start": 9, "end": 22}], "meta": {"domain": "회의록", "style": "메신저 줄임말", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

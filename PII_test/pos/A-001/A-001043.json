@@ -1,1 +1,0 @@
-{"id": "A-001043", "text": "내일 배송되는 건 혹시 수원시 성남대로 123-4입니다. 받는 분 성함은 '수원' 씨로 되어있는데 맞아요?", "pi": [{"type": "PASSPORT", "text": "수원시 성남대로 123-4", "start": 13, "end": 27}, {"type": "NAME", "text": "수원", "start": 42, "end": 44}], "meta": {"domain": "배달 요청사항", "style": "반말 대화", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

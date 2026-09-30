@@ -1,1 +1,0 @@
-{"id": "A-003525", "text": "예약하신 분 성함은 김민준 님 맞으시고, 연락 가능한 번호가 010-1111-2222 맞으신가요?", "pi": [{"type": "PHONE", "text": "010-1111-2222", "start": 34, "end": 47}], "meta": {"domain": "음성통화 전사문", "style": "구어체", "obfuscation": ["separator_noise", "repeat_expr"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-003569", "text": "예약 확인차 연락드렸는데요, 혹시 고객님 전화번호가 010 9999 8888이요? 네, 그리고 다시 한번 010 9999 1234로 부탁드릴게요.", "pi": [{"type": "PHONE", "text": "010 9999 8888", "start": 29, "end": 42}, {"type": "PHONE", "text": "010 9999 1234", "start": 59, "end": 72}], "meta": {"domain": "커뮤니티 게시글", "style": "격식체", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

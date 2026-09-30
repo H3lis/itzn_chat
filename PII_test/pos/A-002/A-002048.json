@@ -1,1 +1,0 @@
-{"id": "A-002048", "text": "김보람 부장님께서는 이번 여행 건으로 말씀 주셨는데요, 성함이 보람 씨가 맞으신가요? 부장님 직함과 함께 말씀해주시면 좋을 것 같습니다.", "pi": [{"type": "NAME", "text": "보람", "start": 1, "end": 3}], "meta": {"domain": "여행 예약", "style": "길고 장황한 설명", "obfuscation": ["honorific_ref"], "hard_case": "homonym_name"}}

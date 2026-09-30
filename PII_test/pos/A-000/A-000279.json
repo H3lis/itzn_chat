@@ -1,1 +1,0 @@
-{"id": "A-000279", "text": "차량 번호가 '에프 에이 투 쓰리'예요. 그리고 연락처는 mytrip2024@email.com이에요.", "pi": [{"type": "CAR_PLATE", "text": "에프 에이 투 쓰리", "start": 8, "end": 18}, {"type": "EMAIL", "text": "mytrip2024@email.com", "start": 32, "end": 52}], "meta": {"domain": "여행 예약", "style": "메신저 줄임말", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

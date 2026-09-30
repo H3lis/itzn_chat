@@ -1,1 +1,0 @@
-{"id": "A-003487", "text": "혹시 전화번호가요? 010-2222-3333이요. 아니요, 010 2222 3333 맞아요.", "pi": [{"type": "PHONE", "text": "010 2222 3333", "start": 33, "end": 46}], "meta": {"domain": "배달 요청사항", "style": "짧은 단답", "obfuscation": ["stt_error", "repeat_expr"], "hard_case": "none"}}

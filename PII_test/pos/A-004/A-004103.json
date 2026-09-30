@@ -1,1 +1,0 @@
-{"id": "A-004103", "text": "혹시 계정 같은 거 비밀번호로 설정된 거 있나요? 번호는 ０10 1111 2222 같은 거 말씀하시는 거예요?", "pi": [{"type": "ACCOUNT", "text": "계정", "start": 3, "end": 5}, {"type": "PHONE", "text": "０10 1111 2222", "start": 32, "end": 45}], "meta": {"domain": "중고거래 채팅", "style": "존댓말 상담", "obfuscation": ["stt_error", "lookalike_char"], "hard_case": "none"}}

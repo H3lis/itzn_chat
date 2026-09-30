@@ -1,1 +1,0 @@
-{"id": "A-000428", "text": "안녕하세요. 제 이메일 주소는 park.minji@testmail.com이고, 이름은 박민지입니다.", "pi": [{"type": "EMAIL", "text": "park.minji@testmail.com", "start": 17, "end": 40}, {"type": "NAME", "text": "박민지", "start": 48, "end": 51}], "meta": {"domain": "고객센터 채팅", "style": "길고 장황한 설명", "obfuscation": ["plain"], "hard_case": "none"}}

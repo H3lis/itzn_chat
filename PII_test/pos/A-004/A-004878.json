@@ -1,1 +1,0 @@
-{"id": "A-004878", "text": "고객님, 계정은 123456입니다. 이메일 주소는 z(at)example(dot)com으로 확인되셨습니다.", "pi": [{"type": "ACCOUNT", "text": "123456", "start": 9, "end": 15}, {"type": "EMAIL", "text": "z(at)example(dot)com", "start": 28, "end": 48}], "meta": {"domain": "콜센터 상담 요약", "style": "존댓말 상담", "obfuscation": ["stt_error"], "hard_case": "none"}}

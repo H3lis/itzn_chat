@@ -1,1 +1,0 @@
-{"id": "A-000486", "text": "요청하신 예전 여권 번호는 이게 맞고, 그리고 연락 가능한 번호는 010-9999-1111이에요.", "pi": [{"type": "PASSPORT", "text": "이게", "start": 15, "end": 17}, {"type": "PHONE", "text": "010-9999-1111", "start": 37, "end": 50}], "meta": {"domain": "직장 메신저", "style": "길고 장황한 설명", "obfuscation": ["split_utterance"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-004833", "text": "별 이름은 별이고, 제 생년월일은 1990년 1월 1일, 성함은 별로 되어 있습니다.", "pi": [{"type": "NAME", "text": "별", "start": 0, "end": 1}, {"type": "BIRTH", "text": "1990년 1월 1일", "start": 19, "end": 30}], "meta": {"domain": "이메일 본문", "style": "짧은 단답", "obfuscation": ["romanized"], "hard_case": "homonym_name"}}

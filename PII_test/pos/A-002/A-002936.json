@@ -1,1 +1,0 @@
-{"id": "A-002936", "text": "주소는 서울시 강남구 테헤란로 123-45이고요, 연락 주실 번호는 070-8888-1234가 맞으실까요?", "pi": [{"type": "ADDRESS", "text": "서울시 강남구 테헤란로 123-45", "start": 4, "end": 23}, {"type": "PHONE", "text": "070-8888-1234", "start": 38, "end": 51}], "meta": {"domain": "부동산 상담", "style": "존댓말 상담", "obfuscation": ["stt_error"], "hard_case": "none"}}

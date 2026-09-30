@@ -1,1 +1,0 @@
-{"id": "A-005660", "text": "차량 번호는 1가 2나 3다 이고, 연락처는 010-5555-1212로 기재 바랍니다.", "pi": [{"type": "CAR_PLATE", "text": "1가 2나 3다", "start": 7, "end": 15}, {"type": "PHONE", "text": "010-5555-1212", "start": 25, "end": 38}], "meta": {"domain": "배달 요청사항", "style": "공문서풍", "obfuscation": ["plain"], "hard_case": "none"}}

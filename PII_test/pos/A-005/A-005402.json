@@ -1,1 +1,0 @@
-{"id": "A-005402", "text": "주문하신 분 이름이 '장미' 씨가 맞나요? 계정은 뭐로 써야 돼요? 아, '자두'로 할게요.", "pi": [{"type": "NAME", "text": "장미", "start": 12, "end": 14}, {"type": "ACCOUNT", "text": "자두", "start": 42, "end": 44}], "meta": {"domain": "배달 요청사항", "style": "짧은 단답", "obfuscation": ["self_correction"], "hard_case": "homonym_name"}}

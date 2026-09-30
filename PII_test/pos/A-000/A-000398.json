@@ -1,1 +1,0 @@
-{"id": "A-000398", "text": "혹시 주소는 강남구 역삼동 123-45번지야? 그리고 연락처는 010 9999 8888이 맞지?", "pi": [{"type": "ADDRESS", "text": "강남구 역삼동 123-45번지", "start": 7, "end": 23}, {"type": "PHONE", "text": "010 9999 8888", "start": 35, "end": 48}], "meta": {"domain": "병원 접수", "style": "반말 대화", "obfuscation": ["split_utterance", "korean_reading", "repeat_expr"], "hard_case": "none"}}

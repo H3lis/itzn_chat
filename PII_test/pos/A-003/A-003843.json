@@ -1,1 +1,0 @@
-{"id": "A-003843", "text": "연락처가 혹시 '０１０-１１１１-２２２２' 맞으신가요? 그리고 주민등록번호는 900101-2111111이신가요?", "pi": [{"type": "PHONE", "text": "０１０-１１１１-２２２２", "start": 9, "end": 22}, {"type": "RRN", "text": "900101-2111111", "start": 43, "end": 57}], "meta": {"domain": "병원 접수", "style": "존댓말 상담", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

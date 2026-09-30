@@ -1,1 +1,0 @@
-{"id": "B-001620", "text": "회원가입 시 아이디는 영문 소문자 조합으로 8글자 이상이어야 하고, 비밀번호는 특수문자를 포함해야 합니다.", "pi": [], "meta": {"domain": "민원 접수", "style": "메신저 줄임말", "obfuscation": [], "hard_case": "handle_like_nonpi"}}

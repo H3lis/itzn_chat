@@ -1,1 +1,0 @@
-{"id": "A-000921", "text": "환자 이름이 김지민 씨 맞으시고요, 연락처는 010-9999-8888로 알고 있습니다.", "pi": [{"type": "NAME", "text": "김지민", "start": 7, "end": 10}, {"type": "PHONE", "text": "010-9999-8888", "start": 25, "end": 38}], "meta": {"domain": "병원 접수", "style": "길고 장황한 설명", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

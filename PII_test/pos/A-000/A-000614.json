@@ -1,1 +1,0 @@
-{"id": "A-000614", "text": "저 제 면허증이 혹시 921012이고, 이름은 민준이에요.", "pi": [{"type": "DRIVER_LICENSE", "text": "921012", "start": 12, "end": 18}, {"type": "NAME", "text": "민준", "start": 26, "end": 28}], "meta": {"domain": "커뮤니티 게시글", "style": "메신저 줄임말", "obfuscation": ["self_correction"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-005833", "text": "아닙니다. 번호는 070-1234-5678이 맞아요.", "pi": [{"type": "PHONE", "text": "070-1234-5678", "start": 10, "end": 23}], "meta": {"domain": "배달 요청사항", "style": "짧은 단답", "obfuscation": ["self_correction"], "hard_case": "none"}}

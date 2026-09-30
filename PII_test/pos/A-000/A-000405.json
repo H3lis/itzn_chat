@@ -1,1 +1,0 @@
-{"id": "A-000405", "text": "팀장님께 말씀드리자면, 김민준 씨와 박지영 씨 두 분이 오늘 프로젝트 회의에 참석하실 예정입니다.", "pi": [{"type": "NAME", "text": "김민준", "start": 13, "end": 16}, {"type": "NAME", "text": "박지영", "start": 20, "end": 23}], "meta": {"domain": "회의록", "style": "길고 장황한 설명", "obfuscation": ["honorific_ref"], "hard_case": "none"}}

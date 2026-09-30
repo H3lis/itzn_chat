@@ -1,1 +1,0 @@
-{"id": "A-005150", "text": "이거 혹시 김민지 씨 건데요, 연락처가 010-5555-1234 맞을까요?", "pi": [{"type": "NAME", "text": "김민지", "start": 6, "end": 9}, {"type": "PHONE", "text": "010-5555-1234", "start": 22, "end": 35}], "meta": {"domain": "보험 청구", "style": "음성인식(STT) 전사", "obfuscation": ["jamo_split"], "hard_case": "none"}}

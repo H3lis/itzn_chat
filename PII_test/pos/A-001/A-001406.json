@@ -1,1 +1,0 @@
-{"id": "A-001406", "text": "주소는 경기도 가상시 테스트로 123-45번지 쪽으로 부탁드리고, 연락처는 010-9999-8888 이렇게 해 주세요.", "pi": [{"type": "ADDRESS", "text": "경기도 가상시 테스트로 123-45번지", "start": 4, "end": 25}, {"type": "PHONE", "text": "010-9999-8888", "start": 42, "end": 55}], "meta": {"domain": "배달 요청사항", "style": "길고 장황한 설명", "obfuscation": ["stt_error", "lookalike_char"], "hard_case": "none"}}

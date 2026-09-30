@@ -1,1 +1,0 @@
-{"id": "A-004326", "text": "담당자분께요? 김과장님 말씀이신가요? 아, 아니요. 최팀장님 말씀이 맞아요.", "pi": [{"type": "NAME", "text": "김과장님", "start": 8, "end": 12}, {"type": "NAME", "text": "최팀장님", "start": 29, "end": 33}], "meta": {"domain": "보험 청구", "style": "짧은 단답", "obfuscation": ["honorific_ref"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-004538", "text": "회의록에는 연락처가 010-9999-1234로 기록되어 있고, 주소는 서울특별시 강남구 테헤란로로 되어 있네요.", "pi": [{"type": "SNS", "text": "서울특별시 강남구 테헤란로", "start": 39, "end": 53}], "meta": {"domain": "회의록", "style": "음성인식(STT) 전사", "obfuscation": ["separator_noise"], "hard_case": "none"}}

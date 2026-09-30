@@ -1,1 +1,0 @@
-{"id": "A-005492", "text": "새벽에 도착하는 기차표가 혹시 있을까요? 네, 아, 저희는 서울시 강남구 테헤란로 123번지 근처로 부탁드립니다.", "pi": [{"type": "NAME", "text": "새벽", "start": 0, "end": 2}, {"type": "ADDRESS", "text": "서울시 강남구 테헤란로 123번지", "start": 33, "end": 51}], "meta": {"domain": "여행 예약", "style": "구어체", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

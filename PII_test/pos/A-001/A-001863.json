@@ -1,1 +1,0 @@
-{"id": "A-001863", "text": "저번에 문의하셨던 건 메일 주소가 chulsoo(at)gmail(dot)com 이 맞는지 확인 부탁드립니다. 성함은 김철수 님이시죠?", "pi": [{"type": "EMAIL", "text": "chulsoo(at)gmail(dot)com", "start": 19, "end": 43}, {"type": "NAME", "text": "김철수", "start": 65, "end": 68}], "meta": {"domain": "직장 메신저", "style": "구어체", "obfuscation": ["email_spoken", "romanized"], "hard_case": "none"}}

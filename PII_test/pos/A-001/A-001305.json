@@ -1,1 +1,0 @@
-{"id": "A-001305", "text": "나 공주 누나한테 문자 왔어. 010-2222-3333 번호로 온 거 같은데, 진짜 맞아?", "pi": [{"type": "NAME", "text": "공주", "start": 2, "end": 4}, {"type": "PHONE", "text": "010-2222-3333", "start": 17, "end": 30}], "meta": {"domain": "SNS 댓글", "style": "반말 대화", "obfuscation": ["honorific_ref"], "hard_case": "none"}}

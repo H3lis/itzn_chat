@@ -1,1 +1,0 @@
-{"id": "A-002270", "text": "바다 님, 혹시 성함이 '바다'가 맞으신가요? 아니면 혹시 김바다 님 같은 분일까요?", "pi": [{"type": "NAME", "text": "바다", "start": 0, "end": 2}], "meta": {"domain": "금융 상담", "style": "메신저 줄임말", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

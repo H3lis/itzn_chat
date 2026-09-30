@@ -1,1 +1,0 @@
-{"id": "A-004157", "text": "저희가 방문했던 주소는 서울시 강남구 테헤란로이고요. 또 다른 곳은 부산광역시 해운대구 마린시티 쪽이었어요.", "pi": [{"type": "ADDRESS", "text": "서울시 강남구 테헤란로", "start": 13, "end": 25}, {"type": "ADDRESS", "text": "부산광역시 해운대구 마린시티", "start": 38, "end": 53}], "meta": {"domain": "콜센터 상담 요약", "style": "메신저 줄임말", "obfuscation": ["korean_reading"], "hard_case": "none"}}

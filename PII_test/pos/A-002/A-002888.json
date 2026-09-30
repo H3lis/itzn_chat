@@ -1,1 +1,0 @@
-{"id": "A-002888", "text": "제가 사는 곳은 도토리마을 근처라요. 저희 집 번호가 1050 2233이거든요. 혹시 이 근방에서 유명한 식당 아시는 곳 있나요?", "pi": [{"type": "NAME", "text": "도토리", "start": 9, "end": 12}, {"type": "PHONE", "text": "1050 2233", "start": 30, "end": 39}], "meta": {"domain": "중고거래 채팅", "style": "길고 장황한 설명", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

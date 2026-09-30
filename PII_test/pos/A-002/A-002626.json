@@ -1,1 +1,0 @@
-{"id": "A-002626", "text": "네, 아이디는 ㅋ@auser123 이고요, 비밀번호는 아세요?", "pi": [{"type": "ID", "text": "ㅋ@auser123", "start": 8, "end": 18}], "meta": {"domain": "콜센터 상담 요약", "style": "메신저 줄임말", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

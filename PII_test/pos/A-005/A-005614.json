@@ -1,1 +1,0 @@
-{"id": "A-005614", "text": "아, 혹시 수원 근처 사시는 분이세요? 혹시 성함이 수원 씨인가요?", "pi": [{"type": "NAME", "text": "수원", "start": 6, "end": 8}], "meta": {"domain": "중고거래 채팅", "style": "구어체", "obfuscation": ["honorific_ref"], "hard_case": "homonym_name"}}

@@ -1,1 +1,0 @@
-{"id": "A-003166", "text": "차량 번호는 12가 나고 25가 마지막이에요. 이거 맞죠?", "pi": [{"type": "CAR_PLATE", "text": "12가 나고 25가", "start": 7, "end": 17}], "meta": {"domain": "회의록", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "none"}}

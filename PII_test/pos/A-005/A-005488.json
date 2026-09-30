@@ -1,1 +1,0 @@
-{"id": "A-005488", "text": "아니, 제가 어제 문의드렸던 그 사람, 나라 씨 건 말씀인데요. 성함이 정확히 '나' 자 '라' 자 맞나요?", "pi": [{"type": "NAME", "text": "나라", "start": 22, "end": 24}], "meta": {"domain": "보험 청구", "style": "음성인식(STT) 전사", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

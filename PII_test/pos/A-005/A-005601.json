@@ -1,1 +1,0 @@
-{"id": "A-005601", "text": "선생님, 그 이름이요. 김민준 선생님이요. 그러니까 'ㅋㅏㅁㅏㄴㅁㅏㄴ' 같은 건가요? 혹시요?", "pi": [{"type": "NAME", "text": "김민준", "start": 13, "end": 16}], "meta": {"domain": "온라인 강의 Q&A", "style": "음성인식(STT) 전사", "obfuscation": ["honorific_ref", "jamo_split", "self_correction"], "hard_case": "none"}}

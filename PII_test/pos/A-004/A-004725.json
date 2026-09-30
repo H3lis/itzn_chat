@@ -1,1 +1,0 @@
-{"id": "A-004725", "text": "제 핸드폰 번호는 010 다섯 다섯 다섯-다섯 다섯-여섯 일구 이예요.", "pi": [{"type": "PHONE", "text": "010 다섯 다섯 다섯-다섯 다섯-여섯 일구 이예요.", "start": 10, "end": 39}], "meta": {"domain": "SNS 댓글", "style": "길고 장황한 설명", "obfuscation": ["separator_noise"], "hard_case": "none"}}

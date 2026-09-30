@@ -1,1 +1,0 @@
-{"id": "A-003913", "text": "제 이름은 소나무인데요, 혹시요. 그리고 다른 이름은 송재민이에요.", "pi": [{"type": "NAME", "text": "소나무", "start": 6, "end": 9}, {"type": "NAME", "text": "송재민", "start": 30, "end": 33}], "meta": {"domain": "쇼핑몰 문의", "style": "짧은 단답", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

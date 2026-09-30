@@ -1,1 +1,0 @@
-{"id": "A-000944", "text": "주소는 경기도 성남시 분당구 정자역로 123이고요, 받는 분은 김철수입니다.", "pi": [{"type": "ADDRESS", "text": "경기도 성남시 분당구 정자역로 123", "start": 4, "end": 24}, {"type": "NAME", "text": "김철수", "start": 35, "end": 38}], "meta": {"domain": "택배 문의", "style": "짧은 단답", "obfuscation": ["jamo_split"], "hard_case": "none"}}

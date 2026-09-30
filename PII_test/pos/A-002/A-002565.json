@@ -1,1 +1,0 @@
-{"id": "A-002565", "text": "이번 여름 휴가 상품 예약하려고 하는데요. 제 계정 아이디가 user_traveler-99예요. 그리고 예약할 분 성함이 이가영이 맞나요?", "pi": [{"type": "ACCOUNT", "text": "user_traveler-99", "start": 34, "end": 50}, {"type": "NAME", "text": "이가영", "start": 68, "end": 71}], "meta": {"domain": "여행 예약", "style": "구어체", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

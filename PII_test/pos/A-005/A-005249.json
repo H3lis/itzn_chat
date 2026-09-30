@@ -1,1 +1,0 @@
-{"id": "A-005249", "text": "네, 청구는 010 9999 8888로 하시면 돼요.", "pi": [{"type": "PHONE", "text": "010 9999 8888", "start": 7, "end": 20}], "meta": {"domain": "금융 상담", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "none"}}

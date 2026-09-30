@@ -1,1 +1,0 @@
-{"id": "A-005143", "text": "생일은 1990년 10월 1일이고, 연락은 abc@test.net으로 보내주세요.", "pi": [{"type": "BIRTH", "text": "1990년 10월 1일", "start": 4, "end": 16}, {"type": "EMAIL", "text": "abc@test.net", "start": 24, "end": 36}], "meta": {"domain": "음성통화 전사문", "style": "짧은 단답", "obfuscation": ["repeat_expr", "email_spoken"], "hard_case": "none"}}

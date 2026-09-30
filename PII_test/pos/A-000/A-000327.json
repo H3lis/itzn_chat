@@ -1,1 +1,0 @@
-{"id": "A-000327", "text": "저희가 확인해 보니, 기관명은 한국정보개발원이고 주민등록번호는 910510-1******로 파악됩니다.", "pi": [{"type": "ORG", "text": "한국정보개발원", "start": 17, "end": 24}, {"type": "RRN", "text": "910510", "start": 35, "end": 41}], "meta": {"domain": "고객센터 채팅", "style": "길고 장황한 설명", "obfuscation": ["korean_reading", "jamo_split"], "hard_case": "none"}}

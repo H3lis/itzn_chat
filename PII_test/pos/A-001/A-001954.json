@@ -1,1 +1,0 @@
-{"id": "A-001954", "text": "이사 오신 주소가 경기 성남시 분당구 정자역 근처인가요? 아니면 다른 곳이 있으세요?", "pi": [{"type": "ADDRESS", "text": "경기 성남시 분당구 정자역", "start": 10, "end": 24}], "meta": {"domain": "부동산 상담", "style": "반말 대화", "obfuscation": ["split_utterance"], "hard_case": "none"}}

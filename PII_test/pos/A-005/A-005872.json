@@ -1,1 +1,0 @@
-{"id": "A-005872", "text": "회신 받을 이메일은 user.test(at)mail(dot)net 입니다. 이거는 공백으로 표시해 주세요.", "pi": [{"type": "EMAIL", "text": "user.test(at)mail(dot)net", "start": 11, "end": 36}], "meta": {"domain": "학교 행정 문의", "style": "격식체", "obfuscation": ["separator_noise"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-003301", "text": "김민준 씨, 오늘 진료는 몇 시에 받으면 될까요? 제가 좀 헷갈려서요.", "pi": [{"type": "NAME", "text": "김민준", "start": 0, "end": 3}], "meta": {"domain": "병원 접수", "style": "존댓말 상담", "obfuscation": ["jamo_split"], "hard_case": "none"}}

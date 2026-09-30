@@ -1,1 +1,0 @@
-{"id": "A-005905", "text": "어제 받은 청구서 말이야? 번호가 010 5555 1234라던데, 이게 맞아?", "pi": [{"type": "PHONE", "text": "010 5555 1234", "start": 19, "end": 32}], "meta": {"domain": "보험 청구", "style": "반말 대화", "obfuscation": ["separator_noise"], "hard_case": "none"}}

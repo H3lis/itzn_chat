@@ -1,1 +1,0 @@
-{"id": "A-005156", "text": "제 아이디는 A1B2C3D4-5678-90EF 이고요, 주민번호는 950315-1234567이요.", "pi": [{"type": "ID", "text": "A1B2C3D4-5678-90EF", "start": 7, "end": 25}, {"type": "RRN", "text": "950315-1234567", "start": 37, "end": 51}], "meta": {"domain": "직장 메신저", "style": "오타 많은 채팅", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

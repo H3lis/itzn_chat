@@ -1,1 +1,0 @@
-{"id": "A-003880", "text": "민준아, 너 지난번에 말한 그 프로젝트 말이야. 현우 너는 어떻게 돼가?", "pi": [{"type": "NAME", "text": "민준", "start": 0, "end": 2}, {"type": "NAME", "text": "현우", "start": 27, "end": 29}], "meta": {"domain": "콜센터 상담 요약", "style": "반말 대화", "obfuscation": ["jamo_split", "honorific_ref"], "hard_case": "none"}}

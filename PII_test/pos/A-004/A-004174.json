@@ -1,1 +1,0 @@
-{"id": "A-004174", "text": "저기요, 서울시 강남구 삼성로에 있는 123-45번지 건물이요. 전화번호는 010-5555-1212 맞으시죠?", "pi": [{"type": "ADDRESS", "text": "서울시 강남구 삼성로", "start": 5, "end": 16}, {"type": "PHONE", "text": "010-5555-1212", "start": 42, "end": 55}], "meta": {"domain": "여행 예약", "style": "오타 많은 채팅", "obfuscation": ["korean_reading"], "hard_case": "none"}}

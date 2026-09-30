@@ -1,1 +1,0 @@
-{"id": "A-002835", "text": "안녕하세요. 박민정 씨가 부탁한 건가요? 박민정으로 보내주시고, 그리고 제 이름은 최현우예요.", "pi": [{"type": "NAME", "text": "박민정", "start": 7, "end": 10}, {"type": "NAME", "text": "최현우", "start": 46, "end": 49}], "meta": {"domain": "택배 문의", "style": "짧은 단답", "obfuscation": ["self_correction", "jamo_split", "romanized"], "hard_case": "none"}}

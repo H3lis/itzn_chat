@@ -1,1 +1,0 @@
-{"id": "A-002295", "text": "저희가 받은 연락처가 010-9999-8888인데, 혹시 제 이름이 기쁨이에요?", "pi": [{"type": "PHONE", "text": "010-9999-8888", "start": 12, "end": 25}, {"type": "NAME", "text": "기쁨", "start": 38, "end": 40}], "meta": {"domain": "커뮤니티 게시글", "style": "구어체", "obfuscation": ["mixed_reading"], "hard_case": "homonym_name"}}

@@ -1,1 +1,0 @@
-{"id": "A-001550", "text": "진료 기록 조회 때문에 연락드렸는데요. 담당자님은 김과장님이라고 하셨고, 연락처는 070-1234-5678이에요.", "pi": [{"type": "NAME", "text": "김과장님", "start": 28, "end": 32}, {"type": "PHONE", "text": "070-1234-5678", "start": 46, "end": 59}], "meta": {"domain": "병원 접수", "style": "오타 많은 채팅", "obfuscation": ["honorific_ref"], "hard_case": "none"}}

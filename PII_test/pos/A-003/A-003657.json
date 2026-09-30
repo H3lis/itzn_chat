@@ -1,1 +1,0 @@
-{"id": "A-003657", "text": "저희 회사 계정은 ABCDEFG1234-abcd로 등록하고, 주소는 성북구 연신내로 500번지로 부탁해요. 이건 무조건 이게 맞아요.", "pi": [{"type": "ACCOUNT", "text": "ABCDEFG1234-abcd", "start": 10, "end": 26}], "meta": {"domain": "부동산 상담", "style": "메신저 줄임말", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

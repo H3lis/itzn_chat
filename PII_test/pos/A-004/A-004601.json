@@ -1,1 +1,0 @@
-{"id": "A-004601", "text": "보람 선생님, 차량 번호는 12가 이번 거고요, 성함은 박지수 님으로 되어 있네요.", "pi": [{"type": "NAME", "text": "보람", "start": 0, "end": 2}, {"type": "CAR_PLATE", "text": "12", "start": 15, "end": 17}, {"type": "NAME", "text": "박지수", "start": 31, "end": 34}], "meta": {"domain": "학교 행정 문의", "style": "공문서풍", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

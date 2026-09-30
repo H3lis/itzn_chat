@@ -1,1 +1,0 @@
-{"id": "A-005559", "text": "거주지 주소는 경기도 성남시 분당구 판교역로 123번지예요, 이 부분은요?", "pi": [{"type": "ADDRESS", "text": "경기도 성남시 분당구 판교역로 123번지", "start": 8, "end": 30}], "meta": {"domain": "고객센터 채팅", "style": "음성인식(STT) 전사", "obfuscation": ["stt_error"], "hard_case": "none"}}

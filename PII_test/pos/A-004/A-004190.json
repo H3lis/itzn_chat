@@ -1,1 +1,0 @@
-{"id": "A-004190", "text": "진주 고객님, 주문하신 상품 관련해서요. 연락 주신 번호가 010-9999-8888로 되나요? 다시 한번 확인 부탁드립니다.", "pi": [{"type": "NAME", "text": "진주", "start": 0, "end": 2}, {"type": "PHONE", "text": "010-9999-8888", "start": 33, "end": 46}], "meta": {"domain": "쇼핑몰 문의", "style": "길고 장황한 설명", "obfuscation": ["repeat_expr"], "hard_case": "homonym_name"}}

@@ -1,1 +1,0 @@
-{"id": "A-001140", "text": "문의하신 이메일 주소는 test.user@mail..com으로 등록되어 있습니다.", "pi": [{"type": "EMAIL", "text": "test.user@mail..com", "start": 13, "end": 32}], "meta": {"domain": "SNS 댓글", "style": "공문서풍", "obfuscation": ["separator_noise"], "hard_case": "none"}}

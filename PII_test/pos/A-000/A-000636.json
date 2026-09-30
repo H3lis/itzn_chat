@@ -1,1 +1,0 @@
-{"id": "A-000636", "text": "회원님 아이디는 jjsd123입니다. 성함은 박지수 님 맞으시죠? 확인 부탁드려요.", "pi": [{"type": "ID", "text": "jjsd123", "start": 9, "end": 16}, {"type": "NAME", "text": "박지수", "start": 25, "end": 28}], "meta": {"domain": "고객센터 채팅", "style": "존댓말 상담", "obfuscation": ["plain"], "hard_case": "none"}}

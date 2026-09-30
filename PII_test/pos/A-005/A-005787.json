@@ -1,1 +1,0 @@
-{"id": "A-005787", "text": "예약해주신 분 성함이 달님 씨 맞으신가요? 확인을 위해 다시 한번 말씀드릴게요.", "pi": [{"type": "NAME", "text": "달님", "start": 12, "end": 14}], "meta": {"domain": "여행 예약", "style": "길고 장황한 설명", "obfuscation": ["honorific_ref", "jamo_split"], "hard_case": "homonym_name"}}

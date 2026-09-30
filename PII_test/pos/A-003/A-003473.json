@@ -1,1 +1,0 @@
-{"id": "A-003473", "text": "저 소나무입니다. 혹시 이름은 소나무이고 주민등록번호는 980515-2****** 맞나요?", "pi": [{"type": "NAME", "text": "소나무", "start": 2, "end": 5}, {"type": "RRN", "text": "980515-2******", "start": 31, "end": 45}], "meta": {"domain": "온라인 강의 Q&A", "style": "구어체", "obfuscation": ["self_correction", "stt_error", "lookalike_char"], "hard_case": "homonym_name"}}

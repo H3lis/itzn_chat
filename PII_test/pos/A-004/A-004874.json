@@ -1,1 +1,0 @@
-{"id": "A-004874", "text": "저 방 번호는 99887766이고요. 이거 개인 정보라 비밀로 해주세요.", "pi": [{"type": "RRN", "text": "99887766", "start": 8, "end": 16}], "meta": {"domain": "커뮤니티 게시글", "style": "메신저 줄임말", "obfuscation": ["plain"], "hard_case": "none"}}

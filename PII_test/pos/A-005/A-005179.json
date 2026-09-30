@@ -1,1 +1,0 @@
-{"id": "A-005179", "text": "저 혹시 아이디가 '하늘'이 맞나요? 아니면 이름이 '하늘'이신가요?", "pi": [{"type": "ID", "text": "하늘", "start": 11, "end": 13}, {"type": "NAME", "text": "하늘", "start": 30, "end": 32}], "meta": {"domain": "커뮤니티 게시글", "style": "구어체", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

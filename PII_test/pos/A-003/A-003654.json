@@ -1,1 +1,0 @@
-{"id": "A-003654", "text": "어디예요요? 전화번호가 010-5555-6666이요. 죄송한데, 아이디가 ㅇ1ㅇ으로 잘못 적었어요.", "pi": [{"type": "PHONE", "text": "010-5555-6666", "start": 13, "end": 26}, {"type": "OTHER_ID", "text": "ㅇ1ㅇ", "start": 41, "end": 44}], "meta": {"domain": "민원 접수", "style": "오타 많은 채팅", "obfuscation": ["korean_reading"], "hard_case": "none"}}

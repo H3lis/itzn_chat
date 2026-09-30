@@ -1,1 +1,0 @@
-{"id": "A-004265", "text": "회원 계정 확인하려고 하는데, 혹시 이메일도 같이 여쭤보고요? 그리고 비밀번호는 1234로 말씀해주셨던 것 같은데요.", "pi": [{"type": "ACCOUNT", "text": "1234", "start": 45, "end": 49}], "meta": {"domain": "병원 접수", "style": "메신저 줄임말", "obfuscation": ["stt_error", "split_utterance"], "hard_case": "none"}}

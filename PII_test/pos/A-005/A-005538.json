@@ -1,1 +1,0 @@
-{"id": "A-005538", "text": "예약하시는 분 이름이 박지수 님이시군요. 연락처는 010-2222-1111로 되나요?", "pi": [{"type": "NAME", "text": "박지수", "start": 12, "end": 15}, {"type": "PHONE", "text": "010-2222-1111", "start": 28, "end": 41}], "meta": {"domain": "여행 예약", "style": "존댓말 상담", "obfuscation": ["korean_reading", "split_utterance"], "hard_case": "none"}}

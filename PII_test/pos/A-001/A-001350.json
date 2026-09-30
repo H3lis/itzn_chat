@@ -1,1 +1,0 @@
-{"id": "A-001350", "text": "환자분 성함은 Lee Minho 님이시고요. 병원 내 코드는 서울특별시 강남구 삼성동 세이프티 빌딩 12층 접수처로 알고 있습니다.", "pi": [{"type": "ORG", "text": "Lee Minho", "start": 8, "end": 17}, {"type": "ADDRESS", "text": "서울특별시 강남구 삼성동 세이프티 빌딩 12층", "start": 34, "end": 59}], "meta": {"domain": "병원 접수", "style": "음성인식(STT) 전사", "obfuscation": ["romanized"], "hard_case": "org_person"}}

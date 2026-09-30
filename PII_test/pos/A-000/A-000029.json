@@ -1,1 +1,0 @@
-{"id": "A-000029", "text": "고객님의 계정은 9999이요, 성함은 최현우 님 맞으신가요? SNS는 이거로 등록 부탁드립니다.", "pi": [{"type": "ACCOUNT", "text": "9999", "start": 9, "end": 13}, {"type": "NAME", "text": "최현우", "start": 21, "end": 24}, {"type": "SNS", "text": "이거", "start": 39, "end": 41}], "meta": {"domain": "음성통화 전사문", "style": "존댓말 상담", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

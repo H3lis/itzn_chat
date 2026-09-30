@@ -1,1 +1,0 @@
-{"id": "A-002466", "text": "네, 고객님. 문의하신 상품 번호가 정확히 010-2222-3333이 맞으신가요?", "pi": [{"type": "PHONE", "text": "010-2222-3333", "start": 24, "end": 37}], "meta": {"domain": "고객센터 채팅", "style": "짧은 단답", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

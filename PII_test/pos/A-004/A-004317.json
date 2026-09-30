@@ -1,1 +1,0 @@
-{"id": "A-004317", "text": "김민준 씨는 생년월일이 몇 년 몇 월 며칠이셨나요? 아, 제가 잘못 들었네요. 95년 11월 28일 맞으세요?", "pi": [{"type": "NAME", "text": "김민준", "start": 0, "end": 3}, {"type": "BIRTH", "text": "95년 11월 28일", "start": 44, "end": 55}], "meta": {"domain": "음성통화 전사문", "style": "격식체", "obfuscation": ["stt_error"], "hard_case": "none"}}

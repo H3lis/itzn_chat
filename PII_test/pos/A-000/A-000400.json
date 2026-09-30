@@ -1,1 +1,0 @@
-{"id": "A-000400", "text": "신규 환자 등록을 위해 성함은 최민준, 주민등록번호는 901234-1234567까지 확인이 필요합니다. 이건 중요하니까 잘 적어주세요.", "pi": [{"type": "NAME", "text": "최민준", "start": 17, "end": 20}, {"type": "RRN", "text": "901234-1234567", "start": 30, "end": 44}], "meta": {"domain": "회의록", "style": "길고 장황한 설명", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

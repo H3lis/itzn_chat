@@ -1,1 +1,0 @@
-{"id": "A-002680", "text": "사용자 계정이요? 음... 아니요, 그건 123456으로 되어 있었어요.", "pi": [{"type": "ACCOUNT", "text": "123456", "start": 23, "end": 29}], "meta": {"domain": "콜센터 상담 요약", "style": "오타 많은 채팅", "obfuscation": ["self_correction"], "hard_case": "none"}}

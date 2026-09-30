@@ -1,1 +1,0 @@
-{"id": "A-003885", "text": "저기요, 사용자 이름은 ㄱㅏㅇㄴㅏㅁ이고요, 연락처는 공일공 1234 5678 맞나요?", "pi": [{"type": "NAME", "text": "ㄱㅏㅇㄴㅏㅁ", "start": 13, "end": 19}, {"type": "PHONE", "text": "공일공 1234 5678", "start": 29, "end": 42}], "meta": {"domain": "중고거래 채팅", "style": "음성인식(STT) 전사", "obfuscation": ["jamo_split"], "hard_case": "none"}}

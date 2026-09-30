@@ -1,1 +1,0 @@
-{"id": "A-002237", "text": "어제 만난 바다 씨는요? 이름이 바다 인데, 주민등록번호가 900101-1******예요.", "pi": [{"type": "NAME", "text": "바다", "start": 18, "end": 20}, {"type": "RRN", "text": "900101-1******", "start": 33, "end": 47}], "meta": {"domain": "보험 청구", "style": "오타 많은 채팅", "obfuscation": ["separator_noise"], "hard_case": "homonym_name"}}

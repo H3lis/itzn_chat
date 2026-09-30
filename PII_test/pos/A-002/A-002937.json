@@ -1,1 +1,0 @@
-{"id": "A-002937", "text": "저희 프로젝트 팀장님 성함이 김철수 씨랑, 그리고 실무 담당자분이 박지혜 씨 맞으신지 한 번만 더 확인 부탁드립니다.", "pi": [{"type": "NAME", "text": "김철수", "start": 16, "end": 19}, {"type": "NAME", "text": "박지혜", "start": 37, "end": 40}], "meta": {"domain": "회의록", "style": "존댓말 상담", "obfuscation": ["jamo_split"], "hard_case": "none"}}

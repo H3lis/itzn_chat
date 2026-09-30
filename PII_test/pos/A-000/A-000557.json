@@ -1,1 +1,0 @@
-{"id": "A-000557", "text": "안녕하세요, 신입사원 김민지 님, 반갑습니다. 저희 개발팀에서 근무하게 되셨어요.", "pi": [{"type": "NAME", "text": "김민지", "start": 12, "end": 15}, {"type": "ORG", "text": "개발팀", "start": 29, "end": 32}], "meta": {"domain": "직장 메신저", "style": "짧은 단답", "obfuscation": ["honorific_ref"], "hard_case": "org_person"}}

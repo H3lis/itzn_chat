@@ -1,1 +1,0 @@
-{"id": "A-003972", "text": "저번에 등록하신 휴대폰 번호가 01012345678이었는데, 혹시 010 1234 5678이 맞으신가요? 다시 확인 부탁드려요.", "pi": [{"type": "PHONE", "text": "01012345678", "start": 17, "end": 28}], "meta": {"domain": "SNS 댓글", "style": "공문서풍", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

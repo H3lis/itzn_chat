@@ -1,1 +1,0 @@
-{"id": "A-002995", "text": "아, 그 지점 주소는 네이버 지도에서 다시 확인해봐야겠어요. 거기가 어디였더라...", "pi": [{"type": "ADDRESS", "text": "네이버 지도", "start": 12, "end": 18}], "meta": {"domain": "회의록", "style": "오타 많은 채팅", "obfuscation": ["split_utterance"], "hard_case": "none"}}

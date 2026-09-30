@@ -1,1 +1,0 @@
-{"id": "A-005147", "text": "주소는 서울특별시 강남구 역삼동 501호이고, 학번은 20201234입니다.", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 역삼동 501호", "start": 4, "end": 22}, {"type": "ID", "text": "20201234", "start": 30, "end": 38}], "meta": {"domain": "학교 행정 문의", "style": "격식체", "obfuscation": ["plain"], "hard_case": "none"}}

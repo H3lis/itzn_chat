@@ -1,1 +1,0 @@
-{"id": "A-001958", "text": "저 저희가 계약하려는 곳은 별거예요. 김민준 팀장님이랑 박서윤 매니저님이요. 두 분 다 연락처가 필요해서요.", "pi": [{"type": "NAME", "text": "김민준", "start": 21, "end": 24}, {"type": "NAME", "text": "박서윤", "start": 31, "end": 34}], "meta": {"domain": "여행 예약", "style": "공문서풍", "obfuscation": ["jamo_split"], "hard_case": "none"}}

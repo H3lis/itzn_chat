@@ -1,1 +1,0 @@
-{"id": "A-005503", "text": "학생 분리된 아이디가 'ㄱㅏㅇㄴㅏㅁ'이고요, 성함은 '꽃님' 학생으로 등록 부탁드립니다.", "pi": [{"type": "ID", "text": "ㄱㅏㅇㄴㅏㅁ", "start": 13, "end": 19}, {"type": "NAME", "text": "꽃님", "start": 30, "end": 32}], "meta": {"domain": "학교 행정 문의", "style": "존댓말 상담", "obfuscation": ["jamo_split", "honorific_ref"], "hard_case": "homonym_name"}}

@@ -1,1 +1,0 @@
-{"id": "A-001367", "text": "전화번호는 공일공 9999 1234고요, SNS는 @user_korea입니다.", "pi": [{"type": "PHONE", "text": "공일공 9999 1234", "start": 6, "end": 19}, {"type": "SNS", "text": "@user_korea", "start": 28, "end": 39}], "meta": {"domain": "배달 요청사항", "style": "음성인식(STT) 전사", "obfuscation": ["mixed_reading"], "hard_case": "nickname_id"}}

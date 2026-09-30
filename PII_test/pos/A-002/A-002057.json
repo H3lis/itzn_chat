@@ -1,1 +1,0 @@
-{"id": "A-002057", "text": "하루 씨 성함이 김하루예요. 혹시 신분증 사본도 같이 준비해 주실 수 있나요?", "pi": [{"type": "NAME", "text": "하루", "start": 0, "end": 2}], "meta": {"domain": "병원 접수", "style": "음성인식(STT) 전사", "obfuscation": ["romanized"], "hard_case": "homonym_name"}}

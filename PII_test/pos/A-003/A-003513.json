@@ -1,1 +1,0 @@
-{"id": "A-003513", "text": "작가님, 보내주신 샘플 자료가요. 일단 이름은 이서현이고요. 연락은 010-5555-1234로 주시면 돼요.", "pi": [{"type": "NAME", "text": "이서현", "start": 26, "end": 29}, {"type": "PHONE", "text": "010-5555-1234", "start": 38, "end": 51}], "meta": {"domain": "택배 문의", "style": "메신저 줄임말", "obfuscation": ["split_utterance"], "hard_case": "none"}}

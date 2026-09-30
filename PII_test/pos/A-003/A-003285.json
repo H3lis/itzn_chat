@@ -1,1 +1,0 @@
-{"id": "A-003285", "text": "고객님, 카드 번호가 010-5555-4444 이시고, 연락처는 010 1234 5678 이 맞으실까요?", "pi": [{"type": "CARD", "text": "010-5555-4444", "start": 12, "end": 25}, {"type": "PHONE", "text": "010 1234 5678", "start": 36, "end": 49}], "meta": {"domain": "콜센터 상담 요약", "style": "오타 많은 채팅", "obfuscation": ["separator_noise"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-004559", "text": "물건 언제 와? 추적번호 1234567890인데, 지금 어디쯤에 있는지 확인 좀 부탁해.", "pi": [{"type": "PHONE", "text": "1234567890", "start": 14, "end": 24}], "meta": {"domain": "택배 문의", "style": "메신저 줄임말", "obfuscation": ["stt_error"], "hard_case": "none"}}

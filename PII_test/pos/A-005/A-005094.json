@@ -1,1 +1,0 @@
-{"id": "A-005094", "text": "제 메일 주소는 a.b.c@example.net이고, 연락처는 010-3333-4444로 되는데요.", "pi": [{"type": "EMAIL", "text": "a.b.c@example.net", "start": 9, "end": 26}, {"type": "PHONE", "text": "010-3333-4444", "start": 35, "end": 48}], "meta": {"domain": "학교 행정 문의", "style": "존댓말 상담", "obfuscation": ["separator_noise", "mixed_reading"], "hard_case": "none"}}

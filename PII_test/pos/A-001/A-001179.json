@@ -1,1 +1,0 @@
-{"id": "A-001179", "text": "카드 번호가 5432-1234로 된 거랑, 담당자분 성함은 박 대리님이요.", "pi": [{"type": "CARD", "text": "5432-1234", "start": 7, "end": 16}, {"type": "NAME", "text": "박", "start": 33, "end": 34}], "meta": {"domain": "쇼핑몰 문의", "style": "메신저 줄임말", "obfuscation": ["self_correction"], "hard_case": "none"}}

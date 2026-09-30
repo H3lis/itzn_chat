@@ -1,1 +1,0 @@
-{"id": "A-005455", "text": "학생증 분실해서요. 혹시 010-5555-1234로 전화 주시면 확인 부탁드립니다.", "pi": [{"type": "PHONE", "text": "010-5555-1234", "start": 14, "end": 27}], "meta": {"domain": "학교 행정 문의", "style": "구어체", "obfuscation": ["plain"], "hard_case": "none"}}

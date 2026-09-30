@@ -1,1 +1,0 @@
-{"id": "A-001409", "text": "주민등록번호가 880515-2xxxxxxx 이렇게 되어 있는데, 이거 맞게 청구서에 기재할까요?", "pi": [{"type": "RRN", "text": "880515-2xxxxxxx", "start": 8, "end": 23}], "meta": {"domain": "보험 청구", "style": "구어체", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

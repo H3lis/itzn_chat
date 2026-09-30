@@ -1,1 +1,0 @@
-{"id": "A-003319", "text": "저희 거래소 주소는 서울특별시 강남구 역삼동 123-45번지고요, 정확하게는 여기예요.", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 역삼동 123-45", "start": 11, "end": 31}], "meta": {"domain": "직장 메신저", "style": "길고 장황한 설명", "obfuscation": ["jamo_split", "split_utterance", "korean_reading"], "hard_case": "none"}}

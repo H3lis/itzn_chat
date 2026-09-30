@@ -1,1 +1,0 @@
-{"id": "A-004191", "text": "저번에 알려주신 번호가요... 공일공 구구구-일일일-이이이이 같은 건가요?", "pi": [{"type": "PHONE", "text": "공일공 구구구-일일일-이이이이", "start": 17, "end": 33}], "meta": {"domain": "SNS 댓글", "style": "구어체", "obfuscation": ["separator_noise", "mixed_reading"], "hard_case": "none"}}

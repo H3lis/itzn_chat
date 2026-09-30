@@ -1,1 +1,0 @@
-{"id": "A-003339", "text": "혹시 주문하신 상품 번호가 010-3333-4444 쪽 건가요? 아니면 010 세 번째 자릿수가 3333인 번호요?", "pi": [{"type": "PHONE", "text": "010-3333-4444", "start": 15, "end": 28}], "meta": {"domain": "민원 접수", "style": "오타 많은 채팅", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

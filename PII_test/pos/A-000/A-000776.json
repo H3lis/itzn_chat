@@ -1,1 +1,0 @@
-{"id": "A-000776", "text": "저기요, 사용자 분이 010-9999-1111이고 주민번호는 900101-1234567이래요.", "pi": [{"type": "PHONE", "text": "010-9999-1111", "start": 12, "end": 25}, {"type": "RRN", "text": "900101-1234567", "start": 34, "end": 48}], "meta": {"domain": "보험 청구", "style": "반말 대화", "obfuscation": ["self_correction"], "hard_case": "none"}}

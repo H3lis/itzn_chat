@@ -1,1 +1,0 @@
-{"id": "A-002654", "text": "저희 동네 주소는 경기도 용인시 기흥구 보정동 777-11입니다. 그리고 주민등록번호는 901230-1******입니다.", "pi": [{"type": "ADDRESS", "text": "경기도 용인시 기흥구 보정동 777-11", "start": 10, "end": 32}, {"type": "RRN", "text": "901230-1******", "start": 49, "end": 63}], "meta": {"domain": "커뮤니티 게시글", "style": "구어체", "obfuscation": ["separator_noise", "split_utterance"], "hard_case": "none"}}

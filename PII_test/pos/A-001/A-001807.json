@@ -1,1 +1,0 @@
-{"id": "A-001807", "text": "성함이 뭐시죠? 그리고 김민준 씨는 이전에 연락했던 분이신가요?", "pi": [{"type": "NAME", "text": "김민준", "start": 13, "end": 16}], "meta": {"domain": "금융 상담", "style": "오타 많은 채팅", "obfuscation": ["jamo_split", "self_correction"], "hard_case": "none"}}

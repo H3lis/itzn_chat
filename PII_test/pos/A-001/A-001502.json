@@ -1,1 +1,0 @@
-{"id": "A-001502", "text": "접속하신 기기의 IP 주소는 203-112-55-12입니다. 이 주소로 다시 시도해 보시기 바랍니다.", "pi": [{"type": "IP_ADDR", "text": "203-112-55-12", "start": 16, "end": 29}], "meta": {"domain": "직장 메신저", "style": "격식체", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-002636", "text": "홍길동 님 성함이 맞으신가요? 아니면 김민재 씨 쪽이신가요? 다시 한번 확인 부탁드립니다.", "pi": [{"type": "NAME", "text": "홍길동", "start": 0, "end": 3}], "meta": {"domain": "고객센터 채팅", "style": "음성인식(STT) 전사", "obfuscation": ["romanized"], "hard_case": "none"}}

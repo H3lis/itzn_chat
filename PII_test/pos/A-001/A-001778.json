@@ -1,1 +1,0 @@
-{"id": "A-001778", "text": "네, 상담원님께서 요청하신 분의 이름이 바로 꽃님 이시고, 연락처는 010-9999-8888 입니다.", "pi": [{"type": "NAME", "text": "꽃님", "start": 25, "end": 27}, {"type": "PHONE", "text": "010-9999-8888", "start": 38, "end": 51}], "meta": {"domain": "회의록", "style": "존댓말 상담", "obfuscation": ["lookalike_char"], "hard_case": "homonym_name"}}

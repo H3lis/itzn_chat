@@ -1,1 +1,0 @@
-{"id": "A-000993", "text": "혹시 김민준님 건 문의드리는 거인데요, 연락 주신 번호가 010-5555-1234 맞으실까요?", "pi": [{"type": "NAME", "text": "김민준", "start": 3, "end": 6}, {"type": "PHONE", "text": "010-5555-1234", "start": 32, "end": 45}], "meta": {"domain": "쇼핑몰 문의", "style": "메신저 줄임말", "obfuscation": ["korean_reading"], "hard_case": "none"}}

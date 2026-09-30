@@ -1,1 +1,0 @@
-{"id": "A-003927", "text": "제 이메일 주소가 @naver.com으로 알고 있습니다. 혹시 다른 주소가 있나요?", "pi": [{"type": "EMAIL", "text": "@naver.com", "start": 10, "end": 20}], "meta": {"domain": "중고거래 채팅", "style": "존댓말 상담", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

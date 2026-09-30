@@ -1,1 +1,0 @@
-{"id": "A-005501", "text": "주소는 경기도 수원시 영통구 삼성로 123이고요, 연락은 010-5555-1234, 이메일 주소는 user@example.com입니다.", "pi": [{"type": "ADDRESS", "text": "경기도 수원시 영통구 삼성로 123", "start": 4, "end": 23}, {"type": "EMAIL", "text": "user@example.com", "start": 55, "end": 71}], "meta": {"domain": "배달 요청사항", "style": "구어체", "obfuscation": ["stt_error"], "hard_case": "none"}}

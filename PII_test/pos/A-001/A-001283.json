@@ -1,1 +1,0 @@
-{"id": "A-001283", "text": "고객님 성함은 '노을'씨로 확인됩니다. 연락처는 010-5555-6666이 맞으신가요? 네, 이 번호로 다시 안내드리겠습니다.", "pi": [{"type": "NAME", "text": "노을", "start": 9, "end": 11}, {"type": "PHONE", "text": "010-5555-6666", "start": 27, "end": 40}], "meta": {"domain": "콜센터 상담 요약", "style": "존댓말 상담", "obfuscation": ["lookalike_char"], "hard_case": "homonym_name"}}

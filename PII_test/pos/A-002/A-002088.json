@@ -1,1 +1,0 @@
-{"id": "A-002088", "text": "저기, 아이디는 ㅇ1ㅇ나영이고 이름은 장미야.", "pi": [{"type": "ACCOUNT", "text": "ㅇ1ㅇ나영", "start": 9, "end": 14}, {"type": "NAME", "text": "장미", "start": 21, "end": 23}], "meta": {"domain": "커뮤니티 게시글", "style": "반말 대화", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-001481", "text": "담당자님, 저희가 요청드렸던 업무 관련 연락처는 0-10 / 1111 / 2222-입니다. 혹시 다른 번호도 있을까요?", "pi": [{"type": "PHONE", "text": "0-10 / 1111 / 2222", "start": 27, "end": 45}], "meta": {"domain": "직장 메신저", "style": "격식체", "obfuscation": ["korean_reading", "separator_noise"], "hard_case": "none"}}

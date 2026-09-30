@@ -1,1 +1,0 @@
-{"id": "A-000583", "text": "그거 번호가 55점 77점 99점인데, 이거 맞게 기재해야지.", "pi": [{"type": "CAR_PLATE", "text": "55점 77점 99점", "start": 7, "end": 18}], "meta": {"domain": "여행 예약", "style": "반말 대화", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

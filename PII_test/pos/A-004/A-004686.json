@@ -1,1 +1,0 @@
-{"id": "A-004686", "text": "신분증 번호는 Ｓ９８７６５４, 그리고 이메일은 W@y.me.com 입니다.", "pi": [{"type": "DRIVER_LICENSE", "text": "Ｓ９８７６５４", "start": 8, "end": 15}, {"type": "EMAIL", "text": "W@y.me.com", "start": 26, "end": 36}], "meta": {"domain": "회의록", "style": "격식체", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

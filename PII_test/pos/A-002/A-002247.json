@@ -1,1 +1,0 @@
-{"id": "A-002247", "text": "저기요, 라임 이름으로 처리해야 될 것 같은데, 전화는 010-1234-5678이 맞나요?", "pi": [{"type": "NAME", "text": "라임", "start": 5, "end": 7}, {"type": "PHONE", "text": "010-1234-5678", "start": 31, "end": 44}], "meta": {"domain": "보험 청구", "style": "메신저 줄임말", "obfuscation": ["lookalike_char"], "hard_case": "homonym_name"}}

@@ -1,1 +1,0 @@
-{"id": "A-001957", "text": "주문하신 상품의 결제는 신용카드로 진행하셔야 합니다. 카드번호는 5432-1098-7654-3210으로 확인 부탁드립니다.", "pi": [{"type": "CARD", "text": "5432-1098-7654-3210", "start": 36, "end": 55}], "meta": {"domain": "부동산 상담", "style": "공문서풍", "obfuscation": ["split_utterance"], "hard_case": "none"}}

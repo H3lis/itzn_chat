@@ -1,1 +1,0 @@
-{"id": "A-005986", "text": "김민준 선생님의 주민등록번호가 851020-1xxxxxx로 되어 있는데, 이게 정확한 건가요?", "pi": [{"type": "NAME", "text": "김민준", "start": 0, "end": 3}, {"type": "RRN", "text": "851020-1xxxxxx", "start": 17, "end": 31}], "meta": {"domain": "병원 접수", "style": "길고 장황한 설명", "obfuscation": ["korean_reading"], "hard_case": "none"}}

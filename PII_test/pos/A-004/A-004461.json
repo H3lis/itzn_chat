@@ -1,1 +1,0 @@
-{"id": "A-004461", "text": "귀하의 계정 정보는 sample.user@company.net 이며, 성함은 최준호 님으로 확인되었습니다.", "pi": [{"type": "EMAIL", "text": "sample.user@company.net", "start": 11, "end": 34}, {"type": "NAME", "text": "최준호", "start": 43, "end": 46}], "meta": {"domain": "쇼핑몰 문의", "style": "공문서풍", "obfuscation": ["plain"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-005628", "text": "혹시 연락주신 분 성함은 김민준 씨였나요? 아니면 박민준 이 맞나요? 다시 확인해 보겠습니다.", "pi": [{"type": "NAME", "text": "김민준", "start": 14, "end": 17}, {"type": "NAME", "text": "박민준", "start": 28, "end": 31}], "meta": {"domain": "콜센터 상담 요약", "style": "음성인식(STT) 전사", "obfuscation": ["self_correction"], "hard_case": "none"}}

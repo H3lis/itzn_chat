@@ -1,1 +1,0 @@
-{"id": "A-000211", "text": "혹시 거주하시는 주소는 서울시 종로구 종로 3길이신가요? 민준 씨 맞으신가요?", "pi": [{"type": "ADDRESS", "text": "서울시 종로구 종로 3길", "start": 13, "end": 26}, {"type": "NAME", "text": "민준", "start": 32, "end": 34}], "meta": {"domain": "학교 행정 문의", "style": "구어체", "obfuscation": ["stt_error"], "hard_case": "none"}}

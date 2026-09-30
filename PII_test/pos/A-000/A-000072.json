@@ -1,1 +1,0 @@
-{"id": "A-000072", "text": "담당자님은 김민준 씨 맞으신가요? 죄송하지만 제가 전화번호가 070-9999-8888이라고 잘못 말씀드렸어요.", "pi": [{"type": "NAME", "text": "김민준", "start": 6, "end": 9}, {"type": "PHONE", "text": "070-9999-8888", "start": 34, "end": 47}], "meta": {"domain": "여행 예약", "style": "짧은 단답", "obfuscation": ["stt_error", "honorific_ref"], "hard_case": "none"}}

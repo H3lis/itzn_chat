@@ -1,1 +1,0 @@
-{"id": "A-004405", "text": "자두 씨가 예약하신 건에 대해 문의드릴 사항이 있어서요. 예약하신 이메일 주소는 자두.kim@naver.com 맞으신가요?", "pi": [{"type": "NAME", "text": "자두", "start": 0, "end": 2}, {"type": "EMAIL", "text": "자두.kim@naver.com", "start": 45, "end": 61}], "meta": {"domain": "여행 예약", "style": "존댓말 상담", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

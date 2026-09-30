@@ -1,1 +1,0 @@
-{"id": "A-004232", "text": "네가 사는 곳이 강동구 천호동 2234번지라며? 맞아, 여기는 같은 달동네야.", "pi": [{"type": "ADDRESS", "text": "강동구 천호동 2234번지", "start": 9, "end": 23}, {"type": "ADDRESS", "text": "달동네", "start": 38, "end": 41}], "meta": {"domain": "회의록", "style": "반말 대화", "obfuscation": ["jamo_split"], "hard_case": "none"}}

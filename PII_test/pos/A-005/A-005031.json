@@ -1,1 +1,0 @@
-{"id": "A-005031", "text": "이거요? 에이, 저번에 올라왔던 'IT솔루션즈' 같은 건가요?", "pi": [{"type": "ORG", "text": "IT솔루션즈", "start": 19, "end": 25}], "meta": {"domain": "중고거래 채팅", "style": "오타 많은 채팅", "obfuscation": ["jamo_split"], "hard_case": "none"}}

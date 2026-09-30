@@ -1,1 +1,0 @@
-{"id": "A-003659", "text": "문의하신 이메일은 example@naver.com이고, 소속은 한국개발원인데요. 담당자가 확인해 줄게요.", "pi": [{"type": "EMAIL", "text": "example@naver.com", "start": 10, "end": 27}, {"type": "ORG", "text": "한국개발원", "start": 35, "end": 40}], "meta": {"domain": "온라인 강의 Q&A", "style": "존댓말 상담", "obfuscation": ["plain"], "hard_case": "org_person"}}

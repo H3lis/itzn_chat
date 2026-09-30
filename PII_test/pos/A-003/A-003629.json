@@ -1,1 +1,0 @@
-{"id": "A-003629", "text": "네, 그리고 제 이름은 한결이에요. 그리고 전화번호는 010-2222-3333으로 다시 한번 말씀드릴게요.", "pi": [{"type": "NAME", "text": "한결", "start": 13, "end": 15}, {"type": "PHONE", "text": "010-2222-3333", "start": 30, "end": 43}], "meta": {"domain": "직장 메신저", "style": "짧은 단답", "obfuscation": ["stt_error"], "hard_case": "homonym_name"}}

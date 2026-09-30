@@ -1,1 +1,0 @@
-{"id": "A-004082", "text": "가을 씨는 저랑 인스타그램으로 연락했던 적이 있어요. 혹시 페이스북 아이디도 같이 알려주시겠어요?", "pi": [{"type": "NAME", "text": "가을", "start": 0, "end": 2}, {"type": "SNS", "text": "인스타그램", "start": 9, "end": 14}], "meta": {"domain": "음성통화 전사문", "style": "격식체", "obfuscation": ["honorific_ref"], "hard_case": "homonym_name"}}

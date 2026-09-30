@@ -1,1 +1,0 @@
-{"id": "A-001810", "text": "저희 주소는 부산광역시 해운대구인데, 이거 '부산 해운대'가 맞나요?", "pi": [{"type": "ADDRESS", "text": "부산광역시 해운대구", "start": 7, "end": 17}], "meta": {"domain": "SNS 댓글", "style": "존댓말 상담", "obfuscation": ["stt_error", "korean_reading"], "hard_case": "none"}}

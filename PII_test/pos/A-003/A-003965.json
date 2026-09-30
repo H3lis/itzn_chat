@@ -1,1 +1,0 @@
-{"id": "A-003965", "text": "김민준 부장님께, 귀하의 성함은 김민준이 맞으신지, 아니면 김민철 씨로 정정해야 할지 재확인 부탁드립니다.", "pi": [{"type": "NAME", "text": "김민준", "start": 0, "end": 3}, {"type": "NAME", "text": "김민철", "start": 33, "end": 36}], "meta": {"domain": "택배 문의", "style": "공문서풍", "obfuscation": ["self_correction", "honorific_ref"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-001773", "text": "카드 번호가 5432이고, 회원 아이디는 testuser예요. 그리고 연락처는 01055556666입니다.", "pi": [{"type": "CARD", "text": "5432", "start": 7, "end": 11}, {"type": "ID", "text": "testuser", "start": 23, "end": 31}, {"type": "PHONE", "text": "01055556666", "start": 44, "end": 55}], "meta": {"domain": "금융 상담", "style": "구어체", "obfuscation": ["romanized"], "hard_case": "none"}}

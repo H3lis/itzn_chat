@@ -1,1 +1,0 @@
-{"id": "A-000309", "text": "고객님, 연락 주신 분은 김민준 님이시고 연락 가능한 번호는 010-5555-1234로 확인됩니다.", "pi": [{"type": "PHONE", "text": "010-5555-1234", "start": 34, "end": 47}], "meta": {"domain": "콜센터 상담 요약", "style": "격식체", "obfuscation": ["stt_error"], "hard_case": "none"}}

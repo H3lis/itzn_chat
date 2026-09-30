@@ -1,1 +1,0 @@
-{"id": "A-003146", "text": "저 혹시 계정번호가 1234-5678-9012로 되어 있는데요, 이거 다시 한번 확인 부탁드립니다.", "pi": [{"type": "ACCOUNT", "text": "1234-5678-9012", "start": 11, "end": 25}], "meta": {"domain": "민원 접수", "style": "오타 많은 채팅", "obfuscation": ["plain"], "hard_case": "none"}}

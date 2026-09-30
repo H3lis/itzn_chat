@@ -1,1 +1,0 @@
-{"id": "A-004632", "text": "카드 번호 말씀해주시면 되는데요. 이거는 1234에다가, 5678에다가 그리고 9012로 해주세요.", "pi": [{"type": "CARD", "text": "1234에다가, 5678에다가 그리고 9012로", "start": 23, "end": 49}], "meta": {"domain": "콜센터 상담 요약", "style": "메신저 줄임말", "obfuscation": ["korean_reading"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-004894", "text": "신청자분 생년월일은 1985년 10월 20일로 확인되는데요. 이게 맞는지 다시 한번 말씀해 주시겠어요?", "pi": [{"type": "BIRTH", "text": "1985년 10월 20일", "start": 11, "end": 24}], "meta": {"domain": "회의록", "style": "음성인식(STT) 전사", "obfuscation": ["self_correction"], "hard_case": "none"}}

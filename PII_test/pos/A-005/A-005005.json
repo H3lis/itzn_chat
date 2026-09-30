@@ -1,1 +1,0 @@
-{"id": "A-005005", "text": "이메일 주소가 abc@test.co.kr인데, 혹시 이게 1234로 오타 냈을까요?", "pi": [{"type": "EMAIL", "text": "abc@test.co.kr", "start": 8, "end": 22}, {"type": "IP_ADDR", "text": "1234", "start": 32, "end": 36}], "meta": {"domain": "보험 청구", "style": "짧은 단답", "obfuscation": ["self_correction"], "hard_case": "none"}}

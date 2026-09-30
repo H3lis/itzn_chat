@@ -1,1 +1,0 @@
-{"id": "A-004883", "text": "이거 주소지가 서울시 강남구 역삼동인데, 혹시 회사 이름이 '하이테크' 맞음?", "pi": [{"type": "ADDRESS", "text": "서울시 강남구 역삼동", "start": 8, "end": 19}, {"type": "ORG", "text": "하이테크", "start": 34, "end": 38}], "meta": {"domain": "민원 접수", "style": "반말 대화", "obfuscation": ["jamo_split"], "hard_case": "org_person"}}

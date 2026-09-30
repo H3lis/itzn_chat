@@ -1,1 +1,0 @@
-{"id": "A-003448", "text": "고객님은 바다 현지 거주가 어려우신 것 같고, 이름은 바다영식으로 하시는 게 좋을 것 같아요.", "pi": [{"type": "ADDRESS", "text": "바다 현지", "start": 5, "end": 10}, {"type": "NAME", "text": "바다영식", "start": 30, "end": 34}], "meta": {"domain": "금융 상담", "style": "길고 장황한 설명", "obfuscation": ["romanized", "self_correction"], "hard_case": "homonym_name"}}

@@ -1,1 +1,0 @@
-{"id": "A-005607", "text": "우리 회사 대표가 저번에 왔던 곳은 강남점인데, 주소는 123-45, 그리고 저희 팀은 AI 개발팀이에요.", "pi": [{"type": "ADDRESS", "text": "123-45", "start": 31, "end": 37}, {"type": "ORG", "text": "AI 개발팀", "start": 49, "end": 55}], "meta": {"domain": "커뮤니티 게시글", "style": "메신저 줄임말", "obfuscation": ["plain"], "hard_case": "org_person"}}

@@ -1,1 +1,0 @@
-{"id": "A-004057", "text": "제 생년월일이 83년 10월 25일이고요. 현재 접속하신 IP 주소는 192.168.0.5 같은데요. 이거 맞나요?", "pi": [{"type": "BIRTH", "text": "83년 10월 25일", "start": 8, "end": 19}, {"type": "IP_ADDR", "text": "192.168.0.5", "start": 39, "end": 50}], "meta": {"domain": "민원 접수", "style": "음성인식(STT) 전사", "obfuscation": ["separator_noise", "repeat_expr"], "hard_case": "none"}}

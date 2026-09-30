@@ -1,1 +1,0 @@
-{"id": "A-001790", "text": "혹시 소나무 님 건으로 문의 주셨는데, 계좌 번호가 123-4567-8901이 맞는지 다시 한번 확인 부탁드려요.", "pi": [{"type": "NAME", "text": "소나무", "start": 3, "end": 6}, {"type": "ACCOUNT", "text": "123-4567-8901", "start": 29, "end": 42}], "meta": {"domain": "부동산 상담", "style": "구어체", "obfuscation": ["separator_noise"], "hard_case": "homonym_name"}}

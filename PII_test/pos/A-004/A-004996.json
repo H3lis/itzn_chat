@@ -1,1 +1,0 @@
-{"id": "A-004996", "text": "계정 같은 거는 ㅇ１０-1111-2222로 되게 해주세요. 메일은 test@test.com이요.", "pi": [{"type": "ACCOUNT", "text": "ㅇ１０-1111-2222", "start": 9, "end": 22}, {"type": "EMAIL", "text": "test@test.com", "start": 37, "end": 50}], "meta": {"domain": "SNS 댓글", "style": "짧은 단답", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

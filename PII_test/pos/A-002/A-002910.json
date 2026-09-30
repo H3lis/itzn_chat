@@ -1,1 +1,0 @@
-{"id": "A-002910", "text": "광주에 사는 광주 민준이요, 메일은 minjun.gwangju@fake.com 으로 부탁드립니다.", "pi": [{"type": "NAME", "text": "광주 민준", "start": 7, "end": 12}, {"type": "EMAIL", "text": "minjun.gwangju@fake.com", "start": 20, "end": 43}], "meta": {"domain": "배달 요청사항", "style": "메신저 줄임말", "obfuscation": ["romanized", "jamo_split"], "hard_case": "homonym_name"}}

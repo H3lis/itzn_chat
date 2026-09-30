@@ -1,1 +1,0 @@
-{"id": "A-003745", "text": "김민지 님 성함은 김 이시고, 부모님 성함은 이지은 씨, 그리고 본인 이름은 최현우예요.", "pi": [{"type": "NAME", "text": "김", "start": 0, "end": 1}, {"type": "NAME", "text": "이", "start": 12, "end": 13}, {"type": "NAME", "text": "최현우", "start": 43, "end": 46}], "meta": {"domain": "민원 접수", "style": "격식체", "obfuscation": ["self_correction", "jamo_split"], "hard_case": "none"}}

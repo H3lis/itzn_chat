@@ -1,1 +1,0 @@
-{"id": "A-001843", "text": "담당자님, 저 해솔인데요. 제가 오늘 상담드리려고 전화드렸어요. 성함이 해솔 맞나요?", "pi": [{"type": "NAME", "text": "해솔", "start": 8, "end": 10}], "meta": {"domain": "고객센터 채팅", "style": "존댓말 상담", "obfuscation": ["self_correction"], "hard_case": "homonym_name"}}

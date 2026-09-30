@@ -1,1 +1,0 @@
-{"id": "A-005689", "text": "사용자 아이디가 'smartguy'로 되어있는데, 혹시 연락 가능한 전화번호는 앞자리가 010으로 시작하는 거 말씀이신가요? 그리고 성함은 김민수 학생이요.", "pi": [{"type": "ACCOUNT", "text": "smartguy", "start": 10, "end": 18}, {"type": "NAME", "text": "김민수", "start": 78, "end": 81}], "meta": {"domain": "부동산 상담", "style": "오타 많은 채팅", "obfuscation": ["stt_error", "split_utterance"], "hard_case": "none"}}

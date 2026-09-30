@@ -1,1 +1,0 @@
-{"id": "A-004428", "text": "학생분 성함이 뭔가요? 혹시 보리라는 이름으로 등록하면 될까요? 담당자 이름도 같은 건가요?", "pi": [{"type": "NAME", "text": "보리", "start": 16, "end": 18}], "meta": {"domain": "학교 행정 문의", "style": "오타 많은 채팅", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

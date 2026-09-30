@@ -1,1 +1,0 @@
-{"id": "A-001937", "text": "이 상품의 카드 결제는 혹시 모바일로 가능한가요? 저희가 이전에 쓴 카드번호가 4321로 기억하는데, 이게 맞는지 다시 한번 확인 부탁드립니다.", "pi": [{"type": "CARD", "text": "4321", "start": 44, "end": 48}], "meta": {"domain": "부동산 상담", "style": "길고 장황한 설명", "obfuscation": ["mixed_reading", "self_correction"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-004288", "text": "고객님, 연락 가능한 전화번호는 공일오 슬리피 5555예요.", "pi": [{"type": "PHONE", "text": "공일오 슬리피 5555", "start": 18, "end": 30}], "meta": {"domain": "고객센터 채팅", "style": "격식체", "obfuscation": ["repeat_expr", "korean_reading"], "hard_case": "none"}}

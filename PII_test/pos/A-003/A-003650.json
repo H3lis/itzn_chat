@@ -1,1 +1,0 @@
-{"id": "A-003650", "text": "저의 이름은 사랑이고, 주민등록번호는 901234-5678901까지 알고 계실까요?", "pi": [{"type": "NAME", "text": "사랑", "start": 7, "end": 9}, {"type": "RRN", "text": "901234-5678901", "start": 21, "end": 35}], "meta": {"domain": "금융 상담", "style": "메신저 줄임말", "obfuscation": ["self_correction"], "hard_case": "homonym_name"}}

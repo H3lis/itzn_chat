@@ -1,1 +1,0 @@
-{"id": "A-000785", "text": "주소는요? 서울특별시 강남구 테헤란로에 있는데, 혹시 다른 곳으로 변경이 필요할까요?", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 테헤란로", "start": 6, "end": 20}], "meta": {"domain": "택배 문의", "style": "길고 장황한 설명", "obfuscation": ["split_utterance"], "hard_case": "none"}}

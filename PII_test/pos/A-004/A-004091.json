@@ -1,1 +1,0 @@
-{"id": "A-004091", "text": "전화는 010 5555 1234고요, SNS는 @user_global입니다. 이게 정확할까요?", "pi": [{"type": "PHONE", "text": "010 5555 1234", "start": 4, "end": 17}, {"type": "SNS", "text": "@user_global", "start": 26, "end": 38}], "meta": {"domain": "온라인 강의 Q&A", "style": "구어체", "obfuscation": ["romanized", "split_utterance"], "hard_case": "none"}}

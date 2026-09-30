@@ -1,1 +1,0 @@
-{"id": "A-001993", "text": "네, 예약 확인 부탁드려요. 저는 봄이라는 이름의 고객이고요, 제 인스타는 www.spring_b_trip이에요.", "pi": [{"type": "NAME", "text": "봄", "start": 19, "end": 20}, {"type": "SNS", "text": "www.spring_b_trip", "start": 42, "end": 59}], "meta": {"domain": "여행 예약", "style": "존댓말 상담", "obfuscation": ["romanized"], "hard_case": "homonym_name"}}

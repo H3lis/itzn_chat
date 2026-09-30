@@ -1,1 +1,0 @@
-{"id": "A-001485", "text": "혹시 고객님 성함이 '달님'이 맞으실까요? 제가 자모 단위로 확인해 볼게요.", "pi": [{"type": "NAME", "text": "달님", "start": 12, "end": 14}], "meta": {"domain": "고객센터 채팅", "style": "격식체", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

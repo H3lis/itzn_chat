@@ -1,1 +1,0 @@
-{"id": "A-002746", "text": "장미 씨는 예약한 게 맞으세요? 전화번호가 010-5555-4444예요.", "pi": [{"type": "NAME", "text": "장미", "start": 0, "end": 2}, {"type": "PHONE", "text": "010-5555-4444", "start": 24, "end": 37}], "meta": {"domain": "병원 접수", "style": "반말 대화", "obfuscation": ["lookalike_char"], "hard_case": "homonym_name"}}

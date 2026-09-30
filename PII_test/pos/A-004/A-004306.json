@@ -1,1 +1,0 @@
-{"id": "A-004306", "text": "제게 오신 분은 김민준 대표님으로 알고 있는데요, 실명으로 불러주실 수 있나요?", "pi": [{"type": "NAME", "text": "김민준", "start": 9, "end": 12}], "meta": {"domain": "민원 접수", "style": "짧은 단답", "obfuscation": ["jamo_split", "honorific_ref", "romanized"], "hard_case": "none"}}

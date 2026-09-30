@@ -1,1 +1,0 @@
-{"id": "A-005759", "text": "네, 이메일 주소는 '별@naver점com' 이고요. 성함은 별이라고 하셨죠? 맞으신가요?", "pi": [{"type": "EMAIL", "text": "별@naver점com", "start": 12, "end": 23}, {"type": "NAME", "text": "별", "start": 34, "end": 35}], "meta": {"domain": "쇼핑몰 문의", "style": "짧은 단답", "obfuscation": ["jamo_split", "email_spoken"], "hard_case": "homonym_name"}}

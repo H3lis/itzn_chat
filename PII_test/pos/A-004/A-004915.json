@@ -1,1 +1,0 @@
-{"id": "A-004915", "text": "주소는 서울시 강남구 역삼동 123-45고요, 연락처는 010-2222-3333입니다.", "pi": [{"type": "ADDRESS", "text": "서울시 강남구 역삼동 123-45", "start": 4, "end": 22}, {"type": "PHONE", "text": "010-2222-3333", "start": 31, "end": 44}], "meta": {"domain": "여행 예약", "style": "존댓말 상담", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

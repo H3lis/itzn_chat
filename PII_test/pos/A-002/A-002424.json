@@ -1,1 +1,0 @@
-{"id": "A-002424", "text": "청구서에 등록된 계정번호가 7777-A-BBBB예요. 이 건은 이메일로 보내드릴게요.", "pi": [{"type": "ACCOUNT", "text": "7777-A-BBBB", "start": 15, "end": 26}], "meta": {"domain": "보험 청구", "style": "격식체", "obfuscation": ["split_utterance", "stt_error"], "hard_case": "none"}}

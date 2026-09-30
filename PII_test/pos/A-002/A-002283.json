@@ -1,1 +1,0 @@
-{"id": "A-002283", "text": "네, 이름은 박서준이에요. 그리고 연락처는 010-8888-9999 맞나요?", "pi": [{"type": "NAME", "text": "박서준", "start": 7, "end": 10}], "meta": {"domain": "고객센터 채팅", "style": "짧은 단답", "obfuscation": ["self_correction"], "hard_case": "none"}}

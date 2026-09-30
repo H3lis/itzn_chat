@@ -1,1 +1,0 @@
-{"id": "A-004841", "text": "생년월일은 2000년 12월 25일이고요, 이메일 주소는 example(at)test.com으로 알고 있어요.", "pi": [{"type": "BIRTH", "text": "2000년 12월 25일", "start": 6, "end": 19}, {"type": "EMAIL", "text": "example(at)test.com", "start": 32, "end": 51}], "meta": {"domain": "배달 요청사항", "style": "음성인식(STT) 전사", "obfuscation": ["plain"], "hard_case": "none"}}

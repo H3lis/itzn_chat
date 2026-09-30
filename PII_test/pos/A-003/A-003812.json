@@ -1,1 +1,0 @@
-{"id": "A-003812", "text": "거주지는 서울특별시 강남구 테헤란로 303-2예요. 아, 아니요. 주소는 서울시 강남구 삼성동 123-4예요.", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 테헤란로 303-2", "start": 5, "end": 25}, {"type": "ADDRESS", "text": "서울시 강남구 삼성동 123-4", "start": 41, "end": 58}], "meta": {"domain": "SNS 댓글", "style": "반말 대화", "obfuscation": ["stt_error"], "hard_case": "none"}}

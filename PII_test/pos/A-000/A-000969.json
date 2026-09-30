@@ -1,1 +1,0 @@
-{"id": "A-000969", "text": "광주 씨한테 연락드릴게요. 전화번호는 010 다시 하나 넷, 그리고 본명은 광주예요.", "pi": [{"type": "NAME", "text": "광주", "start": 0, "end": 2}, {"type": "PHONE", "text": "010 다시 하나 넷", "start": 21, "end": 32}], "meta": {"domain": "이메일 본문", "style": "오타 많은 채팅", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

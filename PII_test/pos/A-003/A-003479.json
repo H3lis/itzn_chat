@@ -1,1 +1,0 @@
-{"id": "A-003479", "text": "수신 주소는 555-5555-3333점이고, 카드 번호는 999-0000-1111-2222예요.", "pi": [{"type": "ADDRESS", "text": "555-5555-3333", "start": 7, "end": 20}, {"type": "CARD", "text": "999-0000-1111-2222", "start": 32, "end": 50}], "meta": {"domain": "이메일 본문", "style": "음성인식(STT) 전사", "obfuscation": ["mixed_reading", "separator_noise"], "hard_case": "none"}}

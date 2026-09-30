@@ -1,1 +1,0 @@
-{"id": "A-003360", "text": "이름은 Kim Minjun이고, 여권 번호는 ＫｉｍＭｉｎＪｕｎ 입니다.", "pi": [{"type": "NAME", "text": "Kim Minjun", "start": 4, "end": 14}, {"type": "PASSPORT", "text": "ＫｉｍＭｉｎＪｕｎ", "start": 25, "end": 34}], "meta": {"domain": "음성통화 전사문", "style": "길고 장황한 설명", "obfuscation": ["lookalike_char", "romanized"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-001018", "text": "생년월일이 2000년 5월 20일이었고, 주민등록번호는 990101-2222222이에요.", "pi": [{"type": "BIRTH", "text": "2000년 5월 20일", "start": 6, "end": 18}, {"type": "RRN", "text": "990101-2222222", "start": 31, "end": 45}], "meta": {"domain": "직장 메신저", "style": "음성인식(STT) 전사", "obfuscation": ["korean_reading"], "hard_case": "none"}}

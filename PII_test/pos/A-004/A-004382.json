@@ -1,1 +1,0 @@
-{"id": "A-004382", "text": "예약하신 분 성함이 '노을' 님이시군요? 연락처는 '010-9999-1111'로 알고 있습니다.", "pi": [{"type": "NAME", "text": "노을", "start": 12, "end": 14}, {"type": "PHONE", "text": "010-9999-1111", "start": 29, "end": 42}], "meta": {"domain": "택배 문의", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

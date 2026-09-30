@@ -1,1 +1,0 @@
-{"id": "A-001705", "text": "배송받으실 주소는 서울특별시 강남구 테헤란로 123이고, 저희는 한국전자공사입니다.", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 테헤란로 123", "start": 10, "end": 28}, {"type": "ORG", "text": "한국전자공사", "start": 36, "end": 42}], "meta": {"domain": "택배 문의", "style": "격식체", "obfuscation": ["plain"], "hard_case": "org_person"}}

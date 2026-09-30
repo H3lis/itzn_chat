@@ -1,1 +1,0 @@
-{"id": "A-002037", "text": "주소는 경기도 성남시 분당구 서현대로 500번지 1234호로 오시면 돼요.", "pi": [{"type": "ADDRESS", "text": "경기도 성남시 분당구 서현대로 500번지 1234호", "start": 4, "end": 32}], "meta": {"domain": "금융 상담", "style": "음성인식(STT) 전사", "obfuscation": ["stt_error", "korean_reading", "jamo_split"], "hard_case": "none"}}

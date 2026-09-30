@@ -1,1 +1,0 @@
-{"id": "A-002806", "text": "고객님의 주민등록번호가 910115-1******이고요, 이건 저희 측 시스템에서 직접 확인해야 할 것 같아요.", "pi": [{"type": "EMAIL", "text": "910115", "start": 13, "end": 19}, {"type": "RRN", "text": "1******", "start": 20, "end": 27}], "meta": {"domain": "고객센터 채팅", "style": "공문서풍", "obfuscation": ["split_utterance", "email_spoken"], "hard_case": "none"}}

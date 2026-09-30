@@ -1,1 +1,0 @@
-{"id": "A-004729", "text": "여권 번호는 XYZ987654321이고, 전화번호는 070-9999-8888입니다.", "pi": [{"type": "PASSPORT", "text": "XYZ987654321", "start": 7, "end": 19}, {"type": "PHONE", "text": "070-9999-8888", "start": 29, "end": 42}], "meta": {"domain": "민원 접수", "style": "반말 대화", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

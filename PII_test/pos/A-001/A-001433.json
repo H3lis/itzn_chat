@@ -1,1 +1,0 @@
-{"id": "A-001433", "text": "저 오늘 김철수랑 이영희가 왔는데요. 저희는 두 사람 다 정말 잘 아는 분들이라구요.", "pi": [{"type": "NAME", "text": "김철수", "start": 5, "end": 8}, {"type": "NAME", "text": "이영희", "start": 10, "end": 13}], "meta": {"domain": "고객센터 채팅", "style": "메신저 줄임말", "obfuscation": ["romanized", "jamo_split"], "hard_case": "none"}}

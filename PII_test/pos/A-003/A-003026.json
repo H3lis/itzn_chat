@@ -1,1 +1,0 @@
-{"id": "A-003026", "text": "고객님의 주민번호는 900101-1******, 되나요? 다시 한번 불러주실 수 있을까요?", "pi": [{"type": "RRN", "text": "900101-1******", "start": 11, "end": 25}], "meta": {"domain": "콜센터 상담 요약", "style": "구어체", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

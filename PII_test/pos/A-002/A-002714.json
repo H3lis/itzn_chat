@@ -1,1 +1,0 @@
-{"id": "A-002714", "text": "결제 카드는 비자 마스터로 끝자리 4444로 부탁드립니다.", "pi": [{"type": "CARD", "text": "4444", "start": 19, "end": 23}], "meta": {"domain": "병원 접수", "style": "짧은 단답", "obfuscation": ["korean_reading"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "B-001064", "text": "이거 보험 접수할 때, 청구 번호가 9876543210 같은 건 아닌지 모르겠네.", "pi": [], "meta": {"domain": "보험 청구", "style": "반말 대화", "obfuscation": [], "hard_case": "number_like_pi"}}

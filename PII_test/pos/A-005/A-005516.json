@@ -1,1 +1,0 @@
-{"id": "A-005516", "text": "담당자님 성함은 '최은영'님이시고, 주민번호는 '901231-1******' 맞으신가요?", "pi": [{"type": "NAME", "text": "최은영", "start": 10, "end": 13}, {"type": "RRN", "text": "901231-1******", "start": 27, "end": 41}], "meta": {"domain": "음성통화 전사문", "style": "오타 많은 채팅", "obfuscation": ["honorific_ref", "repeat_expr"], "hard_case": "none"}}

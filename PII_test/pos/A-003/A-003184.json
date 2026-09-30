@@ -1,1 +1,0 @@
-{"id": "A-003184", "text": "저 신한은행에 다니는 박지민입니다. 주민등록번호는 901231-2XXXXXX로 확인 부탁드려요.", "pi": [{"type": "ORG", "text": "신한은행", "start": 2, "end": 6}, {"type": "RRN", "text": "901231-2XXXXXX", "start": 28, "end": 42}], "meta": {"domain": "보험 청구", "style": "반말 대화", "obfuscation": ["romanized"], "hard_case": "org_person"}}

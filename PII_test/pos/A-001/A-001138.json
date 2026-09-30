@@ -1,1 +1,0 @@
-{"id": "A-001138", "text": "혹시 차량 번호가 C-5678-D가 맞는지 다시 한번 확인 부탁드려요.", "pi": [{"type": "CAR_PLATE", "text": "C-5678-D", "start": 10, "end": 18}], "meta": {"domain": "부동산 상담", "style": "오타 많은 채팅", "obfuscation": ["korean_reading"], "hard_case": "none"}}

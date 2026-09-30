@@ -1,1 +1,0 @@
-{"id": "A-004102", "text": "문의하신 메일은 user@g**mail.com 같은 느낌으로 보입니다만, ＠ 기호가 이상해서요.", "pi": [{"type": "EMAIL", "text": "user@g**mail.com", "start": 9, "end": 25}], "meta": {"domain": "직장 메신저", "style": "메신저 줄임말", "obfuscation": ["separator_noise", "lookalike_char"], "hard_case": "none"}}

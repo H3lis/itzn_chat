@@ -1,1 +1,0 @@
-{"id": "A-000723", "text": "운전면허 번호가 12345678이요. 혹시 이거랑 다른 번호가 있을까요?", "pi": [{"type": "DRIVER_LICENSE", "text": "12345678", "start": 9, "end": 17}], "meta": {"domain": "중고거래 채팅", "style": "오타 많은 채팅", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-004567", "text": "방문하실 주소는 서울특별시 강남구 테헤란로 123-45이며, 이메일은 example@corp.net으로 꼭 기록해 주십시오.", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 테헤란로 123-45", "start": 9, "end": 30}, {"type": "EMAIL", "text": "example@corp.net", "start": 39, "end": 55}], "meta": {"domain": "커뮤니티 게시글", "style": "공문서풍", "obfuscation": ["plain"], "hard_case": "none"}}

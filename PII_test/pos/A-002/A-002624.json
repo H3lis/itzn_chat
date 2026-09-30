@@ -1,1 +1,0 @@
-{"id": "A-002624", "text": "지금 사시는 주소는 강남구 역삼동 123-45번지 맞나요?", "pi": [{"type": "ADDRESS", "text": "강남구 역삼동 123-45번지", "start": 11, "end": 27}], "meta": {"domain": "콜센터 상담 요약", "style": "구어체", "obfuscation": ["jamo_split"], "hard_case": "none"}}

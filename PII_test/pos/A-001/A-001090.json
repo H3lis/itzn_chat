@@ -1,1 +1,0 @@
-{"id": "A-001090", "text": "상담받으신 분 이름은 여름 씨 맞으신가요? 그리고 이메일 주소는 chulsoo(at)gmail(dot)com으로 적어주시면 됩니다.", "pi": [{"type": "NAME", "text": "여름", "start": 12, "end": 14}, {"type": "EMAIL", "text": "chulsoo(at)gmail(dot)com", "start": 36, "end": 60}], "meta": {"domain": "콜센터 상담 요약", "style": "오타 많은 채팅", "obfuscation": ["self_correction"], "hard_case": "homonym_name"}}

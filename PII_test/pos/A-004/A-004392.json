@@ -1,1 +1,0 @@
-{"id": "A-004392", "text": "저한테 연락하시려면 하루로 전화주세요. 제 번호는 010-2222-3333이에요. 혹시 메모로 적어주시면 돼요.", "pi": [{"type": "NAME", "text": "하루", "start": 11, "end": 13}, {"type": "PHONE", "text": "010-2222-3333", "start": 28, "end": 41}], "meta": {"domain": "커뮤니티 게시글", "style": "메신저 줄임말", "obfuscation": ["split_utterance"], "hard_case": "homonym_name"}}

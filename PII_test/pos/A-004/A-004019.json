@@ -1,1 +1,0 @@
-{"id": "A-004019", "text": "받으실 주소는 경기도 과천시 중앙로 55번지이고, 연락처는 010-3333-4444입니다.", "pi": [{"type": "ADDRESS", "text": "경기도 과천시 중앙로 55번지", "start": 8, "end": 24}, {"type": "PHONE", "text": "010-3333-4444", "start": 33, "end": 46}], "meta": {"domain": "중고거래 채팅", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-003671", "text": "제 닉네임은 'CoolMaster'이고, 소셜 미디어는 @user_cool입니다. 이름은 로마자로 'Hong Gildong'이에요.", "pi": [{"type": "SNS", "text": "@user_cool", "start": 31, "end": 41}, {"type": "NAME", "text": "Hong Gildong", "start": 56, "end": 68}], "meta": {"domain": "음성통화 전사문", "style": "길고 장황한 설명", "obfuscation": ["romanized", "jamo_split"], "hard_case": "none"}}

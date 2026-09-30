@@ -1,1 +1,0 @@
-{"id": "A-002710", "text": "청구자님, 연락 가능한 번호가 어떻게 되실까요? 010-3333-4444 번호가 맞으실까요?", "pi": [{"type": "PHONE", "text": "010-3333-4444", "start": 27, "end": 40}], "meta": {"domain": "보험 청구", "style": "존댓말 상담", "obfuscation": ["stt_error"], "hard_case": "none"}}

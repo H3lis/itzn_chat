@@ -1,1 +1,0 @@
-{"id": "A-004201", "text": "저 달님인데요. 혹시 생년월일이 95년 3월 15일 맞나요? 이름이 김달님으로 되어 있어서요.", "pi": [{"type": "BIRTH", "text": "95년 3월 15일", "start": 18, "end": 28}, {"type": "NAME", "text": "김달님", "start": 38, "end": 41}], "meta": {"domain": "민원 접수", "style": "반말 대화", "obfuscation": ["separator_noise"], "hard_case": "homonym_name"}}

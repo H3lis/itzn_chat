@@ -1,1 +1,0 @@
-{"id": "A-001475", "text": "연락처가 010-1111-2222인데요. 아 아니다, 그건 아니고 010-3333-4444예요.", "pi": [{"type": "PHONE", "text": "010-1111-2222", "start": 5, "end": 18}, {"type": "PHONE", "text": "010-3333-4444", "start": 37, "end": 50}], "meta": {"domain": "민원 접수", "style": "음성인식(STT) 전사", "obfuscation": ["self_correction"], "hard_case": "none"}}

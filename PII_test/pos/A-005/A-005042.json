@@ -1,1 +1,0 @@
-{"id": "A-005042", "text": "제 번호는 010-5555-4444인데, 혹시 이게 010-6666-7777로 바뀌었는지 확인 좀 해주세요.", "pi": [{"type": "PHONE", "text": "010-6666-7777", "start": 29, "end": 42}], "meta": {"domain": "커뮤니티 게시글", "style": "메신저 줄임말", "obfuscation": ["self_correction"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-002639", "text": "고객님께서 문의주신 카드번호가 1234-5678-9012예요. 혹시 1234 점 5678로 말씀하신 건가요?", "pi": [{"type": "PHONE", "text": "1234 점 5678", "start": 38, "end": 49}], "meta": {"domain": "SNS 댓글", "style": "공문서풍", "obfuscation": ["lookalike_char", "stt_error", "separator_noise"], "hard_case": "none"}}

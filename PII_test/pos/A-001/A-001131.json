@@ -1,1 +1,0 @@
-{"id": "A-001131", "text": "강사님, 제가 이메일은 dream.learn@mail.com이고, 제 이름은 지수예요.", "pi": [{"type": "EMAIL", "text": "dream.learn@mail.com", "start": 13, "end": 33}, {"type": "NAME", "text": "지수", "start": 43, "end": 45}], "meta": {"domain": "온라인 강의 Q&A", "style": "구어체", "obfuscation": ["plain"], "hard_case": "none"}}

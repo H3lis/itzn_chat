@@ -1,1 +1,0 @@
-{"id": "A-004643", "text": "저기요, 여권 번호 말씀이신 거죠? 이건 기호로만 해드릴게요. 가 되시고, 그다음에 아자드 점 에이피 거예요.", "pi": [{"type": "PASSPORT", "text": "가 되시고, 그다음에 아자드 점 에이피", "start": 35, "end": 56}], "meta": {"domain": "커뮤니티 게시글", "style": "구어체", "obfuscation": ["lookalike_char", "korean_reading"], "hard_case": "none"}}

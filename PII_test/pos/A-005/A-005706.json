@@ -1,1 +1,0 @@
-{"id": "A-005706", "text": "저의 아이디는 alpha123이고, 이름은 김철수입니다. 죄송하지만 제가 이메일 주소는 다시 말해 드릴게요.", "pi": [{"type": "ID", "text": "alpha123", "start": 8, "end": 16}, {"type": "NAME", "text": "김철수", "start": 24, "end": 27}], "meta": {"domain": "이메일 본문", "style": "길고 장황한 설명", "obfuscation": ["self_correction"], "hard_case": "nickname_id"}}

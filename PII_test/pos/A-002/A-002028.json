@@ -1,1 +1,0 @@
-{"id": "A-002028", "text": "이메일은 dasom.kim@naver.com이고, 이름은 다솜 씨가 맞나요? 저한테만 알려주세요.", "pi": [{"type": "EMAIL", "text": "dasom.kim@naver.com", "start": 5, "end": 24}, {"type": "NAME", "text": "다솜", "start": 32, "end": 34}], "meta": {"domain": "배달 요청사항", "style": "음성인식(STT) 전사", "obfuscation": ["romanized"], "hard_case": "homonym_name"}}

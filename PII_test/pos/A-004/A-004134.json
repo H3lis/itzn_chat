@@ -1,1 +1,0 @@
-{"id": "A-004134", "text": "문의하신 이메일 주소는 g101.service.co.kr으로 기록되셨으니, 추후에 꼭 확인해 주시면 좋겠습니다.", "pi": [{"type": "EMAIL", "text": "g101.service.co.kr", "start": 13, "end": 31}], "meta": {"domain": "회의록", "style": "길고 장황한 설명", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

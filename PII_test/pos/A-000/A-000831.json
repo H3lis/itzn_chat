@@ -1,1 +1,0 @@
-{"id": "A-000831", "text": "회원님 아이디는 'S_Dreamer'로 가입해 주셨고, 성함은 '정우진' 님이 맞으신가요?", "pi": [{"type": "ID", "text": "S_Dreamer", "start": 10, "end": 19}, {"type": "NAME", "text": "정우진", "start": 36, "end": 39}], "meta": {"domain": "쇼핑몰 문의", "style": "공문서풍", "obfuscation": ["plain"], "hard_case": "nickname_id"}}

@@ -1,1 +1,0 @@
-{"id": "A-003304", "text": "저는 지메일 주소, g.m.d@provider.net 이고, 이름은 박지수예요.", "pi": [{"type": "EMAIL", "text": "g.m.d@provider.net", "start": 11, "end": 29}, {"type": "NAME", "text": "박지수", "start": 38, "end": 41}], "meta": {"domain": "쇼핑몰 문의", "style": "음성인식(STT) 전사", "obfuscation": ["jamo_split", "separator_noise"], "hard_case": "none"}}

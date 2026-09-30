@@ -1,1 +1,0 @@
-{"id": "A-005786", "text": "푸름 씨, 이메일 주소는 p-l-u-r-eum@s.co.kr이에요. 성함은 푸름이시죠?", "pi": [{"type": "NAME", "text": "푸름", "start": 0, "end": 2}, {"type": "EMAIL", "text": "p-l-u-r-eum@s.co.kr", "start": 14, "end": 33}], "meta": {"domain": "병원 접수", "style": "반말 대화", "obfuscation": ["separator_noise"], "hard_case": "homonym_name"}}

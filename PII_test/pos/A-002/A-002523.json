@@ -1,1 +1,0 @@
-{"id": "A-002523", "text": "회원님의 아이디는 user12345입니다. 그리고 연락처는 010-9999-8888로 기록되어 있네요.", "pi": [{"type": "ID", "text": "user12345", "start": 10, "end": 19}, {"type": "PHONE", "text": "010-9999-8888", "start": 33, "end": 46}], "meta": {"domain": "금융 상담", "style": "음성인식(STT) 전사", "obfuscation": ["stt_error", "romanized"], "hard_case": "none"}}

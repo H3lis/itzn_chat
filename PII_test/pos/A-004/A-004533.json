@@ -1,1 +1,0 @@
-{"id": "A-004533", "text": "수신자께, 귀하의 문의사항 확인을 위해 담당자 김민준으로부터 연락드리니, 업무에 참고하여 주시기 바랍니다. 연락처는 010-8888-9999입니다.", "pi": [{"type": "NAME", "text": "김민준", "start": 26, "end": 29}, {"type": "PHONE", "text": "010-8888-9999", "start": 65, "end": 78}], "meta": {"domain": "이메일 본문", "style": "공문서풍", "obfuscation": ["separator_noise"], "hard_case": "none"}}

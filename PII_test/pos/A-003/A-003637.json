@@ -1,1 +1,0 @@
-{"id": "A-003637", "text": "이 건물은 서울 종로구 세종대로 123, 502호에 위치하고 있고요. 메일 주소는 user.sample.biz 입니다.", "pi": [{"type": "EMAIL", "text": "user.sample.biz", "start": 46, "end": 61}], "meta": {"domain": "부동산 상담", "style": "격식체", "obfuscation": ["separator_noise"], "hard_case": "none"}}

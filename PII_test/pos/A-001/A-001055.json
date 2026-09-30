@@ -1,1 +1,0 @@
-{"id": "A-001055", "text": "네, 고객님. 연락 가능한 휴대전화 번호가 010-9999-8888로 되어 있는데요, 혹시 변경된 번호 있으신가요?", "pi": [{"type": "PHONE", "text": "010-9999-8888", "start": 24, "end": 37}], "meta": {"domain": "고객센터 채팅", "style": "격식체", "obfuscation": ["self_correction"], "hard_case": "none"}}

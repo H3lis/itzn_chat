@@ -1,1 +1,0 @@
-{"id": "A-001061", "text": "온유 씨가 저한테 연락 주셨는데요. 번호는 010-2222-3333이에요. 제가 잘못 들었나? 010 2222 3333 이었나?", "pi": [{"type": "NAME", "text": "온유", "start": 0, "end": 2}, {"type": "PHONE", "text": "010-2222-3333", "start": 24, "end": 37}], "meta": {"domain": "SNS 댓글", "style": "짧은 단답", "obfuscation": ["split_utterance", "jamo_split"], "hard_case": "homonym_name"}}

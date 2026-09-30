@@ -1,1 +1,0 @@
-{"id": "A-002534", "text": "혹시 계신 번호가 010-2222-3333 맞으세요? 그분은 이름이 박서연이라고 하셨는데요.", "pi": [{"type": "PHONE", "text": "010-2222-3333", "start": 10, "end": 23}, {"type": "NAME", "text": "박서연", "start": 38, "end": 41}], "meta": {"domain": "중고거래 채팅", "style": "존댓말 상담", "obfuscation": ["korean_reading", "mixed_reading", "split_utterance"], "hard_case": "none"}}

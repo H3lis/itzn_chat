@@ -1,1 +1,0 @@
-{"id": "A-000181", "text": "이거 혹시 저희 집 근처에 있어요? 주소는 서울시 강남구 테헤란로 150이고요.", "pi": [{"type": "ADDRESS", "text": "서울시 강남구 테헤란로 150", "start": 24, "end": 40}], "meta": {"domain": "중고거래 채팅", "style": "구어체", "obfuscation": ["split_utterance", "stt_error"], "hard_case": "none"}}

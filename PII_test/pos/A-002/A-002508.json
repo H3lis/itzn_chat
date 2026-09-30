@@ -1,1 +1,0 @@
-{"id": "A-002508", "text": "저희 고객님 성함은 박지성 고객님이시고, 주소는 경기도 성남시 분당구 판교역로 500입니다. 오늘 문의하신 내용에 대해 답변드리겠습니다.", "pi": [{"type": "NAME", "text": "박지성", "start": 11, "end": 14}, {"type": "ADDRESS", "text": "경기도 성남시 분당구 판교역로 500", "start": 27, "end": 47}], "meta": {"domain": "택배 문의", "style": "존댓말 상담", "obfuscation": ["plain"], "hard_case": "none"}}

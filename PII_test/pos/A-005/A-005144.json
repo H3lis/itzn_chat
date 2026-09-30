@@ -1,1 +1,0 @@
-{"id": "A-005144", "text": "네, 고객님. 고객님 성함은 진주현 님이시구요. 그리고 계좌번호는 123-456-7890 같은데요. 이게 맞을까요?", "pi": [{"type": "NAME", "text": "진주현", "start": 16, "end": 19}, {"type": "ACCOUNT", "text": "123-456-7890", "start": 37, "end": 49}], "meta": {"domain": "음성통화 전사문", "style": "길고 장황한 설명", "obfuscation": ["romanized"], "hard_case": "homonym_name"}}

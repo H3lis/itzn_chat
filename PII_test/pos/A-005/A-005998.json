@@ -1,1 +1,0 @@
-{"id": "A-005998", "text": "너 진짜 재밌다! 오늘 저녁에 같이 놀래? 아, 맞다. 민준이 오늘 약속 있대.", "pi": [{"type": "NAME", "text": "민준", "start": 31, "end": 33}], "meta": {"domain": "SNS 댓글", "style": "반말 대화", "obfuscation": ["jamo_split"], "hard_case": "none"}}

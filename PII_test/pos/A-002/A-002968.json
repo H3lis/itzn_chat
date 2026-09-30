@@ -1,1 +1,0 @@
-{"id": "A-002968", "text": "학생이 325451로 왔는데요. 이름은 광주철수 씨라고 불러주시면 될까요?", "pi": [{"type": "ID", "text": "325451", "start": 4, "end": 10}, {"type": "NAME", "text": "광주철수", "start": 22, "end": 26}], "meta": {"domain": "병원 접수", "style": "음성인식(STT) 전사", "obfuscation": ["lookalike_char"], "hard_case": "homonym_name"}}

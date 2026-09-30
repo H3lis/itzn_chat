@@ -1,1 +1,0 @@
-{"id": "A-004139", "text": "연락 가능한 이메일은 user@mail.com이고요. 번호는 010//8888/7777로 돼있습니다.", "pi": [{"type": "EMAIL", "text": "user@mail.com", "start": 12, "end": 25}, {"type": "PHONE", "text": "010//8888/7777", "start": 34, "end": 48}], "meta": {"domain": "직장 메신저", "style": "음성인식(STT) 전사", "obfuscation": ["separator_noise", "lookalike_char"], "hard_case": "none"}}

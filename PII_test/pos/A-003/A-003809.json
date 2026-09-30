@@ -1,1 +1,0 @@
-{"id": "A-003809", "text": "이메일 주소는 kimssu(at)naver(dot)com이 맞는데요. 이름은 김수준 씨 맞나요?", "pi": [{"type": "EMAIL", "text": "kimssu(at)naver(dot)com", "start": 8, "end": 31}, {"type": "NAME", "text": "김수준", "start": 43, "end": 46}], "meta": {"domain": "택배 문의", "style": "오타 많은 채팅", "obfuscation": ["email_spoken"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-001827", "text": "회원님의 이메일 주소는 cherry.park@naver.com으로 되어 있는데요, 혹시 오타가 있을까요?", "pi": [{"type": "EMAIL", "text": "cherry.park@naver.com", "start": 13, "end": 34}], "meta": {"domain": "쇼핑몰 문의", "style": "구어체", "obfuscation": ["separator_noise"], "hard_case": "none"}}

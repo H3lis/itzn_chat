@@ -1,1 +1,0 @@
-{"id": "A-001303", "text": "면허증 번호는 A-123-BC-9999입니다. 차량 점검 후 다시 연락드리겠습니다.", "pi": [{"type": "DRIVER_LICENSE", "text": "A-123-BC-9999", "start": 8, "end": 21}], "meta": {"domain": "보험 청구", "style": "존댓말 상담", "obfuscation": ["stt_error", "separator_noise"], "hard_case": "none"}}

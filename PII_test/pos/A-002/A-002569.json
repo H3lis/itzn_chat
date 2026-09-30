@@ -1,1 +1,0 @@
-{"id": "A-002569", "text": "생년월일 확인 부탁드리는데요. 네, 다시 말씀드리면 95년 11월 22일이 맞을까요?", "pi": [{"type": "BIRTH", "text": "95년 11월 22일", "start": 29, "end": 40}], "meta": {"domain": "고객센터 채팅", "style": "오타 많은 채팅", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

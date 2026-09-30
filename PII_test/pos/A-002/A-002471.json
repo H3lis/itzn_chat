@@ -1,1 +1,0 @@
-{"id": "A-002471", "text": "제가 구매하려는 건 'Gizmo_X900' 계정으로 등록된 제품이라서요. 이 상품의 거래 기록을 다시 한번 확인해 주실 수 있을까요? 혹시 다른 계정 정보도 필요하신가요?", "pi": [{"type": "ACCOUNT", "text": "Gizmo_X900", "start": 12, "end": 22}], "meta": {"domain": "중고거래 채팅", "style": "길고 장황한 설명", "obfuscation": ["self_correction"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-002333", "text": "이번 프로젝트는 홍길동 부장님과 이지은 팀장님 두 분의 의견이 모두 중요합니다.", "pi": [{"type": "NAME", "text": "홍길동", "start": 9, "end": 12}, {"type": "NAME", "text": "이지은", "start": 18, "end": 21}], "meta": {"domain": "회의록", "style": "길고 장황한 설명", "obfuscation": ["honorific_ref", "romanized"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-003708", "text": "저는 2000년 3월 15일에 태어났고, 제 이름은 최준영이에요. 이거 틀렸어요, 이름은 진짜 최준현이에요.", "pi": [{"type": "BIRTH", "text": "2000년 3월 15일", "start": 3, "end": 15}, {"type": "NAME", "text": "최준영", "start": 29, "end": 32}, {"type": "NAME", "text": "최준현", "start": 53, "end": 56}], "meta": {"domain": "여행 예약", "style": "오타 많은 채팅", "obfuscation": ["jamo_split"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-002751", "text": "저 지원자 수원입니다. 아이디는 S1234, 주민번호는 990101-2xxxxxxx 확인 부탁드려요.", "pi": [{"type": "NAME", "text": "수원", "start": 6, "end": 8}, {"type": "ID", "text": "S1234", "start": 18, "end": 23}, {"type": "RRN", "text": "990101-2xxxxxxx", "start": 31, "end": 46}], "meta": {"domain": "SNS 댓글", "style": "공문서풍", "obfuscation": ["stt_error"], "hard_case": "homonym_name"}}

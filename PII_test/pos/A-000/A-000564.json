@@ -1,1 +1,0 @@
-{"id": "A-000564", "text": "저기요, 저는 이름이 '봄'이고, 소속은 서울대학교이고, 여권 번호가 G5H6I7J8입니다.", "pi": [{"type": "NAME", "text": "봄", "start": 13, "end": 14}, {"type": "ORG", "text": "서울대학교", "start": 23, "end": 28}, {"type": "PASSPORT", "text": "G5H6I7J8", "start": 39, "end": 47}], "meta": {"domain": "병원 접수", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

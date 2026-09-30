@@ -1,1 +1,0 @@
-{"id": "A-005789", "text": "제 이메일은 4@a.com이구요, 이름은 ㅇㅇㅇ이요. 아, 맞다, 저는 김민지예요.", "pi": [{"type": "EMAIL", "text": "4@a.com", "start": 7, "end": 14}, {"type": "NAME", "text": "ㅇㅇㅇ", "start": 23, "end": 26}, {"type": "NAME", "text": "김민지", "start": 40, "end": 43}], "meta": {"domain": "커뮤니티 게시글", "style": "오타 많은 채팅", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

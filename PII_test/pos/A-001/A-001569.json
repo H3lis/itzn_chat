@@ -1,1 +1,0 @@
-{"id": "A-001569", "text": "여권 정보가 필요합니다. 여권 번호는 'A123B4567'로 되어 있는데요, 이 번호가 맞으신가요? 아니면 혹시 '여권 번호는' 이 부분이 좀 틀린 걸까요?", "pi": [{"type": "PASSPORT", "text": "A123B4567", "start": 22, "end": 31}], "meta": {"domain": "배달 요청사항", "style": "음성인식(STT) 전사", "obfuscation": ["split_utterance"], "hard_case": "none"}}

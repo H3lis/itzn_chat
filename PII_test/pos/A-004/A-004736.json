@@ -1,1 +1,0 @@
-{"id": "A-004736", "text": "학번은 20202101이고, 전화번호는 010 5555 4444로 문의 주시면 제가 확인해 드릴게요.", "pi": [{"type": "ACCOUNT", "text": "20202101", "start": 4, "end": 12}, {"type": "PHONE", "text": "010 5555 4444", "start": 22, "end": 35}], "meta": {"domain": "온라인 강의 Q&A", "style": "길고 장황한 설명", "obfuscation": ["plain"], "hard_case": "none"}}

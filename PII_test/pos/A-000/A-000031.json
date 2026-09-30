@@ -1,1 +1,0 @@
-{"id": "A-000031", "text": "하루 만에 오셨네요. 혹시 성함이 '하루'신가요? 번호는 010-555-1111부터 시작해서요.", "pi": [{"type": "NAME", "text": "하루", "start": 0, "end": 2}, {"type": "PHONE", "text": "010-555-1111", "start": 32, "end": 44}], "meta": {"domain": "민원 접수", "style": "길고 장황한 설명", "obfuscation": ["split_utterance", "self_correction"], "hard_case": "homonym_name"}}

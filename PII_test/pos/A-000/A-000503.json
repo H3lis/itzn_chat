@@ -1,1 +1,0 @@
-{"id": "A-000503", "text": "너의 이름이 뭐야? 야, 전화번호는 010-1111-2222로 돼 있어.", "pi": [{"type": "NAME", "text": "이름", "start": 3, "end": 5}, {"type": "PHONE", "text": "010-1111-2222", "start": 20, "end": 33}], "meta": {"domain": "회의록", "style": "반말 대화", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

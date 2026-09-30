@@ -1,1 +1,0 @@
-{"id": "A-004767", "text": "화물 추적해서 문의드립니다. IP 주소 192.168.1.1로 조회 부탁드립니다.", "pi": [{"type": "IP_ADDR", "text": "192.168.1.1", "start": 22, "end": 33}], "meta": {"domain": "택배 문의", "style": "공문서풍", "obfuscation": ["korean_reading"], "hard_case": "none"}}

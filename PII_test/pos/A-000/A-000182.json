@@ -1,1 +1,0 @@
-{"id": "A-000182", "text": "접수 도와드리겠습니다. 예약하신 회원 아이디가 'user123' 맞으신가요? 아니면 그거 말고 'user124'로 다시 해주시겠어요?", "pi": [{"type": "ACCOUNT", "text": "user123", "start": 27, "end": 34}, {"type": "ACCOUNT", "text": "user124", "start": 54, "end": 61}], "meta": {"domain": "병원 접수", "style": "길고 장황한 설명", "obfuscation": ["self_correction"], "hard_case": "none"}}

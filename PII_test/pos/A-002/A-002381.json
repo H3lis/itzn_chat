@@ -1,1 +1,0 @@
-{"id": "A-002381", "text": "혹시 연락처가 010-9999-8888이요? 아니면 070-1234-5678로 다시 시도해 볼까요?", "pi": [{"type": "PHONE", "text": "010-9999-8888", "start": 8, "end": 21}, {"type": "PHONE", "text": "070-1234-5678", "start": 29, "end": 42}], "meta": {"domain": "커뮤니티 게시글", "style": "오타 많은 채팅", "obfuscation": ["stt_error"], "hard_case": "none"}}

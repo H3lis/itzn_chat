@@ -1,1 +1,0 @@
-{"id": "A-003912", "text": "진료가 필요한 분은 김민준 선생님께 오셔서 접수해 주시면 돼요.", "pi": [{"type": "NAME", "text": "김민준", "start": 11, "end": 14}], "meta": {"domain": "병원 접수", "style": "음성인식(STT) 전사", "obfuscation": ["honorific_ref"], "hard_case": "none"}}

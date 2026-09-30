@@ -1,1 +1,0 @@
-{"id": "A-001296", "text": "민지 씨한테 연락드릴게요. 혹시 전화번호가 010-1234-5678 맞으셨나요?", "pi": [{"type": "NAME", "text": "민지", "start": 0, "end": 2}, {"type": "PHONE", "text": "010-1234-5678", "start": 24, "end": 37}], "meta": {"domain": "SNS 댓글", "style": "존댓말 상담", "obfuscation": ["split_utterance"], "hard_case": "none"}}

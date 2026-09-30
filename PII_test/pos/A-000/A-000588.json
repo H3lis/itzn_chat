@@ -1,1 +1,0 @@
-{"id": "A-000588", "text": "이름이 박지성 씨라고 하셨고, 그 다음엔 박지성 씨로 다시 한번 확인해 주세요.", "pi": [{"type": "NAME", "text": "박지성", "start": 4, "end": 7}, {"type": "NAME", "text": "박지성", "start": 23, "end": 26}], "meta": {"domain": "콜센터 상담 요약", "style": "오타 많은 채팅", "obfuscation": ["plain"], "hard_case": "none"}}

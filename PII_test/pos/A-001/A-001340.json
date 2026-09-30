@@ -1,1 +1,0 @@
-{"id": "A-001340", "text": "계좌 번호는 123-4567-8901 이 맞습니다. 이 계좌로 결제하시면 됩니다.", "pi": [{"type": "ACCOUNT", "text": "123-4567-8901", "start": 7, "end": 20}], "meta": {"domain": "택배 문의", "style": "공문서풍", "obfuscation": ["plain"], "hard_case": "none"}}

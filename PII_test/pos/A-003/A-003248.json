@@ -1,1 +1,0 @@
-{"id": "A-003248", "text": "김 부장님, 저희가 이용할 계정은 kim(at)gmail(dot)com으로 해 주시면 될까요?", "pi": [{"type": "NAME", "text": "김", "start": 0, "end": 1}, {"type": "EMAIL", "text": "kim(at)gmail(dot)com", "start": 19, "end": 39}], "meta": {"domain": "부동산 상담", "style": "존댓말 상담", "obfuscation": ["email_spoken", "honorific_ref", "romanized"], "hard_case": "none"}}

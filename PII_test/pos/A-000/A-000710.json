@@ -1,1 +1,0 @@
-{"id": "A-000710", "text": "신청서에 기재된 성함은 홍길동 님으로 알고 있는데, 이게 'HONG GIL DONG'이 맞는지 확인 부탁드립니다. 제가 '홍길동'이라고 알고 있어서요.", "pi": [{"type": "NAME", "text": "홍길동", "start": 13, "end": 16}], "meta": {"domain": "이메일 본문", "style": "공문서풍", "obfuscation": ["jamo_split", "self_correction"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-002230", "text": "네, 환자분 성함이 '박서연' 씨 맞으신가요? 아니, 그게 아니라 '박서연'이요. 혹시 '강남병원' 쪽으로 예약 도와드릴까요?", "pi": [{"type": "NAME", "text": "박서연", "start": 12, "end": 15}, {"type": "SNS", "text": "강남병원", "start": 50, "end": 54}], "meta": {"domain": "병원 접수", "style": "격식체", "obfuscation": ["self_correction", "separator_noise", "honorific_ref"], "hard_case": "none"}}

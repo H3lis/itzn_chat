@@ -1,1 +1,0 @@
-{"id": "A-003465", "text": "차량 번호는 G2B 9012이요. 그리고 신청자 성함은 김민준 씨입니다.", "pi": [{"type": "CAR_PLATE", "text": "G2B 9012", "start": 7, "end": 15}, {"type": "NAME", "text": "김민준", "start": 31, "end": 34}], "meta": {"domain": "쇼핑몰 문의", "style": "공문서풍", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

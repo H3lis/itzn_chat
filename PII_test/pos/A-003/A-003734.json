@@ -1,1 +1,0 @@
-{"id": "A-003734", "text": "네, 그 차량 번호가 '12가 3333 4444' 맞아요? 그리고 이름은 '수원민준' 맞지?", "pi": [{"type": "CAR_PLATE", "text": "12가 3333 4444", "start": 13, "end": 26}, {"type": "NAME", "text": "수원민준", "start": 42, "end": 46}], "meta": {"domain": "금융 상담", "style": "반말 대화", "obfuscation": ["separator_noise", "romanized"], "hard_case": "homonym_name"}}

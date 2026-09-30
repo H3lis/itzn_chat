@@ -1,1 +1,0 @@
-{"id": "A-003894", "text": "만 나이로 계산하는 게 맞을까요? 제 생년월일은 1990년 3월 15일이고, 아이디는 SkyRiver입니다.", "pi": [{"type": "BIRTH", "text": "1990년 3월 15일", "start": 27, "end": 39}, {"type": "ID", "text": "SkyRiver", "start": 48, "end": 56}], "meta": {"domain": "배달 요청사항", "style": "구어체", "obfuscation": ["korean_reading", "mixed_reading"], "hard_case": "none"}}

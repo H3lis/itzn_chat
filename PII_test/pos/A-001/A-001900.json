@@ -1,1 +1,0 @@
-{"id": "A-001900", "text": "제가 보내드릴 이메일은 cool_buyer@tempmail.com 이고요. 생년월일은 2000년 05월 20일이에요.", "pi": [{"type": "EMAIL", "text": "cool_buyer@tempmail.com", "start": 13, "end": 36}, {"type": "BIRTH", "text": "2000년 05월 20일", "start": 48, "end": 61}], "meta": {"domain": "중고거래 채팅", "style": "구어체", "obfuscation": ["email_spoken"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-001736", "text": "안녕하세요. 저는 겨울입니다. 연락드리려고요.", "pi": [{"type": "NAME", "text": "겨울", "start": 10, "end": 12}], "meta": {"domain": "중고거래 채팅", "style": "음성인식(STT) 전사", "obfuscation": ["romanized"], "hard_case": "homonym_name"}}

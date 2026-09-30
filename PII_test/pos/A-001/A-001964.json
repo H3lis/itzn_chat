@@ -1,1 +1,0 @@
-{"id": "A-001964", "text": "주소는 서울특별시 강남구 역삼동 555-12입니다. 전화번호는 010-9999-8888로 연락 주시면 되고요.", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 역삼동 555-12", "start": 4, "end": 24}, {"type": "PHONE", "text": "010-9999-8888", "start": 35, "end": 48}], "meta": {"domain": "온라인 강의 Q&A", "style": "짧은 단답", "obfuscation": ["korean_reading"], "hard_case": "none"}}

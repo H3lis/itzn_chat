@@ -1,1 +1,0 @@
-{"id": "A-002670", "text": "해당 기관은 국가행정정보센터 같은 거라 말씀드렸는데, 정확히 발음하면 국가행정정보센터에요.", "pi": [{"type": "ORG", "text": "국가행정정보센터", "start": 7, "end": 15}], "meta": {"domain": "민원 접수", "style": "음성인식(STT) 전사", "obfuscation": ["jamo_split", "romanized"], "hard_case": "none"}}

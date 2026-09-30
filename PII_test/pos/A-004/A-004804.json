@@ -1,1 +1,0 @@
-{"id": "A-004804", "text": "회원님께서 사용하신 메일 주소는 zeroone.two@mail(dot)co.kr으로 확인되었습니다.", "pi": [{"type": "EMAIL", "text": "zeroone.two@mail(dot)co.kr", "start": 18, "end": 44}], "meta": {"domain": "쇼핑몰 문의", "style": "음성인식(STT) 전사", "obfuscation": ["lookalike_char", "email_spoken", "separator_noise"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-005175", "text": "원래 IP 주소는 192.168.1.1이었는데, 이거 아마 172.16.0.1이 맞을 거예요.", "pi": [{"type": "EMAIL", "text": "192.168.1.1", "start": 10, "end": 21}, {"type": "IP_ADDR", "text": "172.16.0.1", "start": 33, "end": 43}], "meta": {"domain": "회의록", "style": "구어체", "obfuscation": ["mixed_reading", "self_correction"], "hard_case": "none"}}

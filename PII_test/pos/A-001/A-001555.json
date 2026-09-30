@@ -1,1 +1,0 @@
-{"id": "A-001555", "text": "배달 요청사항인데요, 생일이 88년 12월 25일이니까, 그리고 연락처는 010, 1111-2222로 부탁드려요.", "pi": [{"type": "BIRTH", "text": "88년 12월 25일", "start": 16, "end": 27}, {"type": "PHONE", "text": "010, 1111-2222", "start": 41, "end": 55}], "meta": {"domain": "배달 요청사항", "style": "음성인식(STT) 전사", "obfuscation": ["korean_reading", "separator_noise"], "hard_case": "none"}}

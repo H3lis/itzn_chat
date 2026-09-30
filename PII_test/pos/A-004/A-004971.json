@@ -1,1 +1,0 @@
-{"id": "A-004971", "text": "안녕하세요, 제가 말씀드릴 번호는 070-9999-8888입니다. 혹시 이 번호로 다시 연락드려도 될까요?", "pi": [{"type": "PHONE", "text": "070-9999-8888", "start": 19, "end": 32}], "meta": {"domain": "온라인 강의 Q&A", "style": "음성인식(STT) 전사", "obfuscation": ["plain"], "hard_case": "none"}}

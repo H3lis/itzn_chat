@@ -1,1 +1,0 @@
-{"id": "A-003258", "text": "차량 번호가 12가 3456이고, 주인분 성함은 박지민 씨로 돼 있거든요.", "pi": [{"type": "CAR_PLATE", "text": "12가 3456", "start": 7, "end": 15}, {"type": "NAME", "text": "박지민", "start": 27, "end": 30}], "meta": {"domain": "부동산 상담", "style": "오타 많은 채팅", "obfuscation": ["plain"], "hard_case": "none"}}

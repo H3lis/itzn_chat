@@ -1,1 +1,0 @@
-{"id": "A-000573", "text": "계정번호가 ABC-123456이고요, 여권 번호는 AB123456789입니다. 확인 부탁드립니다.", "pi": [{"type": "ACCOUNT", "text": "ABC-123456", "start": 6, "end": 16}, {"type": "PASSPORT", "text": "AB123456789", "start": 28, "end": 39}], "meta": {"domain": "이메일 본문", "style": "짧은 단답", "obfuscation": ["self_correction"], "hard_case": "none"}}

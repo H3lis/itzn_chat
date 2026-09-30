@@ -1,1 +1,0 @@
-{"id": "A-005504", "text": "제가 연락드릴 번호는 010 아무 아무 1234로 다시 확인 부탁드립니다.", "pi": [{"type": "PHONE", "text": "010 아무 아무 1234", "start": 12, "end": 26}], "meta": {"domain": "직장 메신저", "style": "음성인식(STT) 전사", "obfuscation": ["plain"], "hard_case": "none"}}

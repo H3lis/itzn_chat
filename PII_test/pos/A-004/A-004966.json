@@ -1,1 +1,0 @@
-{"id": "A-004966", "text": "너 혹시 춘천 출신 맞아? 네 전화번호가 010-9999-8888이라던데, 이름이 뭐였지?", "pi": [{"type": "NAME", "text": "춘천", "start": 5, "end": 7}, {"type": "PHONE", "text": "010-9999-8888", "start": 23, "end": 36}], "meta": {"domain": "커뮤니티 게시글", "style": "반말 대화", "obfuscation": ["korean_reading"], "hard_case": "homonym_name"}}

@@ -1,1 +1,0 @@
-{"id": "A-004292", "text": "혹시 신용카드는 4567-나인 8888 끝자리로 되나요? 고객님 성함은 봄 씨로 알고 있는데요.", "pi": [{"type": "CARD", "text": "4567-나인 8888", "start": 9, "end": 21}, {"type": "NAME", "text": "봄", "start": 40, "end": 41}], "meta": {"domain": "부동산 상담", "style": "반말 대화", "obfuscation": ["honorific_ref", "repeat_expr"], "hard_case": "homonym_name"}}

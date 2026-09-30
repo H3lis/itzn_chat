@@ -1,1 +1,0 @@
-{"id": "A-003498", "text": "문의 주신 분의 성함이 혹시 김민준 님 맞으실까요? 아니면 혹시 다른 분이신가요?", "pi": [{"type": "NAME", "text": "김민준", "start": 16, "end": 19}], "meta": {"domain": "고객센터 채팅", "style": "격식체", "obfuscation": ["self_correction"], "hard_case": "none"}}

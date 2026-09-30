@@ -1,1 +1,0 @@
-{"id": "A-004406", "text": "혹시 연락 가능한 번호가 있으실까요? 010 다음에 1이 네 번 그리고 2가 네 번으로 된 번호가 좋을 것 같은데요.", "pi": [{"type": "PHONE", "text": "010 다음에 1이 네 번 그리고 2가 네 번", "start": 21, "end": 46}], "meta": {"domain": "중고거래 채팅", "style": "격식체", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

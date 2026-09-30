@@ -1,1 +1,0 @@
-{"id": "A-003414", "text": "죄송한데, 제가 아이디가 혹시 'testuser'가 아니라 'testuser1' 맞나요? 이걸로 다시 해주시겠어요?", "pi": [{"type": "ACCOUNT", "text": "testuser1", "start": 34, "end": 43}], "meta": {"domain": "이메일 본문", "style": "격식체", "obfuscation": ["self_correction"], "hard_case": "none"}}

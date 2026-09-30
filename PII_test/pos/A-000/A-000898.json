@@ -1,1 +1,0 @@
-{"id": "A-000898", "text": "생년월일은 2001년 5월 15일이고, 제 신분증 번호가 가나다 12345로 적혀있는데요.", "pi": [{"type": "BIRTH", "text": "2001년 5월 15일", "start": 6, "end": 18}, {"type": "ID", "text": "가나다 12345", "start": 32, "end": 41}], "meta": {"domain": "민원 접수", "style": "짧은 단답", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

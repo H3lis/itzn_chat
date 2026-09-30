@@ -1,1 +1,0 @@
-{"id": "A-001750", "text": "저는 오늘 온유라고 하는데, 발음이 좀 어려우실 거예요.", "pi": [{"type": "NAME", "text": "온유", "start": 6, "end": 8}], "meta": {"domain": "회의록", "style": "오타 많은 채팅", "obfuscation": ["jamo_split", "romanized"], "hard_case": "homonym_name"}}

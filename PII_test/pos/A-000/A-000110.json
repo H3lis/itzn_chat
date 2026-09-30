@@ -1,1 +1,0 @@
-{"id": "A-000110", "text": "접속하시던 계정명이 바로 A1B2C3D4입니다. 혹시 그 부분 다시 확인 부탁드리고요.", "pi": [{"type": "ACCOUNT", "text": "A1B2C3D4", "start": 14, "end": 22}], "meta": {"domain": "회의록", "style": "구어체", "obfuscation": ["split_utterance", "lookalike_char"], "hard_case": "none"}}

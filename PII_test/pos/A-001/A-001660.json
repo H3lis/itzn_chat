@@ -1,1 +1,0 @@
-{"id": "A-001660", "text": "저희는 OO대학교 3학년 4반 학생이에요. 제가 따로 부여받은 게이트웨이 아이디가 있습니다.", "pi": [{"type": "ORG", "text": "OO대학교", "start": 4, "end": 9}, {"type": "OTHER_ID", "text": "게이트웨이", "start": 35, "end": 40}], "meta": {"domain": "음성통화 전사문", "style": "구어체", "obfuscation": ["stt_error"], "hard_case": "org_person"}}

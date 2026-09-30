@@ -1,1 +1,0 @@
-{"id": "A-004006", "text": "공주 씨께서는 이름이 공주님이라고 말씀하시면 안 되고, 실제로는 '공주'라는 이름을 사용하시는 게 맞습니다.", "pi": [{"type": "NAME", "text": "공주", "start": 12, "end": 14}], "meta": {"domain": "이메일 본문", "style": "길고 장황한 설명", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

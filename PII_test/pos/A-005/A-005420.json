@@ -1,1 +1,0 @@
-{"id": "A-005420", "text": "문의하신 분 이름이 안양 민지 씨 맞으신가요? 고객님, 아니면 안양 민지 님으로 부르는 게 좋을까요? 전화번호는 010-5555-1212예요.", "pi": [{"type": "NAME", "text": "안양 민지", "start": 11, "end": 16}, {"type": "PHONE", "text": "010-5555-1212", "start": 63, "end": 76}], "meta": {"domain": "쇼핑몰 문의", "style": "메신저 줄임말", "obfuscation": ["split_utterance"], "hard_case": "homonym_name"}}

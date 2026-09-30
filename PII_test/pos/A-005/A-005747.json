@@ -1,1 +1,0 @@
-{"id": "A-005747", "text": "제 이름은 박지성이고요, 연락처는 010-5555-6666 맞나요?", "pi": [{"type": "NAME", "text": "박지성", "start": 6, "end": 9}, {"type": "PHONE", "text": "010-5555-6666", "start": 19, "end": 32}], "meta": {"domain": "고객센터 채팅", "style": "메신저 줄임말", "obfuscation": ["plain"], "hard_case": "none"}}

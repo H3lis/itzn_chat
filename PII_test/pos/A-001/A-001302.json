@@ -1,1 +1,0 @@
-{"id": "A-001302", "text": "연락 가능한 전화번호는 010점5555점1234예요. 혹시 이거 틀린 건가요?", "pi": [{"type": "PHONE", "text": "010점5555점1234", "start": 13, "end": 26}], "meta": {"domain": "민원 접수", "style": "짧은 단답", "obfuscation": ["lookalike_char", "stt_error"], "hard_case": "none"}}

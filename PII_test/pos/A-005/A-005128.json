@@ -1,1 +1,0 @@
-{"id": "A-005128", "text": "신용카드는 5432, 아니요. 그게 아니라 6789부터 시작하고요. 제가 다니는 곳이 '부산교육청'이라서요.", "pi": [{"type": "CARD", "text": "5432", "start": 6, "end": 10}, {"type": "ORG", "text": "부산교육청", "start": 49, "end": 54}], "meta": {"domain": "학교 행정 문의", "style": "오타 많은 채팅", "obfuscation": ["mixed_reading", "jamo_split"], "hard_case": "none"}}

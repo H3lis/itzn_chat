@@ -1,1 +1,0 @@
-{"id": "A-004551", "text": "OO님, 혹시 저희 쪽에서 확인해 보신 게 있으세요? 아니면 ㅇㅇ고 3학년 4반 쪽으로 문의 주신 건가요?", "pi": [{"type": "NAME", "text": "OO", "start": 0, "end": 2}, {"type": "ORG", "text": "ㅇㅇ고", "start": 34, "end": 37}], "meta": {"domain": "고객센터 채팅", "style": "반말 대화", "obfuscation": ["honorific_ref"], "hard_case": "org_person"}}

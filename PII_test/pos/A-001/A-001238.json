@@ -1,1 +1,0 @@
-{"id": "A-001238", "text": "가입하신 분의 생년월일과 성함을 알려주셔야 본인 확인이 가능합니다. 1990년 05월 15일, 김민준 님 맞으신가요?", "pi": [{"type": "BIRTH", "text": "1990년 05월 15일", "start": 38, "end": 51}, {"type": "NAME", "text": "김민준", "start": 53, "end": 56}], "meta": {"domain": "고객센터 채팅", "style": "격식체", "obfuscation": ["plain"], "hard_case": "none"}}

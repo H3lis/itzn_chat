@@ -1,1 +1,0 @@
-{"id": "A-004938", "text": "제 이름은 장미예요. (실은 김지수입니다). SNS 아이디는 Sunshine_Dream이에요.", "pi": [{"type": "NAME", "text": "장미", "start": 6, "end": 8}, {"type": "SNS", "text": "Sunshine_Dream", "start": 34, "end": 48}], "meta": {"domain": "병원 접수", "style": "음성인식(STT) 전사", "obfuscation": ["self_correction"], "hard_case": "nickname_id"}}

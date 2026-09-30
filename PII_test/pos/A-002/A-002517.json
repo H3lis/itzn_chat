@@ -1,1 +1,0 @@
-{"id": "A-002517", "text": "저희 공지사항에 본인 아이디가 'User_1234'로 되어있던데, 혹시 SNS는 인스타그램(@user1234) 쪽으로 연락 가능한가요?", "pi": [{"type": "NAME", "text": "User_1234", "start": 18, "end": 27}, {"type": "SNS", "text": "@user1234", "start": 51, "end": 60}], "meta": {"domain": "커뮤니티 게시글", "style": "메신저 줄임말", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

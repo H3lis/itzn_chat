@@ -1,1 +1,0 @@
-{"id": "A-000702", "text": "온유 씨, 저희가 사는 주소는 강남구 역삼동이고요, 이름은 온유예요.", "pi": [{"type": "ADDRESS", "text": "강남구 역삼동", "start": 17, "end": 24}, {"type": "NAME", "text": "온유", "start": 33, "end": 35}], "meta": {"domain": "쇼핑몰 문의", "style": "길고 장황한 설명", "obfuscation": ["jamo_split", "korean_reading"], "hard_case": "homonym_name"}}

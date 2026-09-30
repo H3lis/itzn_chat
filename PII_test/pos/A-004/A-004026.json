@@ -1,1 +1,0 @@
-{"id": "A-004026", "text": "수원 선생님께서 문의 주셨습니다. 연락 가능한 전화번호는 010-3333-4444이니 확인 부탁드립니다.", "pi": [{"type": "NAME", "text": "수원", "start": 0, "end": 2}, {"type": "PHONE", "text": "010-3333-4444", "start": 32, "end": 45}], "meta": {"domain": "학교 행정 문의", "style": "공문서풍", "obfuscation": ["repeat_expr", "jamo_split"], "hard_case": "homonym_name"}}

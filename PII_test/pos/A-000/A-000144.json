@@ -1,1 +1,0 @@
-{"id": "A-000144", "text": "차량 번호는 99가-5555고, 연락처는 070-1111-2222로 확인 부탁드립니다.", "pi": [{"type": "CAR_PLATE", "text": "99가-5555", "start": 7, "end": 15}, {"type": "PHONE", "text": "070-1111-2222", "start": 23, "end": 36}], "meta": {"domain": "학교 행정 문의", "style": "공문서풍", "obfuscation": ["split_utterance"], "hard_case": "none"}}

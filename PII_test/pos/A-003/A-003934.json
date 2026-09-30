@@ -1,1 +1,0 @@
-{"id": "A-003934", "text": "결제하실 카드는 'VISA 트래블러'로 됐어요? 네, 반복해서 말씀드리지만, 끝 네 자리는 5555입니다.", "pi": [{"type": "CARD", "text": "VISA 트래블러", "start": 10, "end": 19}], "meta": {"domain": "음성통화 전사문", "style": "반말 대화", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-004195", "text": "저희 아이디는 kkeunhong이고, 이름은 영희예요. 그걸로 민원 접수하고 싶어요.", "pi": [{"type": "ID", "text": "kkeunhong", "start": 8, "end": 17}, {"type": "NAME", "text": "영희", "start": 25, "end": 27}], "meta": {"domain": "민원 접수", "style": "메신저 줄임말", "obfuscation": ["jamo_split"], "hard_case": "nickname_id"}}

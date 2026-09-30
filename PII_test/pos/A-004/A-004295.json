@@ -1,1 +1,0 @@
-{"id": "A-004295", "text": "요즘 부동산 시장 상황을 고려했을 때, 이쪽 동네는 기술로 삼사라 다시 오육이요, 전화는 070-9999-1111이 제일 좋겠습니다.", "pi": [{"type": "ORG", "text": "기술로 삼사라 다시 오육이요", "start": 29, "end": 44}, {"type": "PHONE", "text": "070-9999-1111", "start": 50, "end": 63}], "meta": {"domain": "부동산 상담", "style": "길고 장황한 설명", "obfuscation": ["stt_error"], "hard_case": "org_person"}}

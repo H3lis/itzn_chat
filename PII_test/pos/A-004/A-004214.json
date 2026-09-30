@@ -1,1 +1,0 @@
-{"id": "A-004214", "text": "주문하신 상품은 2024년 8월에 만들어진 A카운트입니다. 이거 맞나요?", "pi": [{"type": "ACCOUNT", "text": "A카운트", "start": 24, "end": 28}], "meta": {"domain": "배달 요청사항", "style": "오타 많은 채팅", "obfuscation": ["plain"], "hard_case": "none"}}

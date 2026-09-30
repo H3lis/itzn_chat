@@ -1,1 +1,0 @@
-{"id": "A-001689", "text": "방문하셨다고요? 성함이 박지민 씨 맞으신가요? 예약하신 시간은 오후 두 시로 알고 있습니다.", "pi": [{"type": "NAME", "text": "박지민", "start": 13, "end": 16}], "meta": {"domain": "음성통화 전사문", "style": "음성인식(STT) 전사", "obfuscation": ["plain"], "hard_case": "none"}}

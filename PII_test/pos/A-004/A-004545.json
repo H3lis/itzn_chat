@@ -1,1 +1,0 @@
-{"id": "A-004545", "text": "혹시 주소는 서울시 강남구 역삼동 555-11번지예요? 전화는 010-9999-8888로 부탁드려요.", "pi": [{"type": "ADDRESS", "text": "서울시 강남구 역삼동 555-11번지", "start": 7, "end": 27}, {"type": "PHONE", "text": "010-9999-8888", "start": 35, "end": 48}], "meta": {"domain": "중고거래 채팅", "style": "오타 많은 채팅", "obfuscation": ["korean_reading"], "hard_case": "none"}}

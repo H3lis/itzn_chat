@@ -1,1 +1,0 @@
-{"id": "A-003970", "text": "담당자 분 성함이 김지우 씨가 아니라, 아마도 김지우가 맞는 것 같아요. 그리고 연락처는 010-5555-1234로 다시 남겨주세요.", "pi": [{"type": "NAME", "text": "김지우", "start": 10, "end": 13}, {"type": "PHONE", "text": "010-5555-1234", "start": 50, "end": 63}], "meta": {"domain": "콜센터 상담 요약", "style": "오타 많은 채팅", "obfuscation": ["jamo_split"], "hard_case": "none"}}

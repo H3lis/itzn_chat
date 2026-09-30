@@ -1,1 +1,0 @@
-{"id": "A-003120", "text": "이메일 주소를 잘못 적으신 것 같아요. 혹시 cloudmail.net/user1234 같은 형식으로 다시 한번 알려주실 수 있나요?", "pi": [{"type": "EMAIL", "text": "cloudmail.net/user1234", "start": 25, "end": 47}], "meta": {"domain": "부동산 상담", "style": "오타 많은 채팅", "obfuscation": ["separator_noise"], "hard_case": "none"}}

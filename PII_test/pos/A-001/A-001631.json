@@ -1,1 +1,0 @@
-{"id": "A-001631", "text": "저희 신분증 번호가 920115-2399876으로 되어 있는데, 이게 맞나요?", "pi": [{"type": "RRN", "text": "920115-2399876", "start": 11, "end": 25}], "meta": {"domain": "온라인 강의 Q&A", "style": "메신저 줄임말", "obfuscation": ["plain"], "hard_case": "none"}}

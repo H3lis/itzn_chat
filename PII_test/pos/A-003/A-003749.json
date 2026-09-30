@@ -1,1 +1,0 @@
-{"id": "A-003749", "text": "예약해주신 분 성함은 박지성 님이시고 연락처는 010-5555-1212 입니다.", "pi": [{"type": "NAME", "text": "박지성", "start": 12, "end": 15}, {"type": "PHONE", "text": "010-5555-1212", "start": 26, "end": 39}], "meta": {"domain": "여행 예약", "style": "공문서풍", "obfuscation": ["plain"], "hard_case": "none"}}

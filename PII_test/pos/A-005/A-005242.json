@@ -1,1 +1,0 @@
-{"id": "A-005242", "text": "주문하신 상품 배송이요. 고객님 성함은 홍길동, 주민등록번호는 821122-1111222 앞자리까지 말씀해 주시겠어요?", "pi": [{"type": "RRN", "text": "821122-1111222", "start": 35, "end": 49}], "meta": {"domain": "택배 문의", "style": "음성인식(STT) 전사", "obfuscation": ["self_correction"], "hard_case": "none"}}

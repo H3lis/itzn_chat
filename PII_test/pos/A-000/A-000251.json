@@ -1,1 +1,0 @@
-{"id": "A-000251", "text": "혹시 이 캐릭터의 이름이 진짜로 장미인가요? 제가 알고 있는 정보로는 장미가 맞는데, 혹시 다른 아이디가 있는지 궁금해요.", "pi": [{"type": "NAME", "text": "장미", "start": 18, "end": 20}, {"type": "SNS", "text": "장미", "start": 39, "end": 41}], "meta": {"domain": "SNS 댓글", "style": "길고 장황한 설명", "obfuscation": ["jamo_split"], "hard_case": "none"}}

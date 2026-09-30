@@ -1,1 +1,0 @@
-{"id": "A-002847", "text": "생년월일은 95년 1월 15일이시고, 연락 가능한 전화번호는 010-9999-8888이 맞으신가요?", "pi": [{"type": "BIRTH", "text": "95년 1월 15일", "start": 6, "end": 16}, {"type": "PHONE", "text": "010-9999-8888", "start": 34, "end": 47}], "meta": {"domain": "금융 상담", "style": "존댓말 상담", "obfuscation": ["separator_noise"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-000378", "text": "고객님, 해당 계좌는요, 0-10-1111-2222예요. 이 부분이 가장 중요하십니다.", "pi": [{"type": "PHONE", "text": "0-10-1111-2222", "start": 14, "end": 28}], "meta": {"domain": "금융 상담", "style": "길고 장황한 설명", "obfuscation": ["separator_noise"], "hard_case": "none"}}

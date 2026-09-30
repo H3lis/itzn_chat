@@ -1,1 +1,0 @@
-{"id": "A-004946", "text": "주소는 서울시 강남구 테헤란로 55-22고요. 담당자는 김노을 부장님으로 해주시겠어요?", "pi": [{"type": "ADDRESS", "text": "서울시 강남구 테헤란로 55-22", "start": 4, "end": 22}, {"type": "NAME", "text": "김노을", "start": 31, "end": 34}], "meta": {"domain": "음성통화 전사문", "style": "격식체", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

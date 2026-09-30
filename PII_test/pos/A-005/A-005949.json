@@ -1,1 +1,0 @@
-{"id": "A-005949", "text": "김민지 님, 여권 번호가 혹시 9100123456782예요?", "pi": [{"type": "NAME", "text": "김민지", "start": 0, "end": 3}, {"type": "PASSPORT", "text": "9100123456782", "start": 17, "end": 30}], "meta": {"domain": "금융 상담", "style": "존댓말 상담", "obfuscation": ["jamo_split"], "hard_case": "none"}}

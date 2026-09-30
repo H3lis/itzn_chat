@@ -1,1 +1,0 @@
-{"id": "A-005305", "text": "고객님, 고객님의 전화번호는 010-2222-3333 맞으신가요? 다시 한번 확인 부탁드립니다.", "pi": [{"type": "PHONE", "text": "010-2222-3333", "start": 16, "end": 29}], "meta": {"domain": "콜센터 상담 요약", "style": "존댓말 상담", "obfuscation": ["stt_error"], "hard_case": "none"}}

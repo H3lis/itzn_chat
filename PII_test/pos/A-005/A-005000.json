@@ -1,1 +1,0 @@
-{"id": "A-005000", "text": "김민준 선생님께서 연락 주신 분인가요? 전화번호가 010-9999-8888로 되어 있네요.", "pi": [{"type": "NAME", "text": "김민준", "start": 0, "end": 3}, {"type": "PHONE", "text": "010-9999-8888", "start": 28, "end": 41}], "meta": {"domain": "고객센터 채팅", "style": "구어체", "obfuscation": ["honorific_ref"], "hard_case": "none"}}

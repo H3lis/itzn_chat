@@ -1,1 +1,0 @@
-{"id": "A-004101", "text": "저요? 김철수 맞아요. 전화는 070-1111-2222로 하세요.", "pi": [{"type": "NAME", "text": "김철수", "start": 4, "end": 7}, {"type": "PHONE", "text": "070-1111-2222", "start": 17, "end": 30}], "meta": {"domain": "이메일 본문", "style": "짧은 단답", "obfuscation": ["stt_error"], "hard_case": "none"}}

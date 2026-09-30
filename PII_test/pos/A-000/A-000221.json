@@ -1,1 +1,0 @@
-{"id": "A-000221", "text": "고객님께서 거주하시는 주소는 경기도 가평군 설악면에 위치한 123-45번지 쪽이 맞으신가요?", "pi": [{"type": "ADDRESS", "text": "경기도 가평군 설악면", "start": 16, "end": 27}], "meta": {"domain": "콜센터 상담 요약", "style": "음성인식(STT) 전사", "obfuscation": ["korean_reading"], "hard_case": "none"}}

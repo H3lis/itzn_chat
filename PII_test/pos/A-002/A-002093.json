@@ -1,1 +1,0 @@
-{"id": "A-002093", "text": "가입하신 계정 번호가 7777이고, 이름은 강민준 씨 맞으신가요?", "pi": [{"type": "ACCOUNT", "text": "7777", "start": 12, "end": 16}, {"type": "NAME", "text": "강민준", "start": 24, "end": 27}], "meta": {"domain": "보험 청구", "style": "길고 장황한 설명", "obfuscation": ["separator_noise", "mixed_reading"], "hard_case": "none"}}

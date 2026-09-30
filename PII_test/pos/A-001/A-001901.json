@@ -1,1 +1,0 @@
-{"id": "A-001901", "text": "김과장님 말씀이 맞는지 다시 한번 확인해 주시겠어요?", "pi": [{"type": "NAME", "text": "김과장님", "start": 0, "end": 4}], "meta": {"domain": "고객센터 채팅", "style": "짧은 단답", "obfuscation": ["honorific_ref", "romanized"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-002095", "text": "요청하신 이메일 주소는 example.test@naver.com입니다. 비밀번호는 따로 확인이 필요하지 않습니다.", "pi": [{"type": "EMAIL", "text": "example.test@naver.com", "start": 13, "end": 35}], "meta": {"domain": "고객센터 채팅", "style": "공문서풍", "obfuscation": ["plain"], "hard_case": "none"}}

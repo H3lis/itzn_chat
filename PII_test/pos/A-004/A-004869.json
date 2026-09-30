@@ -1,1 +1,0 @@
-{"id": "A-004869", "text": "저기요, 아파트 301동 1504호 근처에 있는 큰 슈퍼마켓으로 배달 부탁드려요. 계단 이용 가능한 곳으로 부탁합니다.", "pi": [{"type": "ADDRESS", "text": "아파트 301동 1504호", "start": 5, "end": 19}], "meta": {"domain": "배달 요청사항", "style": "오타 많은 채팅", "obfuscation": ["jamo_split", "stt_error"], "hard_case": "none"}}

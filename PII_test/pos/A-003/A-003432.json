@@ -1,1 +1,0 @@
-{"id": "A-003432", "text": "카드 번호가 1111-2222-3333-4444 맞으신가요? 그리고 만료일은 12월 25일로 되어 있고요.", "pi": [{"type": "CARD", "text": "1111-2222-3333-4444", "start": 7, "end": 26}, {"type": "CARD", "text": "12월 25일", "start": 43, "end": 50}], "meta": {"domain": "음성통화 전사문", "style": "존댓말 상담", "obfuscation": ["plain"], "hard_case": "none"}}

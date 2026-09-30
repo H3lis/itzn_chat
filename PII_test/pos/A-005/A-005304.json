@@ -1,1 +1,0 @@
-{"id": "A-005304", "text": "나무 씨, 김밥 두 줄이랑 떡볶이 매운 거로 주세요. 잊지 말고 꼭 부탁해요.", "pi": [{"type": "NAME", "text": "나무", "start": 0, "end": 2}], "meta": {"domain": "배달 요청사항", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

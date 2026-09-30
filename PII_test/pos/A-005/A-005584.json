@@ -1,1 +1,0 @@
-{"id": "A-005584", "text": "아이고, 받는 분 성함은 '꽃님'으로 해주시고, 배달 주소는 경기도 수원시 팔달구 효원로 502번지까지 부탁드려요.", "pi": [{"type": "NAME", "text": "꽃님", "start": 15, "end": 17}, {"type": "ADDRESS", "text": "경기도 수원시 팔달구 효원로 502번지", "start": 34, "end": 55}], "meta": {"domain": "배달 요청사항", "style": "구어체", "obfuscation": ["stt_error", "jamo_split", "honorific_ref"], "hard_case": "homonym_name"}}

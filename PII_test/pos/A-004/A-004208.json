@@ -1,1 +1,0 @@
-{"id": "A-004208", "text": "저희 팀은 '데이터 분석부'로요. 영어로는 'Data Analysis Division'이라고 적어주시면 됩니다.", "pi": [{"type": "ORG", "text": "데이터 분석부", "start": 7, "end": 14}], "meta": {"domain": "고객센터 채팅", "style": "공문서풍", "obfuscation": ["jamo_split", "romanized"], "hard_case": "none"}}

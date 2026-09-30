@@ -1,1 +1,0 @@
-{"id": "A-004524", "text": "저희는 기쁨이 개발한 시스템을 사용해요. 회원 계정은 'JoyUser'로, 성함은 '기쁨'으로 등록 부탁드립니다.", "pi": [{"type": "ACCOUNT", "text": "JoyUser", "start": 31, "end": 38}, {"type": "NAME", "text": "기쁨", "start": 47, "end": 49}], "meta": {"domain": "콜센터 상담 요약", "style": "길고 장황한 설명", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

@@ -1,1 +1,0 @@
-{"id": "A-001879", "text": "저 OO대학교에 계신 김철수 님께 전화드렸는데요. 번호가 070-9001-1234 맞나요?", "pi": [{"type": "ORG", "text": "OO대학교", "start": 2, "end": 7}, {"type": "PHONE", "text": "070-9001-1234", "start": 32, "end": 45}], "meta": {"domain": "고객센터 채팅", "style": "구어체", "obfuscation": ["romanized", "korean_reading"], "hard_case": "org_person"}}

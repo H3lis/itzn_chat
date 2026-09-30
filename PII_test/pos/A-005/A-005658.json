@@ -1,1 +1,0 @@
-{"id": "A-005658", "text": "카드 번호는 5555-4444-3333-2222야. 그리고 연락처는 070-1234-5678로 해줘.", "pi": [{"type": "CARD", "text": "5555-4444-3333-2222", "start": 7, "end": 26}, {"type": "PHONE", "text": "070-1234-5678", "start": 38, "end": 51}], "meta": {"domain": "이메일 본문", "style": "반말 대화", "obfuscation": ["plain"], "hard_case": "none"}}

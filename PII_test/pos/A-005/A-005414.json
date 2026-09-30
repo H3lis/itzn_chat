@@ -1,1 +1,0 @@
-{"id": "A-005414", "text": "부장님, 김민준 씨가 계신 분을 여쭤봤는데요. 이름이 김민준이 맞으신가요? 아니면 혹시 김민준 씨라고 불러드릴까요?", "pi": [{"type": "NAME", "text": "김민준", "start": 5, "end": 8}], "meta": {"domain": "회의록", "style": "음성인식(STT) 전사", "obfuscation": ["self_correction", "honorific_ref", "romanized"], "hard_case": "none"}}

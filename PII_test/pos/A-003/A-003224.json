@@ -1,1 +1,0 @@
-{"id": "A-003224", "text": "저희 집 주소는 서울특별시 강남구 역삼로 152이고, 담당자는 이하나 씨입니다.", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 역삼로 152", "start": 9, "end": 26}, {"type": "NAME", "text": "이하나", "start": 35, "end": 38}], "meta": {"domain": "직장 메신저", "style": "구어체", "obfuscation": ["plain"], "hard_case": "none"}}

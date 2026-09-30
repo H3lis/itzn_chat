@@ -1,1 +1,0 @@
-{"id": "A-002512", "text": "보리 씨요? 혹시 광주에서 오셨나요? 그 주소로 배송하면 될까요?", "pi": [{"type": "NAME", "text": "보리", "start": 0, "end": 2}, {"type": "ADDRESS", "text": "광주", "start": 10, "end": 12}], "meta": {"domain": "쇼핑몰 문의", "style": "반말 대화", "obfuscation": ["honorific_ref"], "hard_case": "homonym_name"}}

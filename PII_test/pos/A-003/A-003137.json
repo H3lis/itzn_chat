@@ -1,1 +1,0 @@
-{"id": "A-003137", "text": "선생님은 이지은 학생이시고, 개인 SNS는 jiseun_lee예요.", "pi": [{"type": "NAME", "text": "이지은", "start": 5, "end": 8}, {"type": "SNS", "text": "jiseun_lee", "start": 24, "end": 34}], "meta": {"domain": "학교 행정 문의", "style": "격식체", "obfuscation": ["jamo_split", "self_correction"], "hard_case": "nickname_id"}}

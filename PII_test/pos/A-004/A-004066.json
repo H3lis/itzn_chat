@@ -1,1 +1,0 @@
-{"id": "A-004066", "text": "제가 쓰던 계좌는 1001은행이구요, 그 다음은 주민번호가 900000-1111222예요.", "pi": [{"type": "ACCOUNT", "text": "1001은행", "start": 10, "end": 16}, {"type": "RRN", "text": "900000-1111222", "start": 33, "end": 47}], "meta": {"domain": "음성통화 전사문", "style": "존댓말 상담", "obfuscation": ["split_utterance"], "hard_case": "none"}}

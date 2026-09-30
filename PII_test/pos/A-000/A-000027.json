@@ -1,1 +1,0 @@
-{"id": "A-000027", "text": "사용하시는 아이디가 '꽃님' 맞아요? 아니면 '꽃님123'으로 변경할까요? 이름은 그냥 '꽃님'으로 해주시고요.", "pi": [{"type": "ID", "text": "꽃님", "start": 12, "end": 14}, {"type": "NAME", "text": "꽃님", "start": 50, "end": 52}], "meta": {"domain": "부동산 상담", "style": "반말 대화", "obfuscation": ["lookalike_char", "self_correction"], "hard_case": "homonym_name"}}

@@ -1,1 +1,0 @@
-{"id": "A-004023", "text": "카드 번호는 하나 두 세 네 다섯 여섯 일곱 여덟, 그리고 만료일은 12월 25일이 맞습니다.", "pi": [{"type": "CARD", "text": "하나 두 세 네 다섯 여섯 일곱 여덟", "start": 7, "end": 27}], "meta": {"domain": "회의록", "style": "음성인식(STT) 전사", "obfuscation": ["separator_noise"], "hard_case": "none"}}

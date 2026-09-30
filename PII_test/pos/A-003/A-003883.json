@@ -1,1 +1,0 @@
-{"id": "A-003883", "text": "저희 집 주소가 강남구 역삼동 1505라, 그쪽으로 와주시면 돼요.", "pi": [{"type": "ADDRESS", "text": "강남구 역삼동 1505", "start": 9, "end": 21}], "meta": {"domain": "커뮤니티 게시글", "style": "짧은 단답", "obfuscation": ["jamo_split"], "hard_case": "none"}}

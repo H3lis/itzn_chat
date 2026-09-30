@@ -1,1 +1,0 @@
-{"id": "A-004154", "text": "강사님, 제가 아이디는 'Student99' 같은 거 쓰고, SNS는 'Insta_user'로 운영하고 있습니다.", "pi": [{"type": "NAME", "text": "강사님", "start": 0, "end": 3}, {"type": "SNS", "text": "Insta_user", "start": 40, "end": 50}], "meta": {"domain": "온라인 강의 Q&A", "style": "구어체", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

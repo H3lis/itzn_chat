@@ -1,1 +1,0 @@
-{"id": "A-004662", "text": "제가 가을이라는 이름으로 청구 건을 접수했는데, 확인 부탁드립니다.", "pi": [{"type": "NAME", "text": "가을", "start": 3, "end": 5}], "meta": {"domain": "보험 청구", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

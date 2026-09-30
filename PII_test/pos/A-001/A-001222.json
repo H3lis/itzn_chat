@@ -1,1 +1,0 @@
-{"id": "A-001222", "text": "환자분 성함이 하늘 씨고 연락처는 010-3154-2600 이신가요?", "pi": [{"type": "NAME", "text": "하늘", "start": 8, "end": 10}, {"type": "PHONE", "text": "010-3154-2600", "start": 19, "end": 32}], "meta": {"domain": "병원 접수", "style": "구어체", "obfuscation": ["separator_noise"], "hard_case": "homonym_name"}}

@@ -1,1 +1,0 @@
-{"id": "A-003607", "text": "저 사람 진짜 재밌다ㅋㅋ 닉네임은 아티스트뮤즈 같은데, sns는 @art_muse_official이야.", "pi": [{"type": "NAME", "text": "아티스트뮤즈", "start": 19, "end": 25}, {"type": "SNS", "text": "@art_muse_official", "start": 36, "end": 54}], "meta": {"domain": "SNS 댓글", "style": "오타 많은 채팅", "obfuscation": ["romanized"], "hard_case": "nickname_id"}}

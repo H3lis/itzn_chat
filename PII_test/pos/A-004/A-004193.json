@@ -1,1 +1,0 @@
-{"id": "A-004193", "text": "차량 번호는 55가 9999, 전화번호는 010 다음에 1이 네 번 그리고 2가 네 번 맞습니까?", "pi": [{"type": "CAR_PLATE", "text": "55가 9999", "start": 7, "end": 15}, {"type": "PHONE", "text": "010 다음에 1이 네 번 그리고 2가 네 번", "start": 23, "end": 48}], "meta": {"domain": "콜센터 상담 요약", "style": "짧은 단답", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

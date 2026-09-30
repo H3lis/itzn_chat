@@ -1,1 +1,0 @@
-{"id": "A-003886", "text": "다솜님, 고객님 생일이 몇 년 몇 월 며칠이세요? 성함은 다솜님이시고요.", "pi": [{"type": "BIRTH", "text": "다솜", "start": 0, "end": 2}, {"type": "NAME", "text": "다솜", "start": 32, "end": 34}], "meta": {"domain": "쇼핑몰 문의", "style": "반말 대화", "obfuscation": ["lookalike_char"], "hard_case": "homonym_name"}}

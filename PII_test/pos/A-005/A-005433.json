@@ -1,1 +1,0 @@
-{"id": "A-005433", "text": "방문하신 주소는 서울특별시 강남구 테헤란로 123이구요, 회원 ID는 user_1987으로 기억합니다.", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 테헤란로 123", "start": 9, "end": 27}, {"type": "ID", "text": "user_1987", "start": 39, "end": 48}], "meta": {"domain": "회의록", "style": "메신저 줄임말", "obfuscation": ["romanized"], "hard_case": "nickname_id"}}

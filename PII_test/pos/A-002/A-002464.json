@@ -1,1 +1,0 @@
-{"id": "A-002464", "text": "이메일 주소는 user.test@ga-mail.com 입니다. 혹시 다른 거 있으신가요?", "pi": [{"type": "EMAIL", "text": "user.test@ga-mail.com", "start": 8, "end": 29}], "meta": {"domain": "중고거래 채팅", "style": "존댓말 상담", "obfuscation": ["lookalike_char", "separator_noise"], "hard_case": "none"}}

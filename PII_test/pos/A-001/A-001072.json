@@ -1,1 +1,0 @@
-{"id": "A-001072", "text": "네, 제주도행 비행기 표는요. 차량 번호는요? 제가 예약 시스템에 입력해야 하는데.", "pi": [{"type": "CAR_PLATE", "text": "제주도행 비행기 표는요. 차량 번호는요?", "start": 3, "end": 25}], "meta": {"domain": "여행 예약", "style": "구어체", "obfuscation": ["korean_reading"], "hard_case": "none"}}

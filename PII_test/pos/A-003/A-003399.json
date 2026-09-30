@@ -1,1 +1,0 @@
-{"id": "A-003399", "text": "신입생 등록은 작년 10월 15일에 태어났어요.", "pi": [{"type": "BIRTH", "text": "10월 15일", "start": 11, "end": 18}], "meta": {"domain": "학교 행정 문의", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "none"}}

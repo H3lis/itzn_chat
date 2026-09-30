@@ -1,1 +1,0 @@
-{"id": "A-000006", "text": "저희 홍보팀 담당자 연락처는 010-2222-3333이구요, 이 계정은 ꧁abc꧂로 활동하고 있습니다.", "pi": [{"type": "SNS", "text": "꧁abc꧂", "start": 40, "end": 45}], "meta": {"domain": "이메일 본문", "style": "음성인식(STT) 전사", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

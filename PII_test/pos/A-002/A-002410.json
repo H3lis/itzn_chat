@@ -1,1 +1,0 @@
-{"id": "A-002410", "text": "접수증 상의 계정 번호는 8888이고, 환자분 이름은 박지성, 여권 번호는 AB1234567890입니다.", "pi": [{"type": "ACCOUNT", "text": "8888", "start": 14, "end": 18}, {"type": "NAME", "text": "박지성", "start": 30, "end": 33}, {"type": "PASSPORT", "text": "AB1234567890", "start": 42, "end": 54}], "meta": {"domain": "병원 접수", "style": "공문서풍", "obfuscation": ["plain"], "hard_case": "none"}}

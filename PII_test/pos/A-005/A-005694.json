@@ -1,1 +1,0 @@
-{"id": "A-005694", "text": "계정은 ㅋㅏㅇㄴㅏㅁ이고, 이메일은 ㄷㅣㅅㅏㄴ ㅋㅗㅁ입니다.", "pi": [{"type": "ACCOUNT", "text": "ㅋㅏㅇㄴㅏㅁ", "start": 4, "end": 10}], "meta": {"domain": "금융 상담", "style": "메신저 줄임말", "obfuscation": ["korean_reading", "stt_error", "lookalike_char"], "hard_case": "none"}}

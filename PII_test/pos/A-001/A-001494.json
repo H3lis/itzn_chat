@@ -1,1 +1,0 @@
-{"id": "A-001494", "text": "진료 예약 관련해서는요. 혹시 031-2222-3333으로 전화 주시거나, 내원 시 접수처에 말씀해주시면 됩니다.", "pi": [{"type": "PHONE", "text": "031-2222-3333", "start": 17, "end": 30}], "meta": {"domain": "병원 접수", "style": "길고 장황한 설명", "obfuscation": ["separator_noise"], "hard_case": "none"}}

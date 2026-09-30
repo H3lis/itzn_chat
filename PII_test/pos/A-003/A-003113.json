@@ -1,1 +1,0 @@
-{"id": "A-003113", "text": "보내주실 주소지가 경기도 고양시 덕양구고요, 담당자님 성함이 김민준 씨인가요?", "pi": [{"type": "ADDRESS", "text": "경기도 고양시 덕양구", "start": 10, "end": 21}, {"type": "NAME", "text": "김민준", "start": 34, "end": 37}], "meta": {"domain": "배달 요청사항", "style": "존댓말 상담", "obfuscation": ["stt_error"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-002480", "text": "카드는 비자 씨고요, 이름은 '김민준'이고요. 전화번호는 010부터 1111이고요.", "pi": [{"type": "CARD", "text": "비자", "start": 4, "end": 6}, {"type": "NAME", "text": "김민준", "start": 17, "end": 20}, {"type": "PHONE", "text": "010부터 1111", "start": 32, "end": 42}], "meta": {"domain": "배달 요청사항", "style": "짧은 단답", "obfuscation": ["romanized", "split_utterance"], "hard_case": "none"}}

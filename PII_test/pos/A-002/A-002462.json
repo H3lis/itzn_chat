@@ -1,1 +1,0 @@
-{"id": "A-002462", "text": "제 생일은 98년 11월 12일이고, 연락처는 010-2345-6789입니다.", "pi": [{"type": "BIRTH", "text": "98년 11월 12일", "start": 6, "end": 17}, {"type": "PHONE", "text": "010-2345-6789", "start": 26, "end": 39}], "meta": {"domain": "커뮤니티 게시글", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "none"}}

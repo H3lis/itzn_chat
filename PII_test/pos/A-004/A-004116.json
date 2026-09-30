@@ -1,1 +1,0 @@
-{"id": "A-004116", "text": "저희 계정명은 abc1234고요, 예약하신 전화번호는 010-9999-1212입니다.", "pi": [{"type": "ACCOUNT", "text": "abc1234", "start": 8, "end": 15}, {"type": "PHONE", "text": "010-9999-1212", "start": 30, "end": 43}], "meta": {"domain": "여행 예약", "style": "격식체", "obfuscation": ["mixed_reading", "separator_noise"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-005655", "text": "결제할 카드는 1234. 5678 9012-3456 쪽으로 해주세요.", "pi": [{"type": "CARD", "text": "1234. 5678 9012-3456", "start": 8, "end": 28}], "meta": {"domain": "이메일 본문", "style": "메신저 줄임말", "obfuscation": ["separator_noise", "mixed_reading"], "hard_case": "none"}}

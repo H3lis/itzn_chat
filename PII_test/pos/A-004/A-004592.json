@@ -1,1 +1,0 @@
-{"id": "A-004592", "text": "접수 도와드릴게요. 환자분 성함은 ㄱㅏㅁㅁㅏ ㅇㅣㄷㅏ요.", "pi": [{"type": "ID", "text": "ㄱㅏㅁㅁㅏ ㅇㅣㄷㅏ요", "start": 19, "end": 30}], "meta": {"domain": "병원 접수", "style": "구어체", "obfuscation": ["jamo_split"], "hard_case": "none"}}

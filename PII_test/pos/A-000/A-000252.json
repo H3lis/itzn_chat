@@ -1,1 +1,0 @@
-{"id": "A-000252", "text": "저희 계정 번호는 2222-AAAA입니다. 그리고 거주하시는 주소는 ㅂㅂㅂ구 ㄷㄷㄷ로 되어있는데요, 이게 맞을까요?", "pi": [{"type": "ACCOUNT", "text": "2222-AAAA", "start": 10, "end": 19}, {"type": "ADDRESS", "text": "ㅂㅂㅂ구 ㄷㄷㄷ", "start": 38, "end": 46}], "meta": {"domain": "온라인 강의 Q&A", "style": "오타 많은 채팅", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

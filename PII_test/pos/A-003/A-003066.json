@@ -1,1 +1,0 @@
-{"id": "A-003066", "text": "저희 회원님의 계좌번호는 '일삼사 이공 백팔' 이고, 이메일 주소는 'user_abc@example.net'으로 등록되어 있나요?", "pi": [{"type": "ACCOUNT", "text": "일삼사 이공 백팔", "start": 15, "end": 24}, {"type": "EMAIL", "text": "user_abc@example.net", "start": 39, "end": 59}], "meta": {"domain": "보험 청구", "style": "존댓말 상담", "obfuscation": ["korean_reading"], "hard_case": "none"}}

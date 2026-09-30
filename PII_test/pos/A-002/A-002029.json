@@ -1,1 +1,0 @@
-{"id": "A-002029", "text": "혹시 운전면허증에 적힌 이름과 생년월일을 다시 한번 불러주시겠어요?", "pi": [{"type": "DRIVER_LICENSE", "text": "운전면허증", "start": 3, "end": 8}], "meta": {"domain": "이메일 본문", "style": "구어체", "obfuscation": ["plain"], "hard_case": "none"}}

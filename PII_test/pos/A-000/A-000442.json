@@ -1,1 +1,0 @@
-{"id": "A-000442", "text": "전화번호가 010-1111-2222예요. 음, 010 다음에 1이 네 번 그리고 2가 네 번으로 불러드릴게요.", "pi": [{"type": "PHONE", "text": "010 다음에 1이 네 번 그리고 2가 네 번", "start": 26, "end": 51}], "meta": {"domain": "병원 접수", "style": "반말 대화", "obfuscation": ["lookalike_char", "mixed_reading", "repeat_expr"], "hard_case": "none"}}

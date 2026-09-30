@@ -1,1 +1,0 @@
-{"id": "A-003343", "text": "학생의 주민등록번호가 900101-2XXXXXXX로 돼 있던데, 이게 정확히 맞는 번호인지 다시 한번 확인해 주시겠어요?", "pi": [{"type": "RRN", "text": "900101-2XXXXXXX", "start": 12, "end": 27}], "meta": {"domain": "민원 접수", "style": "음성인식(STT) 전사", "obfuscation": ["split_utterance"], "hard_case": "none"}}

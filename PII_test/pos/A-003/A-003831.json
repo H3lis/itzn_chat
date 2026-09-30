@@ -1,1 +1,0 @@
-{"id": "A-003831", "text": "담당자님 성함은 여름 씨시고, 연락처는 8282-3333-4444로 돼 있나요?", "pi": [{"type": "NAME", "text": "여름", "start": 9, "end": 11}, {"type": "PHONE", "text": "8282-3333-4444", "start": 22, "end": 36}], "meta": {"domain": "콜센터 상담 요약", "style": "공문서풍", "obfuscation": ["lookalike_char"], "hard_case": "homonym_name"}}

@@ -1,1 +1,0 @@
-{"id": "A-003084", "text": "카드 번호가 1234로 시작하고요, 다섯 번째 자리가 5예요.", "pi": [{"type": "CARD", "text": "1234", "start": 7, "end": 11}], "meta": {"domain": "중고거래 채팅", "style": "짧은 단답", "obfuscation": ["korean_reading"], "hard_case": "none"}}

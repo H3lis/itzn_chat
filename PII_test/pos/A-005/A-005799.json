@@ -1,1 +1,0 @@
-{"id": "A-005799", "text": "주소는 서울 아파트 101동 503호로 알고 있는데요, 성함이 아침 씨 맞으신가요?", "pi": [{"type": "ADDRESS", "text": "서울 아파트 101동 503호", "start": 4, "end": 20}, {"type": "NAME", "text": "아침", "start": 35, "end": 37}], "meta": {"domain": "부동산 상담", "style": "격식체", "obfuscation": ["romanized"], "hard_case": "homonym_name"}}

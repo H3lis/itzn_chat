@@ -1,1 +1,0 @@
-{"id": "A-005991", "text": "접수하신 회원번호는 ㄱ①⓪①9999이고, 저희는 인공지능 연구소에서 연락드렸습니다.", "pi": [{"type": "ID", "text": "ㄱ①⓪①9999", "start": 11, "end": 19}, {"type": "ORG", "text": "인공지능 연구소", "start": 27, "end": 35}], "meta": {"domain": "민원 접수", "style": "음성인식(STT) 전사", "obfuscation": ["lookalike_char"], "hard_case": "org_person"}}

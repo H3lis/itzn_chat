@@ -1,1 +1,0 @@
-{"id": "A-003549", "text": "저희 구름 부근으로 보내주시면 되는데요. 혹시 SNS 주소는 구름이예요? 아, 제가 실수했네요. 맞아요, 구름이로 해주세요.", "pi": [{"type": "NAME", "text": "구름", "start": 3, "end": 5}, {"type": "SNS", "text": "구름", "start": 34, "end": 36}], "meta": {"domain": "배달 요청사항", "style": "공문서풍", "obfuscation": ["self_correction"], "hard_case": "homonym_name"}}

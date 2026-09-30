@@ -1,1 +1,0 @@
-{"id": "A-002920", "text": "나무 부장님께서는 주소지가 서울 강남구 역삼동이고, 제 이름은 나무현 대리님이에요.", "pi": [{"type": "ADDRESS", "text": "서울 강남구 역삼동", "start": 15, "end": 25}, {"type": "NAME", "text": "나무현", "start": 35, "end": 38}], "meta": {"domain": "직장 메신저", "style": "짧은 단답", "obfuscation": ["honorific_ref", "korean_reading"], "hard_case": "homonym_name"}}

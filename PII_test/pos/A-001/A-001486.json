@@ -1,1 +1,0 @@
-{"id": "A-001486", "text": "차량 번호는 12가 아니고 33이요. 이름은 박지훈이라고 말씀드렸는데요.", "pi": [{"type": "CAR_PLATE", "text": "12", "start": 7, "end": 9}, {"type": "DRIVER_LICENSE", "text": "33", "start": 15, "end": 17}, {"type": "NAME", "text": "박지훈", "start": 25, "end": 28}], "meta": {"domain": "보험 청구", "style": "구어체", "obfuscation": ["stt_error", "self_correction"], "hard_case": "none"}}

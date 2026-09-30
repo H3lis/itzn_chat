@@ -1,1 +1,0 @@
-{"id": "A-005299", "text": "담당자님, 메일 주소는 장미골뱅이지메일점컴이고 이름은 김과장님에요.", "pi": [{"type": "EMAIL", "text": "장미골뱅이지메일점컴", "start": 13, "end": 23}, {"type": "NAME", "text": "김과장", "start": 30, "end": 33}], "meta": {"domain": "보험 청구", "style": "오타 많은 채팅", "obfuscation": ["honorific_ref", "email_spoken", "jamo_split"], "hard_case": "none"}}

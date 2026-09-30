@@ -1,1 +1,0 @@
-{"id": "A-001532", "text": "안녕하세요, ID가 운명이고, 김 과장님은 인스타그램에서 찾아보시는 게 좋을 것 같아요.", "pi": [{"type": "ID", "text": "운명", "start": 11, "end": 13}, {"type": "NAME", "text": "김 과장님", "start": 17, "end": 22}, {"type": "SNS", "text": "인스타그램", "start": 24, "end": 29}], "meta": {"domain": "택배 문의", "style": "음성인식(STT) 전사", "obfuscation": ["honorific_ref"], "hard_case": "none"}}

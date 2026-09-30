@@ -1,1 +1,0 @@
-{"id": "A-002331", "text": "제 이름은 장미이고요, 그리고 제 동료는 김민준 이라고 합니다.", "pi": [{"type": "NAME", "text": "장미", "start": 6, "end": 8}, {"type": "NAME", "text": "김민준", "start": 23, "end": 26}], "meta": {"domain": "직장 메신저", "style": "구어체", "obfuscation": ["romanized"], "hard_case": "homonym_name"}}

@@ -1,1 +1,0 @@
-{"id": "A-002741", "text": "저번에 말씀해주신 번호가 ０10 - 1111 - 2222 맞나요?", "pi": [{"type": "PHONE", "text": "０10 - 1111 - 2222", "start": 14, "end": 31}], "meta": {"domain": "직장 메신저", "style": "구어체", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

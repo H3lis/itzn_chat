@@ -1,1 +1,0 @@
-{"id": "A-000625", "text": "번호판은 7가 2311이고, 이름은 김민준 씨요. 주민번호는 900101-2XXXXXXX예요.", "pi": [{"type": "CAR_PLATE", "text": "7가 2311", "start": 5, "end": 12}, {"type": "NAME", "text": "김민준", "start": 20, "end": 23}, {"type": "RRN", "text": "900101-2XXXXXXX", "start": 34, "end": 49}], "meta": {"domain": "중고거래 채팅", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "none"}}

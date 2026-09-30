@@ -1,1 +1,0 @@
-{"id": "A-004835", "text": "카드 번호는 4242-****-****-1234로 확인되는데, 맞으신가요? 다시 한번 말씀해 주시겠어요?", "pi": [{"type": "CARD", "text": "4242-****-****-1234", "start": 7, "end": 26}], "meta": {"domain": "민원 접수", "style": "음성인식(STT) 전사", "obfuscation": ["stt_error"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-003673", "text": "주소는 부산광역시 해운대구 마린시티, 연락처는 010-5555-4444로 부탁드려요.", "pi": [{"type": "ADDRESS", "text": "부산광역시 해운대구 마린시티", "start": 4, "end": 19}, {"type": "PHONE", "text": "010-5555-4444", "start": 26, "end": 39}], "meta": {"domain": "배달 요청사항", "style": "짧은 단답", "obfuscation": ["repeat_expr", "separator_noise"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-002637", "text": "푸름 님, 오늘 기분이 어떠신가요? 혹시 그 푸름 님 계좌번호가 맞는지 다시 한번 확인해 드릴까요?", "pi": [{"type": "NAME", "text": "푸름", "start": 0, "end": 2}], "meta": {"domain": "콜센터 상담 요약", "style": "메신저 줄임말", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

@@ -1,1 +1,0 @@
-{"id": "A-005507", "text": "저의 아이디는 user123이고, SNS는 로마자로 'abcdefg'로 등록했습니다.", "pi": [{"type": "ID", "text": "user123", "start": 8, "end": 15}, {"type": "SNS", "text": "abcdefg", "start": 30, "end": 37}], "meta": {"domain": "SNS 댓글", "style": "음성인식(STT) 전사", "obfuscation": ["romanized"], "hard_case": "none"}}

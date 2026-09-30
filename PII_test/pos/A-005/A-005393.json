@@ -1,1 +1,0 @@
-{"id": "A-005393", "text": "저의 생년월일은 1985년 5월 1일입니다. 그리고 언제쯤 수강을 완료할 수 있을까요?", "pi": [{"type": "BIRTH", "text": "1985년 5월 1일", "start": 9, "end": 20}], "meta": {"domain": "온라인 강의 Q&A", "style": "격식체", "obfuscation": ["split_utterance"], "hard_case": "none"}}

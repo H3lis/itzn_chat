@@ -1,1 +1,0 @@
-{"id": "A-004557", "text": "택배 기사님, 이 박스 정말 어디에 두고 가야 할까요? 받는 분 전화번호는 010-5555-4444이고요. 그리고 수신인 주민등록번호가 901230-1xxxxxxx로 적혀있습니다.", "pi": [{"type": "PHONE", "text": "010-5555-4444", "start": 42, "end": 55}, {"type": "RRN", "text": "901230-1xxxxxxx", "start": 76, "end": 91}], "meta": {"domain": "택배 문의", "style": "격식체", "obfuscation": ["korean_reading"], "hard_case": "none"}}

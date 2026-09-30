@@ -1,1 +1,0 @@
-{"id": "A-003923", "text": "주소지가 경기도 용인시 수지구 성복로 45번지라고 합니다. 혹시 이게 맞으신가요? 저희가 받은 게 다른 건가요?", "pi": [{"type": "ADDRESS", "text": "경기도 용인시 수지구 성복로 45번지", "start": 5, "end": 25}], "meta": {"domain": "보험 청구", "style": "존댓말 상담", "obfuscation": ["korean_reading", "split_utterance", "jamo_split"], "hard_case": "none"}}

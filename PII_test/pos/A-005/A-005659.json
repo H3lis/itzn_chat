@@ -1,1 +1,0 @@
-{"id": "A-005659", "text": "결제하시려는 카드는 9999. 0000. 1111. 2222로 확인되는데요.", "pi": [{"type": "CARD", "text": "9999. 0000. 1111. 2222", "start": 11, "end": 33}], "meta": {"domain": "고객센터 채팅", "style": "짧은 단답", "obfuscation": ["lookalike_char", "split_utterance"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-002051", "text": "주민등록번호는 가리시는 게 좋을 것 같아요. 혹시 여권번호 같은 다른 신분증 번호가 있나요?", "pi": [{"type": "RRN", "text": "주민등록번호", "start": 0, "end": 6}], "meta": {"domain": "민원 접수", "style": "구어체", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-000521", "text": "제 아이디가 '구름요정' 맞나요? 아, 제가 'GuryumYojeng'으로 바꿨어요. 이름은 김민준이에요.", "pi": [{"type": "ID", "text": "구름요정", "start": 8, "end": 12}, {"type": "NAME", "text": "김민준", "start": 52, "end": 55}], "meta": {"domain": "민원 접수", "style": "반말 대화", "obfuscation": ["lookalike_char", "romanized"], "hard_case": "nickname_id"}}

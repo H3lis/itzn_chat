@@ -1,1 +1,0 @@
-{"id": "A-001658", "text": "혹시 카드 번호 말씀 좀 해주시겠어요? 네, 1234로 시작하는 게 맞으신가요? 새벽 님께서 오늘 물품을 보내주신 건가요?", "pi": [{"type": "CARD", "text": "1234", "start": 25, "end": 29}, {"type": "NAME", "text": "새벽", "start": 45, "end": 47}], "meta": {"domain": "중고거래 채팅", "style": "오타 많은 채팅", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

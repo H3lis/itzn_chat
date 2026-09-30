@@ -1,1 +1,0 @@
-{"id": "A-002545", "text": "안녕하세요, 홍길동 씨. 혹시 다시 한번 본인 확인을 위해 말씀해주시겠어요?", "pi": [{"type": "NAME", "text": "홍길동", "start": 7, "end": 10}], "meta": {"domain": "고객센터 채팅", "style": "반말 대화", "obfuscation": ["romanized"], "hard_case": "none"}}

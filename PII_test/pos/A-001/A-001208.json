@@ -1,1 +1,0 @@
-{"id": "A-001208", "text": "네, 이메일은 user123@naver.com이고, 전화번호는 010 1111 2222입니다.", "pi": [{"type": "EMAIL", "text": "user123@naver.com", "start": 8, "end": 25}, {"type": "PHONE", "text": "010 1111 2222", "start": 35, "end": 48}], "meta": {"domain": "택배 문의", "style": "짧은 단답", "obfuscation": ["email_spoken"], "hard_case": "none"}}

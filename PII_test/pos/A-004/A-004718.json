@@ -1,1 +1,0 @@
-{"id": "A-004718", "text": "구매자분께서 생년월일을 알려주셔야 돼요. ２０００년 １０월 ０１일 같은 식으로 한번 말씀해 주시겠어요?", "pi": [{"type": "BIRTH", "text": "２０００년 １０월 ０１일", "start": 23, "end": 36}], "meta": {"domain": "중고거래 채팅", "style": "길고 장황한 설명", "obfuscation": ["mixed_reading", "split_utterance", "lookalike_char"], "hard_case": "none"}}

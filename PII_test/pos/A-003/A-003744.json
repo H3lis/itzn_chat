@@ -1,1 +1,0 @@
-{"id": "A-003744", "text": "저희 계좌 번호는 010-9999-8888 이고, 주민등록번호는 901234-5678901이요.", "pi": [{"type": "CAR_PLATE", "text": "010-9999-8888", "start": 10, "end": 23}, {"type": "RRN", "text": "901234-5678901", "start": 36, "end": 50}], "meta": {"domain": "이메일 본문", "style": "메신저 줄임말", "obfuscation": ["plain"], "hard_case": "none"}}

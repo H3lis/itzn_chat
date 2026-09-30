@@ -1,1 +1,0 @@
-{"id": "A-004488", "text": "아, 주소는 서울시 강남구 테헤란로 123, 주민등록번호는 900101-1234567이 맞아요. 이게 제일 정확해요.", "pi": [{"type": "ADDRESS", "text": "서울시 강남구 테헤란로 123", "start": 7, "end": 23}, {"type": "RRN", "text": "900101-1234567", "start": 33, "end": 47}], "meta": {"domain": "회의록", "style": "반말 대화", "obfuscation": ["korean_reading", "repeat_expr"], "hard_case": "none"}}

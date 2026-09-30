@@ -1,1 +1,0 @@
-{"id": "A-002330", "text": "거주하시는 주소는 서울시 강남구 삼성로 123-456 입니다.", "pi": [{"type": "ADDRESS", "text": "서울시 강남구 삼성로 123-456", "start": 10, "end": 29}], "meta": {"domain": "민원 접수", "style": "짧은 단답", "obfuscation": ["jamo_split", "stt_error"], "hard_case": "none"}}

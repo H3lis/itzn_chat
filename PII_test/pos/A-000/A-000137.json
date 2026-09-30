@@ -1,1 +1,0 @@
-{"id": "A-000137", "text": "예약하신 김철수님은 010-1234-5678로 변경되셨나요?", "pi": [{"type": "PHONE", "text": "010-1234-5678", "start": 11, "end": 24}], "meta": {"domain": "병원 접수", "style": "음성인식(STT) 전사", "obfuscation": ["plain"], "hard_case": "none"}}

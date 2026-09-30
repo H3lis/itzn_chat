@@ -1,1 +1,0 @@
-{"id": "A-002986", "text": "차량 번호가 12가로 공 백-삼 사 구, 그리고 메일은 grade.school/xyz@email.com 이 맞나요?", "pi": [{"type": "CAR_PLATE", "text": "공 백-삼 사 구", "start": 12, "end": 21}, {"type": "EMAIL", "text": "grade.school/xyz@email.com", "start": 31, "end": 57}], "meta": {"domain": "온라인 강의 Q&A", "style": "존댓말 상담", "obfuscation": ["split_utterance", "separator_noise"], "hard_case": "none"}}

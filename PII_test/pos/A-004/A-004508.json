@@ -1,1 +1,0 @@
-{"id": "A-004508", "text": "가입하신 계정 번호는 2222 그리고 이메일은 test(at)naver.com 이고요.", "pi": [{"type": "ACCOUNT", "text": "2222", "start": 12, "end": 16}, {"type": "EMAIL", "text": "test(at)naver.com", "start": 26, "end": 43}], "meta": {"domain": "보험 청구", "style": "공문서풍", "obfuscation": ["korean_reading", "separator_noise"], "hard_case": "none"}}

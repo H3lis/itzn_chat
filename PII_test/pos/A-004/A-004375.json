@@ -1,1 +1,0 @@
-{"id": "A-004375", "text": "저희 회원번호가 '８８８８@지메일.com'으로 확인되는데, 이거 맞으신가요?", "pi": [{"type": "RRN", "text": "８８８８@지메일.com", "start": 10, "end": 22}], "meta": {"domain": "이메일 본문", "style": "메신저 줄임말", "obfuscation": ["lookalike_char", "mixed_reading"], "hard_case": "none"}}

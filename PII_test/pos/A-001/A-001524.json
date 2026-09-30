@@ -1,1 +1,0 @@
-{"id": "A-001524", "text": "확인 결과, 말씀해주신 주민등록번호는 990101-1111222이고, 이는 내부 규정상 보안상 전송이 불가합니다.", "pi": [{"type": "RRN", "text": "990101-1111222", "start": 21, "end": 35}], "meta": {"domain": "음성통화 전사문", "style": "격식체", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

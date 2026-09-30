@@ -1,1 +1,0 @@
-{"id": "A-002734", "text": "담당자 분 성함이 민준이 씨시던데, 혹시 이름이 나라 아니신가요? 다시 한번 확인 부탁드립니다.", "pi": [{"type": "NAME", "text": "나라", "start": 27, "end": 29}], "meta": {"domain": "이메일 본문", "style": "길고 장황한 설명", "obfuscation": ["self_correction"], "hard_case": "homonym_name"}}

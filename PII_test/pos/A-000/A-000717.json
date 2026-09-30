@@ -1,1 +1,0 @@
-{"id": "A-000717", "text": "운전면허증 번호가 52114993이에요. 그리고 이름은 우주 씨로 하시면 돼요.", "pi": [{"type": "DRIVER_LICENSE", "text": "52114993", "start": 10, "end": 18}, {"type": "NAME", "text": "우주", "start": 31, "end": 33}], "meta": {"domain": "배달 요청사항", "style": "구어체", "obfuscation": ["split_utterance"], "hard_case": "homonym_name"}}

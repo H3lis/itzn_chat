@@ -1,1 +1,0 @@
-{"id": "A-000356", "text": "회원님 성함은 단비고, ID는 DNB99만 등록되어 있어요.", "pi": [{"type": "NAME", "text": "단비", "start": 8, "end": 10}, {"type": "ID", "text": "DNB99", "start": 17, "end": 22}], "meta": {"domain": "콜센터 상담 요약", "style": "공문서풍", "obfuscation": ["lookalike_char"], "hard_case": "homonym_name"}}

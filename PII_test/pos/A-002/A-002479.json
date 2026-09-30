@@ -1,1 +1,0 @@
-{"id": "A-002479", "text": "저기요, 제 아이디는 '팀원구'고요, 제가 속한 부서는 '마케팅전략팀'입니다.", "pi": [{"type": "ID", "text": "팀원구", "start": 13, "end": 16}, {"type": "ORG", "text": "마케팅전략팀", "start": 32, "end": 38}], "meta": {"domain": "직장 메신저", "style": "음성인식(STT) 전사", "obfuscation": ["romanized"], "hard_case": "org_person"}}

@@ -1,1 +1,0 @@
-{"id": "A-001739", "text": "구매하시려면 카드 번호 4불 2222로 결제 가능하신가요?", "pi": [{"type": "CARD", "text": "4불 2222", "start": 13, "end": 20}], "meta": {"domain": "SNS 댓글", "style": "구어체", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

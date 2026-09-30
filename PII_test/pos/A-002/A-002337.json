@@ -1,1 +1,0 @@
-{"id": "A-002337", "text": "혹시 제 포스포르토는 '스머드라' 같은 건가요? 아니면 'ㅇㅁㅇ' 이 맞나요?", "pi": [{"type": "PASSPORT", "text": "스머드라", "start": 13, "end": 17}, {"type": "NAME", "text": "ㅇㅁㅇ", "start": 32, "end": 35}], "meta": {"domain": "중고거래 채팅", "style": "음성인식(STT) 전사", "obfuscation": ["split_utterance", "jamo_split"], "hard_case": "none"}}

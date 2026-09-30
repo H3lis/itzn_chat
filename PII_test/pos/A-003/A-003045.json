@@ -1,1 +1,0 @@
-{"id": "A-003045", "text": "저희가 확인한 부서명은 글로벌 기술지원팀이고요, 담당 전화번호는 070 다음에 1이 네 번 그리고 9가 네 번 입니다.", "pi": [{"type": "ORG", "text": "글로벌 기술지원팀", "start": 13, "end": 22}, {"type": "PHONE", "text": "070 다음에 1이 네 번 그리고 9가 네 번", "start": 36, "end": 61}], "meta": {"domain": "민원 접수", "style": "공문서풍", "obfuscation": ["repeat_expr", "jamo_split"], "hard_case": "none"}}

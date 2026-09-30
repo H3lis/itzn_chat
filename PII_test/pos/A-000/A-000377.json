@@ -1,1 +1,0 @@
-{"id": "A-000377", "text": "라임 씨 성함이시죠? 네, 본인 확인은 신분증이나 다른 자료가 필요합니다. 혹시 생년월일도 알고 계신가요?", "pi": [{"type": "NAME", "text": "라임", "start": 0, "end": 2}], "meta": {"domain": "금융 상담", "style": "존댓말 상담", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

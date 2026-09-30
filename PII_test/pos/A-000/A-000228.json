@@ -1,1 +1,0 @@
-{"id": "A-000228", "text": "고객 성함은 봄 씨시고요, 연락 가능한 번호는 010-9999-8888로 부탁드립니다.", "pi": [{"type": "NAME", "text": "봄", "start": 7, "end": 8}, {"type": "PHONE", "text": "010-9999-8888", "start": 26, "end": 39}], "meta": {"domain": "콜센터 상담 요약", "style": "격식체", "obfuscation": ["separator_noise", "stt_error"], "hard_case": "homonym_name"}}

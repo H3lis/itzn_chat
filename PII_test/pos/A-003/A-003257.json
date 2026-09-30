@@ -1,1 +1,0 @@
-{"id": "A-003257", "text": "저희가 기록한 생년월일은 85년 11월 20일이구요, 주민등록번호는 950101-2XXXXXX로 되어 있어요.", "pi": [{"type": "BIRTH", "text": "85년 11월 20일", "start": 14, "end": 25}, {"type": "RRN", "text": "950101-2XXXXXX", "start": 38, "end": 52}], "meta": {"domain": "여행 예약", "style": "존댓말 상담", "obfuscation": ["stt_error"], "hard_case": "none"}}

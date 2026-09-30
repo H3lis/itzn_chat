@@ -1,1 +1,0 @@
-{"id": "A-001012", "text": "주소는 강남구 테헤란로 333예요. 저희가 직접 방문해서 서류를 작성해 주셔야 합니다.", "pi": [{"type": "ADDRESS", "text": "강남구 테헤란로 333", "start": 4, "end": 16}], "meta": {"domain": "병원 접수", "style": "존댓말 상담", "obfuscation": ["korean_reading", "split_utterance", "jamo_split"], "hard_case": "none"}}

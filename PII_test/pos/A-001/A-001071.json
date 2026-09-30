@@ -1,1 +1,0 @@
-{"id": "A-001071", "text": "고객님 주민등록번호는 기밀사항이라 제가 직접 여쭤볼 수는 없어요. 생년월일만 알려주시겠어요?", "pi": [{"type": "RRN", "text": "주민등록번호", "start": 4, "end": 10}], "meta": {"domain": "콜센터 상담 요약", "style": "반말 대화", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-005231", "text": "회원님의 계정 정보는 시스템에 다음과 같이 등록해야 합니다. 계정명은 testuser입니다.", "pi": [{"type": "ACCOUNT", "text": "testuser", "start": 39, "end": 47}], "meta": {"domain": "콜센터 상담 요약", "style": "공문서풍", "obfuscation": ["plain"], "hard_case": "none"}}

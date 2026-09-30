@@ -1,1 +1,0 @@
-{"id": "A-005291", "text": "저희 계정은 user123이고요, 주소는 부산 해운대구로, 이름은 김민수예요.", "pi": [{"type": "ACCOUNT", "text": "user123", "start": 7, "end": 14}, {"type": "ADDRESS", "text": "부산 해운대구", "start": 23, "end": 30}, {"type": "NAME", "text": "김민수", "start": 37, "end": 40}], "meta": {"domain": "SNS 댓글", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "none"}}

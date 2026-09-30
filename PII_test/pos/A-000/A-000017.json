@@ -1,1 +1,0 @@
-{"id": "A-000017", "text": "저기요, 학생분 성함이 혹시 '겨울'이세요? 아니면 다른 분이신가요?", "pi": [{"type": "NAME", "text": "겨울", "start": 17, "end": 19}], "meta": {"domain": "학교 행정 문의", "style": "오타 많은 채팅", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

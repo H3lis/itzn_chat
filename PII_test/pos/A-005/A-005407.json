@@ -1,1 +1,0 @@
-{"id": "A-005407", "text": "주소지는 서울시 강남구 테헤란로 123이고, 성함은 김민준 씨 맞으시죠?", "pi": [{"type": "ADDRESS", "text": "서울시 강남구 테헤란로 123", "start": 5, "end": 21}, {"type": "NAME", "text": "김민준", "start": 29, "end": 32}], "meta": {"domain": "금융 상담", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "none"}}

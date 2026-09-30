@@ -1,1 +1,0 @@
-{"id": "A-001530", "text": "성함이 어떻게 되시는지 다시 한번 천천히 말씀해주시겠어요?", "pi": [{"type": "NAME", "text": "성함", "start": 0, "end": 2}], "meta": {"domain": "부동산 상담", "style": "격식체", "obfuscation": ["jamo_split"], "hard_case": "none"}}

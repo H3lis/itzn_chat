@@ -1,1 +1,0 @@
-{"id": "A-002059", "text": "예약 확인을 위해 전화번호가 필요합니다. 010-1234-5678로 말씀해 주시겠어요?", "pi": [{"type": "PHONE", "text": "010-1234-5678", "start": 23, "end": 36}], "meta": {"domain": "부동산 상담", "style": "격식체", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-005916", "text": "제 생일은 0808이고, 제 인스타 계정은 @lucky_user123 이에요. 확인되셨나요?", "pi": [{"type": "BIRTH", "text": "0808", "start": 6, "end": 10}, {"type": "SNS", "text": "@lucky_user123", "start": 24, "end": 38}], "meta": {"domain": "중고거래 채팅", "style": "오타 많은 채팅", "obfuscation": ["separator_noise"], "hard_case": "nickname_id"}}

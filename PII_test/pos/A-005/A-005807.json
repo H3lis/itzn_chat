@@ -1,1 +1,0 @@
-{"id": "A-005807", "text": "여권 번호가요? 앞자리는 그리고 12345678 같은 식으로 겹치는 부분이 있어요.", "pi": [{"type": "PASSPORT", "text": "12345678", "start": 18, "end": 26}], "meta": {"domain": "회의록", "style": "구어체", "obfuscation": ["repeat_expr", "stt_error", "lookalike_char"], "hard_case": "none"}}

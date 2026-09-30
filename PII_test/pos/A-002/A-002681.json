@@ -1,1 +1,0 @@
-{"id": "A-002681", "text": "아, 그 분 성함이 사랑 씨 맞으신가요? 정말 좋은 분이시네요.", "pi": [{"type": "NAME", "text": "사랑", "start": 11, "end": 13}], "meta": {"domain": "SNS 댓글", "style": "구어체", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

@@ -1,1 +1,0 @@
-{"id": "A-004147", "text": "문의하신 상품의 재고 여부는 02-7777-1234로 전화 주시면 바로 확인 가능합니다.", "pi": [{"type": "PHONE", "text": "02-7777-1234", "start": 16, "end": 28}], "meta": {"domain": "SNS 댓글", "style": "격식체", "obfuscation": ["plain"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-005804", "text": "결제하신 카드는 A카드 번호가 3456으로 시작하는데, 이쪽으로 조회해보니 뒷 네 자리가 7890이라고 하네요.", "pi": [{"type": "NAME", "text": "A카드", "start": 9, "end": 12}, {"type": "CARD", "text": "3456", "start": 17, "end": 21}], "meta": {"domain": "회의록", "style": "구어체", "obfuscation": ["split_utterance"], "hard_case": "none"}}

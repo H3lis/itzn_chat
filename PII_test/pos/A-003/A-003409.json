@@ -1,1 +1,0 @@
-{"id": "A-003409", "text": "제가 이름이 최민수라는데, 그게 아니고요. 사실은 'Cheolsoo'예요, 저요.", "pi": [{"type": "NAME", "text": "Cheolsoo", "start": 29, "end": 37}], "meta": {"domain": "고객센터 채팅", "style": "반말 대화", "obfuscation": ["self_correction", "romanized"], "hard_case": "none"}}

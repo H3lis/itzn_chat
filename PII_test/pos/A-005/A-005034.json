@@ -1,1 +1,0 @@
-{"id": "A-005034", "text": "네, 제가 듣는 수업은 '자두' 선생님 강의고요. 제 SNS 계정은 자두자두입니다. 다른 거는 없어요.", "pi": [{"type": "NAME", "text": "자두", "start": 14, "end": 16}, {"type": "SNS", "text": "자두자두", "start": 38, "end": 42}], "meta": {"domain": "온라인 강의 Q&A", "style": "존댓말 상담", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

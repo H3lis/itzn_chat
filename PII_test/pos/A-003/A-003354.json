@@ -1,1 +1,0 @@
-{"id": "A-003354", "text": "신청하시는 분의 주민등록번호는 900101-1234567이 맞으신가요?", "pi": [{"type": "RRN", "text": "900101-1234567", "start": 17, "end": 31}], "meta": {"domain": "부동산 상담", "style": "공문서풍", "obfuscation": ["plain"], "hard_case": "none"}}

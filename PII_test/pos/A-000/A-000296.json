@@ -1,1 +1,0 @@
-{"id": "A-000296", "text": "어제 보내주신 자료 말인데요. 이메일 주소를 다시 확인해 주시겠어요? it.dept-manager@corp-network.co.kr 같은 게 맞는지요.", "pi": [{"type": "EMAIL", "text": "it.dept-manager@corp-network.co.kr", "start": 39, "end": 73}], "meta": {"domain": "중고거래 채팅", "style": "길고 장황한 설명", "obfuscation": ["separator_noise", "email_spoken"], "hard_case": "none"}}

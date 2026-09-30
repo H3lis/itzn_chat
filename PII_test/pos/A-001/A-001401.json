@@ -1,1 +1,0 @@
-{"id": "A-001401", "text": "저희 회사는 삼성전자예요. 그리고 고객님 전화번호는 010 5555 6666 맞으신가요?", "pi": [{"type": "ORG", "text": "삼성전자", "start": 7, "end": 11}, {"type": "PHONE", "text": "010 5555 6666", "start": 29, "end": 42}], "meta": {"domain": "보험 청구", "style": "존댓말 상담", "obfuscation": ["stt_error"], "hard_case": "org_person"}}

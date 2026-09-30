@@ -1,1 +1,0 @@
-{"id": "A-004128", "text": "혹시 고객님 성함은 김민준 씨세요? 접수처에 서명하실 때 필요한 정보입니다.", "pi": [{"type": "NAME", "text": "김민준", "start": 11, "end": 14}], "meta": {"domain": "배달 요청사항", "style": "격식체", "obfuscation": ["honorific_ref"], "hard_case": "none"}}

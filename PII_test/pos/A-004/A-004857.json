@@ -1,1 +1,0 @@
-{"id": "A-004857", "text": "거주하시는 주소는 경기도 용인시 기흥동 501호 근처예요.", "pi": [{"type": "ADDRESS", "text": "경기도 용인시 기흥동 501호", "start": 10, "end": 26}], "meta": {"domain": "SNS 댓글", "style": "짧은 단답", "obfuscation": ["korean_reading", "stt_error", "jamo_split"], "hard_case": "none"}}

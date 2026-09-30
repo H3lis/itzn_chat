@@ -1,1 +1,0 @@
-{"id": "A-005449", "text": "제 이름이 지혜이고요, 주민번호는 990220으로 확인 부탁드려요.", "pi": [{"type": "NAME", "text": "지혜", "start": 6, "end": 8}, {"type": "RRN", "text": "990220", "start": 19, "end": 25}], "meta": {"domain": "병원 접수", "style": "오타 많은 채팅", "obfuscation": ["romanized"], "hard_case": "homonym_name"}}

@@ -1,1 +1,0 @@
-{"id": "A-001963", "text": "저의 계정 번호는 1A2B-3C4D-5E6F이며, 이 번호를 이용해서 두 개의 다른 곳에 가입하려고 하는데 절차가 어떻게 되나요? 혹시 나눠서 말씀드려도 될까요?", "pi": [{"type": "ACCOUNT", "text": "1A2B-3C4D-5E6F", "start": 10, "end": 24}], "meta": {"domain": "온라인 강의 Q&A", "style": "길고 장황한 설명", "obfuscation": ["split_utterance"], "hard_case": "none"}}

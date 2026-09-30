@@ -1,1 +1,0 @@
-{"id": "A-003633", "text": "학생의 고유 식별번호는 G3-9999-K입니다. 이걸로 등록할게요.", "pi": [{"type": "ID", "text": "G3-9999-K", "start": 13, "end": 22}], "meta": {"domain": "학교 행정 문의", "style": "공문서풍", "obfuscation": ["lookalike_char", "jamo_split"], "hard_case": "none"}}

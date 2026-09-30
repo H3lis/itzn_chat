@@ -1,1 +1,0 @@
-{"id": "A-005023", "text": "저기요, 그 주소 말씀이신가요? 삼일동, 이 삼사라고 하셨는데, 아마 삼일동에 가깝지 않을까요?", "pi": [{"type": "PHONE", "text": "이 삼사", "start": 23, "end": 27}], "meta": {"domain": "부동산 상담", "style": "구어체", "obfuscation": ["stt_error"], "hard_case": "none"}}

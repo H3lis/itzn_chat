@@ -1,1 +1,0 @@
-{"id": "A-001670", "text": "제 생년월일이 99년 12월 25일이고요, 주민등록번호 앞자리는 123456으로 알고 있습니다.", "pi": [{"type": "BIRTH", "text": "99년 12월 25일", "start": 8, "end": 19}, {"type": "RRN", "text": "123456", "start": 36, "end": 42}], "meta": {"domain": "이메일 본문", "style": "구어체", "obfuscation": ["plain"], "hard_case": "none"}}

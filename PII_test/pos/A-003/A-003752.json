@@ -1,1 +1,0 @@
-{"id": "A-003752", "text": "저거 서류에 있는 건가요? 제가 개인 번호가 010-8888-1111이고, 주민번호는 900101-2222222예요.", "pi": [{"type": "EMAIL", "text": "010-8888-1111", "start": 25, "end": 38}, {"type": "RRN", "text": "900101-2222222", "start": 48, "end": 62}], "meta": {"domain": "보험 청구", "style": "반말 대화", "obfuscation": ["split_utterance"], "hard_case": "none"}}

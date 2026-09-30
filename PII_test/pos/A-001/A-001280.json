@@ -1,1 +1,0 @@
-{"id": "A-001280", "text": "가입하고 싶은 회원 아이디는 ㅊㅓㄹㅅㅜ가 좋고, 회사 이름은 삼성전자 같은 곳으로 하려고 합니다.", "pi": [{"type": "ID", "text": "ㅊㅓㄹㅅㅜ", "start": 16, "end": 21}, {"type": "ORG", "text": "삼성전자", "start": 34, "end": 38}], "meta": {"domain": "여행 예약", "style": "격식체", "obfuscation": ["jamo_split", "lookalike_char"], "hard_case": "org_person"}}

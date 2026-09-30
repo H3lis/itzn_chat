@@ -1,1 +1,0 @@
-{"id": "A-005456", "text": "결제가 완료되었다는 건데요, 카드 번호 마지막 네 자리가 8888-XXXX-XXXX-1234 같은 거죠? 재확인 부탁드려요.", "pi": [{"type": "CARD", "text": "8888-XXXX-XXXX-1234", "start": 32, "end": 51}], "meta": {"domain": "쇼핑몰 문의", "style": "공문서풍", "obfuscation": ["repeat_expr", "separator_noise"], "hard_case": "none"}}

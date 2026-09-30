@@ -1,1 +1,0 @@
-{"id": "A-002214", "text": "학생 성함은 김민지 맞으신가요? 등록하시려면 민지@naver.com으로 메일 주소를 남겨주세요. 주소는 서울시 강남구 테헤란로 123입니다.", "pi": [{"type": "EMAIL", "text": "민지@naver.com", "start": 25, "end": 37}, {"type": "ADDRESS", "text": "서울시 강남구 테헤란로 123", "start": 58, "end": 74}], "meta": {"domain": "학교 행정 문의", "style": "오타 많은 채팅", "obfuscation": ["plain"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-003232", "text": "연락은 이메일 주소로 남겨주시면 제가 확인해 보겠습니다. user.example@test.com 이요.", "pi": [{"type": "EMAIL", "text": "user.example@test.com", "start": 32, "end": 53}], "meta": {"domain": "금융 상담", "style": "짧은 단답", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

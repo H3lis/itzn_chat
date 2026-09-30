@@ -1,1 +1,0 @@
-{"id": "A-005785", "text": "접수 도와주세요. 제 이메일이 abc@1234.com이에요.", "pi": [{"type": "EMAIL", "text": "abc@1234.com", "start": 17, "end": 29}], "meta": {"domain": "병원 접수", "style": "공문서풍", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

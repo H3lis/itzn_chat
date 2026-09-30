@@ -1,1 +1,0 @@
-{"id": "A-001092", "text": "혹시 진료비 청구 건 관련해서요. 접수처에 연락하시려면 070-8888-9999로 해주세요.", "pi": [{"type": "PHONE", "text": "070-8888-9999", "start": 31, "end": 44}], "meta": {"domain": "보험 청구", "style": "격식체", "obfuscation": ["stt_error"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-004224", "text": "안녕하세요, 제 이름은 지혜이고요, 주민등록번호는 901234-5XXXXXX가 맞습니다.", "pi": [{"type": "NAME", "text": "지혜", "start": 13, "end": 15}, {"type": "RRN", "text": "901234-5XXXXXX", "start": 28, "end": 42}], "meta": {"domain": "커뮤니티 게시글", "style": "음성인식(STT) 전사", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

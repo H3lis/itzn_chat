@@ -1,1 +1,0 @@
-{"id": "A-005202", "text": "예약은 김민준 씨 명의로 했는데요, 결제는 이게 비자카드번호 4123으로 진행 부탁드려요.", "pi": [{"type": "SNS", "text": "김민준", "start": 4, "end": 7}, {"type": "CARD", "text": "4123", "start": 34, "end": 38}], "meta": {"domain": "여행 예약", "style": "구어체", "obfuscation": ["romanized", "split_utterance"], "hard_case": "none"}}

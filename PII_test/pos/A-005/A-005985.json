@@ -1,1 +1,0 @@
-{"id": "A-005985", "text": "저희는 삼성테크놀로지 본사에서 온 자료입니다. 여권 번호는 A1B2C3D4-E5F6로 알고 있어요.", "pi": [{"type": "ORG", "text": "삼성테크놀로지", "start": 4, "end": 11}, {"type": "PASSPORT", "text": "A1B2C3D4-E5F6", "start": 33, "end": 46}], "meta": {"domain": "온라인 강의 Q&A", "style": "격식체", "obfuscation": ["korean_reading"], "hard_case": "org_person"}}

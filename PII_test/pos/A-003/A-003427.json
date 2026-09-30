@@ -1,1 +1,0 @@
-{"id": "A-003427", "text": "장미 씨의 예약 정보 확인을 위해 성함이 어떻게 되시나요? 보호자님 성함을 말씀해주시면 됩니다.", "pi": [{"type": "NAME", "text": "장미", "start": 0, "end": 2}], "meta": {"domain": "여행 예약", "style": "공문서풍", "obfuscation": ["honorific_ref"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-005896", "text": "거주지 주소는 경기도 성남시 분당구 판교역로 123이고, 연락처는 010-2222-3333입니다.", "pi": [{"type": "ADDRESS", "text": "경기도 성남시 분당구 판교역로 123", "start": 8, "end": 28}, {"type": "PHONE", "text": "010-2222-3333", "start": 37, "end": 50}], "meta": {"domain": "민원 접수", "style": "공문서풍", "obfuscation": ["plain"], "hard_case": "none"}}

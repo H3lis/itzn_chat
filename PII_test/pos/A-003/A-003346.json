@@ -1,1 +1,0 @@
-{"id": "A-003346", "text": "혹시 신촌역 근처 3층에 위치한 OO 아파트가 맞나요? 찾아가려고 하는데 정확한 주소를 다시 한번 알려주시겠어요?", "pi": [{"type": "ADDRESS", "text": "신촌역 근처 3층에 위치한 OO 아파트", "start": 3, "end": 24}], "meta": {"domain": "학교 행정 문의", "style": "격식체", "obfuscation": ["split_utterance"], "hard_case": "none"}}

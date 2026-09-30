@@ -1,1 +1,0 @@
-{"id": "A-004628", "text": "저희 주소는 서울특별시 강남구 테헤란로 123이고, 인스타 아이디는 kmin_life예요.", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 테헤란로 123", "start": 7, "end": 25}, {"type": "SNS", "text": "kmin_life", "start": 38, "end": 47}], "meta": {"domain": "커뮤니티 게시글", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-001257", "text": "생년월일이 9999년 99월 99일이고, 이름은 보람이요. 그리고 성함이 보람이 맞나요?", "pi": [{"type": "BIRTH", "text": "9999년 99월 99일", "start": 6, "end": 19}, {"type": "NAME", "text": "보람", "start": 27, "end": 29}], "meta": {"domain": "병원 접수", "style": "반말 대화", "obfuscation": ["repeat_expr", "mixed_reading", "stt_error"], "hard_case": "homonym_name"}}

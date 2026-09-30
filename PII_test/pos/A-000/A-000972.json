@@ -1,1 +1,0 @@
-{"id": "A-000972", "text": "혹시 제 이름이 장미인가요? 제가 오늘 아침에 좀 헷갈려서요.", "pi": [{"type": "NAME", "text": "장미", "start": 9, "end": 11}], "meta": {"domain": "금융 상담", "style": "메신저 줄임말", "obfuscation": ["jamo_split"], "hard_case": "none"}}

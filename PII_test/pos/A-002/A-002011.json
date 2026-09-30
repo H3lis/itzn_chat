@@ -1,1 +1,0 @@
-{"id": "A-002011", "text": "홍길동 씨가 어제 방문한 고객님은 요즘 컨디션이 별로 안 좋다고 하시더라.", "pi": [{"type": "NAME", "text": "홍길동", "start": 0, "end": 3}], "meta": {"domain": "콜센터 상담 요약", "style": "반말 대화", "obfuscation": ["plain"], "hard_case": "none"}}

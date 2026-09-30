@@ -1,1 +1,0 @@
-{"id": "A-002354", "text": "상품권 결제는요? 제가 사용한 카드 번호가 5555-4444-3333-2222인데, 이름이 미소라고 하면 되나요?", "pi": [{"type": "CARD", "text": "5555-4444-3333-2222", "start": 24, "end": 43}, {"type": "NAME", "text": "미소", "start": 51, "end": 53}], "meta": {"domain": "택배 문의", "style": "길고 장황한 설명", "obfuscation": ["mixed_reading"], "hard_case": "homonym_name"}}

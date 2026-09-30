@@ -1,1 +1,0 @@
-{"id": "A-001044", "text": "저의 이름은 홍길동입니다. 혹시 성함 말씀해주시겠어요?", "pi": [{"type": "NAME", "text": "홍길동", "start": 7, "end": 10}], "meta": {"domain": "고객센터 채팅", "style": "존댓말 상담", "obfuscation": ["jamo_split", "romanized"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-003728", "text": "안녕하세요, 제 이름은 제이슨이고 저는 인스타 아이디가 JasonLee에요.", "pi": [{"type": "NAME", "text": "제이슨", "start": 13, "end": 16}, {"type": "SNS", "text": "JasonLee", "start": 31, "end": 39}], "meta": {"domain": "직장 메신저", "style": "짧은 단답", "obfuscation": ["romanized"], "hard_case": "nickname_id"}}

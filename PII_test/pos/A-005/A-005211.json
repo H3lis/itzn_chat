@@ -1,1 +1,0 @@
-{"id": "A-005211", "text": "하늘 학생이 만난 생년월일이 어떻게 되나요? 98년 5월 12일 맞죠?", "pi": [{"type": "NAME", "text": "하늘", "start": 0, "end": 2}, {"type": "BIRTH", "text": "98년 5월 12일", "start": 25, "end": 35}], "meta": {"domain": "학교 행정 문의", "style": "구어체", "obfuscation": ["korean_reading", "repeat_expr"], "hard_case": "homonym_name"}}

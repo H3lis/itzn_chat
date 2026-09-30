@@ -1,1 +1,0 @@
-{"id": "A-004815", "text": "신청자분 성함이 '강민준' 씨시고, 주민등록번호는 990101-1******-21이 맞나요?", "pi": [{"type": "NAME", "text": "강민준", "start": 10, "end": 13}, {"type": "RRN", "text": "990101-1******-21", "start": 28, "end": 45}], "meta": {"domain": "부동산 상담", "style": "짧은 단답", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

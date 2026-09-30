@@ -1,1 +1,0 @@
-{"id": "A-002027", "text": "혹시 예약하신 번호가 010-1111-2222 같은 건가요? 아니면 010 하나 일일일일 이이이이로 다시 확인 부탁드려요.", "pi": [{"type": "PHONE", "text": "010 하나 일일일일 이이이이", "start": 38, "end": 54}], "meta": {"domain": "병원 접수", "style": "오타 많은 채팅", "obfuscation": ["lookalike_char", "korean_reading"], "hard_case": "none"}}

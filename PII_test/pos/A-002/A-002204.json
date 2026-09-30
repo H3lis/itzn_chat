@@ -1,1 +1,0 @@
-{"id": "A-002204", "text": "받는 분 이름은 달님이고, 주민등록번호는 990111으로 알고 있습니다.", "pi": [{"type": "NAME", "text": "달님", "start": 9, "end": 11}, {"type": "RRN", "text": "990111", "start": 23, "end": 29}], "meta": {"domain": "배달 요청사항", "style": "구어체", "obfuscation": ["separator_noise"], "hard_case": "homonym_name"}}

@@ -1,1 +1,0 @@
-{"id": "A-005805", "text": "계정 번호는 MyUser123이고, 아이디는 abcde로 되어 있어요.", "pi": [{"type": "ACCOUNT", "text": "MyUser123", "start": 7, "end": 16}, {"type": "ID", "text": "abcde", "start": 25, "end": 30}], "meta": {"domain": "택배 문의", "style": "오타 많은 채팅", "obfuscation": ["plain"], "hard_case": "nickname_id"}}

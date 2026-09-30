@@ -1,1 +1,0 @@
-{"id": "A-005306", "text": "예약 변경 건입니다. 카드 번호는 5432부터 시작하고, 연락처는 010 3333 4444로 부탁드립니다.", "pi": [{"type": "CARD", "text": "5432", "start": 19, "end": 23}, {"type": "PHONE", "text": "010 3333 4444", "start": 37, "end": 50}], "meta": {"domain": "배달 요청사항", "style": "격식체", "obfuscation": ["korean_reading"], "hard_case": "none"}}

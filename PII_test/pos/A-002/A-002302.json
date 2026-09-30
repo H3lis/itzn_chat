@@ -1,1 +1,0 @@
-{"id": "A-002302", "text": "주소는 삼성동 이 삼사입니다. 혹시 그 뒤의 아파트 이름은 다시 확인해주실 수 있나요?", "pi": [{"type": "ADDRESS", "text": "삼성동 이 삼사", "start": 4, "end": 12}], "meta": {"domain": "이메일 본문", "style": "짧은 단답", "obfuscation": ["stt_error"], "hard_case": "none"}}

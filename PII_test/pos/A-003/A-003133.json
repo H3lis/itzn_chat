@@ -1,1 +1,0 @@
-{"id": "A-003133", "text": "문의하신 계좌의 고객님 연락처는 영 하나 영, 다시 하나 넷으로 되어 있고, 소셜 미디어는 @kakao_friend_123입니다.", "pi": [{"type": "PHONE", "text": "영 하나 영, 다시 하나 넷", "start": 18, "end": 33}, {"type": "SNS", "text": "@kakao_friend_123", "start": 51, "end": 68}], "meta": {"domain": "부동산 상담", "style": "격식체", "obfuscation": ["korean_reading", "separator_noise"], "hard_case": "none"}}

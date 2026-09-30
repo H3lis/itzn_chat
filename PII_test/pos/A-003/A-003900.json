@@ -1,1 +1,0 @@
-{"id": "A-003900", "text": "김 이사님께 연락드린 건인데요, 저희가 확보한 전화번호는 010-2222-3333입니다.", "pi": [{"type": "NAME", "text": "김 이사님", "start": 0, "end": 5}, {"type": "PHONE", "text": "010-2222-3333", "start": 32, "end": 45}], "meta": {"domain": "고객센터 채팅", "style": "공문서풍", "obfuscation": ["romanized", "honorific_ref"], "hard_case": "none"}}

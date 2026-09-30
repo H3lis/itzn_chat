@@ -1,1 +1,0 @@
-{"id": "A-004674", "text": "혹시 거주하시는 곳이 경기도 수원시 연건동이시고, 카드 번호는 5432로 시작해요. 이름은 여름이에요.", "pi": [{"type": "ADDRESS", "text": "경기도 수원시 연건동", "start": 12, "end": 23}, {"type": "CARD", "text": "5432", "start": 35, "end": 39}, {"type": "NAME", "text": "여름", "start": 51, "end": 53}], "meta": {"domain": "SNS 댓글", "style": "메신저 줄임말", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

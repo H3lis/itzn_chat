@@ -1,1 +1,0 @@
-{"id": "A-004199", "text": "차량 번호가 저희가 안내드린 '서울 1가 234' 맞는지 확인 부탁드리고요. 김철수 씨는요?", "pi": [{"type": "CAR_PLATE", "text": "서울 1가 234", "start": 17, "end": 26}, {"type": "NAME", "text": "김철수", "start": 43, "end": 46}], "meta": {"domain": "음성통화 전사문", "style": "메신저 줄임말", "obfuscation": ["separator_noise"], "hard_case": "none"}}

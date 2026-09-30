@@ -1,1 +1,0 @@
-{"id": "A-000417", "text": "저희가 말씀드린 생년월일이 1995년 5월 20일이 맞을까요? 아니면 1995년 5월 22일이요?", "pi": [{"type": "BIRTH", "text": "1995년 5월 22일", "start": 39, "end": 51}], "meta": {"domain": "중고거래 채팅", "style": "존댓말 상담", "obfuscation": ["self_correction"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-002243", "text": "여권 정보가 필요해서요. 이름은 김민준이고요, 여권 번호는 A123456789입니다.", "pi": [{"type": "PASSPORT", "text": "A123456789", "start": 33, "end": 43}], "meta": {"domain": "보험 청구", "style": "구어체", "obfuscation": ["korean_reading"], "hard_case": "none"}}

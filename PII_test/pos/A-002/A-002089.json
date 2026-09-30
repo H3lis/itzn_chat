@@ -1,1 +1,0 @@
-{"id": "A-002089", "text": "운전면허증은 구름이요? 혹시 구름이랑 같이 말씀해주시겠어요?", "pi": [{"type": "DRIVER_LICENSE", "text": "구름", "start": 7, "end": 9}, {"type": "NAME", "text": "구름", "start": 16, "end": 18}], "meta": {"domain": "보험 청구", "style": "존댓말 상담", "obfuscation": ["split_utterance"], "hard_case": "homonym_name"}}

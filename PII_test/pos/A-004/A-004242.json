@@ -1,1 +1,0 @@
-{"id": "A-004242", "text": "제 아이디는 User_Alpha구요, 아뇨, 제 이름은 진짜 김철수예요.", "pi": [{"type": "ID", "text": "User_Alpha", "start": 7, "end": 17}, {"type": "NAME", "text": "김철수", "start": 34, "end": 37}], "meta": {"domain": "민원 접수", "style": "짧은 단답", "obfuscation": ["self_correction"], "hard_case": "nickname_id"}}

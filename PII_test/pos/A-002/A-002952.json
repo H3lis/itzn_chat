@@ -1,1 +1,0 @@
-{"id": "A-002952", "text": "접수해주신 민원 접수 번호가 9258734120입니다.", "pi": [{"type": "ID", "text": "9258734120", "start": 16, "end": 26}], "meta": {"domain": "민원 접수", "style": "격식체", "obfuscation": ["jamo_split"], "hard_case": "none"}}

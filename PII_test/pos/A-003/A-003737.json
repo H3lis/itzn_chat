@@ -1,1 +1,0 @@
-{"id": "A-003737", "text": "차량 번호가 12가 나는데, 여기은 OOO개발팀 3층이에요.", "pi": [{"type": "CAR_PLATE", "text": "12", "start": 7, "end": 9}, {"type": "ORG", "text": "OOO개발팀", "start": 20, "end": 26}], "meta": {"domain": "보험 청구", "style": "오타 많은 채팅", "obfuscation": ["split_utterance"], "hard_case": "org_person"}}

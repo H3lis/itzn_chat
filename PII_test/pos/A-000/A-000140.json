@@ -1,1 +1,0 @@
-{"id": "A-000140", "text": "이사 온 거주지 주소는 123번지고요. SNS는 @my_new_life로 되어 있답니다.", "pi": [{"type": "ADDRESS", "text": "123번지", "start": 13, "end": 18}, {"type": "SNS", "text": "@my_new_life", "start": 27, "end": 39}], "meta": {"domain": "택배 문의", "style": "격식체", "obfuscation": ["romanized"], "hard_case": "nickname_id"}}

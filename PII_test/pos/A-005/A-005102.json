@@ -1,1 +1,0 @@
-{"id": "A-005102", "text": "아, 환자분 성함이 김민지 씨 맞으신가요? 그리고 생년월일은 92년 10월 15일로 말씀해 주시겠어요?", "pi": [{"type": "NAME", "text": "김민지", "start": 11, "end": 14}], "meta": {"domain": "병원 접수", "style": "길고 장황한 설명", "obfuscation": ["jamo_split"], "hard_case": "none"}}

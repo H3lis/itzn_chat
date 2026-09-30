@@ -1,1 +1,0 @@
-{"id": "A-001820", "text": "저의 생년월일이 1995년 10월 20일이에요. 혹시 여기로 등록하면 될까요?", "pi": [{"type": "BIRTH", "text": "1995년 10월 20일", "start": 9, "end": 22}], "meta": {"domain": "병원 접수", "style": "메신저 줄임말", "obfuscation": ["plain"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-003951", "text": "김민지 고객님께서는 성함이 '김민지'시고, 이쪽으로 좀 오시겠어요?", "pi": [{"type": "NAME", "text": "김민지", "start": 0, "end": 3}], "meta": {"domain": "고객센터 채팅", "style": "길고 장황한 설명", "obfuscation": ["honorific_ref", "jamo_split"], "hard_case": "none"}}

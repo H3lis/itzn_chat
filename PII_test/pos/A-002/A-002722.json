@@ -1,1 +1,0 @@
-{"id": "A-002722", "text": "요즘 회사 전화번호가 010-3333-4444인데, 이게 계속 바뀌는 건지 궁금해서요.", "pi": [{"type": "PHONE", "text": "010-3333-4444", "start": 12, "end": 25}], "meta": {"domain": "직장 메신저", "style": "반말 대화", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-002525", "text": "자두님, 그 부분은 '자 두' 이렇게 말씀하시는 게 나을 것 같아요. 로마자로도 적어드릴까요?", "pi": [{"type": "NAME", "text": "자두", "start": 0, "end": 2}], "meta": {"domain": "배달 요청사항", "style": "메신저 줄임말", "obfuscation": ["jamo_split", "honorific_ref", "romanized"], "hard_case": "homonym_name"}}

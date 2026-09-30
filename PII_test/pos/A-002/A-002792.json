@@ -1,1 +1,0 @@
-{"id": "A-002792", "text": "예약을 위해 고객님께서 사용하시는 휴대폰 번호가 010-2222-3333인지 다시 한번 확인 부탁드리겠습니다. 다른 번호가 있으신가요?", "pi": [{"type": "PHONE", "text": "010-2222-3333", "start": 27, "end": 40}], "meta": {"domain": "이메일 본문", "style": "길고 장황한 설명", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

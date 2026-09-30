@@ -1,1 +1,0 @@
-{"id": "A-001711", "text": "제 카드번호가 1234-5678-9012-3456인데, 운전면허번호는 95123456789예요. 카드 마지막 네 자리가 3456 맞나요?", "pi": [{"type": "CARD", "text": "1234-5678-9012-3456", "start": 8, "end": 27}, {"type": "DRIVER_LICENSE", "text": "95123456789", "start": 39, "end": 50}], "meta": {"domain": "SNS 댓글", "style": "존댓말 상담", "obfuscation": ["lookalike_char", "stt_error"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-000142", "text": "카드 번호는 4111부터 시작하고요. 휴대폰 번호는 010-9999-0000이 맞으신가요?", "pi": [{"type": "CARD", "text": "4111", "start": 7, "end": 11}, {"type": "PHONE", "text": "010-9999-0000", "start": 29, "end": 42}], "meta": {"domain": "부동산 상담", "style": "음성인식(STT) 전사", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-002025", "text": "저희 집 주소는 서울시 마포구 월드컵로 3가에요. 혹시 청구서에 나오는 주소가 이 삼사 같은데 맞나요?", "pi": [{"type": "ADDRESS", "text": "서울시 마포구 월드컵로 3가", "start": 9, "end": 24}], "meta": {"domain": "보험 청구", "style": "음성인식(STT) 전사", "obfuscation": ["stt_error", "korean_reading"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-003682", "text": "제 친구 이름은 민재인데, 요즘 연락이 잘 안 되네요. 혹시 다른 계정으로 연락 가능한가요?", "pi": [{"type": "NAME", "text": "민재", "start": 9, "end": 11}], "meta": {"domain": "SNS 댓글", "style": "메신저 줄임말", "obfuscation": ["jamo_split"], "hard_case": "none"}}

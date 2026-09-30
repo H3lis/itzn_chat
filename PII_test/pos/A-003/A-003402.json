@@ -1,1 +1,0 @@
-{"id": "A-003402", "text": "결제하실 카드는 비자 사인이 찍힌 5432-XXXX-XXXX-1234 쪽이요.", "pi": [{"type": "CARD", "text": "5432-XXXX-XXXX-1234", "start": 19, "end": 38}], "meta": {"domain": "직장 메신저", "style": "존댓말 상담", "obfuscation": ["stt_error", "mixed_reading"], "hard_case": "none"}}

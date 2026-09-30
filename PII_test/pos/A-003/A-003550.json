@@ -1,1 +1,0 @@
-{"id": "A-003550", "text": "고객님께서 전화번호는 010-3456-7890으로 다시 한번 불러주시겠어요? 네, 010 삼사 오육 칠팔구공 맞습니다.", "pi": [{"type": "PHONE", "text": "010 삼사 오육 칠팔구공", "start": 46, "end": 60}], "meta": {"domain": "회의록", "style": "공문서풍", "obfuscation": ["korean_reading"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-000603", "text": "고객님 성함이 박지수 씨 맞으시죠? 오늘 방문 주신 건 맞을까요?", "pi": [{"type": "NAME", "text": "박지수", "start": 8, "end": 11}], "meta": {"domain": "부동산 상담", "style": "존댓말 상담", "obfuscation": ["plain"], "hard_case": "none"}}

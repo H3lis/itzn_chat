@@ -1,1 +1,0 @@
-{"id": "A-001444", "text": "제 주민등록번호는 920515-1******이고, 이게 맞는지 다시 한번 확인해 주실 수 있나요?", "pi": [{"type": "RRN", "text": "920515-1******", "start": 10, "end": 24}], "meta": {"domain": "민원 접수", "style": "음성인식(STT) 전사", "obfuscation": ["plain"], "hard_case": "none"}}

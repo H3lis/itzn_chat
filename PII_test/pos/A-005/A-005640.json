@@ -1,1 +1,0 @@
-{"id": "A-005640", "text": "제 이메일은 홍길동 골뱅이 메일점 컴으로 연락 주시면 될 것 같아요.", "pi": [{"type": "EMAIL", "text": "홍길동 골뱅이 메일점 컴", "start": 7, "end": 20}], "meta": {"domain": "온라인 강의 Q&A", "style": "구어체", "obfuscation": ["email_spoken", "lookalike_char"], "hard_case": "none"}}

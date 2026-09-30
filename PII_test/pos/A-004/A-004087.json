@@ -1,1 +1,0 @@
-{"id": "A-004087", "text": "카드 번호가 1234-5678-9012-3456이라고 말씀해주신 것이 맞을까요? 아니면 다시 한번 확인해 주시겠어요?", "pi": [{"type": "CARD", "text": "1234-5678-9012-3456", "start": 7, "end": 26}], "meta": {"domain": "민원 접수", "style": "존댓말 상담", "obfuscation": ["self_correction"], "hard_case": "none"}}

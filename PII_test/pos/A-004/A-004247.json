@@ -1,1 +1,0 @@
-{"id": "A-004247", "text": "네, 예약자 성함은 노을이시고, 이메일은 노을.zzz골뱅이지메일점컴입니다.", "pi": [{"type": "NAME", "text": "노을", "start": 11, "end": 13}, {"type": "EMAIL", "text": "노을.zzz골뱅이지메일점컴", "start": 23, "end": 37}], "meta": {"domain": "병원 접수", "style": "공문서풍", "obfuscation": ["self_correction", "email_spoken"], "hard_case": "homonym_name"}}

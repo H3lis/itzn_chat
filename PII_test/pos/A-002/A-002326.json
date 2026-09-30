@@ -1,1 +1,0 @@
-{"id": "A-002326", "text": "장미 씨는 성함이 어떻게 되세요? 다시 한 번 말씀해 주시겠어요?", "pi": [{"type": "NAME", "text": "장미", "start": 0, "end": 2}], "meta": {"domain": "고객센터 채팅", "style": "음성인식(STT) 전사", "obfuscation": ["jamo_split"], "hard_case": "none"}}

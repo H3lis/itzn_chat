@@ -1,1 +1,0 @@
-{"id": "A-005522", "text": "저희가 요청드리는 계정은 ㅇ1ㅇ으로 돼 있고, 이름은 ㅁㅏㅇㄱㄴㅏㅁ 이 맞으신가요?", "pi": [{"type": "ACCOUNT", "text": "ㅇ1ㅇ", "start": 14, "end": 17}, {"type": "NAME", "text": "ㅁㅏㅇㄱㄴㅏㅁ", "start": 30, "end": 37}], "meta": {"domain": "배달 요청사항", "style": "격식체", "obfuscation": ["repeat_expr", "jamo_split"], "hard_case": "none"}}

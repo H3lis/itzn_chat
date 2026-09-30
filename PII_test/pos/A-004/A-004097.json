@@ -1,1 +1,0 @@
-{"id": "A-004097", "text": "예약하시려는 분 성함이 '미소' 씨 맞으신가요? 카드는 비씨카드시고, 생년월일은 1990년 5월 1일로 되어 있어요.", "pi": [{"type": "NAME", "text": "미소", "start": 14, "end": 16}, {"type": "CARD", "text": "비씨카드", "start": 31, "end": 35}], "meta": {"domain": "학교 행정 문의", "style": "공문서풍", "obfuscation": ["romanized", "repeat_expr", "separator_noise"], "hard_case": "homonym_name"}}

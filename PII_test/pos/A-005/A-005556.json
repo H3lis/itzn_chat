@@ -1,1 +1,0 @@
-{"id": "A-005556", "text": "제 아이디는 GamerKing이고요, 회사 이름은 네오테크입니다. 저는 김철수입니다.", "pi": [{"type": "ORG", "text": "네오테크", "start": 28, "end": 32}, {"type": "NAME", "text": "김철수", "start": 40, "end": 43}], "meta": {"domain": "중고거래 채팅", "style": "구어체", "obfuscation": ["self_correction", "romanized"], "hard_case": "org_person"}}

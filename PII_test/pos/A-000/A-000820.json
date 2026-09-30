@@ -1,1 +1,0 @@
-{"id": "A-000820", "text": "차량 번호판은 가나다 7777 모델이라서요, 그거 조회해 드릴게요.", "pi": [{"type": "CAR_PLATE", "text": "가나다 7777", "start": 8, "end": 16}], "meta": {"domain": "여행 예약", "style": "구어체", "obfuscation": ["plain"], "hard_case": "none"}}

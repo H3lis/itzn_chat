@@ -1,1 +1,0 @@
-{"id": "A-001611", "text": "겨울이라서 방문하기 어려운데, 혹시 연락처를 알려주시겠어요? 제 번호는 010-2345-6789예요.", "pi": [{"type": "NAME", "text": "겨울", "start": 0, "end": 2}, {"type": "PHONE", "text": "010-2345-6789", "start": 40, "end": 53}], "meta": {"domain": "커뮤니티 게시글", "style": "반말 대화", "obfuscation": ["stt_error"], "hard_case": "homonym_name"}}

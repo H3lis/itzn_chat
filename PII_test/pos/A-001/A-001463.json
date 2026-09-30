@@ -1,1 +1,0 @@
-{"id": "A-001463", "text": "혹시 바다 관련해서 문의드리는데요. 김바다 님이 지난번에 주신 SNS 주소는 맞나요? 이게 정확한지 궁금합니다.", "pi": [{"type": "NAME", "text": "김바다", "start": 20, "end": 23}, {"type": "SNS", "text": "SNS", "start": 35, "end": 38}], "meta": {"domain": "민원 접수", "style": "길고 장황한 설명", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

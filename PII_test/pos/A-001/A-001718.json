@@ -1,1 +1,0 @@
-{"id": "A-001718", "text": "배송지를 아시는지 모르겠네요. 일단 '경기도 성남시 분당구 판교역로'로 잠정 처리를 해두겠습니다.", "pi": [{"type": "ADDRESS", "text": "경기도 성남시 분당구 판교역로", "start": 21, "end": 37}], "meta": {"domain": "고객센터 채팅", "style": "메신저 줄임말", "obfuscation": ["split_utterance"], "hard_case": "none"}}

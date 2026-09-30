@@ -1,1 +1,0 @@
-{"id": "A-005130", "text": "저희 예약은 345-67-8901번으로 들어가면 되는 건가요? 네, 여기는 8888-AAAA-BBBBD-CCCC 형식으로 입력하시면 됩니다.", "pi": [{"type": "RRN", "text": "345-67-8901", "start": 7, "end": 18}], "meta": {"domain": "여행 예약", "style": "메신저 줄임말", "obfuscation": ["separator_noise"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-001211", "text": "성함이 박지성 씨시고, 연락처는 고엠일 공일공 일일일일이 맞으신가요? 네, 박지성을 말로 하면 파ㄱ 지성이요.", "pi": [{"type": "NAME", "text": "박지성", "start": 4, "end": 7}, {"type": "PHONE", "text": "고엠일 공일공 일일일일", "start": 18, "end": 30}], "meta": {"domain": "금융 상담", "style": "격식체", "obfuscation": ["mixed_reading", "korean_reading", "jamo_split"], "hard_case": "none"}}

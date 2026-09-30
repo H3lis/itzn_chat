@@ -1,1 +1,0 @@
-{"id": "A-002489", "text": "카드 번호는 4567부터 시작해서, 미소님 성함은 최지우 맞으실까요?", "pi": [{"type": "CARD", "text": "4567", "start": 7, "end": 11}, {"type": "NAME", "text": "미소", "start": 20, "end": 22}], "meta": {"domain": "여행 예약", "style": "격식체", "obfuscation": ["stt_error"], "hard_case": "homonym_name"}}

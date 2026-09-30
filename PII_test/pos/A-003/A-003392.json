@@ -1,1 +1,0 @@
-{"id": "A-003392", "text": "저번에 주문했던 옷 말인데요, 결제하신 계정명이 뭘까요?", "pi": [{"type": "NAME", "text": "저", "start": 0, "end": 1}, {"type": "ACCOUNT", "text": "계정명", "start": 22, "end": 25}], "meta": {"domain": "쇼핑몰 문의", "style": "반말 대화", "obfuscation": ["plain"], "hard_case": "none"}}

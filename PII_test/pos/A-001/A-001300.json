@@ -1,1 +1,0 @@
-{"id": "A-001300", "text": "저번에 상담드렸던 고객님, 김준호 씨가 연락 주신 건데, 혹시 성함이 정확히 어떻게 되셨나요?", "pi": [{"type": "NAME", "text": "김준호", "start": 15, "end": 18}], "meta": {"domain": "택배 문의", "style": "구어체", "obfuscation": ["romanized", "self_correction", "honorific_ref"], "hard_case": "none"}}

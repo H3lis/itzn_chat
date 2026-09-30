@@ -1,1 +1,0 @@
-{"id": "A-005548", "text": "예약하신 고객님의 연락처는 010 5555 4444로 되어 있는데, 다시 말씀해주시겠어요?", "pi": [{"type": "PHONE", "text": "010 5555 4444", "start": 15, "end": 28}], "meta": {"domain": "여행 예약", "style": "길고 장황한 설명", "obfuscation": ["korean_reading"], "hard_case": "none"}}

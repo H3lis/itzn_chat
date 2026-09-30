@@ -1,1 +1,0 @@
-{"id": "A-002035", "text": "혹시 그 차 번호가 되게 'ㄱㄴㅁ. 123-4567' 이거 맞아요? 저 사랑이가 썼던 거라 확인 부탁드려요.", "pi": [{"type": "CAR_PLATE", "text": "ㄱㄴㅁ. 123-4567", "start": 15, "end": 28}, {"type": "NAME", "text": "사랑", "start": 40, "end": 42}], "meta": {"domain": "고객센터 채팅", "style": "반말 대화", "obfuscation": ["separator_noise"], "hard_case": "homonym_name"}}

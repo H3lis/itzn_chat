@@ -1,1 +1,0 @@
-{"id": "A-003450", "text": "신분증 번호가 900101-1234567인데, 이거가 맞는지 확인 부탁해.", "pi": [{"type": "RRN", "text": "900101-1234567", "start": 8, "end": 22}], "meta": {"domain": "중고거래 채팅", "style": "반말 대화", "obfuscation": ["stt_error"], "hard_case": "none"}}

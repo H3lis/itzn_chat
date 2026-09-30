@@ -1,1 +1,0 @@
-{"id": "A-004685", "text": "제 이름은 '강민준'인데요, 혹시 회원가입할 때 쓰신 전화번호 같은 것도 알려주실 수 있나요?", "pi": [{"type": "NAME", "text": "강민준", "start": 7, "end": 10}], "meta": {"domain": "커뮤니티 게시글", "style": "오타 많은 채팅", "obfuscation": ["jamo_split"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-003124", "text": "접수하시려면 제 이메일 주소를 cheolsoo(at)naver(dot)com 으로 남겨주시고요. 제 이름은 장미라고 해주시면 됩니다.", "pi": [{"type": "EMAIL", "text": "cheolsoo(at)naver(dot)com", "start": 17, "end": 42}, {"type": "NAME", "text": "장미", "start": 60, "end": 62}], "meta": {"domain": "민원 접수", "style": "구어체", "obfuscation": ["email_spoken"], "hard_case": "none"}}

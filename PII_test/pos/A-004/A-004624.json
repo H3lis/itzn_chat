@@ -1,1 +1,0 @@
-{"id": "A-004624", "text": "혹시 저희 제품에 대해 궁금한 점이 있으시면, 메일 주소로는 aaa@example.com이구요, 전화는 010-2222-3333으로 부탁드립니다.", "pi": [{"type": "EMAIL", "text": "aaa@example.com", "start": 34, "end": 49}, {"type": "PHONE", "text": "010-2222-3333", "start": 58, "end": 71}], "meta": {"domain": "부동산 상담", "style": "길고 장황한 설명", "obfuscation": ["korean_reading", "stt_error"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-005976", "text": "제 생일이 자두예요. 그리고 제 이름은 자두입니다. 맞게 기록된 건가요?", "pi": [{"type": "BIRTH", "text": "자두", "start": 6, "end": 8}, {"type": "NAME", "text": "자두", "start": 22, "end": 24}], "meta": {"domain": "SNS 댓글", "style": "격식체", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

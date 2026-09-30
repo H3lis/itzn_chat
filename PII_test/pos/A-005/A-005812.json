@@ -1,1 +1,0 @@
-{"id": "A-005812", "text": "어디로 오셨어요? 주소는 강남대로 500번지 쪽으로 해주시면 돼요.", "pi": [{"type": "ADDRESS", "text": "강남대로 500번지", "start": 14, "end": 24}], "meta": {"domain": "병원 접수", "style": "반말 대화", "obfuscation": ["split_utterance"], "hard_case": "none"}}

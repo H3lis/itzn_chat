@@ -1,1 +1,0 @@
-{"id": "A-000955", "text": "제 이름이 강남준이거든요. 여기 제가 근무하는 곳은 삼성디지털센터라고요.", "pi": [{"type": "NAME", "text": "강남준", "start": 6, "end": 9}, {"type": "ORG", "text": "삼성디지털센터", "start": 29, "end": 36}], "meta": {"domain": "택배 문의", "style": "오타 많은 채팅", "obfuscation": ["jamo_split"], "hard_case": "org_person"}}

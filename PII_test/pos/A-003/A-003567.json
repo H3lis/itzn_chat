@@ -1,1 +1,0 @@
-{"id": "A-003567", "text": "담당자분께 연락드렸을 때, 혹시 010-5555-1234로 다시 전화 주실 수 있을까요? 저희가 지금 외부에서요.", "pi": [{"type": "PHONE", "text": "010-5555-1234", "start": 18, "end": 31}], "meta": {"domain": "커뮤니티 게시글", "style": "격식체", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

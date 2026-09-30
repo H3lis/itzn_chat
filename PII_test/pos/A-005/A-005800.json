@@ -1,1 +1,0 @@
-{"id": "A-005800", "text": "거주지는 강남구 역삼동이고요. 제 SNS는 nice_user_99예요.", "pi": [{"type": "ADDRESS", "text": "강남구 역삼동", "start": 5, "end": 12}, {"type": "SNS", "text": "nice_user_99", "start": 24, "end": 36}], "meta": {"domain": "이메일 본문", "style": "메신저 줄임말", "obfuscation": ["plain"], "hard_case": "nickname_id"}}

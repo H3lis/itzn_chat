@@ -1,1 +1,0 @@
-{"id": "A-002096", "text": "카드 번호가 4111... 이거랑 김대리님 성함이 김철수님이세요?", "pi": [{"type": "CARD", "text": "4111", "start": 7, "end": 11}, {"type": "NAME", "text": "김대리님", "start": 19, "end": 23}, {"type": "NAME", "text": "김철수님", "start": 28, "end": 32}], "meta": {"domain": "중고거래 채팅", "style": "구어체", "obfuscation": ["plain"], "hard_case": "none"}}

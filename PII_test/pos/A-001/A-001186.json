@@ -1,1 +1,0 @@
-{"id": "A-001186", "text": "김민준 님과 박지연 님이 예약하셨나요? 두 분 성함 다시 한번 확인 부탁드립니다.", "pi": [{"type": "NAME", "text": "김민준", "start": 0, "end": 3}, {"type": "NAME", "text": "박지연", "start": 7, "end": 10}], "meta": {"domain": "병원 접수", "style": "존댓말 상담", "obfuscation": ["plain"], "hard_case": "none"}}

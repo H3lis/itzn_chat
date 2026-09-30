@@ -1,1 +1,0 @@
-{"id": "A-005293", "text": "그 이메일 주소는 abc.com@naver.net이고, 아이피는 111.222.333.444에요.", "pi": [{"type": "EMAIL", "text": "abc.com@naver.net", "start": 10, "end": 27}, {"type": "IP_ADDR", "text": "111.222.333.444", "start": 36, "end": 51}], "meta": {"domain": "SNS 댓글", "style": "반말 대화", "obfuscation": ["separator_noise"], "hard_case": "none"}}

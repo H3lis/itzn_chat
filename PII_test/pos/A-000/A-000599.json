@@ -1,1 +1,0 @@
-{"id": "A-000599", "text": "주소는 네이키드-001 같은 건가요? 저희 학번은 A1B2C3D4로 알고 있는데요.", "pi": [{"type": "ADDRESS", "text": "네이키드-001", "start": 4, "end": 12}, {"type": "ID", "text": "A1B2C3D4", "start": 28, "end": 36}], "meta": {"domain": "학교 행정 문의", "style": "존댓말 상담", "obfuscation": ["romanized", "lookalike_char"], "hard_case": "nickname_id"}}

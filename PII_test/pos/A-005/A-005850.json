@@ -1,1 +1,0 @@
-{"id": "A-005850", "text": "저희가 확인해 보니, 고유 아이디는 User_A123이고 전화번호는 010-7777-8888이군요. 확인 부탁드립니다.", "pi": [{"type": "ID", "text": "User_A123", "start": 20, "end": 29}, {"type": "PHONE", "text": "010-7777-8888", "start": 38, "end": 51}], "meta": {"domain": "직장 메신저", "style": "길고 장황한 설명", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

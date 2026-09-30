@@ -1,1 +1,0 @@
-{"id": "A-001034", "text": "저희 회사는 경기도 성남시 분당구 판교로 50, 그리고 IP 주소는 203.0.113.45에서 접속했어요. 혹시 이 주소로 다시 보내드릴까요?", "pi": [{"type": "ADDRESS", "text": "경기도 성남시 분당구 판교로 50", "start": 7, "end": 25}, {"type": "IP_ADDR", "text": "203.0.113.45", "start": 38, "end": 50}], "meta": {"domain": "이메일 본문", "style": "길고 장황한 설명", "obfuscation": ["stt_error", "separator_noise"], "hard_case": "none"}}

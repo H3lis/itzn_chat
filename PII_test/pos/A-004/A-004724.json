@@ -1,1 +1,0 @@
-{"id": "A-004724", "text": "저희 회사의 이메일은 test_user@corp.net입니다. 다른 문의사항은 없으신가요?", "pi": [{"type": "EMAIL", "text": "test_user@corp.net", "start": 12, "end": 30}], "meta": {"domain": "커뮤니티 게시글", "style": "짧은 단답", "obfuscation": ["separator_noise"], "hard_case": "none"}}

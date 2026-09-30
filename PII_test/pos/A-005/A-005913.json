@@ -1,1 +1,0 @@
-{"id": "A-005913", "text": "어? 라임아, 주소는 경기도 수원시 영통구 광교동 505호고요. 이름은 라임 씨예요. 근데 주소가 좀 길게 나오네요.", "pi": [{"type": "ADDRESS", "text": "경기도 수원시 영통구 광교동 505호", "start": 12, "end": 32}, {"type": "NAME", "text": "라임", "start": 40, "end": 42}], "meta": {"domain": "콜센터 상담 요약", "style": "반말 대화", "obfuscation": ["korean_reading", "split_utterance"], "hard_case": "homonym_name"}}

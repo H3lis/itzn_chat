@@ -1,1 +1,0 @@
-{"id": "A-005921", "text": "받으실 이메일 주소가 user123@example.com이 맞나요? 혹시 철자 확인 한 번만 더 부탁드려요.", "pi": [{"type": "EMAIL", "text": "user123@example.com", "start": 12, "end": 31}], "meta": {"domain": "중고거래 채팅", "style": "음성인식(STT) 전사", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

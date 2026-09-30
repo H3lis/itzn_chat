@@ -1,1 +1,0 @@
-{"id": "A-004655", "text": "민준님, 회원 아이디가 cu~m_999 이라 보이는데요? 성함은 구름 맞죠?", "pi": [{"type": "ACCOUNT", "text": "cu~m_999", "start": 13, "end": 21}, {"type": "NAME", "text": "구름", "start": 36, "end": 38}], "meta": {"domain": "병원 접수", "style": "반말 대화", "obfuscation": ["lookalike_char"], "hard_case": "homonym_name"}}

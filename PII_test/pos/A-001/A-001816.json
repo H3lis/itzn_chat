@@ -1,1 +1,0 @@
-{"id": "A-001816", "text": "제 이름은 홍길동인데요, 아 아닙니다. 사실은 김민준이에요.", "pi": [{"type": "NAME", "text": "김민준", "start": 26, "end": 29}], "meta": {"domain": "보험 청구", "style": "오타 많은 채팅", "obfuscation": ["self_correction"], "hard_case": "none"}}

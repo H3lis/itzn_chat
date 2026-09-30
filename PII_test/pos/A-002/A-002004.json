@@ -1,1 +1,0 @@
-{"id": "A-002004", "text": "카드 번호는 1234/5678/9012 끝 네 자리고요, 운전면허는 999-888-7777이에요.", "pi": [{"type": "CARD", "text": "1234/5678/9012", "start": 7, "end": 21}, {"type": "DRIVER_LICENSE", "text": "999-888-7777", "start": 38, "end": 50}], "meta": {"domain": "콜센터 상담 요약", "style": "짧은 단답", "obfuscation": ["separator_noise", "lookalike_char"], "hard_case": "none"}}

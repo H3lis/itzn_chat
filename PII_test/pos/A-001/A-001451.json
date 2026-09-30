@@ -1,1 +1,0 @@
-{"id": "A-001451", "text": "출생일은 1985년 11월 20일로 기록되어 있습니다. 이 날짜를 기준으로 예약을 진행하면 될까요?", "pi": [{"type": "BIRTH", "text": "1985년 11월 20일", "start": 5, "end": 18}], "meta": {"domain": "여행 예약", "style": "공문서풍", "obfuscation": ["plain"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-002869", "text": "청구 서류 상에 기재된 성함은 김민준 씨이고 연락 가능한 전화번호는 공일공 5555 1234입니다.", "pi": [{"type": "NAME", "text": "김민준", "start": 17, "end": 20}, {"type": "PHONE", "text": "공일공 5555 1234", "start": 38, "end": 51}], "meta": {"domain": "보험 청구", "style": "공문서풍", "obfuscation": ["korean_reading"], "hard_case": "none"}}

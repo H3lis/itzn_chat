@@ -1,1 +1,0 @@
-{"id": "A-001151", "text": "장미 학생은 주소지 확인을 위해 성함과 학번이 필요합니다. 30591234입니다.", "pi": [{"type": "NAME", "text": "장미", "start": 0, "end": 2}, {"type": "ADDRESS", "text": "주소지", "start": 7, "end": 10}, {"type": "OTHER_ID", "text": "30591234", "start": 33, "end": 41}], "meta": {"domain": "학교 행정 문의", "style": "공문서풍", "obfuscation": ["separator_noise"], "hard_case": "homonym_name"}}

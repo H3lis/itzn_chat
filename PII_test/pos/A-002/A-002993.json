@@ -1,1 +1,0 @@
-{"id": "A-002993", "text": "네, 주소는 경기도 용인시 기흥구 보정동 50번지이고요? 이름은 서연이 맞나요?", "pi": [{"type": "ADDRESS", "text": "경기도 용인시 기흥구 보정동 50번지", "start": 7, "end": 27}, {"type": "NAME", "text": "서연", "start": 36, "end": 38}], "meta": {"domain": "커뮤니티 게시글", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "none"}}

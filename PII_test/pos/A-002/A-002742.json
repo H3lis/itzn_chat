@@ -1,1 +1,0 @@
-{"id": "A-002742", "text": "주소는 서울특별시 강남구 역삼동 345-6이고, 담당자는 김민준 씨예요.", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 역삼동 345-6", "start": 4, "end": 23}, {"type": "NAME", "text": "김민준", "start": 32, "end": 35}], "meta": {"domain": "회의록", "style": "짧은 단답", "obfuscation": ["korean_reading"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-000067", "text": "예약하신 비행기 표는 010 다음에 1이 네 번 그리고 2가 네 번으로 되어 있네요.", "pi": [{"type": "PHONE", "text": "010 다음에 1이 네 번 그리고 2가 네 번", "start": 12, "end": 37}], "meta": {"domain": "여행 예약", "style": "구어체", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

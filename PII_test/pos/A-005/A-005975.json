@@ -1,1 +1,0 @@
-{"id": "A-005975", "text": "혹시 상품 조회되는거 보니까 제 이메일이 aaaaa@bbbb.com 인가요? 맞나요?", "pi": [{"type": "SNS", "text": "aaaaa@bbbb.com", "start": 23, "end": 37}], "meta": {"domain": "택배 문의", "style": "존댓말 상담", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

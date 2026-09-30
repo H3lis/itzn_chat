@@ -1,1 +1,0 @@
-{"id": "A-001805", "text": "담당자님, 혹시 '하루' 님의 연락처나 인스타그램 계정 같은 거 알 수 있을까요?", "pi": [{"type": "NAME", "text": "하루", "start": 10, "end": 12}, {"type": "SNS", "text": "인스타그램", "start": 22, "end": 27}], "meta": {"domain": "콜센터 상담 요약", "style": "짧은 단답", "obfuscation": ["lookalike_char"], "hard_case": "homonym_name"}}

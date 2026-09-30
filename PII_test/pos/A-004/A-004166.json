@@ -1,1 +1,0 @@
-{"id": "A-004166", "text": "제가 가입한 계정은 ㅋㄹㅁ123인데요, 그거 혹시 아니고요, 제 이름은 김지현이라고 말씀드리는 게 맞아요.", "pi": [{"type": "ACCOUNT", "text": "ㅋㄹㅁ123", "start": 11, "end": 17}, {"type": "NAME", "text": "김지현", "start": 40, "end": 43}], "meta": {"domain": "커뮤니티 게시글", "style": "구어체", "obfuscation": ["self_correction", "korean_reading"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-000700", "text": "배송 받을 주소지가 2023 서울 강남구 테헤란로 556이고, 운전자는 78901234567이에요.", "pi": [{"type": "ADDRESS", "text": "2023 서울 강남구 테헤란로 556", "start": 11, "end": 31}, {"type": "DRIVER_LICENSE", "text": "78901234567", "start": 40, "end": 51}], "meta": {"domain": "택배 문의", "style": "짧은 단답", "obfuscation": ["stt_error", "split_utterance"], "hard_case": "none"}}

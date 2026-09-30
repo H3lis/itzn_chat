@@ -1,1 +1,0 @@
-{"id": "A-001688", "text": "전화번호는 010-5555-4444 맞아요? 혹시 시간 괜찮을 때 다시 전화 주세요.", "pi": [{"type": "PHONE", "text": "010-5555-4444", "start": 6, "end": 19}], "meta": {"domain": "부동산 상담", "style": "반말 대화", "obfuscation": ["split_utterance"], "hard_case": "none"}}

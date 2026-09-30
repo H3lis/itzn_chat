@@ -1,1 +1,0 @@
-{"id": "A-001497", "text": "학생 주소는 서울시 강남구 역삼로 512-3가 맞으신가요? 연락 가능한 번호는 010-9999-8888이요.", "pi": [{"type": "ADDRESS", "text": "서울시 강남구 역삼로 512-3", "start": 7, "end": 24}, {"type": "PHONE", "text": "010-9999-8888", "start": 44, "end": 57}], "meta": {"domain": "학교 행정 문의", "style": "존댓말 상담", "obfuscation": ["split_utterance"], "hard_case": "none"}}

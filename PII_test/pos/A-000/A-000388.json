@@ -1,1 +1,0 @@
-{"id": "A-000388", "text": "저희 계정은 우주서버이고, 이름은 민준이라고 등록되어 있는데요, 이게 맞나요?", "pi": [{"type": "ACCOUNT", "text": "우주서버", "start": 7, "end": 11}, {"type": "NAME", "text": "민준", "start": 19, "end": 21}], "meta": {"domain": "커뮤니티 게시글", "style": "음성인식(STT) 전사", "obfuscation": ["korean_reading", "split_utterance"], "hard_case": "none"}}

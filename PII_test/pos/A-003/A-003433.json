@@ -1,1 +1,0 @@
-{"id": "A-003433", "text": "차량 번호 말씀해주시겠어요? 5가 네 개에, 9가 두 번요. 정확하게는 5198 디귿입니다.", "pi": [{"type": "CAR_PLATE", "text": "5198", "start": 40, "end": 44}], "meta": {"domain": "회의록", "style": "음성인식(STT) 전사", "obfuscation": ["plain"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-004068", "text": "네, 고객님 성함은 박지수 씨가 맞으신가요? 아니면 혹시 다른 분이신가요? 성함 재확인이 필요합니다.", "pi": [{"type": "NAME", "text": "박지수", "start": 11, "end": 14}], "meta": {"domain": "부동산 상담", "style": "길고 장황한 설명", "obfuscation": ["self_correction"], "hard_case": "none"}}

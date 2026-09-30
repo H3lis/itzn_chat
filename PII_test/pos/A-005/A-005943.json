@@ -1,1 +1,0 @@
-{"id": "A-005943", "text": "배송받을 분의 주민등록번호가 900101-1******로 확인 부탁드립니다.", "pi": [{"type": "RRN", "text": "900101-1******", "start": 16, "end": 30}], "meta": {"domain": "택배 문의", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "none"}}

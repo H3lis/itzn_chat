@@ -1,1 +1,0 @@
-{"id": "A-005772", "text": "요청하신 주소는 경기도 성남시 분당구 세곡로 123-45입니다.", "pi": [{"type": "ADDRESS", "text": "경기도 성남시 분당구 세곡로 123-45", "start": 9, "end": 31}], "meta": {"domain": "고객센터 채팅", "style": "짧은 단답", "obfuscation": ["split_utterance"], "hard_case": "none"}}

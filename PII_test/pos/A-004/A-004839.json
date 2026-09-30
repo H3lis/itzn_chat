@@ -1,1 +1,0 @@
-{"id": "A-004839", "text": "접속하신 번호가 070-9999-8888이신가요? 혹시 다른 번호도 있으신가요?", "pi": [{"type": "PHONE", "text": "070-9999-8888", "start": 9, "end": 22}], "meta": {"domain": "고객센터 채팅", "style": "존댓말 상담", "obfuscation": ["split_utterance", "repeat_expr"], "hard_case": "none"}}

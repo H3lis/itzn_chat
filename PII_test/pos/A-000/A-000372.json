@@ -1,1 +1,0 @@
-{"id": "A-000372", "text": "해솔 님! 지난번 상담 도와주신 덕분이에요. 저희 부서의 계정 ID가 k99p0w이요.", "pi": [{"type": "NAME", "text": "해솔", "start": 0, "end": 2}, {"type": "ACCOUNT", "text": "k99p0w", "start": 39, "end": 45}], "meta": {"domain": "SNS 댓글", "style": "길고 장황한 설명", "obfuscation": ["lookalike_char", "honorific_ref"], "hard_case": "homonym_name"}}

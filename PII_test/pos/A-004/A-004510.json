@@ -1,1 +1,0 @@
-{"id": "A-004510", "text": "문의하신 분은 지혜 님 맞으신가요? 연락 주시면 지혜 님께 자세히 안내드리겠습니다.", "pi": [{"type": "EMAIL", "text": "지혜", "start": 8, "end": 10}, {"type": "NAME", "text": "지혜", "start": 27, "end": 29}], "meta": {"domain": "쇼핑몰 문의", "style": "구어체", "obfuscation": ["honorific_ref"], "hard_case": "homonym_name"}}

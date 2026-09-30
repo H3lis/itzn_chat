@@ -1,1 +1,0 @@
-{"id": "A-004331", "text": "집 주소는 서울특별시 강남구 테헤란로 123이고, 연락처는 010-7777-6666으로 되어있어요.", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 테헤란로 123", "start": 6, "end": 24}, {"type": "PHONE", "text": "010-7777-6666", "start": 33, "end": 46}], "meta": {"domain": "택배 문의", "style": "오타 많은 채팅", "obfuscation": ["jamo_split"], "hard_case": "none"}}

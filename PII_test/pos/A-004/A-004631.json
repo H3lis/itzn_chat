@@ -1,1 +1,0 @@
-{"id": "A-004631", "text": "이사 가시는 주소는요? 서울시 마포구 연남동 112-33인데요. 혹시 부르실 이름은 '김 대리님'으로 하면 될까요?", "pi": [{"type": "ADDRESS", "text": "서울시 마포구 연남동 112-33", "start": 13, "end": 31}, {"type": "NAME", "text": "김 대리님", "start": 48, "end": 53}], "meta": {"domain": "중고거래 채팅", "style": "존댓말 상담", "obfuscation": ["honorific_ref", "split_utterance"], "hard_case": "none"}}

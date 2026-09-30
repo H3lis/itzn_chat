@@ -1,1 +1,0 @@
-{"id": "A-001966", "text": "네, 이슬 씨요. 진료 예약 관련해서 문의드립니다. 접수해 주세요.", "pi": [{"type": "NAME", "text": "이슬", "start": 3, "end": 5}], "meta": {"domain": "병원 접수", "style": "음성인식(STT) 전사", "obfuscation": ["honorific_ref"], "hard_case": "homonym_name"}}

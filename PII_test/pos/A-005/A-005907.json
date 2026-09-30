@@ -1,1 +1,0 @@
-{"id": "A-005907", "text": "고객님의 전화번호는 010-2222-3333이시고요. 다른 연락처가 더 필요하신가요? 아니면 011-8888-7777이세요?", "pi": [{"type": "PHONE", "text": "010-2222-3333", "start": 11, "end": 24}, {"type": "PHONE", "text": "011-8888-7777", "start": 52, "end": 65}], "meta": {"domain": "금융 상담", "style": "격식체", "obfuscation": ["separator_noise"], "hard_case": "none"}}

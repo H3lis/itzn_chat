@@ -1,1 +1,0 @@
-{"id": "A-005342", "text": "본인 아이디는 C1234567이고요, 주민번호는 YYYYMMDD 형식으로 되어 있습니다.", "pi": [{"type": "ID", "text": "C1234567", "start": 8, "end": 16}, {"type": "RRN", "text": "YYYYMMDD", "start": 27, "end": 35}], "meta": {"domain": "보험 청구", "style": "격식체", "obfuscation": ["romanized"], "hard_case": "nickname_id"}}

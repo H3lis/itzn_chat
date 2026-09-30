@@ -1,1 +1,0 @@
-{"id": "A-003410", "text": "겨울 씨랑 겨울지 씨가 같이 오셨어요. 그리고 연락처는 010-9999-0000입니다.", "pi": [{"type": "NAME", "text": "겨울", "start": 0, "end": 2}, {"type": "NAME", "text": "겨울지", "start": 6, "end": 9}, {"type": "PHONE", "text": "010-9999-0000", "start": 31, "end": 44}], "meta": {"domain": "회의록", "style": "존댓말 상담", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

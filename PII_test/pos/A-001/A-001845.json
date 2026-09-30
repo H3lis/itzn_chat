@@ -1,1 +1,0 @@
-{"id": "A-001845", "text": "저희 반에 사는 학생이요? 연락처가요? 010/1234-5678이라고 적혀있는데 맞나요?", "pi": [{"type": "PHONE", "text": "010/1234-5678", "start": 22, "end": 35}], "meta": {"domain": "학교 행정 문의", "style": "반말 대화", "obfuscation": ["separator_noise"], "hard_case": "none"}}

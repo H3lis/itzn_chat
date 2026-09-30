@@ -1,1 +1,0 @@
-{"id": "A-000851", "text": "신용카드는 VISA로 끝에 9999가 찍힌 거요. 혹시 회원 식별번호 같은 것도 필요하신가요?", "pi": [{"type": "CARD", "text": "VISA", "start": 6, "end": 10}, {"type": "OTHER_ID", "text": "9999", "start": 15, "end": 19}], "meta": {"domain": "중고거래 채팅", "style": "존댓말 상담", "obfuscation": ["plain"], "hard_case": "none"}}

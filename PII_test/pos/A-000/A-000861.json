@@ -1,1 +1,0 @@
-{"id": "A-000861", "text": "여기 ㅇ1ㅇ거사님, 연락 주셨나요? 저희는 삼성전자 건물 12층에 위치해 있습니다.", "pi": [{"type": "PHONE", "text": "ㅇ1ㅇ", "start": 3, "end": 6}, {"type": "ORG", "text": "삼성전자", "start": 24, "end": 28}], "meta": {"domain": "SNS 댓글", "style": "메신저 줄임말", "obfuscation": ["lookalike_char"], "hard_case": "org_person"}}

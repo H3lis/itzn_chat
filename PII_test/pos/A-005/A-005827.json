@@ -1,1 +1,0 @@
-{"id": "A-005827", "text": "저는 우주 개발팀에 속해있는데요. 제 주민번호 뒷자리는 900115-2XXXXXX가 돼요.", "pi": [{"type": "NAME", "text": "우주", "start": 3, "end": 5}, {"type": "RRN", "text": "900115-2XXXXXX", "start": 31, "end": 45}], "meta": {"domain": "직장 메신저", "style": "존댓말 상담", "obfuscation": ["split_utterance"], "hard_case": "homonym_name"}}

@@ -1,1 +1,0 @@
-{"id": "A-002632", "text": "저 혹시 이름이 김철수 인가요? 아니면 최현우 님이실까요? 좀 헷갈리네요.", "pi": [{"type": "NAME", "text": "김철수", "start": 9, "end": 12}, {"type": "NAME", "text": "최현우", "start": 22, "end": 25}], "meta": {"domain": "커뮤니티 게시글", "style": "오타 많은 채팅", "obfuscation": ["plain"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-003064", "text": "얘들아, 내 이메일 주소는 'gamer_king@test.com'이고, 내 이름은 '레전드'야.", "pi": [{"type": "EMAIL", "text": "gamer_king@test.com", "start": 16, "end": 35}, {"type": "NAME", "text": "레전드", "start": 47, "end": 50}], "meta": {"domain": "커뮤니티 게시글", "style": "반말 대화", "obfuscation": ["honorific_ref"], "hard_case": "none"}}

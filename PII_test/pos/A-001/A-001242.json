@@ -1,1 +1,0 @@
-{"id": "A-001242", "text": "예약은 ㅈㅁㅈ으로 하셨고요, 예약자 아이디는 a1b2c3입니다. 혹시 다른 정보 필요하신 거 있으세요?", "pi": [{"type": "OTHER_ID", "text": "a1b2c3", "start": 25, "end": 31}], "meta": {"domain": "여행 예약", "style": "메신저 줄임말", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

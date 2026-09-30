@@ -1,1 +1,0 @@
-{"id": "A-004819", "text": "아니 제가 주소는 1111.2222.3333.4444 같은 건 모르겠고요, 혹시 아이피 주소를 아세요?", "pi": [{"type": "NAME", "text": "제가", "start": 3, "end": 5}, {"type": "IP_ADDR", "text": "1111.2222.3333.4444", "start": 10, "end": 29}], "meta": {"domain": "보험 청구", "style": "오타 많은 채팅", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

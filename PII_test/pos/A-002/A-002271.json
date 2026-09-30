@@ -1,1 +1,0 @@
-{"id": "A-002271", "text": "문의하신 고객님 성함은 이지은이고요, 이메일 주소는 ljs0912@sample.net 으로 돼 있고, 저희 회원 ID는 ljs_member 라는 것을 확인했습니다.", "pi": [{"type": "NAME", "text": "이지은", "start": 13, "end": 16}, {"type": "EMAIL", "text": "ljs0912@sample.net", "start": 29, "end": 47}], "meta": {"domain": "콜센터 상담 요약", "style": "길고 장황한 설명", "obfuscation": ["separator_noise"], "hard_case": "none"}}

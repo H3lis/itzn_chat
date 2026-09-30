@@ -1,1 +1,0 @@
-{"id": "A-001351", "text": "닉네임 하늘 좋아해요! 제 아이디는 하늘빛하늘이고요. 저도 하늘이 좋아하는 사용자예요. 저 좀 도와주실 수 있나요?", "pi": [{"type": "NAME", "text": "하늘", "start": 4, "end": 6}, {"type": "ACCOUNT", "text": "하늘빛하늘", "start": 20, "end": 25}], "meta": {"domain": "SNS 댓글", "style": "존댓말 상담", "obfuscation": ["stt_error"], "hard_case": "homonym_name"}}

@@ -1,1 +1,0 @@
-{"id": "A-001829", "text": "학생 이름은 박지수이고요, 학생 주민등록번호는 990515-1xxxxxxx입니다.", "pi": [{"type": "NAME", "text": "박지수", "start": 7, "end": 10}, {"type": "RRN", "text": "990515-1xxxxxxx", "start": 26, "end": 41}], "meta": {"domain": "학교 행정 문의", "style": "구어체", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

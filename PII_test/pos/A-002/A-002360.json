@@ -1,1 +1,0 @@
-{"id": "A-002360", "text": "저기요, 이 아이디가 'user_123'이 맞는지, 그리고 이름이 김철수님 맞나요? 다시 한번 확인 부탁드려요.", "pi": [{"type": "ID", "text": "user_123", "start": 13, "end": 21}, {"type": "NAME", "text": "김철수", "start": 37, "end": 40}], "meta": {"domain": "SNS 댓글", "style": "음성인식(STT) 전사", "obfuscation": ["honorific_ref"], "hard_case": "nickname_id"}}

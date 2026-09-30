@@ -1,1 +1,0 @@
-{"id": "A-001959", "text": "혹시 주문 번호는요? 010.1234.5678 말고, 010 다음에 1이 네 번 그리고 2가 네 번이 맞나요?", "pi": [{"type": "PHONE", "text": "010 다음에 1이 네 번 그리고 2가 네 번", "start": 30, "end": 55}], "meta": {"domain": "쇼핑몰 문의", "style": "짧은 단답", "obfuscation": ["separator_noise", "mixed_reading"], "hard_case": "none"}}

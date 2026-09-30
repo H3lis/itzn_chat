@@ -1,1 +1,0 @@
-{"id": "A-001720", "text": "가장 중요한 계정 정보는 혹시 '원 이공 이삼'으로 된 걸 말씀하시는 건가요? 그리고 사용자 이름은 민준이라고요?", "pi": [{"type": "ACCOUNT", "text": "원 이공 이삼", "start": 18, "end": 25}, {"type": "NAME", "text": "민준", "start": 56, "end": 58}], "meta": {"domain": "병원 접수", "style": "길고 장황한 설명", "obfuscation": ["mixed_reading", "repeat_expr", "korean_reading"], "hard_case": "none"}}

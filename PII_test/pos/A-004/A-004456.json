@@ -1,1 +1,0 @@
-{"id": "A-004456", "text": "혹시 이 책 좀 얼마에 파실 수 있나요? 주소는 경기도 수원시 영통구 광교동이고, 판매자분 성함이 한결 씨 맞으신가요?", "pi": [{"type": "ADDRESS", "text": "경기도 수원시 영통구 광교동", "start": 27, "end": 42}, {"type": "NAME", "text": "한결", "start": 55, "end": 57}], "meta": {"domain": "중고거래 채팅", "style": "오타 많은 채팅", "obfuscation": ["split_utterance"], "hard_case": "homonym_name"}}

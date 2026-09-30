@@ -1,1 +1,0 @@
-{"id": "A-002870", "text": "문의하신 분의 아이디는 알파고이고 연락처는 공일공 1111 2222로 확인됩니다.", "pi": [{"type": "ID", "text": "알파고", "start": 13, "end": 16}, {"type": "PHONE", "text": "공일공 1111 2222", "start": 24, "end": 37}], "meta": {"domain": "택배 문의", "style": "짧은 단답", "obfuscation": ["korean_reading"], "hard_case": "nickname_id"}}

@@ -1,1 +1,0 @@
-{"id": "A-004765", "text": "보내주신 주소가 경기도 광명시 광명동 312번지이고, 생년월일은 ㅂㅣㅇㅏㅇㅗㄷㅗㅇㅣㄴㅣㄴㅣㅇㅛ.", "pi": [{"type": "ADDRESS", "text": "광명시 광명동 312번지", "start": 13, "end": 26}, {"type": "BIRTH", "text": "ㅂㅣㅇㅏㅇㅗㄷㅗㅇㅣㄴㅣㄴㅣ", "start": 36, "end": 50}], "meta": {"domain": "콜센터 상담 요약", "style": "오타 많은 채팅", "obfuscation": ["jamo_split", "mixed_reading"], "hard_case": "none"}}

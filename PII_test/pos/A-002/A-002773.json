@@ -1,1 +1,0 @@
-{"id": "A-002773", "text": "저희가 안내 드린 계정명은 Beta_User2024이고, 회원님 성함은 김지수 님으로 확인되었습니다.", "pi": [{"type": "ACCOUNT", "text": "Beta_User2024", "start": 15, "end": 28}, {"type": "NAME", "text": "김지수", "start": 40, "end": 43}], "meta": {"domain": "이메일 본문", "style": "길고 장황한 설명", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

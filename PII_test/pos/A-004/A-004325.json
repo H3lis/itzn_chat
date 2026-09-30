@@ -1,1 +1,0 @@
-{"id": "A-004325", "text": "운전면허증이요. 그게요... 101-555-8888이랑 이메일 주소는 user.dummy@test.com입니다.", "pi": [{"type": "DRIVER_LICENSE", "text": "101-555-8888", "start": 16, "end": 28}, {"type": "EMAIL", "text": "user.dummy@test.com", "start": 39, "end": 58}], "meta": {"domain": "병원 접수", "style": "메신저 줄임말", "obfuscation": ["stt_error"], "hard_case": "none"}}

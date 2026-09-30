@@ -1,1 +1,0 @@
-{"id": "A-004291", "text": "저희가 원하는 주소는 서울특별시 강남구 테헤란로, 123동 456호 쪽으로 부탁드립니다.", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 테헤란로, 123동 456호", "start": 12, "end": 37}], "meta": {"domain": "여행 예약", "style": "구어체", "obfuscation": ["korean_reading", "split_utterance"], "hard_case": "none"}}

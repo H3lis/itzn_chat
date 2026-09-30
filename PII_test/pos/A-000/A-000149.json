@@ -1,1 +1,0 @@
-{"id": "A-000149", "text": "김민준님은 어제 저희 삼성 지점의 신규 파트너사 담당자였어요.", "pi": [{"type": "NAME", "text": "김민준", "start": 0, "end": 3}, {"type": "ORG", "text": "삼성", "start": 12, "end": 14}], "meta": {"domain": "이메일 본문", "style": "음성인식(STT) 전사", "obfuscation": ["jamo_split"], "hard_case": "org_person"}}

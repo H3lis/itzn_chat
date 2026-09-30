@@ -1,1 +1,0 @@
-{"id": "A-002010", "text": "푸름 씨가 요청한 계정은 1234 다음에 5가 네 번 그리고 6이 네 번으로 설정해도 될까요?", "pi": [{"type": "NAME", "text": "푸름", "start": 0, "end": 2}, {"type": "ACCOUNT", "text": "1234 다음에 5가 네 번 그리고 6이 네 번", "start": 14, "end": 40}], "meta": {"domain": "직장 메신저", "style": "오타 많은 채팅", "obfuscation": ["repeat_expr"], "hard_case": "homonym_name"}}

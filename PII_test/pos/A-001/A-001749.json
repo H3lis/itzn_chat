@@ -1,1 +1,0 @@
-{"id": "A-001749", "text": "네, 주소는 서울특별시 강남구 삼성로 157이고, 제 이름은 김민준입니다.", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 삼성로 157", "start": 7, "end": 24}, {"type": "NAME", "text": "김민준", "start": 34, "end": 37}], "meta": {"domain": "회의록", "style": "구어체", "obfuscation": ["korean_reading", "honorific_ref", "self_correction"], "hard_case": "none"}}

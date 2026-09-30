@@ -1,1 +1,0 @@
-{"id": "A-002948", "text": "제 이메일 주소는 'abc@corp.net'이고, 연락드릴 전화번호는 '010-9999-0000'으로 부탁드립니다. 확인 부탁해요.", "pi": [{"type": "EMAIL", "text": "abc@corp.net", "start": 11, "end": 23}, {"type": "PHONE", "text": "010-9999-0000", "start": 40, "end": 53}], "meta": {"domain": "택배 문의", "style": "격식체", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

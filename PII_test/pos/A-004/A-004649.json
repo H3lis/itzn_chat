@@ -1,1 +1,0 @@
-{"id": "A-004649", "text": "안녕하세요, 제 이름은 성남이에요. 저희 쪽으로 연락 주시면 됩니다.", "pi": [{"type": "NAME", "text": "성남", "start": 13, "end": 15}], "meta": {"domain": "이메일 본문", "style": "짧은 단답", "obfuscation": ["romanized", "jamo_split"], "hard_case": "homonym_name"}}

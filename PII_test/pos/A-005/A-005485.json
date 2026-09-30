@@ -1,1 +1,0 @@
-{"id": "A-005485", "text": "안녕하세요. 제가 작년 12월 15일에 가입한 회원인데요, 혹시 제 이름이 김철수고요, 연락처는 010-9999-8888입니다.", "pi": [{"type": "NAME", "text": "김철수", "start": 42, "end": 45}, {"type": "PHONE", "text": "010-9999-8888", "start": 54, "end": 67}], "meta": {"domain": "민원 접수", "style": "길고 장황한 설명", "obfuscation": ["plain"], "hard_case": "none"}}

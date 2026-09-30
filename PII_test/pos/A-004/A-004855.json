@@ -1,1 +1,0 @@
-{"id": "A-004855", "text": "학번으로 조회해 주시면 됩니다. 제 아이디는 네오플래토닉이고, SNS는 블로거별명이에요.", "pi": [{"type": "OTHER_ID", "text": "네오플래토닉", "start": 25, "end": 31}, {"type": "SNS", "text": "블로거별명", "start": 40, "end": 45}], "meta": {"domain": "학교 행정 문의", "style": "짧은 단답", "obfuscation": ["mixed_reading"], "hard_case": "nickname_id"}}

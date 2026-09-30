@@ -1,1 +1,0 @@
-{"id": "A-001665", "text": "접수 부탁드립니다. 신분증 번호는 910215-5555555 입니다. 혹시 추가 정보가 필요하신가요?", "pi": [{"type": "ID", "text": "910215-5555555", "start": 19, "end": 33}], "meta": {"domain": "병원 접수", "style": "음성인식(STT) 전사", "obfuscation": ["plain"], "hard_case": "none"}}

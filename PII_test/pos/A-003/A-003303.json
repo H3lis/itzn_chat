@@ -1,1 +1,0 @@
-{"id": "A-003303", "text": "저 사람 성함은 수원 과장님이고, 생년월일은 90년 5월 1일이었습니다.", "pi": [{"type": "NAME", "text": "수원", "start": 9, "end": 11}, {"type": "BIRTH", "text": "90년 5월 1일", "start": 25, "end": 34}], "meta": {"domain": "회의록", "style": "구어체", "obfuscation": ["separator_noise"], "hard_case": "homonym_name"}}

@@ -1,1 +1,0 @@
-{"id": "A-002413", "text": "저에게 연락할 이메일 주소를 다시 한번 확인 부탁드립니다. 정확히 xyz.user.name@corp-mail.net 으로 부탁드려요.", "pi": [{"type": "EMAIL", "text": "xyz.user.name@corp-mail.net", "start": 37, "end": 64}], "meta": {"domain": "커뮤니티 게시글", "style": "길고 장황한 설명", "obfuscation": ["separator_noise"], "hard_case": "none"}}

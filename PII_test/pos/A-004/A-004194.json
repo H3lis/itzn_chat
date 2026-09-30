@@ -1,1 +1,0 @@
-{"id": "A-004194", "text": "김민수 사원님, 사번이 92-1111-3333 이 아니라, 아뇨, 92.1111.3333 으로 되어 있네요.", "pi": [{"type": "RRN", "text": "92-1111-3333", "start": 13, "end": 25}], "meta": {"domain": "직장 메신저", "style": "오타 많은 채팅", "obfuscation": ["separator_noise"], "hard_case": "none"}}

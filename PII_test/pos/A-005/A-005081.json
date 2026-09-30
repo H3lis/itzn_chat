@@ -1,1 +1,0 @@
-{"id": "A-005081", "text": "배달 주소지에 전화가 안 되네요. 다시 확인해 주시겠어요? 010-9999-1111 번호로요.", "pi": [{"type": "PHONE", "text": "010-9999-1111", "start": 33, "end": 46}], "meta": {"domain": "배달 요청사항", "style": "격식체", "obfuscation": ["stt_error"], "hard_case": "none"}}

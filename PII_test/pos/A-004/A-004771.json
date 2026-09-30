@@ -1,1 +1,0 @@
-{"id": "A-004771", "text": "저의 계정 아이디는 라임라임이고, 이름도 라임이라고 등록되어 있어요.", "pi": [{"type": "ACCOUNT", "text": "라임라임", "start": 11, "end": 15}, {"type": "NAME", "text": "라임", "start": 23, "end": 25}], "meta": {"domain": "직장 메신저", "style": "짧은 단답", "obfuscation": ["repeat_expr"], "hard_case": "homonym_name"}}

@@ -1,1 +1,0 @@
-{"id": "A-004184", "text": "네, 접속하셔야 할 IP 주소는 192 점 168 점 0 점 100 으로 부탁드립니다.", "pi": [{"type": "IP_ADDR", "text": "192 점 168 점 0 점 100", "start": 18, "end": 37}], "meta": {"domain": "부동산 상담", "style": "길고 장황한 설명", "obfuscation": ["korean_reading", "separator_noise"], "hard_case": "none"}}

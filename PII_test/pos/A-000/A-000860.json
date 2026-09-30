@@ -1,1 +1,0 @@
-{"id": "A-000860", "text": "민원 접수를 하려고 하는데, 담당자분 성함이 '정우' 님 맞으실까요?", "pi": [{"type": "NAME", "text": "정우", "start": 26, "end": 28}], "meta": {"domain": "민원 접수", "style": "짧은 단답", "obfuscation": ["jamo_split", "honorific_ref"], "hard_case": "none"}}

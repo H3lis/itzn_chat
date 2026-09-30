@@ -1,1 +1,0 @@
-{"id": "A-001022", "text": "아침에 저희가 도착한 곳이 서울 강남구 역삼동 123-45예요.", "pi": [{"type": "NAME", "text": "아침", "start": 0, "end": 2}, {"type": "ADDRESS", "text": "서울 강남구 역삼동 123-45", "start": 15, "end": 32}], "meta": {"domain": "콜센터 상담 요약", "style": "오타 많은 채팅", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

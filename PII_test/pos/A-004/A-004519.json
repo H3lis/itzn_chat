@@ -1,1 +1,0 @@
-{"id": "A-004519", "text": "주소는 '서울시 강남구 테헤란로 123', 카드 번호는 '일육칠구...'로 적어주시면 됩니다.", "pi": [{"type": "ADDRESS", "text": "서울시 강남구 테헤란로 123", "start": 5, "end": 21}, {"type": "CARD", "text": "일육칠구", "start": 32, "end": 36}], "meta": {"domain": "콜센터 상담 요약", "style": "짧은 단답", "obfuscation": ["jamo_split", "korean_reading"], "hard_case": "none"}}

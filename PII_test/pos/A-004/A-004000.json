@@ -1,1 +1,0 @@
-{"id": "A-004000", "text": "네, 문의주신 건은 02-3456-7890, 그리고 다음 주 회의는 555 님의 컨펌을 받아야 할 것 같습니다.", "pi": [{"type": "PHONE", "text": "02-3456-7890", "start": 11, "end": 23}], "meta": {"domain": "커뮤니티 게시글", "style": "음성인식(STT) 전사", "obfuscation": ["separator_noise", "lookalike_char"], "hard_case": "none"}}

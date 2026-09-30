@@ -1,1 +1,0 @@
-{"id": "A-003320", "text": "혹시 해솔 님 접수하시려면요, 전화번호가 010-3333-4444 맞으신가요?", "pi": [{"type": "NAME", "text": "해솔", "start": 3, "end": 5}, {"type": "PHONE", "text": "010-3333-4444", "start": 23, "end": 36}], "meta": {"domain": "병원 접수", "style": "구어체", "obfuscation": ["mixed_reading", "self_correction"], "hard_case": "homonym_name"}}

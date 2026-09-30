@@ -1,1 +1,0 @@
-{"id": "A-000627", "text": "저기요, 혹시 이전 번호랑 지금 쓰는 번호가 다르다고 하셨잖아요. 이전 번호가 010-2222-3333이었죠? 그리고 새 번호는요?", "pi": [{"type": "PHONE", "text": "010-2222-3333", "start": 44, "end": 57}, {"type": "PHONE", "text": "새 번호", "start": 66, "end": 70}], "meta": {"domain": "민원 접수", "style": "반말 대화", "obfuscation": ["stt_error"], "hard_case": "none"}}

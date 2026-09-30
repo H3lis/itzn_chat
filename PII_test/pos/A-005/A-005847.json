@@ -1,1 +1,0 @@
-{"id": "A-005847", "text": "제가 이해하기로는 메일 주소가 01012345678@naver점com 일 것 같은데, 이게 맞나요?", "pi": [{"type": "EMAIL", "text": "01012345678@naver점com", "start": 17, "end": 38}], "meta": {"domain": "온라인 강의 Q&A", "style": "길고 장황한 설명", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

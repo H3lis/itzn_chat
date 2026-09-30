@@ -1,1 +1,0 @@
-{"id": "A-004104", "text": "고객님께서 거주하시는 곳은 '대한민국'으로, 아이디는 'MiniStar'라고 말씀해주셨습니다.", "pi": [{"type": "ADDRESS", "text": "대한민국", "start": 16, "end": 20}, {"type": "ID", "text": "MiniStar", "start": 31, "end": 39}], "meta": {"domain": "콜센터 상담 요약", "style": "격식체", "obfuscation": ["romanized"], "hard_case": "nickname_id"}}

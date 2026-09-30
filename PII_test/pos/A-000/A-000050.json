@@ -1,1 +1,0 @@
-{"id": "A-000050", "text": "계정은 7777@①⓪①.com이고, 인스타는 @abcde123이에요.", "pi": [{"type": "EMAIL", "text": "7777@①⓪①.com", "start": 4, "end": 16}, {"type": "SNS", "text": "@abcde123", "start": 25, "end": 34}], "meta": {"domain": "직장 메신저", "style": "짧은 단답", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

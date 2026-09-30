@@ -1,1 +1,0 @@
-{"id": "A-005260", "text": "운전면허증 번호는 1234-5678-9012이고요. 성함은 김꽃님으로 알고 있는데요, 맞으실까요?", "pi": [{"type": "DRIVER_LICENSE", "text": "1234-5678-9012", "start": 10, "end": 24}, {"type": "NAME", "text": "김꽃님", "start": 33, "end": 36}], "meta": {"domain": "쇼핑몰 문의", "style": "길고 장황한 설명", "obfuscation": ["mixed_reading"], "hard_case": "homonym_name"}}

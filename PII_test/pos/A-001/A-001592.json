@@ -1,1 +1,0 @@
-{"id": "A-001592", "text": "저기요, 단비 씨요. 제 이름이 단비인데, 주민번호가 920101으로 되어 있어요.", "pi": [{"type": "NAME", "text": "단비", "start": 18, "end": 20}, {"type": "RRN", "text": "920101", "start": 30, "end": 36}], "meta": {"domain": "택배 문의", "style": "메신저 줄임말", "obfuscation": ["jamo_split", "repeat_expr"], "hard_case": "homonym_name"}}

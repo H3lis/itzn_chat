@@ -1,1 +1,0 @@
-{"id": "A-000703", "text": "신청하신 IP 주소는 192.168.1.22이고, 주소는 경기도 성남시 분당구 세곡로 50입니다.", "pi": [{"type": "IP_ADDR", "text": "192.168.1.22", "start": 12, "end": 24}, {"type": "ADDRESS", "text": "경기도 성남시 분당구 세곡로 50", "start": 32, "end": 50}], "meta": {"domain": "보험 청구", "style": "공문서풍", "obfuscation": ["mixed_reading", "split_utterance"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-005972", "text": "저는 90년 1월 1일생이고요, 원래 근무지인 '서울전자'에서 접수했습니다.", "pi": [{"type": "BIRTH", "text": "90년 1월 1일", "start": 3, "end": 12}, {"type": "ORG", "text": "서울전자", "start": 27, "end": 31}], "meta": {"domain": "민원 접수", "style": "반말 대화", "obfuscation": ["split_utterance"], "hard_case": "org_person"}}

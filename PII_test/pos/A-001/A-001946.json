@@ -1,1 +1,0 @@
-{"id": "A-001946", "text": "보험금 청구는 여기를 이용하시면 됩니다. 카드 번호는 3700부터 시작해서 1111로 마무리해주세요.", "pi": [{"type": "CARD", "text": "3700부터 시작해서 1111", "start": 30, "end": 46}], "meta": {"domain": "민원 접수", "style": "음성인식(STT) 전사", "obfuscation": ["plain"], "hard_case": "none"}}

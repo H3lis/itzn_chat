@@ -1,1 +1,0 @@
-{"id": "A-000882", "text": "고객님 연락처는 010 1111 2222 번이고요, SNS는 인스타그램 @minjun_park예요.", "pi": [{"type": "PHONE", "text": "010 1111 2222", "start": 9, "end": 22}, {"type": "SNS", "text": "@minjun_park", "start": 40, "end": 52}], "meta": {"domain": "보험 청구", "style": "존댓말 상담", "obfuscation": ["stt_error"], "hard_case": "none"}}

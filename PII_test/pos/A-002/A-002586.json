@@ -1,1 +1,0 @@
-{"id": "A-002586", "text": "저희가 말씀드릴 주소는 경기도 성남시 분당구 정자동이고, 성함은 홍길동 님으로 기재 부탁드립니다.", "pi": [{"type": "ADDRESS", "text": "경기도 성남시 분당구 정자동", "start": 13, "end": 28}, {"type": "NAME", "text": "홍길동", "start": 36, "end": 39}], "meta": {"domain": "민원 접수", "style": "격식체", "obfuscation": ["honorific_ref"], "hard_case": "none"}}

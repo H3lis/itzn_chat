@@ -1,1 +1,0 @@
-{"id": "A-000483", "text": "고객님 성함이 이지은 씨 맞으신가요? 네, 그리고 연락처는 070-1111-2222로 돼 있습니다.", "pi": [{"type": "NAME", "text": "이지은", "start": 8, "end": 11}, {"type": "PHONE", "text": "070-1111-2222", "start": 33, "end": 46}], "meta": {"domain": "금융 상담", "style": "길고 장황한 설명", "obfuscation": ["plain"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-001482", "text": "저의 생년월일은 95년 10월 20일이고요, 개인적인 연락은 인스타그램 아이디 'sunset_dreamer'로 주시면 됩니다.", "pi": [{"type": "BIRTH", "text": "95년 10월 20일", "start": 9, "end": 20}, {"type": "SNS", "text": "sunset_dreamer", "start": 45, "end": 59}], "meta": {"domain": "고객센터 채팅", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-001557", "text": "접수하신 분은 광주이고, 등록하신 계정은 ABC1234고요. 성함은 광주예요.", "pi": [{"type": "NAME", "text": "광주", "start": 8, "end": 10}, {"type": "ACCOUNT", "text": "ABC1234", "start": 23, "end": 30}], "meta": {"domain": "병원 접수", "style": "짧은 단답", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

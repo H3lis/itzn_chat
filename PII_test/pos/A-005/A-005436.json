@@ -1,1 +1,0 @@
-{"id": "A-005436", "text": "차량 번호는 '서울 12가 3456'으로 알고 있는데, 이거 맞나요?", "pi": [{"type": "CAR_PLATE", "text": "서울 12가 3456", "start": 8, "end": 19}], "meta": {"domain": "중고거래 채팅", "style": "오타 많은 채팅", "obfuscation": ["separator_noise"], "hard_case": "none"}}

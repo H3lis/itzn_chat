@@ -1,1 +1,0 @@
-{"id": "A-003400", "text": "고객님의 번호는 010-8888-9999가 맞으실까요? 다시 한번요.", "pi": [{"type": "PHONE", "text": "010-8888-9999", "start": 9, "end": 22}], "meta": {"domain": "금융 상담", "style": "존댓말 상담", "obfuscation": ["separator_noise"], "hard_case": "none"}}

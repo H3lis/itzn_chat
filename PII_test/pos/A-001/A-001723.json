@@ -1,1 +1,0 @@
-{"id": "A-001723", "text": "생일이랑 학번 알려줄게요. 생일은 '천구백구십삼년 칠월 십일'이고, 학번은 '20130711'이에요.", "pi": [{"type": "BIRTH", "text": "천구백구십삼년 칠월 십일", "start": 20, "end": 33}, {"type": "ID", "text": "20130711", "start": 43, "end": 51}], "meta": {"domain": "학교 행정 문의", "style": "반말 대화", "obfuscation": ["separator_noise"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-005741", "text": "어제 말씀하신 계정명이 'coolstar' 맞나요? 그리고 이메일은 user_a(at)gmail(dot)com으로 확인되나요?", "pi": [{"type": "ACCOUNT", "text": "coolstar", "start": 14, "end": 22}, {"type": "EMAIL", "text": "user_a(at)gmail(dot)com", "start": 38, "end": 61}], "meta": {"domain": "음성통화 전사문", "style": "오타 많은 채팅", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

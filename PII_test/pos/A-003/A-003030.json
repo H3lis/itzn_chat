@@ -1,1 +1,0 @@
-{"id": "A-003030", "text": "생년월일이 90년 5월 10일이고요, 주민등록번호는 900510-2******입니다.", "pi": [{"type": "BIRTH", "text": "90년 5월 10일", "start": 6, "end": 16}, {"type": "RRN", "text": "900510-2", "start": 29, "end": 37}], "meta": {"domain": "커뮤니티 게시글", "style": "존댓말 상담", "obfuscation": ["korean_reading"], "hard_case": "none"}}

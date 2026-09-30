@@ -1,1 +1,0 @@
-{"id": "A-005395", "text": "저번에 같이 프로젝트 하셨던 꽃님님은 메신저로 연락 주셨고, 개인적으로도 꽃님 계정이 있나요?", "pi": [{"type": "NAME", "text": "꽃님", "start": 16, "end": 18}, {"type": "SNS", "text": "꽃님", "start": 41, "end": 43}], "meta": {"domain": "회의록", "style": "구어체", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

@@ -1,1 +1,0 @@
-{"id": "A-003896", "text": "담당자 분 성함이 김민수 씨 맞나요? 아니면 박지훈 님일까요? 성함이 잘 안 들려서요.", "pi": [{"type": "NAME", "text": "김민수", "start": 10, "end": 13}, {"type": "NAME", "text": "박지훈", "start": 25, "end": 28}], "meta": {"domain": "고객센터 채팅", "style": "오타 많은 채팅", "obfuscation": ["jamo_split"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-002196", "text": "담당자님께 말씀드리는데, 그 분이 홍길동 이신 거 맞나요? 네, 홍길동 씨로 처리 부탁드려요.", "pi": [{"type": "NAME", "text": "홍길동", "start": 19, "end": 22}], "meta": {"domain": "민원 접수", "style": "메신저 줄임말", "obfuscation": ["honorific_ref"], "hard_case": "none"}}

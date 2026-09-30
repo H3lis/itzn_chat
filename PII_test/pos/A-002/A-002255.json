@@ -1,1 +1,0 @@
-{"id": "A-002255", "text": "혹시 주문자 아이디가 무엇인지 다시 한번 말씀해 주시겠어요? 12345678 같은 건가요? 아니요, 아 그게 9999요.", "pi": [{"type": "ACCOUNT", "text": "12345678", "start": 34, "end": 42}, {"type": "ID", "text": "9999", "start": 61, "end": 65}], "meta": {"domain": "배달 요청사항", "style": "반말 대화", "obfuscation": ["repeat_expr", "self_correction"], "hard_case": "none"}}

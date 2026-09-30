@@ -1,1 +1,0 @@
-{"id": "A-003707", "text": "차량 번호는 12가 나중에 알려드릴게요. 그리고 제 이름은 박지성이라고 불러주세요.", "pi": [{"type": "CAR_PLATE", "text": "12", "start": 7, "end": 9}, {"type": "NAME", "text": "박지성", "start": 33, "end": 36}], "meta": {"domain": "커뮤니티 게시글", "style": "길고 장황한 설명", "obfuscation": ["split_utterance"], "hard_case": "none"}}

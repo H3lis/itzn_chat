@@ -1,1 +1,0 @@
-{"id": "A-005170", "text": "저기요, 전화번호가요? 010 1111 3333으로 전화 좀 걸어주실 수 있나요?", "pi": [{"type": "PHONE", "text": "010 1111 3333", "start": 13, "end": 26}], "meta": {"domain": "학교 행정 문의", "style": "반말 대화", "obfuscation": ["split_utterance"], "hard_case": "none"}}

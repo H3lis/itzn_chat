@@ -1,1 +1,0 @@
-{"id": "A-005742", "text": "저희가 쓰는 번호가 ㅂ10-3333-4444 이고요, SNS는 인스타그램 애드회원이에요.", "pi": [{"type": "PHONE", "text": "ㅂ10-3333-4444", "start": 11, "end": 24}, {"type": "SNS", "text": "인스타그램", "start": 35, "end": 40}], "meta": {"domain": "금융 상담", "style": "짧은 단답", "obfuscation": ["lookalike_char", "mixed_reading"], "hard_case": "none"}}

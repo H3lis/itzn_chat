@@ -1,1 +1,0 @@
-{"id": "A-005367", "text": "저희가 찾아간 곳은 경기도 과천시 중앙대로 550번지 근처 건물이고, 그쪽 근처에서 회의가 진행될 예정입니다.", "pi": [{"type": "ADDRESS", "text": "경기도 과천시 중앙대로 550번지", "start": 11, "end": 29}], "meta": {"domain": "회의록", "style": "구어체", "obfuscation": ["split_utterance", "korean_reading", "jamo_split"], "hard_case": "none"}}

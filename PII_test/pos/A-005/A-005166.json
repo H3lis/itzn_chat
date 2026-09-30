@@ -1,1 +1,0 @@
-{"id": "A-005166", "text": "네, 먼저 010 9999 1111번으로 연락 주시고, 그다음에 010 8888 2222로 다시 전화 주세요.", "pi": [{"type": "PHONE", "text": "010 9999 1111", "start": 6, "end": 19}, {"type": "PHONE", "text": "010 8888 2222", "start": 36, "end": 49}], "meta": {"domain": "음성통화 전사문", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "none"}}

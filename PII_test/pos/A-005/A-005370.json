@@ -1,1 +1,0 @@
-{"id": "A-005370", "text": "네, 주소는 부산광역시 해운대구 마린시티로 101호구요. 저희 닉네임은 '마린비치'입니다.", "pi": [{"type": "ADDRESS", "text": "부산광역시 해운대구 마린시티로 101호", "start": 7, "end": 28}, {"type": "SNS", "text": "마린비치", "start": 41, "end": 45}], "meta": {"domain": "부동산 상담", "style": "짧은 단답", "obfuscation": ["split_utterance"], "hard_case": "nickname_id"}}

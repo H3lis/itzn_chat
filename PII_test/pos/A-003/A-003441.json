@@ -1,1 +1,0 @@
-{"id": "A-003441", "text": "제 면허 번호는 ㄴㄴㅇㅇ 1234이고, 이메일은 abc(at)email(dot)com이에요.", "pi": [{"type": "DRIVER_LICENSE", "text": "면허 번호", "start": 2, "end": 7}, {"type": "EMAIL", "text": "abc(at)email(dot)com", "start": 27, "end": 47}], "meta": {"domain": "중고거래 채팅", "style": "반말 대화", "obfuscation": ["korean_reading", "mixed_reading", "email_spoken"], "hard_case": "none"}}

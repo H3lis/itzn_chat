@@ -1,1 +1,0 @@
-{"id": "A-000681", "text": "네, 주소는 부산광역시 해운대구 마린시티이고, 연락처는 010-9876-5432 맞습니다.", "pi": [{"type": "ADDRESS", "text": "부산광역시 해운대구 마린시티", "start": 7, "end": 22}, {"type": "PHONE", "text": "010-9876-5432", "start": 31, "end": 44}], "meta": {"domain": "쇼핑몰 문의", "style": "짧은 단답", "obfuscation": ["self_correction"], "hard_case": "none"}}

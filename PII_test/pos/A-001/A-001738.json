@@ -1,1 +1,0 @@
-{"id": "A-001738", "text": "자두님, 번호가 010-2222-3333이에요. 주민번호는 901234-5678901이요.", "pi": [{"type": "NAME", "text": "자두", "start": 0, "end": 2}, {"type": "PHONE", "text": "010-2222-3333", "start": 9, "end": 22}, {"type": "RRN", "text": "901234-5678901", "start": 33, "end": 47}], "meta": {"domain": "SNS 댓글", "style": "메신저 줄임말", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

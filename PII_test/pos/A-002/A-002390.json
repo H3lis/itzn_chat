@@ -1,1 +1,0 @@
-{"id": "A-002390", "text": "결제하실 카드는 비자 마스터카드로 되고요, 계약은 ABC전자하고 진행하시면 돼요.", "pi": [{"type": "CARD", "text": "비자 마스터카드", "start": 9, "end": 17}, {"type": "ORG", "text": "ABC전자", "start": 28, "end": 33}], "meta": {"domain": "커뮤니티 게시글", "style": "존댓말 상담", "obfuscation": ["separator_noise"], "hard_case": "org_person"}}

@@ -1,1 +1,0 @@
-{"id": "A-004187", "text": "신규 계정의 경우, 반드시 본인 명의의 공인인증서로 로그인해야 합니다.", "pi": [{"type": "ACCOUNT", "text": "본인 명의", "start": 15, "end": 20}], "meta": {"domain": "콜센터 상담 요약", "style": "공문서풍", "obfuscation": ["plain"], "hard_case": "none"}}

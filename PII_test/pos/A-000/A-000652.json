@@ -1,1 +1,0 @@
-{"id": "A-000652", "text": "저희가 안내드린 IP 주소는 203.1.1.55였고요, 전화번호는 010-9999-8888이 맞는지요.", "pi": [{"type": "IP_ADDR", "text": "203.1.1.55", "start": 16, "end": 26}, {"type": "PHONE", "text": "010-9999-8888", "start": 37, "end": 50}], "meta": {"domain": "여행 예약", "style": "길고 장황한 설명", "obfuscation": ["split_utterance"], "hard_case": "none"}}

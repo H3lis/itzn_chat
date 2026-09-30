@@ -1,1 +1,0 @@
-{"id": "A-005981", "text": "이사 오신 주소지가 서울특별시 강남구 역삼동 512-33이에요. 혹시 다른 거 있으세요?", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 역삼동 512-33", "start": 11, "end": 31}], "meta": {"domain": "보험 청구", "style": "음성인식(STT) 전사", "obfuscation": ["split_utterance"], "hard_case": "none"}}

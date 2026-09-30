@@ -1,1 +1,0 @@
-{"id": "A-004138", "text": "우주님께서 예약하신 비행기 티켓 정보 말씀드려야 할 것 같은데요. 전화번호는 010-1234-5678 이 맞으신가요?", "pi": [{"type": "NAME", "text": "우주", "start": 0, "end": 2}, {"type": "PHONE", "text": "010-1234-5678", "start": 43, "end": 56}], "meta": {"domain": "여행 예약", "style": "존댓말 상담", "obfuscation": ["honorific_ref"], "hard_case": "homonym_name"}}

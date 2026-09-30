@@ -1,1 +1,0 @@
-{"id": "A-004664", "text": "저희 대표 이름은 민지인데, 사실은 원래 민준이가 맞아요. 제가 좀 헷갈려서요.", "pi": [{"type": "NAME", "text": "민지", "start": 10, "end": 12}, {"type": "NAME", "text": "민준", "start": 23, "end": 25}], "meta": {"domain": "배달 요청사항", "style": "메신저 줄임말", "obfuscation": ["self_correction"], "hard_case": "none"}}

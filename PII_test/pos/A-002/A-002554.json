@@ -1,1 +1,0 @@
-{"id": "A-002554", "text": "제가 주문한 건 567G-990-ALPHA-B-11에 대한 문의인데요. 정확하게는 접수번호 567G-990-ALPHA-B-11번 상품 배송 건을 알고 싶어요.", "pi": [{"type": "OTHER_ID", "text": "567G-990-ALPHA-B-11", "start": 9, "end": 28}], "meta": {"domain": "쇼핑몰 문의", "style": "길고 장황한 설명", "obfuscation": ["separator_noise"], "hard_case": "none"}}

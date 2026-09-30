@@ -1,1 +1,0 @@
-{"id": "A-000836", "text": "회원님 계정은 'Sarang99'고요, 카드 번호는 4321로 시작하고, 이름은 '사랑'이 맞으신가요?", "pi": [{"type": "ACCOUNT", "text": "Sarang99", "start": 9, "end": 17}, {"type": "CARD", "text": "4321", "start": 29, "end": 33}, {"type": "NAME", "text": "사랑", "start": 46, "end": 48}], "meta": {"domain": "보험 청구", "style": "짧은 단답", "obfuscation": ["romanized"], "hard_case": "homonym_name"}}

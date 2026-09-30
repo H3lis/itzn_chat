@@ -1,1 +1,0 @@
-{"id": "A-004429", "text": "제 블로그 주소요. 혹시 아이디가 'user_galaxy' 같은 거라던가? 그 쪽으로 봐주실 수 있나요?", "pi": [{"type": "SNS", "text": "user_galaxy", "start": 20, "end": 31}], "meta": {"domain": "SNS 댓글", "style": "오타 많은 채팅", "obfuscation": ["lookalike_char", "romanized"], "hard_case": "none"}}

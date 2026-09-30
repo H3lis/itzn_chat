@@ -1,1 +1,0 @@
-{"id": "A-005576", "text": "공주 씨, 혹시 오늘 아침에 기분은 어떠셨어요?", "pi": [{"type": "NAME", "text": "공주", "start": 0, "end": 2}], "meta": {"domain": "배달 요청사항", "style": "구어체", "obfuscation": ["honorific_ref"], "hard_case": "homonym_name"}}

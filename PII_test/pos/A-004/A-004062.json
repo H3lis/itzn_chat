@@ -1,1 +1,0 @@
-{"id": "A-004062", "text": "담당자님께서는 이름이 겨울 씨로 알고 있습니다. 혹시 영어로 'winter'라고 말씀해주실 수 있나요?", "pi": [{"type": "NAME", "text": "겨울", "start": 12, "end": 14}], "meta": {"domain": "콜센터 상담 요약", "style": "오타 많은 채팅", "obfuscation": ["romanized"], "hard_case": "homonym_name"}}

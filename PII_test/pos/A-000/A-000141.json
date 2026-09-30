@@ -1,1 +1,0 @@
-{"id": "A-000141", "text": "학생증 번호로 입력하시려면 'A12345'를 말씀해 주시겠어요? 학번이나 기타 정보는 없나요?", "pi": [{"type": "ID", "text": "A12345", "start": 16, "end": 22}], "meta": {"domain": "고객센터 채팅", "style": "공문서풍", "obfuscation": ["jamo_split"], "hard_case": "none"}}

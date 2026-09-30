@@ -1,1 +1,0 @@
-{"id": "A-001306", "text": "제가 태어난 날짜가 1990년 1월 1일로 기억하는데, 혹시 다른 정보 같은 거 있어요?", "pi": [{"type": "BIRTH", "text": "1990년 1월 1일", "start": 11, "end": 22}], "meta": {"domain": "택배 문의", "style": "반말 대화", "obfuscation": ["mixed_reading", "repeat_expr"], "hard_case": "none"}}

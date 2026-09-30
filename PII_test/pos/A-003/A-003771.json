@@ -1,1 +1,0 @@
-{"id": "A-003771", "text": "차량 번호는 서울 12가 3456이고, 고객님 성함은 최영희 부장님이시죠?", "pi": [{"type": "CAR_PLATE", "text": "서울 12가 3456", "start": 7, "end": 18}, {"type": "NAME", "text": "최영희", "start": 30, "end": 33}], "meta": {"domain": "쇼핑몰 문의", "style": "공문서풍", "obfuscation": ["honorific_ref"], "hard_case": "none"}}

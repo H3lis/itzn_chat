@@ -1,1 +1,0 @@
-{"id": "A-002824", "text": "저기요, 성함이 김민준 씨 맞으실까요? (ㄱㅏㅇㄴㅏㅁ) 이라고 하셨는데, 아 아니요, 정정해서 말씀드리면 김민준 이요.", "pi": [{"type": "NAME", "text": "김민준", "start": 9, "end": 12}], "meta": {"domain": "이메일 본문", "style": "격식체", "obfuscation": ["honorific_ref", "jamo_split", "self_correction"], "hard_case": "none"}}

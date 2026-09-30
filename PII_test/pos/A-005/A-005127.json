@@ -1,1 +1,0 @@
-{"id": "A-005127", "text": "저 이번에 제가 사는 곳이요. 일단은 홍대입구역 근처거든요. 네? 제 전화번호는 010-1234-5678이에요.", "pi": [{"type": "NAME", "text": "홍대입구역", "start": 21, "end": 26}, {"type": "PHONE", "text": "010-1234-5678", "start": 45, "end": 58}], "meta": {"domain": "커뮤니티 게시글", "style": "반말 대화", "obfuscation": ["jamo_split", "split_utterance"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-003881", "text": "회원 ID가 zero1234567890이 맞는지 다시 한번 확인해 볼게요.", "pi": [{"type": "ACCOUNT", "text": "zero1234567890", "start": 7, "end": 21}], "meta": {"domain": "커뮤니티 게시글", "style": "짧은 단답", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-005992", "text": "등본상 주소는 경기도 성남시 분당구 판교역로 400이고요, 운전면허 번호는 910123-1234567입니다.", "pi": [{"type": "ADDRESS", "text": "경기도 성남시 분당구 판교역로 400", "start": 8, "end": 28}, {"type": "DRIVER_LICENSE", "text": "910123-1234567", "start": 42, "end": 56}], "meta": {"domain": "학교 행정 문의", "style": "존댓말 상담", "obfuscation": ["split_utterance"], "hard_case": "none"}}

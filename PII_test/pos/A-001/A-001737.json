@@ -1,1 +1,0 @@
-{"id": "A-001737", "text": "네, 진료 예약하려고요. 이름은 춘천이고 전화번호는 010-5555-1234 맞나요?", "pi": [{"type": "NAME", "text": "춘천", "start": 18, "end": 20}, {"type": "PHONE", "text": "010-5555-1234", "start": 29, "end": 42}], "meta": {"domain": "병원 접수", "style": "짧은 단답", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

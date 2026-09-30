@@ -1,1 +1,0 @@
-{"id": "A-002303", "text": "요청하신 담당자 이메일은 공식적으로 'abc@mail.com'이 맞는지, 0000점 체크 부탁드립니다.", "pi": [{"type": "EMAIL", "text": "abc@mail.com", "start": 21, "end": 33}], "meta": {"domain": "쇼핑몰 문의", "style": "공문서풍", "obfuscation": ["separator_noise"], "hard_case": "none"}}

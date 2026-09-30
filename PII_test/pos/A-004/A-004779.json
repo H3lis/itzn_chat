@@ -1,1 +1,0 @@
-{"id": "A-004779", "text": "신청하신 보험은요, 카드 번호 마지막 여섯 자리는 '4444'이고, 아이디는 'user123'이에요. 성함은 '최지훈'님 맞으시죠?", "pi": [{"type": "CARD", "text": "4444", "start": 29, "end": 33}, {"type": "ID", "text": "user123", "start": 44, "end": 51}, {"type": "NAME", "text": "최지훈", "start": 62, "end": 65}], "meta": {"domain": "병원 접수", "style": "공문서풍", "obfuscation": ["plain"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-001245", "text": "고객님 주소는 서울시 강남구 테헤란로 123, 그리고 결제하신 카드는 신한카드 3456이 맞으실까요?", "pi": [{"type": "ADDRESS", "text": "서울시 강남구 테헤란로 123", "start": 8, "end": 24}, {"type": "CARD", "text": "신한카드 3456", "start": 39, "end": 48}], "meta": {"domain": "콜센터 상담 요약", "style": "구어체", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

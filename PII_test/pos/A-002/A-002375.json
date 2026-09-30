@@ -1,1 +1,0 @@
-{"id": "A-002375", "text": "저, 저희 담당자는 가을 씨 맞는데요. 저희 회사 이름은 행복기술연구소이고요. 가을 씨가 오늘 처리해 드릴게요.", "pi": [{"type": "NAME", "text": "가을", "start": 11, "end": 13}, {"type": "ORG", "text": "행복기술연구소", "start": 32, "end": 39}], "meta": {"domain": "이메일 본문", "style": "구어체", "obfuscation": ["self_correction"], "hard_case": "homonym_name"}}

@@ -1,1 +1,0 @@
-{"id": "A-002768", "text": "김민지 님 메일은 민지.photo앳naver 점 com 인가요?", "pi": [{"type": "NAME", "text": "김민지", "start": 0, "end": 3}, {"type": "EMAIL", "text": "민지.photo", "start": 10, "end": 18}], "meta": {"domain": "여행 예약", "style": "오타 많은 채팅", "obfuscation": ["jamo_split"], "hard_case": "none"}}

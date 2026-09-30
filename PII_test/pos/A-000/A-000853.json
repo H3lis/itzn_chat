@@ -1,1 +1,0 @@
-{"id": "A-000853", "text": "결제하신 카드번호는 3700-XXXX-XXXX-8912인데요. 담당 부서가 저희 한국전자통신과는 아닙니다.", "pi": [{"type": "CARD", "text": "3700-XXXX-XXXX-8912", "start": 11, "end": 30}, {"type": "ORG", "text": "한국전자통신과", "start": 45, "end": 52}], "meta": {"domain": "택배 문의", "style": "격식체", "obfuscation": ["stt_error"], "hard_case": "org_person"}}

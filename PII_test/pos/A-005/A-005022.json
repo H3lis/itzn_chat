@@ -1,1 +1,0 @@
-{"id": "A-005022", "text": "배송 조회 부탁하는데, 이 번호로 연락 주실 수 있어요? 010-5555-9999예요.", "pi": [{"type": "PHONE", "text": "010-5555-9999", "start": 32, "end": 45}], "meta": {"domain": "쇼핑몰 문의", "style": "반말 대화", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-000840", "text": "저 그 온라인 강의 듣는 거 말씀인데요. 회원 아이디는 1234가 아니라, 1 다음에 2가 네 번 그리고 3이 네 번으로 되어 있는 게 맞는지 확인 부탁드려요.", "pi": [{"type": "ACCOUNT", "text": "1 다음에 2가 네 번 그리고 3이 네 번", "start": 42, "end": 65}], "meta": {"domain": "커뮤니티 게시글", "style": "음성인식(STT) 전사", "obfuscation": ["repeat_expr", "korean_reading"], "hard_case": "none"}}

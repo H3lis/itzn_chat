@@ -1,1 +1,0 @@
-{"id": "A-000418", "text": "제 아이디는 Kim Minjun이고요, 전화번호는 +82-10-9876-5432로 알고 계세요?", "pi": [{"type": "ID", "text": "Kim Minjun", "start": 7, "end": 17}, {"type": "PHONE", "text": "+82-10-9876-5432", "start": 28, "end": 44}], "meta": {"domain": "음성통화 전사문", "style": "구어체", "obfuscation": ["romanized"], "hard_case": "nickname_id"}}

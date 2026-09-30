@@ -1,1 +1,0 @@
-{"id": "A-003264", "text": "저한테 이메일 주소는 example골뱅이naver점com 이고, 이름은 박지우예요.", "pi": [{"type": "EMAIL", "text": "example골뱅이naver점com", "start": 12, "end": 31}, {"type": "NAME", "text": "박지우", "start": 40, "end": 43}], "meta": {"domain": "SNS 댓글", "style": "존댓말 상담", "obfuscation": ["email_spoken"], "hard_case": "none"}}

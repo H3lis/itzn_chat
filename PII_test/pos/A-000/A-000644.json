@@ -1,1 +1,0 @@
-{"id": "A-000644", "text": "슬기 님께 보내는 주소지 변경 안내문입니다. 새 주소는 경기도 가상시 신흥동 123-45입니다.", "pi": [{"type": "NAME", "text": "슬기", "start": 0, "end": 2}, {"type": "ADDRESS", "text": "경기도 가상시 신흥동 123-45", "start": 31, "end": 49}], "meta": {"domain": "이메일 본문", "style": "길고 장황한 설명", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

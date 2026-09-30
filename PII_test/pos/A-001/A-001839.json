@@ -1,1 +1,0 @@
-{"id": "A-001839", "text": "환자분 성함이 사랑 씨 맞으신가요? 그리고 연락 가능한 휴대폰 번호를 다시 한번 알려주세요.", "pi": [{"type": "NAME", "text": "사랑", "start": 8, "end": 10}, {"type": "PHONE", "text": "휴대폰 번호", "start": 31, "end": 37}], "meta": {"domain": "병원 접수", "style": "격식체", "obfuscation": ["lookalike_char"], "hard_case": "homonym_name"}}

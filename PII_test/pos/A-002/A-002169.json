@@ -1,1 +1,0 @@
-{"id": "A-002169", "text": "운전면허 번호 말씀해주시면요, 그것도 혹시 이름이 '단비'님 맞으실까요?", "pi": [{"type": "DRIVER_LICENSE", "text": "운전면허 번호", "start": 0, "end": 7}, {"type": "NAME", "text": "단비", "start": 29, "end": 31}], "meta": {"domain": "고객센터 채팅", "style": "공문서풍", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

@@ -1,1 +1,0 @@
-{"id": "A-005113", "text": "강사님, 제 이름은 박지수고요. 연락처는 010-3333-4444입니다. 혹시 다른 방법으로도 연락 가능한가요?", "pi": [{"type": "NAME", "text": "박지수", "start": 11, "end": 14}, {"type": "PHONE", "text": "010-3333-4444", "start": 23, "end": 36}], "meta": {"domain": "온라인 강의 Q&A", "style": "격식체", "obfuscation": ["stt_error", "split_utterance"], "hard_case": "none"}}

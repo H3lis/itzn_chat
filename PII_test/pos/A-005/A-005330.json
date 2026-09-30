@@ -1,1 +1,0 @@
-{"id": "A-005330", "text": "저의 아이디는 A1B2C3D4예요. 그리고 이름은 김철수라고 해주세요.", "pi": [{"type": "ID", "text": "A1B2C3D4", "start": 8, "end": 16}, {"type": "NAME", "text": "김철수", "start": 28, "end": 31}], "meta": {"domain": "배달 요청사항", "style": "격식체", "obfuscation": ["lookalike_char"], "hard_case": "nickname_id"}}

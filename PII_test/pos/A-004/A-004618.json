@@ -1,1 +1,0 @@
-{"id": "A-004618", "text": "네, 제 이름은 박준호입니다. 아니, 제가 이름이 박준호가 아니라 박준우였던 것 같아요. 죄송해요.", "pi": [{"type": "NAME", "text": "박준호", "start": 9, "end": 12}, {"type": "NAME", "text": "박준우", "start": 37, "end": 40}], "meta": {"domain": "음성통화 전사문", "style": "짧은 단답", "obfuscation": ["self_correction"], "hard_case": "none"}}

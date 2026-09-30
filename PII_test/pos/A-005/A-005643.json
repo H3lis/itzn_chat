@@ -1,1 +1,0 @@
-{"id": "A-005643", "text": "주문한 거 지금 어디쯤 왔어? 번호가 010 1234 5678로 찍혔는데, 혹시 잘못된 번호 아닐까?", "pi": [{"type": "PHONE", "text": "010 1234 5678", "start": 21, "end": 34}], "meta": {"domain": "회의록", "style": "오타 많은 채팅", "obfuscation": ["separator_noise"], "hard_case": "none"}}

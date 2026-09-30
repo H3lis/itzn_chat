@@ -1,1 +1,0 @@
-{"id": "A-001400", "text": "제가 말씀드리는 이름은 미소님이고, 주민등록번호는 900101 다음에 5가 네 번 그리고 3가 네 번이에요.", "pi": [{"type": "NAME", "text": "미소", "start": 13, "end": 15}, {"type": "RRN", "text": "900101 다음에 5가 네 번 그리고 3가 네 번", "start": 28, "end": 56}], "meta": {"domain": "금융 상담", "style": "오타 많은 채팅", "obfuscation": ["split_utterance", "repeat_expr"], "hard_case": "homonym_name"}}

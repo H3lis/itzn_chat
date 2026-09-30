@@ -1,1 +1,0 @@
-{"id": "A-005662", "text": "혹시 가입하신 분 성함이 노을 님이신가요? 이메일은 n0eul@example.com으로 확인 부탁드려요.", "pi": [{"type": "NAME", "text": "노을", "start": 14, "end": 16}, {"type": "EMAIL", "text": "n0eul@example.com", "start": 29, "end": 46}], "meta": {"domain": "쇼핑몰 문의", "style": "구어체", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

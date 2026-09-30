@@ -1,1 +1,0 @@
-{"id": "A-003180", "text": "담당자님 성함이 김민준 씨 맞으세요? 전화번호는 010-1234-5678로 해주시면 됩니다.", "pi": [{"type": "NAME", "text": "김민준", "start": 9, "end": 12}, {"type": "PHONE", "text": "010-1234-5678", "start": 27, "end": 40}], "meta": {"domain": "음성통화 전사문", "style": "존댓말 상담", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

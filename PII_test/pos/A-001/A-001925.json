@@ -1,1 +1,0 @@
-{"id": "A-001925", "text": "아파트 앞에 두고 가시되, 혹시 오시는 길에 제 전화번호로 전화 좀 주시면 감사하겠습니다. 010 다음에 3이 네 번 그리고 8이 네 번이요.", "pi": [{"type": "PHONE", "text": "010 다음에 3이 네 번 그리고 8이 네 번", "start": 51, "end": 76}], "meta": {"domain": "배달 요청사항", "style": "구어체", "obfuscation": ["repeat_expr", "self_correction"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-001398", "text": "제 아이디는 케이지브이이고요, 전화번호는 일일이일일 다시 이이이이예요.", "pi": [{"type": "ID", "text": "케이지브이", "start": 7, "end": 12}, {"type": "PHONE", "text": "일일이일일 다시 이이이이", "start": 23, "end": 36}], "meta": {"domain": "이메일 본문", "style": "구어체", "obfuscation": ["korean_reading", "mixed_reading", "separator_noise"], "hard_case": "nickname_id"}}

@@ -1,1 +1,0 @@
-{"id": "A-004580", "text": "연락처가 010 다음에 1이 네 번 그리고 2가 네 번이에요. 그리고 주민번호는 950515-3456789가 맞는지요?", "pi": [{"type": "PHONE", "text": "010 다음에 1이 네 번 그리고 2가 네 번", "start": 5, "end": 30}, {"type": "RRN", "text": "950515-3456789", "start": 45, "end": 59}], "meta": {"domain": "금융 상담", "style": "오타 많은 채팅", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

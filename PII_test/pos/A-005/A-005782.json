@@ -1,1 +1,0 @@
-{"id": "A-005782", "text": "저 성호예요. 제 전화번호는 010-3333-4444입니다.", "pi": [{"type": "NAME", "text": "성호", "start": 2, "end": 4}, {"type": "PHONE", "text": "010-3333-4444", "start": 16, "end": 29}], "meta": {"domain": "온라인 강의 Q&A", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "none"}}

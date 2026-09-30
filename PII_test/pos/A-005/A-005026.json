@@ -1,1 +1,0 @@
-{"id": "A-005026", "text": "저희 어머니 성함은 김철수 씨고요, 생년월일은 90년 5월 15일이라고 말씀드리면 될까요?", "pi": [{"type": "NAME", "text": "김철수", "start": 11, "end": 14}, {"type": "BIRTH", "text": "90년 5월 15일", "start": 26, "end": 36}], "meta": {"domain": "학교 행정 문의", "style": "길고 장황한 설명", "obfuscation": ["korean_reading"], "hard_case": "none"}}

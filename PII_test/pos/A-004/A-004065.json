@@ -1,1 +1,0 @@
-{"id": "A-004065", "text": "저희가 안내해 드리는 주소는 서울특별시 강남구 테헤란로 456, 그게 맞나요?", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 테헤란로 456", "start": 16, "end": 34}], "meta": {"domain": "부동산 상담", "style": "구어체", "obfuscation": ["korean_reading", "split_utterance"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-004849", "text": "차량 번호는 1가-2나-3다고요? 혹시 운전면허증 번호가 999-888-7777로 잘못 들으신 건가요? 다시 한번 확인 부탁드립니다.", "pi": [{"type": "ADDRESS", "text": "1가-2나-3다", "start": 7, "end": 15}, {"type": "DRIVER_LICENSE", "text": "999-888-7777", "start": 32, "end": 44}], "meta": {"domain": "민원 접수", "style": "격식체", "obfuscation": ["stt_error"], "hard_case": "none"}}

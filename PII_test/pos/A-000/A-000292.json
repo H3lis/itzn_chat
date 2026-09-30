@@ -1,1 +1,0 @@
-{"id": "A-000292", "text": "저기, 제 이름은 슬기예요. 연락처는 (010) 5555-6666이니 꼭 저장해 주세요.", "pi": [{"type": "NAME", "text": "슬기", "start": 10, "end": 12}, {"type": "PHONE", "text": "010", "start": 22, "end": 25}], "meta": {"domain": "SNS 댓글", "style": "음성인식(STT) 전사", "obfuscation": ["mixed_reading"], "hard_case": "homonym_name"}}

@@ -1,1 +1,0 @@
-{"id": "A-002886", "text": "저희 집 주소는 광진구 자양로 100-5고요. 대표님 성함은 푸름지현 대표님이시고요.", "pi": [{"type": "ADDRESS", "text": "광진구 자양로 100-5고요", "start": 9, "end": 24}, {"type": "NAME", "text": "푸름지현", "start": 34, "end": 38}], "meta": {"domain": "금융 상담", "style": "반말 대화", "obfuscation": ["split_utterance"], "hard_case": "homonym_name"}}

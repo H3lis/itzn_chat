@@ -1,1 +1,0 @@
-{"id": "A-000554", "text": "보험 청구서에 적힌 분 성함은 도토리 씨 맞으신가요? 주민등록번호는 900101-1234567이요.", "pi": [{"type": "NAME", "text": "도토리", "start": 17, "end": 20}, {"type": "RRN", "text": "900101-1234567", "start": 38, "end": 52}], "meta": {"domain": "보험 청구", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

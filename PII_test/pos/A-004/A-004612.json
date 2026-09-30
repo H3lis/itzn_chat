@@ -1,1 +1,0 @@
-{"id": "A-004612", "text": "신청자분 성함이 지혜님 맞으신가요? 연락처는 010-2222-3333으로 확인 부탁드립니다.", "pi": [{"type": "NAME", "text": "지혜", "start": 9, "end": 11}, {"type": "PHONE", "text": "010-2222-3333", "start": 25, "end": 38}], "meta": {"domain": "보험 청구", "style": "공문서풍", "obfuscation": ["lookalike_char"], "hard_case": "homonym_name"}}

@@ -1,1 +1,0 @@
-{"id": "A-002882", "text": "주소는 5가 223번지고요, 결제는 비자 1234로 해 주세요.", "pi": [{"type": "ADDRESS", "text": "5가 223번지", "start": 4, "end": 12}, {"type": "CARD", "text": "비자 1234", "start": 20, "end": 27}], "meta": {"domain": "배달 요청사항", "style": "짧은 단답", "obfuscation": ["split_utterance"], "hard_case": "none"}}

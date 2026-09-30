@@ -1,1 +1,0 @@
-{"id": "A-004255", "text": "얘 좀 괜찮은가요? 제 이메일은 에스알에프 골뱅이 지메일 점 컴이고, 전화번호는 010-1111-2222예요.", "pi": [{"type": "EMAIL", "text": "에스알에프 골뱅이 지메일 점 컴", "start": 18, "end": 35}, {"type": "PHONE", "text": "010-1111-2222", "start": 45, "end": 58}], "meta": {"domain": "중고거래 채팅", "style": "구어체", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-004588", "text": "제 계정 아이디는 testuser123이고, 제 이름은 영희입니다. 꼭 기억해주세요.", "pi": [{"type": "ACCOUNT", "text": "testuser123", "start": 10, "end": 21}, {"type": "NAME", "text": "영희", "start": 31, "end": 33}], "meta": {"domain": "SNS 댓글", "style": "격식체", "obfuscation": ["korean_reading"], "hard_case": "none"}}

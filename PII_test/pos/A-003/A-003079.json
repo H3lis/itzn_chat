@@ -1,1 +1,0 @@
-{"id": "A-003079", "text": "이메일 주소는 사용자점애플지메일이고요, 전화번호는 010-9999-8888 맞으신가요?", "pi": [{"type": "EMAIL", "text": "사용자점애플지메일", "start": 8, "end": 17}, {"type": "PHONE", "text": "010-9999-8888", "start": 28, "end": 41}], "meta": {"domain": "보험 청구", "style": "음성인식(STT) 전사", "obfuscation": ["stt_error"], "hard_case": "none"}}

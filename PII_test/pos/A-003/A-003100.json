@@ -1,1 +1,0 @@
-{"id": "A-003100", "text": "보험 청구서에 계신 분 성함은 김민준 씨 맞으시고요. 주민등록번호는 900101-1******이신가요? 다시 한번 말씀해주시겠어요?", "pi": [{"type": "NAME", "text": "김민준", "start": 17, "end": 20}, {"type": "RRN", "text": "900101-1******", "start": 38, "end": 52}], "meta": {"domain": "보험 청구", "style": "존댓말 상담", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

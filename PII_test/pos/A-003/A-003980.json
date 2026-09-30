@@ -1,1 +1,0 @@
-{"id": "A-003980", "text": "결제가 완료된 카드 번호는 54321... 그리고 이메일 주소는 chulsoo(at)gmail(dot)com이 맞을까요?", "pi": [{"type": "CARD", "text": "54321", "start": 15, "end": 20}, {"type": "EMAIL", "text": "chulsoo(at)gmail(dot)com", "start": 36, "end": 60}], "meta": {"domain": "커뮤니티 게시글", "style": "음성인식(STT) 전사", "obfuscation": ["self_correction"], "hard_case": "none"}}

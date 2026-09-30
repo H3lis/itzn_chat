@@ -1,1 +1,0 @@
-{"id": "A-004697", "text": "주소는 '경기도 성남시 분당구 판교역로 123' 맞으신가요? 그리고 연락처는 070-9999-8888입니다.", "pi": [{"type": "ADDRESS", "text": "경기도 성남시 분당구 판교역로 123", "start": 5, "end": 25}, {"type": "PHONE", "text": "070-9999-8888", "start": 43, "end": 56}], "meta": {"domain": "보험 청구", "style": "존댓말 상담", "obfuscation": ["split_utterance"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-000167", "text": "예약자 아이디는 아침바람이고, 성함은 아침희수님으로 되어 있나요?", "pi": [{"type": "ID", "text": "아침바람", "start": 9, "end": 13}, {"type": "NAME", "text": "아침희수", "start": 21, "end": 25}], "meta": {"domain": "여행 예약", "style": "음성인식(STT) 전사", "obfuscation": ["self_correction"], "hard_case": "homonym_name"}}

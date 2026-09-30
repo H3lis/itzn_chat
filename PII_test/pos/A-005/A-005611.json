@@ -1,1 +1,0 @@
-{"id": "A-005611", "text": "제가 메일 주소 확인해 볼게요. 이거는 abc@1234.net이고요, 그리고 다른 건 xxyy@@5678.co.kr 이고요.", "pi": [{"type": "EMAIL", "text": "abc@1234.net", "start": 22, "end": 34}, {"type": "EMAIL", "text": "xxyy@@5678.co.kr", "start": 48, "end": 64}], "meta": {"domain": "중고거래 채팅", "style": "길고 장황한 설명", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-002126", "text": "제 아이디는 제로 투 원 투 쓰리, 제 이메일은 캑카웃 엔 애트 지메일 닷 컴 같아요.", "pi": [{"type": "ACCOUNT", "text": "제로 투 원 투 쓰리", "start": 7, "end": 18}, {"type": "EMAIL", "text": "캑카웃 엔 애트 지메일 닷 컴", "start": 27, "end": 43}], "meta": {"domain": "SNS 댓글", "style": "구어체", "obfuscation": ["korean_reading", "self_correction"], "hard_case": "none"}}

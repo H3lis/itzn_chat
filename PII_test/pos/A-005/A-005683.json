@@ -1,1 +1,0 @@
-{"id": "A-005683", "text": "생년월일은 1990년 5월 1일이고요. 연락 가능한 번호는 010-3333-4444입니다.", "pi": [{"type": "BIRTH", "text": "1990년 5월 1일", "start": 6, "end": 17}, {"type": "PHONE", "text": "010-3333-4444", "start": 33, "end": 46}], "meta": {"domain": "중고거래 채팅", "style": "짧은 단답", "obfuscation": ["mixed_reading", "repeat_expr"], "hard_case": "none"}}

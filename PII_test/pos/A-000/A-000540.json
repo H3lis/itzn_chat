@@ -1,1 +1,0 @@
-{"id": "A-000540", "text": "주문하신 상품 배송 관련해서 전화 좀 드릴게요. 010-5555-1234로 연락 주세요.", "pi": [{"type": "PHONE", "text": "010-5555-1234", "start": 27, "end": 40}], "meta": {"domain": "회의록", "style": "반말 대화", "obfuscation": ["plain"], "hard_case": "none"}}

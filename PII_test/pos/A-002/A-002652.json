@@ -1,1 +1,0 @@
-{"id": "A-002652", "text": "김선생님 계신가요? 사용자 분은 '김선생님' 이시고, SNS는 인스타 사용자입니다.", "pi": [{"type": "NAME", "text": "김선생님", "start": 0, "end": 4}, {"type": "SNS", "text": "인스타", "start": 35, "end": 38}], "meta": {"domain": "음성통화 전사문", "style": "구어체", "obfuscation": ["honorific_ref"], "hard_case": "none"}}

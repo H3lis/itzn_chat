@@ -1,1 +1,0 @@
-{"id": "A-000066", "text": "제 생일 말씀이시죠? 아, 아니요. 그건 1988년 7월 20일이요. 제 이메일은 a북걸 골뱅이 지메일 점 컴이에요.", "pi": [{"type": "BIRTH", "text": "1988년 7월 20일", "start": 23, "end": 35}, {"type": "EMAIL", "text": "a북걸 골뱅이 지메일 점 컴", "start": 46, "end": 61}], "meta": {"domain": "이메일 본문", "style": "메신저 줄임말", "obfuscation": ["self_correction", "mixed_reading", "email_spoken"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-005897", "text": "운전면허증 번호가 910123-5555555 이거 맞아요? 아니면 다른 게 있나요?", "pi": [{"type": "DRIVER_LICENSE", "text": "910123-5555555", "start": 10, "end": 24}], "meta": {"domain": "쇼핑몰 문의", "style": "반말 대화", "obfuscation": ["split_utterance"], "hard_case": "none"}}

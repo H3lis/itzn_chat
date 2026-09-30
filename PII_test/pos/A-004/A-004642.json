@@ -1,1 +1,0 @@
-{"id": "A-004642", "text": "혹시 성함이 '별' 씨 맞으세요? 네, 맞아요. 여권 번호는 이거예요. A1B2C3D4E5F6까지입니다.", "pi": [{"type": "NAME", "text": "별", "start": 8, "end": 9}, {"type": "PASSPORT", "text": "A1B2C3D4E5F6", "start": 40, "end": 52}], "meta": {"domain": "보험 청구", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

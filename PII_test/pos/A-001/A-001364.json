@@ -1,1 +1,0 @@
-{"id": "A-001364", "text": "혹시 꽃님 성함이 어떻게 되시나요? 그리고 연락처는 010 1111 2222로요.", "pi": [{"type": "NAME", "text": "꽃님", "start": 3, "end": 5}, {"type": "PHONE", "text": "010 1111 2222", "start": 29, "end": 42}], "meta": {"domain": "콜센터 상담 요약", "style": "존댓말 상담", "obfuscation": ["self_correction", "honorific_ref"], "hard_case": "homonym_name"}}

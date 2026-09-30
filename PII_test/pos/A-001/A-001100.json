@@ -1,1 +1,0 @@
-{"id": "A-001100", "text": "저희가 이 계정 번호랑 여권 번호로 조회해 봤는데요. 혼동이 있으신가요? 아, 아니요. 이 계정은 123456이고 여권 번호는 JKL987입니다.", "pi": [{"type": "ACCOUNT", "text": "123456", "start": 55, "end": 61}, {"type": "PASSPORT", "text": "JKL987", "start": 71, "end": 77}], "meta": {"domain": "부동산 상담", "style": "반말 대화", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

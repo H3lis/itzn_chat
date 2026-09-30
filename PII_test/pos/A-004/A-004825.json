@@ -1,1 +1,0 @@
-{"id": "A-004825", "text": "저 오늘 약속 장소에 진주가 오기로 했는데요. 혹시 그쪽으로 오시는 거예요?", "pi": [{"type": "NAME", "text": "진주", "start": 12, "end": 14}], "meta": {"domain": "고객센터 채팅", "style": "반말 대화", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

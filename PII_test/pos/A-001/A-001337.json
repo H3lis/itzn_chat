@@ -1,1 +1,0 @@
-{"id": "A-001337", "text": "저희 담당자는 박지영이고요. 저희 팀장은 최서윤입니다. 혹시 둘 다 연락 가능한가요?", "pi": [{"type": "NAME", "text": "박지영", "start": 8, "end": 11}, {"type": "NAME", "text": "최서윤", "start": 23, "end": 26}], "meta": {"domain": "이메일 본문", "style": "메신저 줄임말", "obfuscation": ["self_correction"], "hard_case": "none"}}

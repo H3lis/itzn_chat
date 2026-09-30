@@ -1,1 +1,0 @@
-{"id": "A-003355", "text": "택배를 받을 분은 김과장님 직계 가족이고, 담당자는 이사님 되시고요.", "pi": [{"type": "NAME", "text": "김과장님", "start": 10, "end": 14}, {"type": "NAME", "text": "이사님", "start": 29, "end": 32}], "meta": {"domain": "배달 요청사항", "style": "구어체", "obfuscation": ["honorific_ref"], "hard_case": "none"}}

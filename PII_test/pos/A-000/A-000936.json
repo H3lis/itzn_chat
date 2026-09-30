@@ -1,1 +1,0 @@
-{"id": "A-000936", "text": "아이디는 푸름123이다. 그리고 이름은 푸름이라고 적어주시면 돼요.", "pi": [{"type": "ID", "text": "푸름123", "start": 5, "end": 10}, {"type": "NAME", "text": "푸름", "start": 22, "end": 24}], "meta": {"domain": "학교 행정 문의", "style": "메신저 줄임말", "obfuscation": ["lookalike_char"], "hard_case": "homonym_name"}}

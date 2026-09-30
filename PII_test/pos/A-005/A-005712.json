@@ -1,1 +1,0 @@
-{"id": "A-005712", "text": "제가 이름이 하늘이라고 하는데요, 전화번호는 010-9999-8888번으로 말씀드릴게요.", "pi": [{"type": "NAME", "text": "하늘", "start": 7, "end": 9}, {"type": "PHONE", "text": "010-9999-8888", "start": 25, "end": 38}], "meta": {"domain": "병원 접수", "style": "음성인식(STT) 전사", "obfuscation": ["mixed_reading"], "hard_case": "homonym_name"}}

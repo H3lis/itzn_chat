@@ -1,1 +1,0 @@
-{"id": "A-005599", "text": "저기, 노을이가요. 전화번호는 010으로 시작하는데, 이게 1111-2222-3333 맞나요? 좀 헷갈리네요.", "pi": [{"type": "NAME", "text": "노을", "start": 4, "end": 6}, {"type": "PHONE", "text": "010", "start": 17, "end": 20}], "meta": {"domain": "학교 행정 문의", "style": "반말 대화", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

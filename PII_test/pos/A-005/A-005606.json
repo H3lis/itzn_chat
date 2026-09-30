@@ -1,1 +1,0 @@
-{"id": "A-005606", "text": "저 사람 이름 말이에요. 사실은 저번에 말했던 그 사람이 아니라, 어, 그게 김지우 씨가 맞았던 것 같아요.", "pi": [{"type": "NAME", "text": "김지우", "start": 43, "end": 46}], "meta": {"domain": "온라인 강의 Q&A", "style": "길고 장황한 설명", "obfuscation": ["self_correction"], "hard_case": "none"}}

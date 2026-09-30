@@ -1,1 +1,0 @@
-{"id": "A-003741", "text": "여권 번호가요? 혹시 P-A-S-S-P-O-R-T가요? 아니면 번호가 1234567890 같은 건가요?", "pi": [{"type": "PASSPORT", "text": "P-A-S-S-P-O-R-T", "start": 12, "end": 27}], "meta": {"domain": "병원 접수", "style": "짧은 단답", "obfuscation": ["stt_error"], "hard_case": "none"}}

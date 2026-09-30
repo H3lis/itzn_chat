@@ -1,1 +1,0 @@
-{"id": "A-002604", "text": "김 선생님께서는 혹시 오셨나요? 어제 오신 김 과장님께 확인이 필요해서요.", "pi": [{"type": "NAME", "text": "김 과장님", "start": 24, "end": 29}], "meta": {"domain": "배달 요청사항", "style": "짧은 단답", "obfuscation": ["honorific_ref"], "hard_case": "none"}}

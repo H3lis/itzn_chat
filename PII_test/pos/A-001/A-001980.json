@@ -1,1 +1,0 @@
-{"id": "A-001980", "text": "제 이름이 박민수인데요, 혹시 이거가 제 이름이 아니라 'ㅂㄱㅁㅅ'로 되어 있어서요.", "pi": [{"type": "NAME", "text": "박민수", "start": 6, "end": 9}], "meta": {"domain": "고객센터 채팅", "style": "오타 많은 채팅", "obfuscation": ["jamo_split"], "hard_case": "none"}}

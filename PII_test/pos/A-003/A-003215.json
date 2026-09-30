@@ -1,1 +1,0 @@
-{"id": "A-003215", "text": "회원님의 아이디는 12345입니다. 그리고 주민등록번호는 987654-2******로 기억하는데, 이게 맞나요?", "pi": [{"type": "ID", "text": "12345", "start": 10, "end": 15}, {"type": "RRN", "text": "987654-2******", "start": 32, "end": 46}], "meta": {"domain": "택배 문의", "style": "음성인식(STT) 전사", "obfuscation": ["korean_reading", "split_utterance", "self_correction"], "hard_case": "none"}}

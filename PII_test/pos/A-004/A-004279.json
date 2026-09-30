@@ -1,1 +1,0 @@
-{"id": "A-004279", "text": "거기 주소는 경기도 수원시 팔달구 효원로 789이고, 주민번호가 19850515*******입니다.", "pi": [{"type": "ADDRESS", "text": "경기도 수원시 팔달구 효원로 789", "start": 7, "end": 26}, {"type": "RRN", "text": "19850515*******", "start": 36, "end": 51}], "meta": {"domain": "배달 요청사항", "style": "오타 많은 채팅", "obfuscation": ["plain"], "hard_case": "none"}}

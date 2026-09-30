@@ -1,1 +1,0 @@
-{"id": "A-004799", "text": "저번에 회원가입하려고 했는데, 계정은 ㅇ1o-a1111-b2222 이런 건 안 되나요? 아니면 소셜로도 로그인 할 수 있을까요?", "pi": [{"type": "ACCOUNT", "text": "ㅇ1o-a1111-b2222", "start": 21, "end": 36}, {"type": "SNS", "text": "소셜", "start": 53, "end": 55}], "meta": {"domain": "민원 접수", "style": "오타 많은 채팅", "obfuscation": ["split_utterance"], "hard_case": "nickname_id"}}

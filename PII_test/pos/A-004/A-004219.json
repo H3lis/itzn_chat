@@ -1,1 +1,0 @@
-{"id": "A-004219", "text": "차량 번호 말씀해 주시겠어요? 12가 가 나, 전화번호는 010 다이렉트 백구십이에요.", "pi": [{"type": "CAR_PLATE", "text": "12가 가 나", "start": 17, "end": 24}, {"type": "PHONE", "text": "010 다이렉트 백구십", "start": 32, "end": 44}], "meta": {"domain": "부동산 상담", "style": "메신저 줄임말", "obfuscation": ["separator_noise"], "hard_case": "none"}}

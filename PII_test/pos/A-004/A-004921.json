@@ -1,1 +1,0 @@
-{"id": "A-004921", "text": "주소는 1234 서울특별시 종로구 세종로 555번지예요. 그리고 주민등록번호는 950101-1234567입니다.", "pi": [{"type": "ADDRESS", "text": "1234 서울특별시 종로구 세종로 555번지", "start": 4, "end": 28}, {"type": "RRN", "text": "950101-1234567", "start": 44, "end": 58}], "meta": {"domain": "중고거래 채팅", "style": "공문서풍", "obfuscation": ["korean_reading", "repeat_expr", "jamo_split"], "hard_case": "none"}}

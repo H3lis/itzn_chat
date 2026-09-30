@@ -1,1 +1,0 @@
-{"id": "A-004437", "text": "이쪽 건에 대해서는 010 9999 8888로 전화 주시거나, 아니면 문자로 연락 주세요.", "pi": [{"type": "PHONE", "text": "010 9999 8888", "start": 11, "end": 24}], "meta": {"domain": "민원 접수", "style": "음성인식(STT) 전사", "obfuscation": ["split_utterance"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-003891", "text": "제 이름은 홍길동이고요, 주민번호는 85xxxx-1234567이고 SNS는 @gildong_hk에요.", "pi": [{"type": "NAME", "text": "홍길동", "start": 6, "end": 9}, {"type": "RRN", "text": "85xxxx-1234567", "start": 20, "end": 34}, {"type": "SNS", "text": "@gildong_hk", "start": 42, "end": 53}], "meta": {"domain": "이메일 본문", "style": "오타 많은 채팅", "obfuscation": ["stt_error"], "hard_case": "none"}}

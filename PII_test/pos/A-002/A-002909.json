@@ -1,1 +1,0 @@
-{"id": "A-002909", "text": "거기요, 도착하시면 주소는 ㄱㅏㅇㄴㅏㅁㄷㅗ ㅇㅣㅅㄷㅏ ㅇㅣ 삼사 다시 오육 번지 근처로 해주세요.", "pi": [{"type": "ADDRESS", "text": "ㄱㅏㅇㄴㅏㅁㄷㅗ ㅇㅣㅅㄷㅏ ㅇㅣ", "start": 15, "end": 32}], "meta": {"domain": "배달 요청사항", "style": "구어체", "obfuscation": ["jamo_split", "korean_reading", "stt_error"], "hard_case": "none"}}

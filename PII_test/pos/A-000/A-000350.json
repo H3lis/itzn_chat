@@ -1,1 +1,0 @@
-{"id": "A-000350", "text": "혹시 단비 씨가 어디 사는지 아세요? 예전 전화번호가 010-5555-1234였는데요.", "pi": [{"type": "NAME", "text": "단비", "start": 3, "end": 5}, {"type": "PHONE", "text": "010-5555-1234", "start": 30, "end": 43}], "meta": {"domain": "음성통화 전사문", "style": "반말 대화", "obfuscation": ["romanized"], "hard_case": "homonym_name"}}

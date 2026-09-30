@@ -1,1 +1,0 @@
-{"id": "A-000701", "text": "단비는 혹시 어디 사는 사람이야? 이름이 단비 맞지?", "pi": [{"type": "NAME", "text": "단비", "start": 0, "end": 2}, {"type": "RRN", "text": "단비", "start": 23, "end": 25}], "meta": {"domain": "쇼핑몰 문의", "style": "반말 대화", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

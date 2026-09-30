@@ -1,1 +1,0 @@
-{"id": "A-002703", "text": "어제 만난 김민준 씨는 생년월일이 2000년 5월 10일이래요. 그리고 혹시 그분 이메일 주소도 나중에 받을 수 있을까요?", "pi": [{"type": "NAME", "text": "김민준", "start": 6, "end": 9}, {"type": "BIRTH", "text": "2000년 5월 10일", "start": 19, "end": 31}], "meta": {"domain": "회의록", "style": "오타 많은 채팅", "obfuscation": ["split_utterance"], "hard_case": "none"}}

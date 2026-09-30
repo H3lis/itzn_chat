@@ -1,1 +1,0 @@
-{"id": "A-003916", "text": "가지고 계신 카드가 비자 플래티넘으로 맞는지 다시 확인해 볼게요.", "pi": [{"type": "CARD", "text": "비자 플래티넘", "start": 11, "end": 18}], "meta": {"domain": "금융 상담", "style": "짧은 단답", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

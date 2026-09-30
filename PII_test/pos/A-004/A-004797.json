@@ -1,1 +1,0 @@
-{"id": "A-004797", "text": "카드 번호는 4444로 알고 있는데, 혹시 만료일이 99년 12월 같은가요? 재확인 부탁드립니다.", "pi": [{"type": "CARD", "text": "4444", "start": 7, "end": 11}], "meta": {"domain": "여행 예약", "style": "존댓말 상담", "obfuscation": ["self_correction"], "hard_case": "none"}}

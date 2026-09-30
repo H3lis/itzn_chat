@@ -1,1 +1,0 @@
-{"id": "A-005996", "text": "카드 번호는 3456으로 하시고, 담당자님 성함은 김민지 님으로 적어주세요.", "pi": [{"type": "CARD", "text": "3456", "start": 7, "end": 11}, {"type": "NAME", "text": "김민지", "start": 28, "end": 31}], "meta": {"domain": "음성통화 전사문", "style": "메신저 줄임말", "obfuscation": ["separator_noise", "korean_reading", "repeat_expr"], "hard_case": "none"}}

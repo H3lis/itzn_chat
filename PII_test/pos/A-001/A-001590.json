@@ -1,1 +1,0 @@
-{"id": "A-001590", "text": "혹시 담당자님 성함이 뭐예요? 어, 바다님. 그 바다요. 그리고 아이디는 badadadi에요.", "pi": [{"type": "NAME", "text": "바다", "start": 20, "end": 22}], "meta": {"domain": "배달 요청사항", "style": "오타 많은 채팅", "obfuscation": ["romanized", "jamo_split"], "hard_case": "none"}}

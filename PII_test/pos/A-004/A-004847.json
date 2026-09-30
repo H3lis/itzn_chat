@@ -1,1 +1,0 @@
-{"id": "A-004847", "text": "제 휴대폰 번호가 010-1234-5678이에요. 그리고 SNS는 위트님으로 쓰고 있는데요, 그게 맞는지 잘 모르겠어요.", "pi": [{"type": "PHONE", "text": "010-1234-5678", "start": 10, "end": 23}, {"type": "SNS", "text": "위트님", "start": 37, "end": 40}], "meta": {"domain": "민원 접수", "style": "오타 많은 채팅", "obfuscation": ["korean_reading", "self_correction"], "hard_case": "none"}}

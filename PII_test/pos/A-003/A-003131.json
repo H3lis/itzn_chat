@@ -1,1 +1,0 @@
-{"id": "A-003131", "text": "야, 너네 어제 말했던 그 번호 말이야. 이게 네 핸드폰 번호 맞아?", "pi": [{"type": "PHONE", "text": "네 핸드폰 번호", "start": 26, "end": 34}], "meta": {"domain": "회의록", "style": "반말 대화", "obfuscation": ["split_utterance"], "hard_case": "none"}}

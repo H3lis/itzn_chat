@@ -1,1 +1,0 @@
-{"id": "A-004715", "text": "주문할 물품에 대한 요청사항입니다. 주소는 경기도 성남시 분당구 정자동 123-4번지고요, 받는 분 성함은 최지훈으로 부탁드립니다.", "pi": [{"type": "ADDRESS", "text": "경기도 성남시 분당구 정자동 123-4번지", "start": 24, "end": 47}, {"type": "NAME", "text": "최지훈", "start": 60, "end": 63}], "meta": {"domain": "배달 요청사항", "style": "격식체", "obfuscation": ["jamo_split", "self_correction"], "hard_case": "none"}}

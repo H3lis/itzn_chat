@@ -1,1 +1,0 @@
-{"id": "A-000736", "text": "야, 너 이름이 미소지? 혹시 연락처가 바뀌었으면 새로 알려줘. 네 번호는 010-3333-4444로 해줘.", "pi": [{"type": "NAME", "text": "미소", "start": 9, "end": 11}, {"type": "PHONE", "text": "010-3333-4444", "start": 42, "end": 55}], "meta": {"domain": "직장 메신저", "style": "반말 대화", "obfuscation": ["split_utterance"], "hard_case": "none"}}

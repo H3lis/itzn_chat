@@ -1,1 +1,0 @@
-{"id": "A-005195", "text": "보험료는 네, 보람이요.", "pi": [{"type": "NAME", "text": "보람", "start": 8, "end": 10}], "meta": {"domain": "보험 청구", "style": "짧은 단답", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

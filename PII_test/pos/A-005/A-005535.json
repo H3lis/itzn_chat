@@ -1,1 +1,0 @@
-{"id": "A-005535", "text": "혹시 그 아이디로 가입한 번호가 맞나요? 010 5555 4444로요.", "pi": [{"type": "ACCOUNT", "text": "아이디", "start": 5, "end": 8}, {"type": "PHONE", "text": "010 5555 4444", "start": 23, "end": 36}], "meta": {"domain": "중고거래 채팅", "style": "짧은 단답", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

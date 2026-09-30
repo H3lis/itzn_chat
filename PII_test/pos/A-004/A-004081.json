@@ -1,1 +1,0 @@
-{"id": "A-004081", "text": "계좌 번호는 공일공-1234-5678로 등록되어 있고, 여권 번호는 990122334455예요.", "pi": [{"type": "ACCOUNT", "text": "공일공", "start": 7, "end": 10}, {"type": "ACCOUNT", "text": "1234-5678", "start": 11, "end": 20}, {"type": "PASSPORT", "text": "990122334455", "start": 38, "end": 50}], "meta": {"domain": "병원 접수", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-000449", "text": "제 아이디는 kimglobal이고요, 저 OO대학교 컴퓨터공학과 재학생이거든요.", "pi": [{"type": "ID", "text": "kimglobal", "start": 7, "end": 16}, {"type": "ORG", "text": "OO대학교 컴퓨터공학과", "start": 23, "end": 35}], "meta": {"domain": "민원 접수", "style": "메신저 줄임말", "obfuscation": ["jamo_split", "romanized"], "hard_case": "org_person"}}

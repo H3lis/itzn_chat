@@ -1,1 +1,0 @@
-{"id": "A-001753", "text": "거주지는 경기도 성남시 분당구에 있고, 이메일은 kim.minjun(at)naver.com 입니다.", "pi": [{"type": "ADDRESS", "text": "경기도 성남시 분당구", "start": 5, "end": 16}, {"type": "EMAIL", "text": "kim.minjun(at)naver.com", "start": 27, "end": 50}], "meta": {"domain": "금융 상담", "style": "격식체", "obfuscation": ["email_spoken", "korean_reading"], "hard_case": "none"}}

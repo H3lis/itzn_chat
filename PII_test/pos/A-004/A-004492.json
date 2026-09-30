@@ -1,1 +1,0 @@
-{"id": "A-004492", "text": "차량 번호는 서울 12가 3456이고, 연락처는 02-1111-2222-9999입니다.", "pi": [{"type": "CAR_PLATE", "text": "서울 12가 3456", "start": 7, "end": 18}, {"type": "PHONE", "text": "02-1111-2222-9999", "start": 27, "end": 44}], "meta": {"domain": "보험 청구", "style": "음성인식(STT) 전사", "obfuscation": ["stt_error", "self_correction"], "hard_case": "none"}}

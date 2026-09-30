@@ -1,1 +1,0 @@
-{"id": "A-000446", "text": "혹시 성함이 어떻게 되시나요? 그리고 주민등록번호는 901234-5678901이 맞으신지 확인 부탁드립니다.", "pi": [{"type": "NAME", "text": "성함", "start": 3, "end": 5}, {"type": "RRN", "text": "901234-5678901", "start": 29, "end": 43}], "meta": {"domain": "쇼핑몰 문의", "style": "구어체", "obfuscation": ["self_correction"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-004783", "text": "거주지 주소는 서울특별시 강남구 테헤란로 123이고, 회원 아이디는 my_secret_id 입니다.", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 테헤란로 123", "start": 8, "end": 26}, {"type": "ID", "text": "my_secret_id", "start": 38, "end": 50}], "meta": {"domain": "고객센터 채팅", "style": "짧은 단답", "obfuscation": ["romanized"], "hard_case": "nickname_id"}}

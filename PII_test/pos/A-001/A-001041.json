@@ -1,1 +1,0 @@
-{"id": "A-001041", "text": "김과장님, 다음 주에 제주도로 예약 가능할까요?", "pi": [{"type": "NAME", "text": "김과장님", "start": 0, "end": 4}], "meta": {"domain": "여행 예약", "style": "짧은 단답", "obfuscation": ["honorific_ref"], "hard_case": "none"}}

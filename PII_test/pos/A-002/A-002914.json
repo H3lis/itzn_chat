@@ -1,1 +1,0 @@
-{"id": "A-002914", "text": "게시글 작성 전에 제가 적어둔 이름이 김철수인데, 혹시 다른 분이신가요? 아무튼 김철수라고 적어주시면 될 것 같아요.", "pi": [{"type": "NAME", "text": "김철수", "start": 21, "end": 24}], "meta": {"domain": "커뮤니티 게시글", "style": "공문서풍", "obfuscation": ["self_correction"], "hard_case": "none"}}

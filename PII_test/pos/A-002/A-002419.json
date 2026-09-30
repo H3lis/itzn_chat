@@ -1,1 +1,0 @@
-{"id": "A-002419", "text": "차량 번호는 12가 들어간 차량을 말씀하시는 건가요? 그리고 접속하신 IP 주소는 203.10.5.99로 확인됩니다.", "pi": [{"type": "CAR_PLATE", "text": "12", "start": 7, "end": 9}, {"type": "IP_ADDR", "text": "203.10.5.99", "start": 46, "end": 57}], "meta": {"domain": "음성통화 전사문", "style": "존댓말 상담", "obfuscation": ["plain"], "hard_case": "none"}}

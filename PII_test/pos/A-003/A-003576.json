@@ -1,1 +1,0 @@
-{"id": "A-003576", "text": "배달은요, ㅇㅇ아파트 101동 503호로 해주시고, 계정은 user_bale12로 부탁해요.", "pi": [{"type": "ADDRESS", "text": "ㅇㅇ아파트 101동 503호", "start": 6, "end": 21}, {"type": "ACCOUNT", "text": "user_bale12", "start": 33, "end": 44}], "meta": {"domain": "배달 요청사항", "style": "반말 대화", "obfuscation": ["plain"], "hard_case": "none"}}

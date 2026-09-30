@@ -1,1 +1,0 @@
-{"id": "A-000890", "text": "해당 보험금 청구 건에 대해 혹시 연락 가능한 전화번호가 있으신가요? 105-1234-5678로 다시 한번 확인 부탁드립니다.", "pi": [{"type": "PHONE", "text": "105-1234-5678", "start": 39, "end": 52}], "meta": {"domain": "보험 청구", "style": "메신저 줄임말", "obfuscation": ["stt_error", "korean_reading"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-005015", "text": "저 다음 달 제주도 여행 가는데, 제가 태어난 게 95년 생이라 좀 혜택이 있는지 궁금해서요.", "pi": [{"type": "BIRTH", "text": "95년", "start": 28, "end": 31}], "meta": {"domain": "여행 예약", "style": "반말 대화", "obfuscation": ["plain"], "hard_case": "none"}}

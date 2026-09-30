@@ -1,1 +1,0 @@
-{"id": "A-001366", "text": "네, 담당자분은 한결님으로 오늘 방문 예정이신가요?", "pi": [{"type": "NAME", "text": "한결", "start": 9, "end": 11}], "meta": {"domain": "이메일 본문", "style": "짧은 단답", "obfuscation": ["honorific_ref"], "hard_case": "homonym_name"}}

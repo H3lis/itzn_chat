@@ -1,1 +1,0 @@
-{"id": "A-002112", "text": "새로 오신 김민준님 맞으시죠? 혹시 예전 기록에 남은 이름이 따로 있나요?", "pi": [{"type": "NAME", "text": "김민준", "start": 6, "end": 9}], "meta": {"domain": "SNS 댓글", "style": "짧은 단답", "obfuscation": ["jamo_split"], "hard_case": "none"}}

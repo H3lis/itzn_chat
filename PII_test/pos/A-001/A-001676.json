@@ -1,1 +1,0 @@
-{"id": "A-001676", "text": "강사님 성함이 온유 선생님이신가요? 정확한 이름 재확인 부탁드리겠습니다.", "pi": [{"type": "NAME", "text": "온유", "start": 8, "end": 10}], "meta": {"domain": "온라인 강의 Q&A", "style": "격식체", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

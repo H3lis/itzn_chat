@@ -1,1 +1,0 @@
-{"id": "A-004302", "text": "카드 번호는 5432, 이름은 진주, 그리고 연락처는 010, 3141, 9999예요.", "pi": [{"type": "CARD", "text": "5432", "start": 7, "end": 11}, {"type": "NAME", "text": "진주", "start": 17, "end": 19}, {"type": "PHONE", "text": "010, 3141, 9999", "start": 30, "end": 45}], "meta": {"domain": "커뮤니티 게시글", "style": "짧은 단답", "obfuscation": ["mixed_reading"], "hard_case": "homonym_name"}}

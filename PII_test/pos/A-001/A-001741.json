@@ -1,1 +1,0 @@
-{"id": "A-001741", "text": "혹시 연락 가능한 전화번호가 어떻게 되시나요? 다시 한번 말씀해주시면 감사하겠습니다.", "pi": [{"type": "PHONE", "text": "전화번호", "start": 10, "end": 14}], "meta": {"domain": "보험 청구", "style": "구어체", "obfuscation": ["self_correction"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-001515", "text": "네, 상담원님. 혹시 그분 이름이 '슬기' 씨 맞으신가요? 연락처는 010-2222-3333이요.", "pi": [{"type": "NAME", "text": "슬기", "start": 20, "end": 22}, {"type": "PHONE", "text": "010-2222-3333", "start": 38, "end": 51}], "meta": {"domain": "부동산 상담", "style": "짧은 단답", "obfuscation": ["self_correction"], "hard_case": "homonym_name"}}

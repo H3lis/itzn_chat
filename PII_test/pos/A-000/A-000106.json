@@ -1,1 +1,0 @@
-{"id": "A-000106", "text": "가을 님, 혹시 성함이 가을이시고, 연락처가 010-1234-5678 맞으신가요? 앗, 아 아닙니다.", "pi": [{"type": "NAME", "text": "가을", "start": 0, "end": 2}, {"type": "PHONE", "text": "010-1234-5678", "start": 25, "end": 38}], "meta": {"domain": "병원 접수", "style": "오타 많은 채팅", "obfuscation": ["self_correction"], "hard_case": "homonym_name"}}

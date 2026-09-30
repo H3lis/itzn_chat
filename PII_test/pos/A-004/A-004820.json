@@ -1,1 +1,0 @@
-{"id": "A-004820", "text": "공주 대리님께서 말씀하시기를, 사용자 ID는 공주 공주 짱이고, 이름은 공주님이라고요.", "pi": [{"type": "NAME", "text": "공주", "start": 0, "end": 2}, {"type": "ACCOUNT", "text": "공주 공주 짱", "start": 25, "end": 32}], "meta": {"domain": "회의록", "style": "오타 많은 채팅", "obfuscation": ["honorific_ref"], "hard_case": "homonym_name"}}

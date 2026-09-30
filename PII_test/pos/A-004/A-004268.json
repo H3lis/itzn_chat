@@ -1,1 +1,0 @@
-{"id": "A-004268", "text": "아 네, 받는 분 성함이 박서준 씨 맞으신가요? 아니면 박서준이요? 그리고 전화번호도 알려주세요.", "pi": [{"type": "NAME", "text": "박서준", "start": 14, "end": 17}], "meta": {"domain": "배달 요청사항", "style": "음성인식(STT) 전사", "obfuscation": ["self_correction"], "hard_case": "none"}}

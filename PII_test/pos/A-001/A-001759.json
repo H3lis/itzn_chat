@@ -1,1 +1,0 @@
-{"id": "A-001759", "text": "계정 번호는 9999 다음에 1이 두 번, 3이 두 번 들어가는 형태입니다.", "pi": [{"type": "ACCOUNT", "text": "9999 다음에 1이 두 번, 3이 두 번", "start": 7, "end": 30}], "meta": {"domain": "회의록", "style": "짧은 단답", "obfuscation": ["repeat_expr", "split_utterance"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-003125", "text": "제 여권 번호는 다음 주에 말씀드리겠습니다. 이건 저희가 준비한 영문 사본을 보시면 확인하실 수 있어요.", "pi": [{"type": "PASSPORT", "text": "영문 사본", "start": 36, "end": 41}], "meta": {"domain": "보험 청구", "style": "격식체", "obfuscation": ["split_utterance", "korean_reading"], "hard_case": "none"}}

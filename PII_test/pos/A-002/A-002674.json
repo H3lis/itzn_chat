@@ -1,1 +1,0 @@
-{"id": "A-002674", "text": "카드 번호는 1234 5678로 돼 있고, 이름은 이지은 씨예요.", "pi": [{"type": "CARD", "text": "1234 5678", "start": 7, "end": 16}, {"type": "NAME", "text": "이지은", "start": 28, "end": 31}], "meta": {"domain": "병원 접수", "style": "짧은 단답", "obfuscation": ["separator_noise"], "hard_case": "none"}}

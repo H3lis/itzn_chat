@@ -1,1 +1,0 @@
-{"id": "A-003388", "text": "주소는 서울시 강남구 삼성동 500, 그리고 전화번호는 010-9999-8888입니다.", "pi": [{"type": "ADDRESS", "text": "서울시 강남구 삼성동 500", "start": 4, "end": 19}, {"type": "PHONE", "text": "010-9999-8888", "start": 31, "end": 44}], "meta": {"domain": "온라인 강의 Q&A", "style": "음성인식(STT) 전사", "obfuscation": ["separator_noise"], "hard_case": "none"}}

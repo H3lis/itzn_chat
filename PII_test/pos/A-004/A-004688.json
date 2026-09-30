@@ -1,1 +1,0 @@
-{"id": "A-004688", "text": "저요? 이름은 '우주'고, 생년월일은 2000년 5월 15일로 알고 있는데요.", "pi": [{"type": "NAME", "text": "우주", "start": 9, "end": 11}, {"type": "BIRTH", "text": "2000년 5월 15일", "start": 21, "end": 33}], "meta": {"domain": "커뮤니티 게시글", "style": "메신저 줄임말", "obfuscation": ["mixed_reading", "jamo_split", "korean_reading"], "hard_case": "homonym_name"}}

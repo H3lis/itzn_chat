@@ -1,1 +1,0 @@
-{"id": "A-002470", "text": "새벽님, 계정은 새벽대장이고요, 전화번호는 010-5555-1234로 확인됐습니다.", "pi": [{"type": "NAME", "text": "새벽", "start": 0, "end": 2}, {"type": "ACCOUNT", "text": "새벽대장", "start": 9, "end": 13}, {"type": "PHONE", "text": "010-5555-1234", "start": 24, "end": 37}], "meta": {"domain": "콜센터 상담 요약", "style": "메신저 줄임말", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

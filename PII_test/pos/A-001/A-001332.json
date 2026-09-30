@@ -1,1 +1,0 @@
-{"id": "A-001332", "text": "제가 근무한 곳은 서울시 강남구 테헤란로에 위치한 ABC 테크놀로지스예요. 대표 번호는 02-5555-6666입니다.", "pi": [{"type": "ORG", "text": "ABC 테크놀로지스", "start": 28, "end": 38}, {"type": "PHONE", "text": "02-5555-6666", "start": 49, "end": 61}], "meta": {"domain": "SNS 댓글", "style": "길고 장황한 설명", "obfuscation": ["repeat_expr", "romanized"], "hard_case": "org_person"}}

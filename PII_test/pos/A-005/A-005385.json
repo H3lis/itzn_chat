@@ -1,1 +1,0 @@
-{"id": "A-005385", "text": "청구서에 기재된 성함은 나무민지 님이시고, 주민등록번호는 나무990101으로 처리 부탁드립니다.", "pi": [{"type": "NAME", "text": "나무민지", "start": 13, "end": 17}, {"type": "RRN", "text": "나무990101", "start": 32, "end": 40}], "meta": {"domain": "보험 청구", "style": "공문서풍", "obfuscation": ["romanized"], "hard_case": "homonym_name"}}

@@ -1,1 +1,0 @@
-{"id": "A-001328", "text": "고객님의 연락처는 대표번호로 070-1111-2222가 있고, 개인번호는 010 3333 4444예요.", "pi": [{"type": "PHONE", "text": "070-1111-2222", "start": 16, "end": 29}, {"type": "PHONE", "text": "010 3333 4444", "start": 41, "end": 54}], "meta": {"domain": "부동산 상담", "style": "공문서풍", "obfuscation": ["plain"], "hard_case": "none"}}

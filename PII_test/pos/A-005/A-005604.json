@@ -1,1 +1,0 @@
-{"id": "A-005604", "text": "저기요, 말씀해주신 이름이 '노을'님이신가요? 그리고 전화번호는 010-2222-3333으로 되나요?", "pi": [{"type": "NAME", "text": "노을", "start": 16, "end": 18}, {"type": "PHONE", "text": "010-2222-3333", "start": 36, "end": 49}], "meta": {"domain": "여행 예약", "style": "격식체", "obfuscation": ["stt_error"], "hard_case": "homonym_name"}}

@@ -1,1 +1,0 @@
-{"id": "A-001833", "text": "나 진짜 김민준이라는 애라니까? 내 SNS는 인스타아이디가 user_kml_1990으로 되어있어.", "pi": [{"type": "NAME", "text": "김민준", "start": 5, "end": 8}, {"type": "SNS", "text": "user_kml_1990", "start": 33, "end": 46}], "meta": {"domain": "커뮤니티 게시글", "style": "반말 대화", "obfuscation": ["jamo_split", "lookalike_char"], "hard_case": "nickname_id"}}

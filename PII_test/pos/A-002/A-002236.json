@@ -1,1 +1,0 @@
-{"id": "A-002236", "text": "네, '지혜' 씨가 계약자 맞으시고요. 아니, 그게 아니라 '지혜'요. 다시 한번 확인 부탁드립니다.", "pi": [{"type": "NAME", "text": "지혜", "start": 4, "end": 6}, {"type": "NAME", "text": "지혜", "start": 34, "end": 36}], "meta": {"domain": "부동산 상담", "style": "짧은 단답", "obfuscation": ["self_correction"], "hard_case": "homonym_name"}}

@@ -1,1 +1,0 @@
-{"id": "A-002232", "text": "운전면허증 번호가 '9912345678'에, 성함이 '최진호' 님으로 되어있습니다. 네, 이 정보가 맞는지 다시 한번 확인 부탁드려요.", "pi": [{"type": "DRIVER_LICENSE", "text": "9912345678", "start": 11, "end": 21}, {"type": "NAME", "text": "최진호", "start": 30, "end": 33}], "meta": {"domain": "보험 청구", "style": "길고 장황한 설명", "obfuscation": ["romanized"], "hard_case": "none"}}

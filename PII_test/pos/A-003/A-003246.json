@@ -1,1 +1,0 @@
-{"id": "A-003246", "text": "김 과장님께서 말씀하시기를, 제 이름은 진짜로 강민준이 맞다고요.", "pi": [{"type": "NAME", "text": "강민준", "start": 26, "end": 29}], "meta": {"domain": "쇼핑몰 문의", "style": "음성인식(STT) 전사", "obfuscation": ["honorific_ref", "jamo_split"], "hard_case": "none"}}

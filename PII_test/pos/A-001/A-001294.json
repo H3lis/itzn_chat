@@ -1,1 +1,0 @@
-{"id": "A-001294", "text": "김 과장님께서 요청하신 주소는 경기도 성남시 분당구 정자역 근처의 123-45번지입니다.", "pi": [{"type": "NAME", "text": "김", "start": 0, "end": 1}, {"type": "ADDRESS", "text": "경기도 성남시 분당구 정자역 근처의 123-45번지", "start": 17, "end": 45}], "meta": {"domain": "직장 메신저", "style": "공문서풍", "obfuscation": ["honorific_ref"], "hard_case": "none"}}

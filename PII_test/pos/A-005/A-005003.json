@@ -1,1 +1,0 @@
-{"id": "A-005003", "text": "저희 거래처 담당자는 김재원 팀장님이세요. 발음상 'ㅋㅏㅁ ㅈㅔㅇㅝㄴ'처럼 되어야 하는데 맞을까요?", "pi": [{"type": "NAME", "text": "김재원", "start": 12, "end": 15}], "meta": {"domain": "쇼핑몰 문의", "style": "격식체", "obfuscation": ["jamo_split"], "hard_case": "none"}}

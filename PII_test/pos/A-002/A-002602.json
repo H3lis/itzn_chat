@@ -1,1 +1,0 @@
-{"id": "A-002602", "text": "네, 찾아보니 이번에 지혜 씨가 요청하신 방은 24층에 있고요, 일단 고객님 성함이 지혜 씨가 맞으신가요? 전화번호는 010-9999-1234로 확인됐습니다.", "pi": [{"type": "NAME", "text": "지혜", "start": 12, "end": 14}, {"type": "PHONE", "text": "010-9999-1234", "start": 66, "end": 79}], "meta": {"domain": "부동산 상담", "style": "길고 장황한 설명", "obfuscation": ["self_correction"], "hard_case": "homonym_name"}}

@@ -1,1 +1,0 @@
-{"id": "A-003356", "text": "담당자님 연락처 확인을 위해 이메일 주소를 알려주실 수 있을까요? example(at)test(dot)com 으로 적어주세요.", "pi": [{"type": "EMAIL", "text": "example(at)test(dot)com", "start": 37, "end": 60}], "meta": {"domain": "배달 요청사항", "style": "구어체", "obfuscation": ["separator_noise", "email_spoken"], "hard_case": "none"}}

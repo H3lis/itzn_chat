@@ -1,1 +1,0 @@
-{"id": "A-001297", "text": "신한병원 측에 문의드립니다. 담당자님 이메일 주소가 abc@corp.co.kr이 맞는지요.", "pi": [{"type": "ORG", "text": "신한병원", "start": 0, "end": 4}, {"type": "EMAIL", "text": "abc@corp.co.kr", "start": 29, "end": 43}], "meta": {"domain": "보험 청구", "style": "음성인식(STT) 전사", "obfuscation": ["email_spoken"], "hard_case": "org_person"}}

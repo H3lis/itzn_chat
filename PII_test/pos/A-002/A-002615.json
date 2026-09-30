@@ -1,1 +1,0 @@
-{"id": "A-002615", "text": "가장 연락 가능한 이메일 주소는 mysecret.user@test.com이에요.", "pi": [{"type": "EMAIL", "text": "mysecret.user@test.com", "start": 18, "end": 40}], "meta": {"domain": "커뮤니티 게시글", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "none"}}

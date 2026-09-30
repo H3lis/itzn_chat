@@ -1,1 +1,0 @@
-{"id": "A-001437", "text": "방금 가입한 계정인데, 아이디가 너무 어려워서 비밀번호를 바꿔야 할 것 같아.", "pi": [{"type": "ACCOUNT", "text": "아이디", "start": 13, "end": 16}], "meta": {"domain": "SNS 댓글", "style": "반말 대화", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

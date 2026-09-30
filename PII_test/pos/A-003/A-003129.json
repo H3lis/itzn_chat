@@ -1,1 +1,0 @@
-{"id": "A-003129", "text": "저기요, 신분 확인을 위해 생년월일 뒤에 나오는 주민등록번호 뒷자리부터 말씀해주시겠어요?", "pi": [{"type": "RRN", "text": "주민등록번호 뒷자리", "start": 27, "end": 37}], "meta": {"domain": "병원 접수", "style": "길고 장황한 설명", "obfuscation": ["split_utterance"], "hard_case": "none"}}

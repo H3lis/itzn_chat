@@ -1,1 +1,0 @@
-{"id": "A-003518", "text": "프로젝트 관련해서 혹시 계정 비밀번호 같은 거 잘못 듣지 않았어? 그거 혹시 저기 계정번호 3456 같은 거 말이야?", "pi": [{"type": "ACCOUNT", "text": "계정번호 3456", "start": 46, "end": 55}], "meta": {"domain": "회의록", "style": "반말 대화", "obfuscation": ["stt_error", "korean_reading"], "hard_case": "none"}}

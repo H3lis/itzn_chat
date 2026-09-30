@@ -1,1 +1,0 @@
-{"id": "A-005268", "text": "혹시 전화번호는 010점 1234점으로 말씀해주시겠어요? 제가 다시 확인해 볼게요.", "pi": [{"type": "PHONE", "text": "010점 1234점", "start": 9, "end": 19}], "meta": {"domain": "온라인 강의 Q&A", "style": "음성인식(STT) 전사", "obfuscation": ["separator_noise"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-005431", "text": "저번 주에 제가 연락드렸던 번호는 010-5555-1234 맞나요? 다시 한번 말씀해 주시겠어요?", "pi": [{"type": "PHONE", "text": "010-5555-1234", "start": 19, "end": 32}], "meta": {"domain": "SNS 댓글", "style": "구어체", "obfuscation": ["split_utterance", "mixed_reading"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-002688", "text": "네, 아이디는 jskd123요. 이 부분은 자모로 풀면 '제이 에스 케이 디 원 쓰리' 이렇게 되는 거예요.", "pi": [{"type": "ID", "text": "jskd123", "start": 8, "end": 15}], "meta": {"domain": "콜센터 상담 요약", "style": "반말 대화", "obfuscation": ["jamo_split"], "hard_case": "none"}}

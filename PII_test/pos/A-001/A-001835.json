@@ -1,1 +1,0 @@
-{"id": "A-001835", "text": "문의하신 메일 주소는 user[at]gmai.com 으로 되어있어요. 이거 맞으신가요?", "pi": [{"type": "EMAIL", "text": "user[at]gmai.com", "start": 12, "end": 28}], "meta": {"domain": "고객센터 채팅", "style": "반말 대화", "obfuscation": ["lookalike_char", "email_spoken"], "hard_case": "none"}}

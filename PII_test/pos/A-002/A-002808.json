@@ -1,1 +1,0 @@
-{"id": "A-002808", "text": "제가 말씀드린 분 성함이 김우주 인가요? 아니면 다른 분이신가요?", "pi": [{"type": "NAME", "text": "김우주", "start": 14, "end": 17}], "meta": {"domain": "음성통화 전사문", "style": "오타 많은 채팅", "obfuscation": ["romanized"], "hard_case": "homonym_name"}}

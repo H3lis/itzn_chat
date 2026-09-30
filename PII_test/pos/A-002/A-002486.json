@@ -1,1 +1,0 @@
-{"id": "A-002486", "text": "그래서 계정 번호는 123456이고, 조직은 저희 개발팀으로 처리됐습니다.", "pi": [{"type": "ACCOUNT", "text": "123456", "start": 11, "end": 17}, {"type": "ORG", "text": "개발팀", "start": 28, "end": 31}], "meta": {"domain": "회의록", "style": "음성인식(STT) 전사", "obfuscation": ["self_correction"], "hard_case": "org_person"}}

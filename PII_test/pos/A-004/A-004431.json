@@ -1,1 +1,0 @@
-{"id": "A-004431", "text": "담당자님, 이 프로젝트의 책임자는 홍길동 씨인데, 제가 임시로 박지수라고 잘못 전달한 부분이 있어요.", "pi": [{"type": "NAME", "text": "홍길동", "start": 19, "end": 22}, {"type": "ID", "text": "박지수", "start": 35, "end": 38}], "meta": {"domain": "회의록", "style": "길고 장황한 설명", "obfuscation": ["self_correction"], "hard_case": "none"}}

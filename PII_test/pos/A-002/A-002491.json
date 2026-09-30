@@ -1,1 +1,0 @@
-{"id": "A-002491", "text": "이 중고 노트북 말인데요, 작동은 되는데 배터리 효율이 좀 떨어져요. 번호로 문의드리자니 좀 그렇고요. 혹시 연락처는 010 5555 1234로 되나요? 아니면 말씀으로 하셔도 되고요.", "pi": [{"type": "PHONE", "text": "010 5555 1234", "start": 66, "end": 79}], "meta": {"domain": "중고거래 채팅", "style": "길고 장황한 설명", "obfuscation": ["korean_reading", "mixed_reading", "stt_error"], "hard_case": "none"}}

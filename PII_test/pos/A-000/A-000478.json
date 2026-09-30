@@ -1,1 +1,0 @@
-{"id": "A-000478", "text": "제가 가입한 계정 번호가 이거구요. 아니면 다른 걸로 다시 확인해 드릴까요?", "pi": [{"type": "ACCOUNT", "text": "이거구요", "start": 14, "end": 18}], "meta": {"domain": "쇼핑몰 문의", "style": "메신저 줄임말", "obfuscation": ["split_utterance"], "hard_case": "none"}}

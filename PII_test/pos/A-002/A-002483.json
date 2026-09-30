@@ -1,1 +1,0 @@
-{"id": "A-002483", "text": "저희 거주지는 서울특별시 강남구 테헤란로 1503호 이고, 직원 ID는 SKS2024년 번호로 되어있어요.", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 테헤란로 1503호", "start": 8, "end": 28}, {"type": "ID", "text": "SKS2024년", "start": 40, "end": 48}], "meta": {"domain": "음성통화 전사문", "style": "길고 장황한 설명", "obfuscation": ["romanized"], "hard_case": "none"}}

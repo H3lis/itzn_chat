@@ -1,1 +1,0 @@
-{"id": "A-000546", "text": "운전면허증 말씀이시죠? 번호는 10시 5분 32번이고, 뒷자리는 3-4-5-6 이렇게 하시면 됩니다.", "pi": [{"type": "DRIVER_LICENSE", "text": "10시 5분 32번", "start": 17, "end": 27}], "meta": {"domain": "부동산 상담", "style": "오타 많은 채팅", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-000995", "text": "회원님 이메일은 user1234@test.com, IP 주소는 192.168.1.1 이거 맞죠?", "pi": [{"type": "EMAIL", "text": "user1234@test.com", "start": 9, "end": 26}, {"type": "IP_ADDR", "text": "192.168.1.1", "start": 35, "end": 46}], "meta": {"domain": "여행 예약", "style": "짧은 단답", "obfuscation": ["repeat_expr", "separator_noise"], "hard_case": "none"}}

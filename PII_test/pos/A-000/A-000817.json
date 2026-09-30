@@ -1,1 +1,0 @@
-{"id": "A-000817", "text": "예약하신 번호가요? 010 5555 - 4444로 부탁드립니다.", "pi": [{"type": "PHONE", "text": "010 5555 - 4444", "start": 11, "end": 26}], "meta": {"domain": "금융 상담", "style": "구어체", "obfuscation": ["separator_noise"], "hard_case": "none"}}

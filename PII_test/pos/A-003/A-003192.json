@@ -1,1 +1,0 @@
-{"id": "A-003192", "text": "너네 지금 접속한 아이피 주소가 121.170.45.201 맞냐? 그리고 너 이름이 하루 맞지?", "pi": [{"type": "IP_ADDR", "text": "121.170.45.201", "start": 18, "end": 32}, {"type": "NAME", "text": "하루", "start": 47, "end": 49}], "meta": {"domain": "쇼핑몰 문의", "style": "반말 대화", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

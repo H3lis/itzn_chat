@@ -1,1 +1,0 @@
-{"id": "A-004831", "text": "회원님, 아이디는 aa1234, 비밀번호는 8888-aaaa 같은 건가요? 아무거나 말씀해 보세요.", "pi": [{"type": "ACCOUNT", "text": "aa1234", "start": 10, "end": 16}], "meta": {"domain": "쇼핑몰 문의", "style": "반말 대화", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

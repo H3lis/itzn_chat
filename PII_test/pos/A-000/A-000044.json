@@ -1,1 +1,0 @@
-{"id": "A-000044", "text": "안녕하세요. 광주 민지라고 합니다. 전화번호는 010-1234-5678인데요. 혹시요?", "pi": [{"type": "NAME", "text": "광주 민지", "start": 7, "end": 12}, {"type": "PHONE", "text": "010-1234-5678", "start": 26, "end": 39}], "meta": {"domain": "고객센터 채팅", "style": "격식체", "obfuscation": ["jamo_split", "romanized", "self_correction"], "hard_case": "homonym_name"}}

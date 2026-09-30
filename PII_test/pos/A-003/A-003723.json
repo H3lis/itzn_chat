@@ -1,1 +1,0 @@
-{"id": "A-003723", "text": "네, 김대리님 성함이 김지영이 맞지? 지난번에 얘기했던 그 사람 이름이 맞는지 확인해봐야겠다.", "pi": [{"type": "NAME", "text": "김대리님", "start": 3, "end": 7}, {"type": "NAME", "text": "김지영", "start": 12, "end": 15}], "meta": {"domain": "회의록", "style": "반말 대화", "obfuscation": ["honorific_ref"], "hard_case": "none"}}

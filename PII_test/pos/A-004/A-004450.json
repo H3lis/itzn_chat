@@ -1,1 +1,0 @@
-{"id": "A-004450", "text": "봄 씨가 사는 곳이 어디예요? 제 아이디는 '봄마을'인데, 거기서 부근 주소 알려줘요.", "pi": [{"type": "NAME", "text": "봄", "start": 0, "end": 1}, {"type": "ADDRESS", "text": "봄마을", "start": 25, "end": 28}], "meta": {"domain": "SNS 댓글", "style": "메신저 줄임말", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

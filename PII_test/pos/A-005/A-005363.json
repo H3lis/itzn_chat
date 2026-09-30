@@ -1,1 +1,0 @@
-{"id": "A-005363", "text": "첫 번째 주소는 경기도 수원시 권선구로, 다음 주소는 부산광역시 해운대구 달맞이길 332입니다.", "pi": [{"type": "ADDRESS", "text": "경기도 수원시 권선구", "start": 9, "end": 20}, {"type": "ADDRESS", "text": "부산광역시 해운대구 달맞이길 332", "start": 30, "end": 49}], "meta": {"domain": "여행 예약", "style": "오타 많은 채팅", "obfuscation": ["korean_reading"], "hard_case": "none"}}

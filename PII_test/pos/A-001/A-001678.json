@@ -1,1 +1,0 @@
-{"id": "A-001678", "text": "주소는 ㅁㅏㅇㄱㅓㅁ로 123번지야. 거기서 2층으로 오면 돼.", "pi": [{"type": "ADDRESS", "text": "ㅁㅏㅇㄱㅓㅁ로 123번지", "start": 4, "end": 17}], "meta": {"domain": "학교 행정 문의", "style": "반말 대화", "obfuscation": ["jamo_split"], "hard_case": "none"}}

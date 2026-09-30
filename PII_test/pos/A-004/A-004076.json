@@ -1,1 +1,0 @@
-{"id": "A-004076", "text": "접수하신 사고 기록은 IP 주소가 192.168.1.100에서 온 건가요?", "pi": [{"type": "IP_ADDR", "text": "192.168.1.100", "start": 19, "end": 32}], "meta": {"domain": "보험 청구", "style": "오타 많은 채팅", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

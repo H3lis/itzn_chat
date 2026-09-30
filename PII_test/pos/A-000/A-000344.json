@@ -1,1 +1,0 @@
-{"id": "A-000344", "text": "접수해주신 번호가 010-5555-1234로 보이는데, 혹시 이 부분 다시 한번 확인 부탁드려도 될까요?", "pi": [{"type": "PHONE", "text": "010-5555-1234", "start": 10, "end": 23}], "meta": {"domain": "민원 접수", "style": "격식체", "obfuscation": ["stt_error"], "hard_case": "none"}}

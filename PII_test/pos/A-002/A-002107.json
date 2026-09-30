@@ -1,1 +1,0 @@
-{"id": "A-002107", "text": "제가 거래하시는 계정은 testuser123@gmail.com 이고요. 개인 SNS는 트위터로 아이디가 T123456이에요. 확인해 보시겠어요?", "pi": [{"type": "ACCOUNT", "text": "testuser123@gmail.com", "start": 13, "end": 34}, {"type": "SNS", "text": "T123456", "start": 58, "end": 65}], "meta": {"domain": "음성통화 전사문", "style": "오타 많은 채팅", "obfuscation": ["lookalike_char"], "hard_case": "nickname_id"}}

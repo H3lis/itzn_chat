@@ -1,1 +1,0 @@
-{"id": "A-005648", "text": "안녕하세요. 고객님. 문의주신 거는, 메일 주소는 user123@test.com이구요, 담당자는 김민지입니다.", "pi": [{"type": "EMAIL", "text": "user123@test.com", "start": 28, "end": 44}, {"type": "NAME", "text": "김민지", "start": 54, "end": 57}], "meta": {"domain": "배달 요청사항", "style": "메신저 줄임말", "obfuscation": ["separator_noise"], "hard_case": "none"}}

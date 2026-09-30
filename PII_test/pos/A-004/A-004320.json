@@ -1,1 +1,0 @@
-{"id": "A-004320", "text": "저희가 원하는 주소지 좀 확인 부탁드려요. 경기도 수원시 영통구 광교로 500고요. 담당자님 성함은 김지수 되시나요?", "pi": [{"type": "ADDRESS", "text": "경기도 수원시 영통구 광교로 500", "start": 24, "end": 43}, {"type": "NAME", "text": "김지수", "start": 56, "end": 59}], "meta": {"domain": "온라인 강의 Q&A", "style": "짧은 단답", "obfuscation": ["korean_reading"], "hard_case": "none"}}

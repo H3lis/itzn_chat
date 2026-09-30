@@ -1,1 +1,0 @@
-{"id": "A-004816", "text": "홍길동 씨의 예약 건은 어떻게 처리해야 할까요?", "pi": [{"type": "NAME", "text": "홍길동", "start": 0, "end": 3}], "meta": {"domain": "여행 예약", "style": "격식체", "obfuscation": ["jamo_split"], "hard_case": "none"}}

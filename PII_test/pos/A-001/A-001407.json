@@ -1,1 +1,0 @@
-{"id": "A-001407", "text": "진료 기록지 작성에 필요한 주소는 서울시 가상구 테크노빌리지 555동 12층입니다.", "pi": [{"type": "ADDRESS", "text": "서울시 가상구 테크노빌리지 555동 12층", "start": 19, "end": 42}], "meta": {"domain": "병원 접수", "style": "격식체", "obfuscation": ["split_utterance"], "hard_case": "none"}}

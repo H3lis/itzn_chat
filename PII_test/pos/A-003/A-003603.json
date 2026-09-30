@@ -1,1 +1,0 @@
-{"id": "A-003603", "text": "생년월일이요? 1990년 5월 15일이던가? 아니요, 90년 5월 15일이 맞아요.", "pi": [{"type": "BIRTH", "text": "1990년 5월 15일", "start": 8, "end": 20}], "meta": {"domain": "여행 예약", "style": "오타 많은 채팅", "obfuscation": ["self_correction", "mixed_reading"], "hard_case": "none"}}

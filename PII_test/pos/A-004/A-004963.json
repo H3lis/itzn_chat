@@ -1,1 +1,0 @@
-{"id": "A-004963", "text": "담당 선생님, 제가 계정 아이디가 'testuser'인데, 이거 맞는지 좀 봐주세요. 혹시 이름이 '김철수' 씨는 아닐까요? 저 혼동돼서요.", "pi": [{"type": "ACCOUNT", "text": "testuser", "start": 20, "end": 28}, {"type": "NAME", "text": "김철수", "start": 56, "end": 59}], "meta": {"domain": "온라인 강의 Q&A", "style": "오타 많은 채팅", "obfuscation": ["honorific_ref", "self_correction"], "hard_case": "none"}}

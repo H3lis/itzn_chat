@@ -1,1 +1,0 @@
-{"id": "A-004005", "text": "담당자님의 성함은 김과장님이시고, 고객님 본인 성함은 최 선생님입니다. 번호로 확인하시려면 '최 선생님'이라고 말씀해 주시겠어요?", "pi": [{"type": "NAME", "text": "최", "start": 30, "end": 31}], "meta": {"domain": "금융 상담", "style": "공문서풍", "obfuscation": ["honorific_ref", "self_correction"], "hard_case": "none"}}

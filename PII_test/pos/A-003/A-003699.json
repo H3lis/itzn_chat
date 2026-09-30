@@ -1,1 +1,0 @@
-{"id": "A-003699", "text": "제가 예약한건데, 이메일은 user.name@example.com이고요, 연락처는 010점1111점2222 같은데요.", "pi": [{"type": "EMAIL", "text": "user.name@example.com", "start": 15, "end": 36}, {"type": "PHONE", "text": "010점1111점2222", "start": 46, "end": 59}], "meta": {"domain": "병원 접수", "style": "길고 장황한 설명", "obfuscation": ["separator_noise"], "hard_case": "none"}}

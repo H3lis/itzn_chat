@@ -1,1 +1,0 @@
-{"id": "A-003643", "text": "상품은 OOO전자인데요. 메일 주소는 support-info(at)naver(dot)com 이고요. 담당자분 성함이요?", "pi": [{"type": "ORG", "text": "OOO전자", "start": 4, "end": 9}, {"type": "EMAIL", "text": "support-info(at)naver(dot)com", "start": 21, "end": 50}], "meta": {"domain": "택배 문의", "style": "오타 많은 채팅", "obfuscation": ["email_spoken", "separator_noise"], "hard_case": "org_person"}}

@@ -1,1 +1,0 @@
-{"id": "A-002579", "text": "카드 번호는 5555-4444-3333-2222가 맞으신가요? (이 번호가 정상 작동하는지 확인이 필요합니다.)", "pi": [{"type": "CARD", "text": "5555-4444-3333-2222", "start": 7, "end": 26}], "meta": {"domain": "온라인 강의 Q&A", "style": "공문서풍", "obfuscation": ["lookalike_char", "stt_error"], "hard_case": "none"}}

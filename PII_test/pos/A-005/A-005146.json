@@ -1,1 +1,0 @@
-{"id": "A-005146", "text": "고객님, 연락처가 010-5555-1212가 맞으신지 다시 한번 확인 부탁드립니다.", "pi": [{"type": "PHONE", "text": "010-5555-1212", "start": 10, "end": 23}], "meta": {"domain": "콜센터 상담 요약", "style": "존댓말 상담", "obfuscation": ["korean_reading", "self_correction"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-003437", "text": "새벽이라 운전면허증 확인 부탁드려요. 이름이 '새벽' 맞으신가요?", "pi": [{"type": "DRIVER_LICENSE", "text": "운전면허증", "start": 5, "end": 10}, {"type": "NAME", "text": "새벽", "start": 26, "end": 28}], "meta": {"domain": "보험 청구", "style": "구어체", "obfuscation": ["lookalike_char"], "hard_case": "homonym_name"}}

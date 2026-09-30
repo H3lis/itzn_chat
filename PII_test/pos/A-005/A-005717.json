@@ -1,1 +1,0 @@
-{"id": "A-005717", "text": "김민준 씨는 010-5555-1234로 연락 주시고, 본인 이름은 라이언이라고 말씀해주셨어요.", "pi": [{"type": "NAME", "text": "김민준", "start": 0, "end": 3}, {"type": "PHONE", "text": "010-5555-1234", "start": 7, "end": 20}, {"type": "NAME", "text": "라이언", "start": 37, "end": 40}], "meta": {"domain": "중고거래 채팅", "style": "존댓말 상담", "obfuscation": ["romanized"], "hard_case": "none"}}

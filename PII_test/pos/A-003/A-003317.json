@@ -1,1 +1,0 @@
-{"id": "A-003317", "text": "제 담당 강사님은 우주 선생님이고, 연락처는 070-1111-2222로 되나요?", "pi": [{"type": "NAME", "text": "우주", "start": 10, "end": 12}, {"type": "PHONE", "text": "070-1111-2222", "start": 25, "end": 38}], "meta": {"domain": "학교 행정 문의", "style": "메신저 줄임말", "obfuscation": ["mixed_reading"], "hard_case": "homonym_name"}}

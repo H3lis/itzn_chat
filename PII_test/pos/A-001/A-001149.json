@@ -1,1 +1,0 @@
-{"id": "A-001149", "text": "저희 사무실 주소는 경기도 가평군 북면 중앙로 123번지이고, 거기 4층에 있습니다.", "pi": [{"type": "ADDRESS", "text": "경기도 가평군 북면 중앙로 123번지", "start": 11, "end": 31}], "meta": {"domain": "직장 메신저", "style": "격식체", "obfuscation": ["jamo_split"], "hard_case": "none"}}

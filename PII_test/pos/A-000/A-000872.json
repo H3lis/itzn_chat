@@ -1,1 +1,0 @@
-{"id": "A-000872", "text": "카드 번호는 끝 네 자리가 7890이고, 혹시 다른 정보는 없으신가요? 재차 확인 부탁드립니다.", "pi": [{"type": "CARD", "text": "7890", "start": 15, "end": 19}], "meta": {"domain": "SNS 댓글", "style": "반말 대화", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

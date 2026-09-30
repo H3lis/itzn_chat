@@ -1,1 +1,0 @@
-{"id": "A-002121", "text": "고객님의 문의사항은 접수되셨습니다. 접수번호는 7890이며, 연락처는 010-5555-1234입니다.", "pi": [{"type": "OTHER_ID", "text": "7890", "start": 26, "end": 30}, {"type": "PHONE", "text": "010-5555-1234", "start": 39, "end": 52}], "meta": {"domain": "택배 문의", "style": "존댓말 상담", "obfuscation": ["plain"], "hard_case": "none"}}

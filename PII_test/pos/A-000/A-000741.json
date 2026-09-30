@@ -1,1 +1,0 @@
-{"id": "A-000741", "text": "생년월일은 1990년 5월 15일이시고, 소속 부서는 마케팅팀으로 확인되었습니다.", "pi": [{"type": "BIRTH", "text": "1990년 5월 15일", "start": 6, "end": 18}, {"type": "ORG", "text": "마케팅팀", "start": 30, "end": 34}], "meta": {"domain": "콜센터 상담 요약", "style": "음성인식(STT) 전사", "obfuscation": ["korean_reading"], "hard_case": "org_person"}}

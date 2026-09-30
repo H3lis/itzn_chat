@@ -1,1 +1,0 @@
-{"id": "A-000484", "text": "이메일 주소는 abc-@abc.co.kr이고, 주소는 서울시 강남구 테헤란로 123입니다.", "pi": [{"type": "EMAIL", "text": "abc-@abc.co.kr", "start": 8, "end": 22}, {"type": "ADDRESS", "text": "서울시 강남구 테헤란로 123", "start": 30, "end": 46}], "meta": {"domain": "고객센터 채팅", "style": "격식체", "obfuscation": ["lookalike_char", "split_utterance"], "hard_case": "none"}}

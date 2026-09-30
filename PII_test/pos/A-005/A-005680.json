@@ -1,1 +1,0 @@
-{"id": "A-005680", "text": "저희가 가고자 하는 곳 주소가 경기도 용인시 기흥구 보정동 123-45번지고요. 큰길 쪽에서 버스로 내리시면 바로 보입니다.", "pi": [{"type": "ADDRESS", "text": "경기도 용인시 기흥구 보정동 123-45번지", "start": 17, "end": 41}], "meta": {"domain": "여행 예약", "style": "길고 장황한 설명", "obfuscation": ["jamo_split"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-004410", "text": "첫 번째 주민등록번호는 980515-2345678이고요, 나머지 하나는 980515-9876543으로 처리해 주시면 됩니다.", "pi": [{"type": "RRN", "text": "980515-2345678", "start": 13, "end": 27}, {"type": "RRN", "text": "980515-9876543", "start": 40, "end": 54}], "meta": {"domain": "여행 예약", "style": "존댓말 상담", "obfuscation": ["separator_noise"], "hard_case": "none"}}

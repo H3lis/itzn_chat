@@ -1,1 +1,0 @@
-{"id": "A-002351", "text": "운전면허증은 'S3L1234' 같고, 이름은 박지훈 씨라고 말씀해주시면 됩니다.", "pi": [{"type": "DRIVER_LICENSE", "text": "S3L1234", "start": 8, "end": 15}, {"type": "NAME", "text": "박지훈", "start": 25, "end": 28}], "meta": {"domain": "금융 상담", "style": "메신저 줄임말", "obfuscation": ["stt_error"], "hard_case": "none"}}

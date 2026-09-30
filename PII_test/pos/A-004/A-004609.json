@@ -1,1 +1,0 @@
-{"id": "A-004609", "text": "문의하신 분의 성함은 박지혜이고, 연락처는 070-1111-2222입니다. 이 정보로 확인하겠습니다.", "pi": [{"type": "NAME", "text": "박지혜", "start": 12, "end": 15}, {"type": "PHONE", "text": "070-1111-2222", "start": 24, "end": 37}], "meta": {"domain": "병원 접수", "style": "공문서풍", "obfuscation": ["romanized"], "hard_case": "none"}}

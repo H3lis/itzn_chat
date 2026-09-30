@@ -1,1 +1,0 @@
-{"id": "A-005718", "text": "거주하시는 주소는 서울시 종로구 세종로 104고요. 혹시 인터넷 주소는 211.222.333.444로 기억하시나요?", "pi": [{"type": "ADDRESS", "text": "서울시 종로구 세종로 104", "start": 10, "end": 25}, {"type": "IP_ADDR", "text": "211.222.333.444", "start": 40, "end": 55}], "meta": {"domain": "이메일 본문", "style": "길고 장황한 설명", "obfuscation": ["self_correction"], "hard_case": "none"}}

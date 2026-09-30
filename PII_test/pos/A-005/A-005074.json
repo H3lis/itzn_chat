@@ -1,1 +1,0 @@
-{"id": "A-005074", "text": "고객님, 연락 가능한 번호를 다시 한번 말씀해 주시겠어요? 010 5555 1234요.", "pi": [{"type": "PHONE", "text": "010 5555 1234", "start": 33, "end": 46}], "meta": {"domain": "고객센터 채팅", "style": "음성인식(STT) 전사", "obfuscation": ["korean_reading"], "hard_case": "none"}}

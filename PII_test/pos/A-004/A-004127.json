@@ -1,1 +1,0 @@
-{"id": "A-004127", "text": "문의하신 이메일 주소가 user.name@mail.com으로 맞으신가요? 혹시 다른 주소도 괜찮으신가요?", "pi": [{"type": "EMAIL", "text": "user.name@mail.com", "start": 13, "end": 31}], "meta": {"domain": "부동산 상담", "style": "격식체", "obfuscation": ["separator_noise"], "hard_case": "none"}}

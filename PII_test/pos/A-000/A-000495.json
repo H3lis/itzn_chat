@@ -1,1 +1,0 @@
-{"id": "A-000495", "text": "담당자님, 문의드립니다. 제 메일 주소는 미소(at)네이버 점 컴 이고요, 이름은 미소예요.", "pi": [{"type": "EMAIL", "text": "미소(at)네이버 점 컴", "start": 23, "end": 36}, {"type": "NAME", "text": "미소", "start": 46, "end": 48}], "meta": {"domain": "콜센터 상담 요약", "style": "오타 많은 채팅", "obfuscation": ["jamo_split", "separator_noise"], "hard_case": "homonym_name"}}

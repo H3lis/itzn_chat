@@ -1,1 +1,0 @@
-{"id": "A-005030", "text": "공주 님, 청구서 상 주소지랑 성함이 혹시 맞는지 다시 한 번만 확인 부탁드릴게요.", "pi": [{"type": "NAME", "text": "공주", "start": 0, "end": 2}, {"type": "ADDRESS", "text": "주소지", "start": 12, "end": 15}], "meta": {"domain": "보험 청구", "style": "격식체", "obfuscation": ["honorific_ref"], "hard_case": "homonym_name"}}

@@ -1,1 +1,0 @@
-{"id": "A-005966", "text": "담당자 메일은 info.user@test.com이고요, 연락처는 010.5555.1234로 부탁드립니다.", "pi": [{"type": "EMAIL", "text": "info.user@test.com", "start": 8, "end": 26}, {"type": "PHONE", "text": "010.5555.1234", "start": 36, "end": 49}], "meta": {"domain": "직장 메신저", "style": "오타 많은 채팅", "obfuscation": ["separator_noise"], "hard_case": "none"}}

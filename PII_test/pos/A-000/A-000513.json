@@ -1,1 +1,0 @@
-{"id": "A-000513", "text": "담당자님 성함이 어떻게 되시나요? 성함이 이지은 씨 맞으신가요? 아니면 다른 분이신가요?", "pi": [{"type": "NAME", "text": "이지은", "start": 23, "end": 26}, {"type": "NAME", "text": "다른 분", "start": 40, "end": 44}], "meta": {"domain": "부동산 상담", "style": "음성인식(STT) 전사", "obfuscation": ["plain"], "hard_case": "none"}}

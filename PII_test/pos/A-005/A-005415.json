@@ -1,1 +1,0 @@
-{"id": "A-005415", "text": "어제 같이 만난 지수 말이야, 주소가 서울시 강남구 역삼동 123-4번지야. 우리 집 근처에 사니까 너한테 오기 편할 거야.", "pi": [{"type": "NAME", "text": "지수", "start": 9, "end": 11}, {"type": "ADDRESS", "text": "서울시 강남구 역삼동 123-4번지", "start": 21, "end": 40}], "meta": {"domain": "이메일 본문", "style": "반말 대화", "obfuscation": ["plain"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-000052", "text": "택배는요, 010-1111-2222로 오는 건가요? 혹시 주소는요? 미로만요.", "pi": [{"type": "PHONE", "text": "010-1111-2222", "start": 6, "end": 19}], "meta": {"domain": "택배 문의", "style": "오타 많은 채팅", "obfuscation": ["stt_error", "mixed_reading"], "hard_case": "none"}}

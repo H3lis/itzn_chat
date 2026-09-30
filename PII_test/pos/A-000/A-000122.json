@@ -1,1 +1,0 @@
-{"id": "A-000122", "text": "이메일 주소가 ㅇ1O@zomail(at)gimail(dot)com이니 확인 부탁드리고, 접수하시려면 꼭 정확히 말씀해주세요.", "pi": [{"type": "EMAIL", "text": "ㅇ1O@zomail(at)gimail(dot)com", "start": 8, "end": 36}], "meta": {"domain": "병원 접수", "style": "길고 장황한 설명", "obfuscation": ["lookalike_char", "email_spoken"], "hard_case": "none"}}

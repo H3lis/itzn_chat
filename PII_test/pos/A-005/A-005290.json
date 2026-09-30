@@ -1,1 +1,0 @@
-{"id": "A-005290", "text": "제가 가야 할 주소는 서울시 강남구 테헤란로 1234이고요, 정확한 주소 확인 부탁드려요.", "pi": [{"type": "ADDRESS", "text": "서울시 강남구 테헤란로 1234", "start": 12, "end": 29}], "meta": {"domain": "쇼핑몰 문의", "style": "격식체", "obfuscation": ["korean_reading", "split_utterance"], "hard_case": "none"}}

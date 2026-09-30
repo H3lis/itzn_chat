@@ -1,1 +1,0 @@
-{"id": "A-002399", "text": "주문하신 상품은 5500부터 6600까지의 게이트가 적용되는데, 이 정보가 정확한가요? 카드번호 끝 네 자리가 7777이에요.", "pi": [{"type": "ADDRESS", "text": "5500", "start": 9, "end": 13}, {"type": "CARD", "text": "7777", "start": 62, "end": 66}], "meta": {"domain": "온라인 강의 Q&A", "style": "오타 많은 채팅", "obfuscation": ["split_utterance"], "hard_case": "none"}}

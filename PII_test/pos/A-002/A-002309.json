@@ -1,1 +1,0 @@
-{"id": "A-002309", "text": "신분증 등록 번호가 궁금해서요. 혹시 공란으로 처리하면 안 될까요? 번호로 주시겠어요?", "pi": [{"type": "ID", "text": "공란", "start": 21, "end": 23}], "meta": {"domain": "부동산 상담", "style": "격식체", "obfuscation": ["lookalike_char", "romanized"], "hard_case": "none"}}

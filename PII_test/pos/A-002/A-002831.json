@@ -1,1 +1,0 @@
-{"id": "A-002831", "text": "환자분 성함은 김민지이고, 접수처 전화번호는 02-777-1111, 거주지는 서울특별시 강남구 테헤란로 123입니다.", "pi": [{"type": "PHONE", "text": "02-777-1111", "start": 25, "end": 36}, {"type": "ADDRESS", "text": "서울특별시 강남구 테헤란로 123", "start": 43, "end": 61}], "meta": {"domain": "병원 접수", "style": "공문서풍", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

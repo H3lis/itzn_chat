@@ -1,1 +1,0 @@
-{"id": "A-005775", "text": "김철수 과장님께서 010-5555-1234로 연락 주신 건 확인했습니다.", "pi": [{"type": "NAME", "text": "김철수", "start": 0, "end": 3}, {"type": "PHONE", "text": "010-5555-1234", "start": 10, "end": 23}], "meta": {"domain": "콜센터 상담 요약", "style": "짧은 단답", "obfuscation": ["honorific_ref"], "hard_case": "none"}}

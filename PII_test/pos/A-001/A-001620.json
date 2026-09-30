@@ -1,1 +1,0 @@
-{"id": "A-001620", "text": "제 여권 번호는 G-5555-A-1111이에요. 이건 5555구역에 해당해요.", "pi": [{"type": "PASSPORT", "text": "G-5555-A-1111", "start": 9, "end": 22}], "meta": {"domain": "민원 접수", "style": "존댓말 상담", "obfuscation": ["separator_noise", "mixed_reading"], "hard_case": "none"}}

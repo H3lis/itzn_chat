@@ -1,1 +1,0 @@
-{"id": "A-005381", "text": "달님, 오늘 혹시 연락 주신 번호가 1044 8888 이 맞는지 다시 확인해 줄래?", "pi": [{"type": "NAME", "text": "달님", "start": 0, "end": 2}, {"type": "PHONE", "text": "1044 8888", "start": 20, "end": 29}], "meta": {"domain": "직장 메신저", "style": "반말 대화", "obfuscation": ["korean_reading", "split_utterance"], "hard_case": "homonym_name"}}

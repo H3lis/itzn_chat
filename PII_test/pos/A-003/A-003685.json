@@ -1,1 +1,0 @@
-{"id": "A-003685", "text": "제가 주문한 물건을 받는 주소지가 변경됐는데, 혹시 제 이메일이 user_name@example.com이 맞는지 확인 좀 해주세요? 제 이름은 하루예요.", "pi": [{"type": "EMAIL", "text": "user_name@example.com", "start": 36, "end": 57}, {"type": "NAME", "text": "하루", "start": 80, "end": 82}], "meta": {"domain": "택배 문의", "style": "반말 대화", "obfuscation": ["separator_noise", "romanized"], "hard_case": "homonym_name"}}

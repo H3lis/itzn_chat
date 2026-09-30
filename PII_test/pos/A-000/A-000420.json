@@ -1,1 +1,0 @@
-{"id": "A-000420", "text": "접속 아이디가 ㅊㅓㄱㅅㅜ고, 원격 IP 주소는 192.168.0.1로 확인되었는데, 이게 맞나요?", "pi": [{"type": "ID", "text": "ㅊㅓㄱㅅㅜ", "start": 8, "end": 13}, {"type": "IP_ADDR", "text": "192.168.0.1", "start": 26, "end": 37}], "meta": {"domain": "음성통화 전사문", "style": "길고 장황한 설명", "obfuscation": ["jamo_split", "stt_error"], "hard_case": "nickname_id"}}

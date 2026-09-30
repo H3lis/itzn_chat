@@ -1,1 +1,0 @@
-{"id": "A-002140", "text": "혹시 제가 전에 사용했던 주소지가 '서울시 강남구 테헤란로 456' 맞나요? 그리고 제 이름은 라임이에요. 이 정보가 맞는지 한번 확인 부탁드립니다.", "pi": [{"type": "ADDRESS", "text": "서울시 강남구 테헤란로 456", "start": 20, "end": 36}, {"type": "NAME", "text": "라임", "start": 53, "end": 55}], "meta": {"domain": "보험 청구", "style": "구어체", "obfuscation": ["romanized"], "hard_case": "homonym_name"}}

@@ -1,1 +1,0 @@
-{"id": "A-003272", "text": "배달 받을 사람 이름은 박지수에요. 저희 집 앞에 두고 가주시면 돼요.", "pi": [{"type": "NAME", "text": "박지수", "start": 13, "end": 16}], "meta": {"domain": "배달 요청사항", "style": "짧은 단답", "obfuscation": ["jamo_split"], "hard_case": "none"}}

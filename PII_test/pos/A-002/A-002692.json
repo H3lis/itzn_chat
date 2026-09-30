@@ -1,1 +1,0 @@
-{"id": "A-002692", "text": "저희가 알려드린 아이디가 맞는지 다시 한 번만요? 'user_cool_id' 이거 맞나요? 아니면 'user_new_id' 이요?", "pi": [{"type": "ID", "text": "user_cool_id", "start": 29, "end": 41}, {"type": "NAME", "text": "user_new_id", "start": 56, "end": 67}], "meta": {"domain": "이메일 본문", "style": "메신저 줄임말", "obfuscation": ["self_correction"], "hard_case": "nickname_id"}}

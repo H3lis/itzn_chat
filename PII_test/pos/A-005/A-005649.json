@@ -1,1 +1,0 @@
-{"id": "A-005649", "text": "네, 고객님. 연락드릴 번호는 010-5555-6666 입니다. 이 번호로 다시 전화드리겠습니다.", "pi": [{"type": "PHONE", "text": "010-5555-6666", "start": 17, "end": 30}], "meta": {"domain": "고객센터 채팅", "style": "음성인식(STT) 전사", "obfuscation": ["plain"], "hard_case": "none"}}

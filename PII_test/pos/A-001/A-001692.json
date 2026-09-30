@@ -1,1 +1,0 @@
-{"id": "A-001692", "text": "혹시 성함이 미소 씨 되시는 분인가요? 연락처는 010-1234-5678이 맞으신지 확인해 볼게요.", "pi": [{"type": "NAME", "text": "미소", "start": 7, "end": 9}, {"type": "PHONE", "text": "010-1234-5678", "start": 27, "end": 40}], "meta": {"domain": "병원 접수", "style": "반말 대화", "obfuscation": ["mixed_reading"], "hard_case": "homonym_name"}}

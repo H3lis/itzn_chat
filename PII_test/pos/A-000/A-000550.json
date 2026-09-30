@@ -1,1 +1,0 @@
-{"id": "A-000550", "text": "차량 번호가 12가 3345였나요? 아니요, 죄송해요. 고객님 성함은 이슬 맞죠?", "pi": [{"type": "CAR_PLATE", "text": "12가 3345", "start": 7, "end": 15}, {"type": "NAME", "text": "이슬", "start": 39, "end": 41}], "meta": {"domain": "콜센터 상담 요약", "style": "반말 대화", "obfuscation": ["stt_error"], "hard_case": "homonym_name"}}

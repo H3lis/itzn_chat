@@ -1,1 +1,0 @@
-{"id": "A-004100", "text": "제 프로필은 닉네임이 '꿀잼러'고, SNS는 @kkl_user로 관리하고 있어요.", "pi": [{"type": "NAME", "text": "꿀잼러", "start": 13, "end": 16}, {"type": "SNS", "text": "@kkl_user", "start": 25, "end": 34}], "meta": {"domain": "SNS 댓글", "style": "메신저 줄임말", "obfuscation": ["romanized"], "hard_case": "nickname_id"}}

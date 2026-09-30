@@ -1,1 +1,0 @@
-{"id": "A-005058", "text": "네, 보험증서 번호 말씀이시죠? 5학년 7반, 총액은 901234원 입니다.", "pi": [{"type": "CARD", "text": "901234", "start": 30, "end": 36}], "meta": {"domain": "병원 접수", "style": "음성인식(STT) 전사", "obfuscation": ["plain"], "hard_case": "none"}}

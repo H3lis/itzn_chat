@@ -1,1 +1,0 @@
-{"id": "A-000806", "text": "자두가 왔어? 어제 본 건 이름이 자두야? 번호는 이거 맞아? 010-1234-5678.", "pi": [{"type": "NAME", "text": "자두", "start": 0, "end": 2}, {"type": "PHONE", "text": "010-1234-5678", "start": 35, "end": 48}], "meta": {"domain": "병원 접수", "style": "반말 대화", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

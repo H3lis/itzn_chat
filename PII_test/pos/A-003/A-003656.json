@@ -1,1 +1,0 @@
-{"id": "A-003656", "text": "제 이름이 뭐였죠? 아, 김민수예요.", "pi": [{"type": "NAME", "text": "김민수", "start": 14, "end": 17}], "meta": {"domain": "고객센터 채팅", "style": "짧은 단답", "obfuscation": ["self_correction"], "hard_case": "none"}}

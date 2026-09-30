@@ -1,1 +1,0 @@
-{"id": "A-001826", "text": "네, 그 건은 김 과장님께 문의하시고, 학생 등록번호가 20240011이라는 정보도 같이 말씀해주셔야 합니다.", "pi": [{"type": "NAME", "text": "김 과장", "start": 8, "end": 12}, {"type": "ID", "text": "20240011", "start": 31, "end": 39}], "meta": {"domain": "학교 행정 문의", "style": "길고 장황한 설명", "obfuscation": ["honorific_ref"], "hard_case": "none"}}

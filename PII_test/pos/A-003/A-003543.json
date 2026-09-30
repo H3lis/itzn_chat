@@ -1,1 +1,0 @@
-{"id": "A-003543", "text": "네, 부동산 매물 번호는 010-9999-8888이고요. 주인분 성함이 김철수 씨 맞으신가요?", "pi": [{"type": "PHONE", "text": "010-9999-8888", "start": 14, "end": 27}, {"type": "NAME", "text": "김철수", "start": 40, "end": 43}], "meta": {"domain": "부동산 상담", "style": "구어체", "obfuscation": ["plain"], "hard_case": "none"}}

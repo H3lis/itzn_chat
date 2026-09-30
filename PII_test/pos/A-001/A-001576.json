@@ -1,1 +1,0 @@
-{"id": "A-001576", "text": "강사님, 제가 어제 배운 내용은 기억하는데, 혹시 성함 다시 한번 여쭤봐도 될까요? 김과장님 말씀이신가요?", "pi": [{"type": "NAME", "text": "김과장님", "start": 47, "end": 51}], "meta": {"domain": "온라인 강의 Q&A", "style": "메신저 줄임말", "obfuscation": ["honorific_ref", "self_correction"], "hard_case": "none"}}

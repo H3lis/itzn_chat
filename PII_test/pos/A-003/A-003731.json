@@ -1,1 +1,0 @@
-{"id": "A-003731", "text": "제 생년월일은 2000년 1월 1일부터 2000년 1월 1일까지고요, 기타 식별 번호는 9900112233에요.", "pi": [{"type": "BIRTH", "text": "2000년 1월 1일", "start": 8, "end": 19}, {"type": "OTHER_ID", "text": "9900112233", "start": 49, "end": 59}], "meta": {"domain": "여행 예약", "style": "짧은 단답", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

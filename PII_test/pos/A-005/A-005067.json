@@ -1,1 +1,0 @@
-{"id": "A-005067", "text": "ㅇㅇ님, 하늘 씨가 연락 왔는데, 연락처가 010-1234-5678 맞아요? 성함은 하늘이라고 하던데요.", "pi": [{"type": "NAME", "text": "하늘", "start": 5, "end": 7}, {"type": "PHONE", "text": "010-1234-5678", "start": 24, "end": 37}], "meta": {"domain": "회의록", "style": "메신저 줄임말", "obfuscation": ["stt_error", "jamo_split"], "hard_case": "homonym_name"}}

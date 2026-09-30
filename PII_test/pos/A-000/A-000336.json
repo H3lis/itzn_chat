@@ -1,1 +1,0 @@
-{"id": "A-000336", "text": "문의주신 고객님 성함은 박지민 씨이시고, 연락 가능한 번호는 010-2222-3333입니다. 혹시 다른 분이신가요?", "pi": [{"type": "NAME", "text": "박지민", "start": 13, "end": 16}, {"type": "PHONE", "text": "010-2222-3333", "start": 34, "end": 47}], "meta": {"domain": "쇼핑몰 문의", "style": "공문서풍", "obfuscation": ["honorific_ref", "self_correction"], "hard_case": "none"}}

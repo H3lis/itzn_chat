@@ -1,1 +1,0 @@
-{"id": "A-002234", "text": "고객님 번호는 '010-5555-1234'로 확인됐고, 주민번호는 '750210-1234567'로 적어주시면 됩니다.", "pi": [{"type": "PHONE", "text": "010-5555-1234", "start": 9, "end": 22}, {"type": "RRN", "text": "750210-1234567", "start": 38, "end": 52}], "meta": {"domain": "고객센터 채팅", "style": "공문서풍", "obfuscation": ["mixed_reading", "lookalike_char"], "hard_case": "none"}}

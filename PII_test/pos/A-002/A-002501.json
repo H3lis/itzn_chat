@@ -1,1 +1,0 @@
-{"id": "A-002501", "text": "본 신청자의 주민등록번호는 910315-1******입니다. 누락된 부분은 추후 보완하도록 하겠습니다.", "pi": [{"type": "RRN", "text": "910315-1******", "start": 15, "end": 29}], "meta": {"domain": "SNS 댓글", "style": "공문서풍", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

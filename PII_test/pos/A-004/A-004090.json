@@ -1,1 +1,0 @@
-{"id": "A-004090", "text": "저희가 방문할 주소가 경기도 수원시 영통구인데, 혹시 여기가 맞는지 다시 한번 확인 부탁드립니다.", "pi": [{"type": "ADDRESS", "text": "경기도 수원시 영통구", "start": 12, "end": 23}], "meta": {"domain": "병원 접수", "style": "오타 많은 채팅", "obfuscation": ["stt_error", "korean_reading"], "hard_case": "none"}}

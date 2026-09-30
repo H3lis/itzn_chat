@@ -1,1 +1,0 @@
-{"id": "A-003583", "text": "저번에 말씀드렸던 계좌번호 말이야. 그거 구두로 말하자면, 1002부터 시작하는 번호로 된대.", "pi": [{"type": "ACCOUNT", "text": "1002", "start": 33, "end": 37}], "meta": {"domain": "금융 상담", "style": "반말 대화", "obfuscation": ["korean_reading"], "hard_case": "none"}}

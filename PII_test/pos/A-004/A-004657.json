@@ -1,1 +1,0 @@
-{"id": "A-004657", "text": "혹시 그분 성함이 온유 맞으신가요? 네, 온유 씨 말씀이시죠?", "pi": [{"type": "NAME", "text": "온유", "start": 10, "end": 12}], "meta": {"domain": "중고거래 채팅", "style": "구어체", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

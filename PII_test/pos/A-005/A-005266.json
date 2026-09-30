@@ -1,1 +1,0 @@
-{"id": "A-005266", "text": "계좌 번호는 0000-1111-2222로 되어있고요. 성함은 김민준님이 맞으실까요?", "pi": [{"type": "ACCOUNT", "text": "0000-1111-2222", "start": 7, "end": 21}, {"type": "NAME", "text": "김민준", "start": 34, "end": 37}], "meta": {"domain": "병원 접수", "style": "격식체", "obfuscation": ["lookalike_char", "jamo_split"], "hard_case": "none"}}

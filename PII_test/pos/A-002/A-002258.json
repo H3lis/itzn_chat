@@ -1,1 +1,0 @@
-{"id": "A-002258", "text": "제 이메일은 kim.developer(at)corp.net이고, 소속은 코리아 테크놀로지(KR-TECH)입니다.", "pi": [{"type": "EMAIL", "text": "kim.developer(at)corp.net", "start": 7, "end": 32}, {"type": "ORG", "text": "코리아 테크놀로지(KR-TECH)", "start": 40, "end": 58}], "meta": {"domain": "회의록", "style": "짧은 단답", "obfuscation": ["romanized", "separator_noise"], "hard_case": "org_person"}}

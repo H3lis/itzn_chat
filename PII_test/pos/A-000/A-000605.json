@@ -1,1 +1,0 @@
-{"id": "A-000605", "text": "예약 확인차 연락드렸습니다. 환자분 이메일 주소는 user@corp.net 이시고, 휴대폰 번호는 010-8888-7777로 되어있습니다.", "pi": [{"type": "EMAIL", "text": "user@corp.net", "start": 28, "end": 41}, {"type": "PHONE", "text": "010-8888-7777", "start": 55, "end": 68}], "meta": {"domain": "병원 접수", "style": "격식체", "obfuscation": ["repeat_expr", "mixed_reading"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-000475", "text": "그쪽 번호가 010 9999 8888 맞지? 그거로 오는 거야.", "pi": [{"type": "PHONE", "text": "010 9999 8888", "start": 7, "end": 20}], "meta": {"domain": "부동산 상담", "style": "반말 대화", "obfuscation": ["separator_noise", "korean_reading", "repeat_expr"], "hard_case": "none"}}

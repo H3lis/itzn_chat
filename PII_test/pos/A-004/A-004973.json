@@ -1,1 +1,0 @@
-{"id": "A-004973", "text": "저희 고객님 성함이요? 음, 이게 맞나... 아니요, 맞아요. '나무' 씨가 맞으신가요?", "pi": [{"type": "NAME", "text": "나무", "start": 36, "end": 38}], "meta": {"domain": "보험 청구", "style": "구어체", "obfuscation": ["self_correction"], "hard_case": "homonym_name"}}

@@ -1,1 +1,0 @@
-{"id": "A-004770", "text": "전화번호 말씀이신가요? 혹시 010-5555-1111 같은 번호 말씀하시는 건지요?", "pi": [{"type": "PHONE", "text": "010-5555-1111", "start": 16, "end": 29}], "meta": {"domain": "콜센터 상담 요약", "style": "구어체", "obfuscation": ["separator_noise", "stt_error", "repeat_expr"], "hard_case": "none"}}

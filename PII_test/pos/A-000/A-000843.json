@@ -1,1 +1,0 @@
-{"id": "A-000843", "text": "내 여권 번호가 이번에 갱신해야 하거든요. 예전 거는 ㄴㅇㅁㅈㄹㅋㄷㄱㅅ7890 같은 거예요. 자, 그거 말고 진짜는 ㄱㅏㅇㄴㅏㅁㅈㄹㅋㄷㄱㅅ7890이래요.", "pi": [{"type": "NAME", "text": "ㄴㅇㅁㅈㄹㅋㄷㄱㅅ7890", "start": 30, "end": 43}, {"type": "PASSPORT", "text": "ㄱㅏㅇㄴㅏㅁㅈㄹㅋㄷㄱㅅ7890", "start": 65, "end": 81}], "meta": {"domain": "직장 메신저", "style": "반말 대화", "obfuscation": ["jamo_split"], "hard_case": "none"}}

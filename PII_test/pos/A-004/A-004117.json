@@ -1,1 +1,0 @@
-{"id": "A-004117", "text": "고객님 계정의 비밀번호는 1234입니다. 확인 부탁드리는데요. 시스템상으로는 010.1111.2222-3333이라는 게 기록되어 있고요.", "pi": [{"type": "ACCOUNT", "text": "1234", "start": 14, "end": 18}], "meta": {"domain": "고객센터 채팅", "style": "공문서풍", "obfuscation": ["mixed_reading", "separator_noise"], "hard_case": "none"}}

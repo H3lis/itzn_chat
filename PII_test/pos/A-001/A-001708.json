@@ -1,1 +1,0 @@
-{"id": "A-001708", "text": "결제하신 카드는 비자 계정으로 되어있고, 담당자분은 이지은 씨라는 분이시죠?", "pi": [{"type": "CARD", "text": "비자", "start": 9, "end": 11}, {"type": "NAME", "text": "이지은", "start": 29, "end": 32}], "meta": {"domain": "병원 접수", "style": "구어체", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

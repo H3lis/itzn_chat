@@ -1,1 +1,0 @@
-{"id": "A-001265", "text": "저희 집 주소는 경기도 가상의 평화로 77번지이고요. 강의를 수강하시는 분은 김철수 님으로 확인되었습니다.", "pi": [{"type": "ADDRESS", "text": "경기도 가상의 평화로 77번지", "start": 9, "end": 25}, {"type": "NAME", "text": "김철수", "start": 43, "end": 46}], "meta": {"domain": "온라인 강의 Q&A", "style": "길고 장황한 설명", "obfuscation": ["korean_reading", "honorific_ref"], "hard_case": "none"}}

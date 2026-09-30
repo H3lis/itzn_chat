@@ -1,1 +1,0 @@
-{"id": "A-002193", "text": "담당 부서에 문의하시면 070-3333-4444로 연락 주시면 바로 연결될 겁니다.", "pi": [{"type": "PHONE", "text": "070-3333-4444", "start": 13, "end": 26}], "meta": {"domain": "직장 메신저", "style": "음성인식(STT) 전사", "obfuscation": ["split_utterance"], "hard_case": "none"}}

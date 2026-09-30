@@ -1,1 +1,0 @@
-{"id": "A-005141", "text": "문의하신 계정으로 확인해보니, 아이디는 test123@0101.com이고, 비밀번호는 8888이 맞으신가요?", "pi": [{"type": "EMAIL", "text": "test123@0101.com", "start": 22, "end": 38}], "meta": {"domain": "이메일 본문", "style": "존댓말 상담", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-004459", "text": "장미가 오늘 회사에 출근했다는 소식 들었어. 민준이가 추천한 '왕자님'이래.", "pi": [{"type": "NAME", "text": "장미", "start": 0, "end": 2}, {"type": "PHONE", "text": "왕자님", "start": 35, "end": 38}], "meta": {"domain": "SNS 댓글", "style": "구어체", "obfuscation": ["romanized", "korean_reading", "repeat_expr"], "hard_case": "homonym_name"}}

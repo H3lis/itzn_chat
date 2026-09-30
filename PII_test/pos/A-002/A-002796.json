@@ -1,1 +1,0 @@
-{"id": "A-002796", "text": "여권을 사용하실 경우, 번호는 AB1234567890이고 비상 연락처는 010-3333-4444로 남겨주세요.", "pi": [{"type": "PASSPORT", "text": "AB1234567890", "start": 17, "end": 29}, {"type": "PHONE", "text": "010-3333-4444", "start": 40, "end": 53}], "meta": {"domain": "민원 접수", "style": "존댓말 상담", "obfuscation": ["separator_noise"], "hard_case": "none"}}

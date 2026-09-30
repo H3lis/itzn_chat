@@ -1,1 +1,0 @@
-{"id": "A-002803", "text": "환자분 성함은 이영애라고 하셨고, 연락처는 010-9999-0000으로 되나요?", "pi": [{"type": "NAME", "text": "이영애", "start": 8, "end": 11}, {"type": "PHONE", "text": "010-9999-0000", "start": 24, "end": 37}], "meta": {"domain": "병원 접수", "style": "구어체", "obfuscation": ["self_correction"], "hard_case": "none"}}

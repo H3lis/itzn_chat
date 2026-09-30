@@ -1,1 +1,0 @@
-{"id": "A-000177", "text": "문의하신 메일 주소는 user(at)testnaver(dot)com이니 확인 부탁드립니다.", "pi": [{"type": "EMAIL", "text": "user(at)testnaver(dot)com", "start": 12, "end": 37}], "meta": {"domain": "쇼핑몰 문의", "style": "짧은 단답", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-004462", "text": "결제가 혹시 010 다음에 5가 네 번 그리고 7이 네 번으로 되나요?", "pi": [{"type": "CARD", "text": "010 다음에 5가 네 번 그리고 7이 네 번", "start": 7, "end": 32}], "meta": {"domain": "직장 메신저", "style": "메신저 줄임말", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-000634", "text": "이 수업 담당 교수님은 ㅇㅇ대학교 소속이신가요? 제가 알기로는 한글 자음으로만 구성된 학회에 속해 있다고 들었어요.", "pi": [{"type": "ORG", "text": "ㅇㅇ대학교", "start": 13, "end": 18}], "meta": {"domain": "온라인 강의 Q&A", "style": "구어체", "obfuscation": ["jamo_split"], "hard_case": "none"}}

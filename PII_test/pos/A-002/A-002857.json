@@ -1,1 +1,0 @@
-{"id": "A-002857", "text": "저기요, 제가 구매한 상품의 이름이 '지아'라는 분 거예요. 혹시 송장지나 연락처 같은 것도 좀 확인해 주실 수 있나요?", "pi": [{"type": "NAME", "text": "지아", "start": 21, "end": 23}], "meta": {"domain": "쇼핑몰 문의", "style": "반말 대화", "obfuscation": ["jamo_split"], "hard_case": "none"}}

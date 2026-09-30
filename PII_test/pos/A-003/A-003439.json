@@ -1,1 +1,0 @@
-{"id": "A-003439", "text": "겨울 님, 카드 번호부터 확인하시고, 이름은 무엇인가요? 전화번호도 다시 한번 말씀해 주시겠어요?", "pi": [{"type": "NAME", "text": "겨울", "start": 0, "end": 2}, {"type": "CARD", "text": "카드 번호", "start": 6, "end": 11}, {"type": "PHONE", "text": "전화번호", "start": 32, "end": 36}], "meta": {"domain": "부동산 상담", "style": "구어체", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

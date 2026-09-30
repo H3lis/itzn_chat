@@ -1,1 +1,0 @@
-{"id": "A-003383", "text": "지혜님, 작성하신 소셜 미디어 계정은 @jhihye_official이고, 성함이 지혜 맞나요?", "pi": [{"type": "NAME", "text": "지혜", "start": 0, "end": 2}, {"type": "SNS", "text": "@jhihye_official", "start": 21, "end": 37}], "meta": {"domain": "이메일 본문", "style": "음성인식(STT) 전사", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

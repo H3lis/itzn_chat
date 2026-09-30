@@ -1,1 +1,0 @@
-{"id": "A-004074", "text": "혹시 성함이 뭐라고 하셨죠? 아, 그게 홍길동이요. 아니요, 다시 말하면 임꺽정입니다.", "pi": [{"type": "NAME", "text": "홍길동", "start": 22, "end": 25}, {"type": "NAME", "text": "임꺽정", "start": 41, "end": 44}], "meta": {"domain": "부동산 상담", "style": "짧은 단답", "obfuscation": ["self_correction", "romanized"], "hard_case": "none"}}

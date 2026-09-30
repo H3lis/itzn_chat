@@ -1,1 +1,0 @@
-{"id": "A-002709", "text": "민원인께서는 연락처를 다시 한번 말씀해주시겠어요? 010 다시 3456 7890입니다.", "pi": [{"type": "PHONE", "text": "010 다시 3456 7890", "start": 28, "end": 44}], "meta": {"domain": "민원 접수", "style": "공문서풍", "obfuscation": ["korean_reading"], "hard_case": "none"}}

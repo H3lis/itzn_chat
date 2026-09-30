@@ -1,1 +1,0 @@
-{"id": "A-002219", "text": "접수하실 분 계정은 10.0.1.1이시고, 예약하신 전화번호는 (070) 9999-1111 이 맞을까요?", "pi": [{"type": "ACCOUNT", "text": "10.0.1.1", "start": 11, "end": 19}, {"type": "PHONE", "text": "(070) 9999-1111", "start": 35, "end": 50}], "meta": {"domain": "병원 접수", "style": "음성인식(STT) 전사", "obfuscation": ["split_utterance", "lookalike_char"], "hard_case": "none"}}

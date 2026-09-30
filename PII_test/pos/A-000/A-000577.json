@@ -1,1 +1,0 @@
-{"id": "A-000577", "text": "혹시 고객님 전화번호가 070-9876-5432 맞으신가요? 다시 한번 확인 부탁드려요.", "pi": [{"type": "PHONE", "text": "070-9876-5432", "start": 13, "end": 26}], "meta": {"domain": "고객센터 채팅", "style": "구어체", "obfuscation": ["korean_reading"], "hard_case": "none"}}

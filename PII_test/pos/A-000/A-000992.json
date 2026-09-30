@@ -1,1 +1,0 @@
-{"id": "A-000992", "text": "고객님의 연락처는 010-5555-4444로 저장되어 있나요?", "pi": [{"type": "PHONE", "text": "010-5555-4444", "start": 10, "end": 23}], "meta": {"domain": "보험 청구", "style": "구어체", "obfuscation": ["plain"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-004622", "text": "고객님, 성함이 어떻게 되시는지 다시 한번 말씀해 주시겠어요?", "pi": [{"type": "NAME", "text": "고객님", "start": 0, "end": 3}], "meta": {"domain": "쇼핑몰 문의", "style": "격식체", "obfuscation": ["plain"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-001610", "text": "고객님께서 요청하신 전화번호는 070-9999-1212입니다. 이 번호로 다시 한번 연락 주시길 바랍니다.", "pi": [{"type": "PHONE", "text": "070-9999-1212", "start": 17, "end": 30}], "meta": {"domain": "이메일 본문", "style": "길고 장황한 설명", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-005486", "text": "아, 계정비밀번호가 뭐였더라? 아, 아니라 이거는 ㅇㅇㅁㅁ1234예요. 이메일은 user(at)mail(dot)com으로 하셨죠?", "pi": [{"type": "ACCOUNT", "text": "ㅇㅇㅁㅁ1234", "start": 28, "end": 36}, {"type": "EMAIL", "text": "user(at)mail(dot)com", "start": 45, "end": 65}], "meta": {"domain": "부동산 상담", "style": "오타 많은 채팅", "obfuscation": ["self_correction"], "hard_case": "none"}}

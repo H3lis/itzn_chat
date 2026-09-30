@@ -1,1 +1,0 @@
-{"id": "A-005934", "text": "제 학생회원 번호는 9999이고, 이름은 김철수 씨, 연락처는 010-1234-5678입니다.", "pi": [{"type": "ID", "text": "9999", "start": 11, "end": 15}, {"type": "NAME", "text": "김철수", "start": 23, "end": 26}, {"type": "PHONE", "text": "010-1234-5678", "start": 35, "end": 48}], "meta": {"domain": "부동산 상담", "style": "존댓말 상담", "obfuscation": ["plain"], "hard_case": "nickname_id"}}

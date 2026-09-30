@@ -1,1 +1,0 @@
-{"id": "A-005841", "text": "운전면허증은 9999-1111-2222이고요. 전화번호는 010-2222-3333 맞으신가요?", "pi": [{"type": "DRIVER_LICENSE", "text": "9999-1111-2222", "start": 7, "end": 21}, {"type": "PHONE", "text": "010-2222-3333", "start": 32, "end": 45}], "meta": {"domain": "고객센터 채팅", "style": "짧은 단답", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

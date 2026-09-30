@@ -1,1 +1,0 @@
-{"id": "A-003646", "text": "혹시 예약하신 분 성함이요? 현우 씨라고 불러주시면 될까요? 예약자분은 정말 존경하는 분이신 것 같아요.", "pi": [{"type": "NAME", "text": "현우", "start": 16, "end": 18}], "meta": {"domain": "여행 예약", "style": "오타 많은 채팅", "obfuscation": ["jamo_split", "honorific_ref"], "hard_case": "none"}}

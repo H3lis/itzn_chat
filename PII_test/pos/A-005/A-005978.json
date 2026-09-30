@@ -1,1 +1,0 @@
-{"id": "A-005978", "text": "저 도토리예요. 그리고 제 이름은 도토리라고 불러주세요. 주민번호가 필요해요.", "pi": [{"type": "DRIVER_LICENSE", "text": "도토리", "start": 2, "end": 5}, {"type": "NAME", "text": "도토리", "start": 19, "end": 22}], "meta": {"domain": "쇼핑몰 문의", "style": "반말 대화", "obfuscation": ["romanized"], "hard_case": "homonym_name"}}

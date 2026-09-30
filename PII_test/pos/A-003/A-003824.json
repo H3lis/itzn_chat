@@ -1,1 +1,0 @@
-{"id": "A-003824", "text": "온유 선생님, 연락처가 010-2222-3333이 맞으실까요? 다시 한번 확인 부탁드립니다.", "pi": [{"type": "NAME", "text": "온유", "start": 0, "end": 2}, {"type": "PHONE", "text": "010-2222-3333", "start": 13, "end": 26}], "meta": {"domain": "콜센터 상담 요약", "style": "격식체", "obfuscation": ["honorific_ref", "repeat_expr"], "hard_case": "homonym_name"}}

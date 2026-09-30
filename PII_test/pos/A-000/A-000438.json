@@ -1,1 +1,0 @@
-{"id": "A-000438", "text": "전화번호가 010 다이얼로 9999 그리고 8888이예요. 다시 한번 말씀드릴게요.", "pi": [{"type": "PHONE", "text": "010 다이얼로 9999 그리고 8888", "start": 6, "end": 28}], "meta": {"domain": "온라인 강의 Q&A", "style": "반말 대화", "obfuscation": ["stt_error"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-005216", "text": "카드 번호는 5555, 그리고 담당자는 박서준입니다. 확인 부탁드려요.", "pi": [{"type": "CARD", "text": "5555", "start": 7, "end": 11}, {"type": "NAME", "text": "박서준", "start": 22, "end": 25}], "meta": {"domain": "회의록", "style": "짧은 단답", "obfuscation": ["mixed_reading", "stt_error"], "hard_case": "none"}}

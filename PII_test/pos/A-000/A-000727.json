@@ -1,1 +1,0 @@
-{"id": "A-000727", "text": "학생증에 적힌 학번이 1234567890이 맞나요?", "pi": [{"type": "ID", "text": "1234567890", "start": 12, "end": 22}], "meta": {"domain": "학교 행정 문의", "style": "음성인식(STT) 전사", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

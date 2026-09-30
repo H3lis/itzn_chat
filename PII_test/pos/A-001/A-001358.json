@@ -1,1 +1,0 @@
-{"id": "A-001358", "text": "혹시 배송이 언제쯤 올까요? 고객님 성함은 박지윤 님으로 되어 있는데, 연락처가 010-5555-6666 맞으신가요?", "pi": [{"type": "PHONE", "text": "010-5555-6666", "start": 45, "end": 58}], "meta": {"domain": "쇼핑몰 문의", "style": "오타 많은 채팅", "obfuscation": ["korean_reading"], "hard_case": "none"}}

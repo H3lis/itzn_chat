@@ -1,1 +1,0 @@
-{"id": "A-003218", "text": "운전면허증 번호가 901234567890으로 보이는데, 이게 맞으신가요?", "pi": [{"type": "DRIVER_LICENSE", "text": "901234567890", "start": 10, "end": 22}], "meta": {"domain": "음성통화 전사문", "style": "음성인식(STT) 전사", "obfuscation": ["korean_reading"], "hard_case": "none"}}

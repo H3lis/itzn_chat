@@ -1,1 +1,0 @@
-{"id": "A-005736", "text": "네, 담당자님. 메일은 test.user@email.com 으로 되어 있고, 전화번호는 010-1111-2222 맞죠?", "pi": [{"type": "EMAIL", "text": "test.user@email.com", "start": 13, "end": 32}, {"type": "PHONE", "text": "010-1111-2222", "start": 49, "end": 62}], "meta": {"domain": "학교 행정 문의", "style": "메신저 줄임말", "obfuscation": ["plain"], "hard_case": "none"}}

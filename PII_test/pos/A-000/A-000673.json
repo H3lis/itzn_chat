@@ -1,1 +1,0 @@
-{"id": "A-000673", "text": "혹시 그 빌라 주소가 서울시 마포구 월드컵로 123-45 쪽 맞을까요? 아니면 정확히 번지수가 필요해요.", "pi": [{"type": "ADDRESS", "text": "서울시 마포구 월드컵로 123-45", "start": 12, "end": 31}], "meta": {"domain": "부동산 상담", "style": "반말 대화", "obfuscation": ["korean_reading"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-005818", "text": "선생님, 제 이름은 기쁨이라고 불러주셔도 되고요, 본명은 Kim Gippeum이라고도 기재되어 있습니다.", "pi": [{"type": "NAME", "text": "기쁨", "start": 11, "end": 13}, {"type": "NAME", "text": "Kim Gippeum", "start": 32, "end": 43}], "meta": {"domain": "온라인 강의 Q&A", "style": "길고 장황한 설명", "obfuscation": ["jamo_split", "romanized"], "hard_case": "homonym_name"}}

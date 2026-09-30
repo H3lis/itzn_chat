@@ -1,1 +1,0 @@
-{"id": "A-001243", "text": "환자분 성함이 김대훈 맞으세요? 접수할 때 신분증에 적힌 대로요. 성함 말씀해 주세요.", "pi": [{"type": "NAME", "text": "김대훈", "start": 8, "end": 11}], "meta": {"domain": "병원 접수", "style": "짧은 단답", "obfuscation": ["jamo_split"], "hard_case": "none"}}

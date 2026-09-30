@@ -1,1 +1,0 @@
-{"id": "A-005463", "text": "제 이름이 김민수예요. 아, 아니요, 사실은 김민준이라고 하는데요. 네, 김민준이 맞아요.", "pi": [{"type": "NAME", "text": "김민수", "start": 6, "end": 9}, {"type": "NAME", "text": "김민준", "start": 25, "end": 28}], "meta": {"domain": "커뮤니티 게시글", "style": "구어체", "obfuscation": ["self_correction"], "hard_case": "none"}}

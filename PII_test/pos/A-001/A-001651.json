@@ -1,1 +1,0 @@
-{"id": "A-001651", "text": "혹시 하늘 씨 정보가 필요하신 건가요? 전화번호는 010-3000-4040 입니다.", "pi": [{"type": "NAME", "text": "하늘", "start": 3, "end": 5}, {"type": "PHONE", "text": "010-3000-4040", "start": 28, "end": 41}], "meta": {"domain": "고객센터 채팅", "style": "오타 많은 채팅", "obfuscation": ["stt_error"], "hard_case": "homonym_name"}}

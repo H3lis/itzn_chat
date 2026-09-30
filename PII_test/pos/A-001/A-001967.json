@@ -1,1 +1,0 @@
-{"id": "A-001967", "text": "혹시 온유 씨 계신가요? 보험 서류 작성 때문에 여쭤봐요.", "pi": [{"type": "NAME", "text": "온유", "start": 3, "end": 5}], "meta": {"domain": "보험 청구", "style": "오타 많은 채팅", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

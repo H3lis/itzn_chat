@@ -1,1 +1,0 @@
-{"id": "A-003143", "text": "다음 회의록에 따르면, 이 부분이 핵심이에요. 김철수 씨는 010-9999-8888로 연락 주신 게 맞고요.", "pi": [{"type": "NAME", "text": "김철수", "start": 26, "end": 29}, {"type": "PHONE", "text": "010-9999-8888", "start": 33, "end": 46}], "meta": {"domain": "회의록", "style": "존댓말 상담", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

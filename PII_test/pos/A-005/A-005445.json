@@ -1,1 +1,0 @@
-{"id": "A-005445", "text": "저의 생년월일이 95년 3월 15일이고요, 사번은 GHM1029예요.", "pi": [{"type": "BIRTH", "text": "95년 3월 15일", "start": 9, "end": 19}, {"type": "ID", "text": "GHM1029", "start": 28, "end": 35}], "meta": {"domain": "직장 메신저", "style": "길고 장황한 설명", "obfuscation": ["plain"], "hard_case": "nickname_id"}}

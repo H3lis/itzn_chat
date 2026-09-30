@@ -1,1 +1,0 @@
-{"id": "A-003599", "text": "이름이요? 'ㄹㄷㅈ'이에요. 전화번호는 010. 1111. 2222라고요. 맞나요?", "pi": [{"type": "NAME", "text": "ㄹㄷㅈ", "start": 7, "end": 10}, {"type": "PHONE", "text": "010. 1111. 2222", "start": 22, "end": 37}], "meta": {"domain": "학교 행정 문의", "style": "반말 대화", "obfuscation": ["lookalike_char", "separator_noise", "self_correction"], "hard_case": "none"}}

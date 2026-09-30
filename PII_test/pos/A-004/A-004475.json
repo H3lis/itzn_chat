@@ -1,1 +1,0 @@
-{"id": "A-004475", "text": "문의처 이메일은 support-test@ww-corp.net 이고, 저희 회사명은 테스트 코퍼레이션입니다.", "pi": [{"type": "EMAIL", "text": "support-test@ww-corp.net", "start": 9, "end": 33}, {"type": "ORG", "text": "테스트 코퍼레이션", "start": 46, "end": 55}], "meta": {"domain": "음성통화 전사문", "style": "음성인식(STT) 전사", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

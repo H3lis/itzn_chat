@@ -1,1 +1,0 @@
-{"id": "A-003601", "text": "이메일 주소 두 개 알려주세요. 하나는 test.user@gmail.com 이고요, 다른 건 info:test@naver.net 으로 부탁드려요.", "pi": [{"type": "EMAIL", "text": "test.user@gmail.com", "start": 22, "end": 41}, {"type": "EMAIL", "text": "info:test@naver.net", "start": 52, "end": 71}], "meta": {"domain": "학교 행정 문의", "style": "메신저 줄임말", "obfuscation": ["separator_noise"], "hard_case": "none"}}

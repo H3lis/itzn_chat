@@ -1,1 +1,0 @@
-{"id": "A-000371", "text": "회원 아이디는 JAE2024 같은데, 제가 이메일은 jae.s24(at)gmail(dot)com으로 등록했어요.", "pi": [{"type": "ID", "text": "JAE2024", "start": 8, "end": 15}, {"type": "EMAIL", "text": "jae.s24(at)gmail(dot)com", "start": 29, "end": 53}], "meta": {"domain": "고객센터 채팅", "style": "격식체", "obfuscation": ["lookalike_char", "email_spoken"], "hard_case": "nickname_id"}}

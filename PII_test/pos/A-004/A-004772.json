@@ -1,1 +1,0 @@
-{"id": "A-004772", "text": "회신 부탁드리는 메일 주소는 testaaaaaa@g@@gle.com이에요.", "pi": [{"type": "EMAIL", "text": "testaaaaaa@g@@gle.com", "start": 16, "end": 37}], "meta": {"domain": "이메일 본문", "style": "짧은 단답", "obfuscation": ["email_spoken", "lookalike_char"], "hard_case": "none"}}

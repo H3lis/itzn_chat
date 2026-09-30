@@ -1,1 +1,0 @@
-{"id": "A-004587", "text": "저희 숙소 주소는 경기도 성남시 분당구 판교역 근처, 거기서부터 시작해서 다음은 5층이에요.", "pi": [{"type": "ADDRESS", "text": "경기도 성남시 분당구 판교역", "start": 10, "end": 25}], "meta": {"domain": "고객센터 채팅", "style": "길고 장황한 설명", "obfuscation": ["split_utterance"], "hard_case": "none"}}

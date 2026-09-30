@@ -1,1 +1,0 @@
-{"id": "A-004576", "text": "제 생년월일이 88년 5월 20일이 맞나요? 그리고 연락처는 010 3333 4444 이거든요.", "pi": [{"type": "BIRTH", "text": "88년 5월 20일", "start": 8, "end": 18}, {"type": "PHONE", "text": "010 3333 4444", "start": 34, "end": 47}], "meta": {"domain": "온라인 강의 Q&A", "style": "짧은 단답", "obfuscation": ["korean_reading"], "hard_case": "none"}}

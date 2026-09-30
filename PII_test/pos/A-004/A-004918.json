@@ -1,1 +1,0 @@
-{"id": "A-004918", "text": "운전면허증 번호는 12학년 3반, 그리고 성함은 박민수입니다.", "pi": [{"type": "DRIVER_LICENSE", "text": "12학년 3반", "start": 10, "end": 17}], "meta": {"domain": "배달 요청사항", "style": "짧은 단답", "obfuscation": ["stt_error"], "hard_case": "none"}}

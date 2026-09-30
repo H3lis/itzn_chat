@@ -1,1 +1,0 @@
-{"id": "A-003028", "text": "주소는 경기도 성남시 분당구 판교역로 500이고, 카드 번호는 3700 1234 5678 9012예요.", "pi": [{"type": "ADDRESS", "text": "경기도 성남시 분당구 판교역로 500", "start": 4, "end": 24}, {"type": "CARD", "text": "3700 1234 5678 9012", "start": 35, "end": 54}], "meta": {"domain": "보험 청구", "style": "반말 대화", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

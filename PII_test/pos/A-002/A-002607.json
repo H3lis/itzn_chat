@@ -1,1 +1,0 @@
-{"id": "A-002607", "text": "학번 검색 오류가 잦은데, 아마도 김민준님으로 검색해보시면 될 거예요. 아이디는 ㅇ1ㅇmnhy123이고요. 성함은 나라로 하시면 됩니다.", "pi": [{"type": "ACCOUNT", "text": "ㅇ1ㅇmnhy123", "start": 45, "end": 55}, {"type": "NAME", "text": "나라", "start": 64, "end": 66}], "meta": {"domain": "온라인 강의 Q&A", "style": "음성인식(STT) 전사", "obfuscation": ["romanized", "lookalike_char"], "hard_case": "homonym_name"}}

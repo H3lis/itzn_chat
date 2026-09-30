@@ -1,1 +1,0 @@
-{"id": "A-005920", "text": "배송을 좀 늦게 받았다고 하시고, 담당자분 성함이 미소 씨시고요. 그리고 다른 문의 ID는 A123B456 이라고 하네요.", "pi": [{"type": "NAME", "text": "미소", "start": 28, "end": 30}, {"type": "OTHER_ID", "text": "A123B456", "start": 51, "end": 59}], "meta": {"domain": "택배 문의", "style": "길고 장황한 설명", "obfuscation": ["stt_error"], "hard_case": "homonym_name"}}

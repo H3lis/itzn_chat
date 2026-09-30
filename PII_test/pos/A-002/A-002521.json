@@ -1,1 +1,0 @@
-{"id": "A-002521", "text": "발표를 맡은 분은 김민준 씨로, 그 분의 전문 분야는 네트워크 보안 쪽이고요. 기술적인 내용이라서 조금 길게 설명해야 할 것 같습니다.", "pi": [{"type": "NAME", "text": "김민준", "start": 10, "end": 13}], "meta": {"domain": "회의록", "style": "길고 장황한 설명", "obfuscation": ["jamo_split"], "hard_case": "none"}}

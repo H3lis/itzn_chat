@@ -1,1 +1,0 @@
-{"id": "A-002743", "text": "이메일은 user_test(at)mail.com으로 보내주시면 돼요.", "pi": [{"type": "EMAIL", "text": "user_test(at)mail.com", "start": 5, "end": 26}], "meta": {"domain": "중고거래 채팅", "style": "격식체", "obfuscation": ["separator_noise"], "hard_case": "none"}}

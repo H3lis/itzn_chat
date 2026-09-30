@@ -1,1 +1,0 @@
-{"id": "A-003081", "text": "저희 어머니 생년월일이 99년 5월 10일이고요, 이름은 김지우라고 말씀드렸어요.", "pi": [{"type": "BIRTH", "text": "99년 5월 10일", "start": 13, "end": 23}, {"type": "NAME", "text": "김지우", "start": 32, "end": 35}], "meta": {"domain": "배달 요청사항", "style": "존댓말 상담", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

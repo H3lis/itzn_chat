@@ -1,1 +1,0 @@
-{"id": "A-003060", "text": "첫 번째 계좌는 11112222입니다. 그리고 두 번째 계좌는 33334444로 부탁드립니다.", "pi": [{"type": "ACCOUNT", "text": "11112222", "start": 9, "end": 17}, {"type": "ACCOUNT", "text": "33334444", "start": 35, "end": 43}], "meta": {"domain": "음성통화 전사문", "style": "격식체", "obfuscation": ["split_utterance"], "hard_case": "none"}}

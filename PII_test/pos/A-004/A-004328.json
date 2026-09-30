@@ -1,1 +1,0 @@
-{"id": "A-004328", "text": "카드 번호는 3456, 그리고 전화번호는 010-9999-8888입니다. 이거 맞는지 확인 부탁드려요.", "pi": [{"type": "CARD", "text": "3456", "start": 7, "end": 11}, {"type": "PHONE", "text": "010-9999-8888", "start": 23, "end": 36}], "meta": {"domain": "민원 접수", "style": "길고 장황한 설명", "obfuscation": ["korean_reading"], "hard_case": "none"}}

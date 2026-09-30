@@ -1,1 +1,0 @@
-{"id": "A-000976", "text": "저희 메일은 ㅇ@나버.컴이 아니라, apple.user@domain.co.kr 이 맞아요. 이거 확인해주세요.", "pi": [{"type": "EMAIL", "text": "apple.user@domain.co.kr", "start": 20, "end": 43}], "meta": {"domain": "고객센터 채팅", "style": "메신저 줄임말", "obfuscation": ["email_spoken", "lookalike_char"], "hard_case": "none"}}

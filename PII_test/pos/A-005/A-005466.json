@@ -1,1 +1,0 @@
-{"id": "A-005466", "text": "혹시 주소가 어느 쪽이신가요? 남산동 123-45번지 쪽으로 알고 있는데 맞을까요?", "pi": [{"type": "ADDRESS", "text": "남산동 123-45번지", "start": 17, "end": 29}], "meta": {"domain": "금융 상담", "style": "오타 많은 채팅", "obfuscation": ["korean_reading"], "hard_case": "none"}}

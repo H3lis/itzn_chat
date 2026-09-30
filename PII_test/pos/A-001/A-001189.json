@@ -1,1 +1,0 @@
-{"id": "A-001189", "text": "혹시 최지우 학생의 여권 번호가 필요할까요? 이건 C-Z-U-Y-J-I-U 학생 전용 번호로 보이는데요.", "pi": [{"type": "NAME", "text": "최지우", "start": 3, "end": 6}, {"type": "PASSPORT", "text": "C-Z-U-Y-J-I-U", "start": 28, "end": 41}], "meta": {"domain": "온라인 강의 Q&A", "style": "메신저 줄임말", "obfuscation": ["honorific_ref", "mixed_reading"], "hard_case": "none"}}

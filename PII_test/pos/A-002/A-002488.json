@@ -1,1 +1,0 @@
-{"id": "A-002488", "text": "저희 고객님 성함은 '김현수'님이시고, 다음 분은 '이재영'님이에요. 두 분 모두 상담 기록을 확인 부탁드립니다.", "pi": [{"type": "NAME", "text": "김현수", "start": 12, "end": 15}, {"type": "NAME", "text": "이재영", "start": 29, "end": 32}], "meta": {"domain": "고객센터 채팅", "style": "공문서풍", "obfuscation": ["jamo_split"], "hard_case": "none"}}

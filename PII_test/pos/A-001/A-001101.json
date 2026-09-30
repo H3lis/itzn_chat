@@ -1,1 +1,0 @@
-{"id": "A-001101", "text": "혹시 빌라가 있는 주소 말씀이세요? 거기는 '서울특별시 강남구 테헤란로 123'이라고 말씀드린 게 맞을까요?", "pi": [{"type": "ADDRESS", "text": "서울특별시 강남구 테헤란로 123", "start": 25, "end": 43}], "meta": {"domain": "커뮤니티 게시글", "style": "격식체", "obfuscation": ["split_utterance", "korean_reading"], "hard_case": "none"}}

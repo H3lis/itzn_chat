@@ -1,1 +1,0 @@
-{"id": "A-005590", "text": "택배 언제 와? 송장 번호가 3621-5990-7744 맞지? 혹시 계정 정보도 확인해 봐.", "pi": [{"type": "ADDRESS", "text": "송장 번호", "start": 9, "end": 14}, {"type": "ACCOUNT", "text": "3621-5990-7744", "start": 16, "end": 30}], "meta": {"domain": "택배 문의", "style": "메신저 줄임말", "obfuscation": ["stt_error"], "hard_case": "none"}}

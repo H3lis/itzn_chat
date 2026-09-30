@@ -1,1 +1,0 @@
-{"id": "A-003491", "text": "담당자분은 박지현 씨가 될까요? 아니면 최은영 매니저님이신가요? 아, 그리고 김재민 님도 괜찮고요.", "pi": [{"type": "NAME", "text": "박지현", "start": 6, "end": 9}, {"type": "NAME", "text": "최은영", "start": 22, "end": 25}, {"type": "NAME", "text": "김재민", "start": 43, "end": 46}], "meta": {"domain": "배달 요청사항", "style": "존댓말 상담", "obfuscation": ["plain"], "hard_case": "none"}}

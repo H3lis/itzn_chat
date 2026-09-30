@@ -1,1 +1,0 @@
-{"id": "A-004204", "text": "슬기님 말씀이시죠? 여권 번호는 1234567890이요. 불러주신 대로 다시 말씀드리자면, 슬기님입니다.", "pi": [{"type": "NAME", "text": "슬기", "start": 0, "end": 2}, {"type": "PASSPORT", "text": "1234567890", "start": 18, "end": 28}], "meta": {"domain": "회의록", "style": "음성인식(STT) 전사", "obfuscation": ["korean_reading"], "hard_case": "homonym_name"}}

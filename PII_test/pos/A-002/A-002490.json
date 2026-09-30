@@ -1,1 +1,0 @@
-{"id": "A-002490", "text": "병원 접수는요? 전화는 010 건너 3333, 5555로 부탁드립니다.", "pi": [{"type": "PHONE", "text": "010 건너 3333", "start": 13, "end": 24}], "meta": {"domain": "병원 접수", "style": "음성인식(STT) 전사", "obfuscation": ["separator_noise"], "hard_case": "none"}}

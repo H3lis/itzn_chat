@@ -1,1 +1,0 @@
-{"id": "A-002510", "text": "가입하신 회원 번호가 1-234-5678 맞으신가요? 제가 다시 한번 확인해 드릴게요.", "pi": [{"type": "RRN", "text": "1-234-5678", "start": 12, "end": 22}], "meta": {"domain": "쇼핑몰 문의", "style": "짧은 단답", "obfuscation": ["separator_noise", "split_utterance"], "hard_case": "none"}}

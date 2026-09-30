@@ -1,1 +1,0 @@
-{"id": "A-003123", "text": "제 이름은 기쁨이에요. 그리고 연락처가 011-8888-9999예요. 이거 맞나요?", "pi": [{"type": "NAME", "text": "기쁨", "start": 6, "end": 8}, {"type": "PHONE", "text": "011-8888-9999", "start": 22, "end": 35}], "meta": {"domain": "커뮤니티 게시글", "style": "짧은 단답", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

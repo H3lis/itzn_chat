@@ -1,1 +1,0 @@
-{"id": "A-000004", "text": "저한테 문의 주셔서 감사해요. 제 이메일은 jks-at-gmail-dot-com이고요, 이름은 재훈이라고 합니다.", "pi": [{"type": "EMAIL", "text": "jks-at-gmail-dot-com", "start": 24, "end": 44}, {"type": "NAME", "text": "재훈", "start": 53, "end": 55}], "meta": {"domain": "SNS 댓글", "style": "존댓말 상담", "obfuscation": ["email_spoken", "lookalike_char"], "hard_case": "none"}}

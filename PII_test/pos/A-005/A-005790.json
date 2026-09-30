@@ -1,1 +1,0 @@
-{"id": "A-005790", "text": "네, 고객님. 성함이 김민지 씨 맞으시죠? 그리고 연락처는 010-5555-1234로 되어있는데요.", "pi": [{"type": "NAME", "text": "김민지", "start": 12, "end": 15}, {"type": "PHONE", "text": "010-5555-1234", "start": 33, "end": 46}], "meta": {"domain": "콜센터 상담 요약", "style": "반말 대화", "obfuscation": ["plain"], "hard_case": "none"}}

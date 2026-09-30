@@ -1,1 +1,0 @@
-{"id": "A-004834", "text": "저희는 경기도 성남시 분당구 판교역로에 위치하고 있으며, 담당 부서는 글로벌 경영팀입니다. 혹시 이전 주소가 필요하신가요?", "pi": [{"type": "ADDRESS", "text": "경기도 성남시 분당구 판교역로", "start": 4, "end": 20}, {"type": "ORG", "text": "글로벌 경영팀", "start": 39, "end": 46}], "meta": {"domain": "고객센터 채팅", "style": "공문서풍", "obfuscation": ["stt_error", "split_utterance"], "hard_case": "org_person"}}

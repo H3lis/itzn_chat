@@ -1,1 +1,0 @@
-{"id": "A-005092", "text": "거주지 주소는 일단 경기도 성남시 분당구 판교역로 200으로 하되, 생년은 1985년 3월 15일이 확실한가요?", "pi": [{"type": "ADDRESS", "text": "경기도 성남시 분당구 판교역로 200", "start": 11, "end": 31}, {"type": "BIRTH", "text": "1985년 3월 15일", "start": 42, "end": 54}], "meta": {"domain": "회의록", "style": "반말 대화", "obfuscation": ["self_correction", "lookalike_char"], "hard_case": "none"}}

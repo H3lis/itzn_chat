@@ -1,1 +1,0 @@
-{"id": "A-001116", "text": "담당자님께 확인된 계좌는 8888-1234-5678이고, 고객님 성함은 겨울 군으로 기록되어 있습니다.", "pi": [{"type": "ACCOUNT", "text": "8888-1234-5678", "start": 14, "end": 28}, {"type": "NAME", "text": "겨울", "start": 40, "end": 42}], "meta": {"domain": "콜센터 상담 요약", "style": "격식체", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

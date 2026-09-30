@@ -1,1 +1,0 @@
-{"id": "A-000704", "text": "요청하신 주민등록번호는 900101-1234567이요. 이 번호 맞으세요?", "pi": [{"type": "RRN", "text": "900101-1234567", "start": 13, "end": 27}], "meta": {"domain": "택배 문의", "style": "길고 장황한 설명", "obfuscation": ["lookalike_char", "repeat_expr"], "hard_case": "none"}}

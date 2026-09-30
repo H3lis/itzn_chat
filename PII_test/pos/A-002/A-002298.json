@@ -1,1 +1,0 @@
-{"id": "A-002298", "text": "지금 전화번호가 010 2222 3333이잖아. 이거 다시 한 번만 천천히 말해줄래?", "pi": [{"type": "PHONE", "text": "010 2222 3333", "start": 9, "end": 22}], "meta": {"domain": "병원 접수", "style": "반말 대화", "obfuscation": ["separator_noise"], "hard_case": "none"}}

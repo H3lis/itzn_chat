@@ -1,1 +1,0 @@
-{"id": "A-004206", "text": "카드 번호는 ㄱㄴㅂㅈ로 해주시면 되고, 예약은 하늘 씨 이름으로 부탁드려요.", "pi": [{"type": "CARD", "text": "ㄱㄴㅂㅈ", "start": 7, "end": 11}, {"type": "NAME", "text": "하늘", "start": 26, "end": 28}], "meta": {"domain": "여행 예약", "style": "짧은 단답", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

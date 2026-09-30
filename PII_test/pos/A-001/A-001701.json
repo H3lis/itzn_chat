@@ -1,1 +1,0 @@
-{"id": "A-001701", "text": "안녕하세요, 김민준 과장님. 저희가 지난번에 보내드렸던 물품이 아직 도착하지 않아서요. 혹시 받은 분 성함이 김서윤 씨인지 여쭤봐도 될까요?", "pi": [{"type": "NAME", "text": "김민준", "start": 7, "end": 10}, {"type": "NAME", "text": "김서윤", "start": 61, "end": 64}], "meta": {"domain": "택배 문의", "style": "길고 장황한 설명", "obfuscation": ["jamo_split", "honorific_ref"], "hard_case": "none"}}

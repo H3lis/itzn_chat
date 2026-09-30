@@ -1,1 +1,0 @@
-{"id": "A-005821", "text": "여기 주소가 강남구 역삼동 55-20인데, 건물 이름은 파크빌이에요.", "pi": [{"type": "ADDRESS", "text": "강남구 역삼동", "start": 7, "end": 14}, {"type": "ORG", "text": "파크빌", "start": 31, "end": 34}], "meta": {"domain": "부동산 상담", "style": "짧은 단답", "obfuscation": ["jamo_split"], "hard_case": "none"}}

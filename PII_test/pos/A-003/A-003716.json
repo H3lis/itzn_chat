@@ -1,1 +1,0 @@
-{"id": "A-003716", "text": "고객님의 연락처 두 개를 확인하겠습니다. 첫 번째는 010-1111-2222고, 두 번째는 010-3333-4444입니다.", "pi": [{"type": "PHONE", "text": "010-1111-2222", "start": 29, "end": 42}, {"type": "PHONE", "text": "010-3333-4444", "start": 51, "end": 64}], "meta": {"domain": "보험 청구", "style": "공문서풍", "obfuscation": ["plain"], "hard_case": "none"}}

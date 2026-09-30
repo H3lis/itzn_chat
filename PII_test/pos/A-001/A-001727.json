@@ -1,1 +1,0 @@
-{"id": "A-001727", "text": "가장 먼저 회원님 아이디가 어떻게 되시나요? 그리고 주민등록번호도 말씀해주시겠어요?", "pi": [{"type": "ID", "text": "아이디", "start": 10, "end": 13}, {"type": "RRN", "text": "주민등록번호", "start": 29, "end": 35}], "meta": {"domain": "여행 예약", "style": "존댓말 상담", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

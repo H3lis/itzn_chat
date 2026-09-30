@@ -1,1 +1,0 @@
-{"id": "A-002520", "text": "공주님, 예약하신 건 원장님 성함으로 되어 있는데요. 맞으신가요?", "pi": [{"type": "NAME", "text": "공주", "start": 0, "end": 2}], "meta": {"domain": "여행 예약", "style": "격식체", "obfuscation": ["plain"], "hard_case": "homonym_name"}}

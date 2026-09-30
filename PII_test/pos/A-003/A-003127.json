@@ -1,1 +1,0 @@
-{"id": "A-003127", "text": "혹시 이메일 주소랑 성함 다시 한번 말씀해 주시겠어요? 봄 씨요.", "pi": [{"type": "EMAIL", "text": "이메일 주소", "start": 3, "end": 9}, {"type": "NAME", "text": "봄", "start": 31, "end": 32}], "meta": {"domain": "택배 문의", "style": "존댓말 상담", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

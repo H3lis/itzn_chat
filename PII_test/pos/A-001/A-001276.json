@@ -1,1 +1,0 @@
-{"id": "A-001276", "text": "카드번호는 1234 다음에 5가 네 번 그리고 6이 네 번으로 되어 있고, 연락처는 010-1111-2222입니다.", "pi": [{"type": "CARD", "text": "1234 다음에 5가 네 번 그리고 6이 네 번", "start": 6, "end": 32}, {"type": "PHONE", "text": "010-1111-2222", "start": 47, "end": 60}], "meta": {"domain": "민원 접수", "style": "짧은 단답", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-004544", "text": "저 저는 스마트빌딩 교육 이수 과정에 참여한 이준호입니다. 등록번호가 9876-5432예요.", "pi": [{"type": "ORG", "text": "스마트빌딩 교육", "start": 5, "end": 13}, {"type": "NAME", "text": "이준호", "start": 25, "end": 28}], "meta": {"domain": "온라인 강의 Q&A", "style": "격식체", "obfuscation": ["jamo_split"], "hard_case": "org_person"}}

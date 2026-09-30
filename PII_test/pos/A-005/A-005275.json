@@ -1,1 +1,0 @@
-{"id": "A-005275", "text": "진료 예약하시려고 하셨죠? 네, 회원 번호는 1234567890이 맞습니다.", "pi": [{"type": "ACCOUNT", "text": "1234567890", "start": 25, "end": 35}], "meta": {"domain": "병원 접수", "style": "음성인식(STT) 전사", "obfuscation": ["split_utterance"], "hard_case": "none"}}

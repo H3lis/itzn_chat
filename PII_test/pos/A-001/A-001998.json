@@ -1,1 +1,0 @@
-{"id": "A-001998", "text": "성남 지역 거주하시는 분은 혹시 성남이라는 이름으로도 불리나요? 저는 성남이요.", "pi": [{"type": "ADDRESS", "text": "성남", "start": 0, "end": 2}, {"type": "NAME", "text": "성남", "start": 39, "end": 41}], "meta": {"domain": "SNS 댓글", "style": "구어체", "obfuscation": ["honorific_ref", "jamo_split"], "hard_case": "homonym_name"}}

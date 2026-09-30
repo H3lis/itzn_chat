@@ -1,1 +1,0 @@
-{"id": "A-000469", "text": "저, 강남역 근처에 있는 OO전자에서 나온 건데, 주소는 서울특별시 강남구 테헤란로 123이에요.", "pi": [{"type": "ORG", "text": "OO전자", "start": 14, "end": 18}, {"type": "ADDRESS", "text": "서울특별시 강남구 테헤란로 123", "start": 32, "end": 50}], "meta": {"domain": "중고거래 채팅", "style": "존댓말 상담", "obfuscation": ["romanized", "korean_reading", "stt_error"], "hard_case": "org_person"}}

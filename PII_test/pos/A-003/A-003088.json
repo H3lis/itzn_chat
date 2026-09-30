@@ -1,1 +1,0 @@
-{"id": "A-003088", "text": "진료 기록 보려면요? 아, 주소지 말씀이신가요? 1104 아파트, 302동, 7층이에요.", "pi": [{"type": "ADDRESS", "text": "1104 아파트, 302동, 7층", "start": 27, "end": 45}], "meta": {"domain": "병원 접수", "style": "메신저 줄임말", "obfuscation": ["korean_reading", "split_utterance"], "hard_case": "none"}}

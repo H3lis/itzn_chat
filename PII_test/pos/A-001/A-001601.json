@@ -1,1 +1,0 @@
-{"id": "A-001601", "text": "저희가 이사 온 주소는 경기도 광주시 작전동 123번지이고, 담당자분 이름은 김민준 씨예요.", "pi": [{"type": "ADDRESS", "text": "경기도 광주시 작전동 123번지", "start": 13, "end": 30}, {"type": "NAME", "text": "김민준", "start": 43, "end": 46}], "meta": {"domain": "민원 접수", "style": "길고 장황한 설명", "obfuscation": ["plain"], "hard_case": "none"}}

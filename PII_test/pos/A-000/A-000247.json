@@ -1,1 +1,0 @@
-{"id": "A-000247", "text": "상담 차원에서 말씀드리자면, 전화번호가 010-9999-8888 맞으신가요? 그리고 생년월일은 950101 같은 건가요?", "pi": [{"type": "PHONE", "text": "010-9999-8888", "start": 22, "end": 35}, {"type": "RRN", "text": "950101", "start": 53, "end": 59}], "meta": {"domain": "중고거래 채팅", "style": "존댓말 상담", "obfuscation": ["plain"], "hard_case": "none"}}

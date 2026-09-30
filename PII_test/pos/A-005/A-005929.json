@@ -1,1 +1,0 @@
-{"id": "A-005929", "text": "저희 담당자가 바로 통화할게요. 제 이름은 박지은이라고 하는데, 이게 맞는지 확인 좀 해주시겠어요?", "pi": [{"type": "NAME", "text": "박지은", "start": 24, "end": 27}], "meta": {"domain": "이메일 본문", "style": "구어체", "obfuscation": ["jamo_split"], "hard_case": "none"}}

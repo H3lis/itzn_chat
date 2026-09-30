@@ -1,1 +1,0 @@
-{"id": "A-004937", "text": "결제하실 카드는 1234-5678-9012입니다. 그리고 주민번호는 99991111로 해주세요.", "pi": [{"type": "CARD", "text": "1234-5678-9012", "start": 9, "end": 23}, {"type": "RRN", "text": "99991111", "start": 38, "end": 46}], "meta": {"domain": "온라인 강의 Q&A", "style": "격식체", "obfuscation": ["lookalike_char", "mixed_reading"], "hard_case": "none"}}

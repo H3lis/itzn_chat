@@ -1,1 +1,0 @@
-{"id": "A-004998", "text": "혹시 김지현 씨 말씀이신가요? 아니, 아니라 이효정 씨가 말씀하신 것 같아요. 다시 한 번만요.", "pi": [{"type": "NAME", "text": "김지현", "start": 3, "end": 6}, {"type": "NAME", "text": "이효정", "start": 25, "end": 28}], "meta": {"domain": "음성통화 전사문", "style": "격식체", "obfuscation": ["self_correction"], "hard_case": "none"}}

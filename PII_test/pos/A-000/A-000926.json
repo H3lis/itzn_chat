@@ -1,1 +1,0 @@
-{"id": "A-000926", "text": "안녕하세요, 제 이름은 지민이에요. 제가 쓰는 번호는 '삼삼사-오오오-쓰리원'이라고 불러주시면 돼요. 혹시 찾으시는 건가요?", "pi": [{"type": "NAME", "text": "지민", "start": 13, "end": 15}, {"type": "PHONE", "text": "삼삼사-오오오-쓰리원", "start": 31, "end": 42}], "meta": {"domain": "학교 행정 문의", "style": "메신저 줄임말", "obfuscation": ["split_utterance", "romanized"], "hard_case": "none"}}

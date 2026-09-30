@@ -1,1 +1,0 @@
-{"id": "A-003577", "text": "김민준 씨의 주소는 서울시 종로구 종로 123이고요, 성함은 나무입니다. 이쪽 정보로 확인 부탁드립니다.", "pi": [{"type": "NAME", "text": "김민준", "start": 0, "end": 3}, {"type": "NAME", "text": "나무", "start": 34, "end": 36}], "meta": {"domain": "민원 접수", "style": "격식체", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

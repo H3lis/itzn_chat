@@ -1,1 +1,0 @@
-{"id": "A-004379", "text": "요청하신 배송지는 강남대로 123인데요. 받는 분 성함은 '새벽' 님 맞으실까요?", "pi": [{"type": "ADDRESS", "text": "강남대로 123", "start": 10, "end": 18}, {"type": "NAME", "text": "새벽", "start": 33, "end": 35}], "meta": {"domain": "배달 요청사항", "style": "구어체", "obfuscation": ["stt_error"], "hard_case": "homonym_name"}}

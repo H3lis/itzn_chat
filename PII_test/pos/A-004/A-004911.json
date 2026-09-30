@@ -1,1 +1,0 @@
-{"id": "A-004911", "text": "예약하신 비행기 메일은 qwertz@abcde.net 이 맞을까요?", "pi": [{"type": "EMAIL", "text": "qwertz@abcde.net", "start": 13, "end": 29}], "meta": {"domain": "여행 예약", "style": "음성인식(STT) 전사", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

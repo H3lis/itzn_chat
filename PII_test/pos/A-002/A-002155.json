@@ -1,1 +1,0 @@
-{"id": "A-002155", "text": "아니, 저 그냥 홍길동이에요. 오늘 여기서 만나서 얘기하면 되는 거죠?", "pi": [{"type": "NAME", "text": "홍길동", "start": 9, "end": 12}], "meta": {"domain": "커뮤니티 게시글", "style": "반말 대화", "obfuscation": ["plain"], "hard_case": "none"}}

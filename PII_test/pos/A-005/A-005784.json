@@ -1,1 +1,0 @@
-{"id": "A-005784", "text": "저희 어머니 주민등록번호가 910101-1******로 보이는데요, 이게 맞나요?", "pi": [{"type": "RRN", "text": "910101-1******", "start": 15, "end": 29}], "meta": {"domain": "여행 예약", "style": "격식체", "obfuscation": ["lookalike_char", "repeat_expr"], "hard_case": "none"}}

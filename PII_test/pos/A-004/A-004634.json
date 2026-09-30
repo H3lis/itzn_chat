@@ -1,1 +1,0 @@
-{"id": "A-004634", "text": "연락 가능한 전화번호가 어떻게 되시나요? 010 공일공 일일일일 이이이이, 그리고 비상용으로 010 다시 하나 넷 같은 번호도 있으세요?", "pi": [{"type": "PHONE", "text": "010 공일공 일일일일 이이이이", "start": 23, "end": 40}, {"type": "PHONE", "text": "010 다시 하나 넷", "start": 52, "end": 63}], "meta": {"domain": "이메일 본문", "style": "음성인식(STT) 전사", "obfuscation": ["repeat_expr", "separator_noise"], "hard_case": "none"}}

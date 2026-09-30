@@ -1,1 +1,0 @@
-{"id": "A-000657", "text": "제가 살던 주소는 경기도 서울시 광진구 테헤란로 99입니다. 그리고 주민등록번호가 900101-1******이에요.", "pi": [{"type": "ADDRESS", "text": "경기도 서울시 광진구 테헤란로 99", "start": 10, "end": 29}, {"type": "RRN", "text": "900101-1", "start": 46, "end": 54}], "meta": {"domain": "민원 접수", "style": "오타 많은 채팅", "obfuscation": ["korean_reading", "separator_noise"], "hard_case": "none"}}

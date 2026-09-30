@@ -1,1 +1,0 @@
-{"id": "A-004046", "text": "제 이메일 주소는 user.a@company.co.kr 입니다. 이걸로 연락 주시면 감사하겠습니다.", "pi": [{"type": "EMAIL", "text": "user.a@company.co.kr", "start": 10, "end": 30}], "meta": {"domain": "SNS 댓글", "style": "격식체", "obfuscation": ["separator_noise"], "hard_case": "none"}}

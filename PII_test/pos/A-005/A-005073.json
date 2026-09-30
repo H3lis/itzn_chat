@@ -1,1 +1,0 @@
-{"id": "A-005073", "text": "계좌번호는 1234567890이고요, 제 이름은 KImㅁㅁㅁㅁㅁㅁ으로 확인 부탁드려요.", "pi": [{"type": "ACCOUNT", "text": "1234567890", "start": 6, "end": 16}, {"type": "NAME", "text": "KImㅁㅁㅁㅁㅁㅁ", "start": 27, "end": 36}], "meta": {"domain": "음성통화 전사문", "style": "오타 많은 채팅", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

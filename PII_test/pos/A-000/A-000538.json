@@ -1,1 +1,0 @@
-{"id": "A-000538", "text": "저기요, 도토리 씨가 요청한 번호가 있거든요? ㄷ０１０-1111-２２２２ 이거 맞아요?", "pi": [{"type": "NAME", "text": "도토리", "start": 5, "end": 8}, {"type": "RRN", "text": "ㄷ０１０-1111-２２２２", "start": 26, "end": 40}], "meta": {"domain": "쇼핑몰 문의", "style": "오타 많은 채팅", "obfuscation": ["lookalike_char"], "hard_case": "homonym_name"}}

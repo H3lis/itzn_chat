@@ -1,1 +1,0 @@
-{"id": "A-005112", "text": "저의 닉네임은 PrettyGirl99이고요, SNS 주소는 @happyuser_k입니다.", "pi": [{"type": "NAME", "text": "PrettyGirl99", "start": 8, "end": 20}, {"type": "SNS", "text": "@happyuser_k", "start": 33, "end": 45}], "meta": {"domain": "고객센터 채팅", "style": "오타 많은 채팅", "obfuscation": ["separator_noise"], "hard_case": "nickname_id"}}

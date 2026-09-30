@@ -1,1 +1,0 @@
-{"id": "A-000185", "text": "혹시 연락 가능한 번호가 어떻게 되실까요? 010-1111-2222 같은 번호로 알려주시면 될 것 같아요.", "pi": [{"type": "PHONE", "text": "010-1111-2222", "start": 24, "end": 37}], "meta": {"domain": "병원 접수", "style": "길고 장황한 설명", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

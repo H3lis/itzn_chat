@@ -1,1 +1,0 @@
-{"id": "A-005743", "text": "그쪽 메일 주소는 김철수 골뱅이 지메일 점 컴 으로 보내면 될 거야.", "pi": [{"type": "EMAIL", "text": "김철수 골뱅이 지메일 점 컴", "start": 10, "end": 25}], "meta": {"domain": "부동산 상담", "style": "반말 대화", "obfuscation": ["email_spoken"], "hard_case": "none"}}

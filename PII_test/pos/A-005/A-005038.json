@@ -1,1 +1,0 @@
-{"id": "A-005038", "text": "전화번호가 010-1234-5678이라고 하셨는데요, 혹시 구두로는 '공일공 일이삼 사네 오육칠팔'로 말씀해주시면 될까요?", "pi": [{"type": "PHONE", "text": "공일공 일이삼 사네 오육칠팔", "start": 39, "end": 54}], "meta": {"domain": "콜센터 상담 요약", "style": "메신저 줄임말", "obfuscation": ["lookalike_char", "korean_reading"], "hard_case": "none"}}

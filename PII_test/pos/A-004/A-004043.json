@@ -1,1 +1,0 @@
-{"id": "A-004043", "text": "참고하시면 됩니다. 연락 주신 메일 주소는 chulsoo(at)gmail(dot)com이고, SNS는 @my_profile_kim 입니다.", "pi": [{"type": "EMAIL", "text": "chulsoo(at)gmail(dot)com", "start": 24, "end": 48}, {"type": "SNS", "text": "@my_profile_kim", "start": 57, "end": 72}], "meta": {"domain": "음성통화 전사문", "style": "공문서풍", "obfuscation": ["email_spoken"], "hard_case": "none"}}

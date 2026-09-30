@@ -1,1 +1,0 @@
-{"id": "A-001118", "text": "예약하신 분 전화번호는 010-8888-2222입니다. 다시 한번 불러주시겠어요?", "pi": [{"type": "PHONE", "text": "010-8888-2222", "start": 13, "end": 26}], "meta": {"domain": "여행 예약", "style": "짧은 단답", "obfuscation": ["separator_noise", "mixed_reading"], "hard_case": "none"}}

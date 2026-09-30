@@ -1,1 +1,0 @@
-{"id": "A-005068", "text": "네, 박지수 팀장님 오신 거 맞고요. 담당 부서는 개발팀입니다. 제가 아까 말씀드린 거랑 조금 다르네요. 일단 개발팀으로 처리 부탁드려요.", "pi": [{"type": "NAME", "text": "박지수", "start": 3, "end": 6}, {"type": "ORG", "text": "개발팀", "start": 62, "end": 65}], "meta": {"domain": "배달 요청사항", "style": "격식체", "obfuscation": ["self_correction"], "hard_case": "org_person"}}

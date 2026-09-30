@@ -1,1 +1,0 @@
-{"id": "A-001174", "text": "어제 쓰던 번호가 아 아니요, 그건 010 다음에 1이 네 번 그리고 2가 네 번이 맞아요.", "pi": [{"type": "PHONE", "text": "010 다음에 1이 네 번 그리고 2가 네 번", "start": 20, "end": 45}], "meta": {"domain": "커뮤니티 게시글", "style": "반말 대화", "obfuscation": ["self_correction", "mixed_reading"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-000920", "text": "사랑아, 너의 그 이름이 정말 멋지다. 이게 너의 별명이니?", "pi": [{"type": "NAME", "text": "사랑", "start": 0, "end": 2}], "meta": {"domain": "중고거래 채팅", "style": "짧은 단답", "obfuscation": ["romanized", "jamo_split"], "hard_case": "homonym_name"}}

@@ -1,1 +1,0 @@
-{"id": "A-001267", "text": "제 아이디는 CoolDev99예요. 그리고 소셜 미디어는 인스타그램 'dev_user_2024'를 사용하고 있습니다.", "pi": [{"type": "NAME", "text": "CoolDev99", "start": 7, "end": 16}, {"type": "SNS", "text": "dev_user_2024", "start": 39, "end": 52}], "meta": {"domain": "직장 메신저", "style": "길고 장황한 설명", "obfuscation": ["lookalike_char", "self_correction"], "hard_case": "nickname_id"}}

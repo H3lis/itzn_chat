@@ -1,1 +1,0 @@
-{"id": "A-003993", "text": "혹시 번호가 헷갈리셨나요? 다시 한 번 불러주시겠어요? 010-5555-6666이요.", "pi": [{"type": "PHONE", "text": "010-5555-6666", "start": 31, "end": 44}], "meta": {"domain": "온라인 강의 Q&A", "style": "음성인식(STT) 전사", "obfuscation": ["self_correction"], "hard_case": "none"}}

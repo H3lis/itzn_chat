@@ -1,1 +1,0 @@
-{"id": "A-004240", "text": "담당 부서장님께는 abc@example.com으로 연락주시고, 혹시 저희 쪽 IP는 192.168.1.100이 맞는지 확인 부탁드립니다.", "pi": [{"type": "IP_ADDR", "text": "192.168.1.100", "start": 47, "end": 60}], "meta": {"domain": "이메일 본문", "style": "격식체", "obfuscation": ["self_correction"], "hard_case": "none"}}

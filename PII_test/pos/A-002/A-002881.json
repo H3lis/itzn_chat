@@ -1,1 +1,0 @@
-{"id": "A-002881", "text": "신청자 이름은 '최현우'입니다. 필요한 서류가 더 있나요?", "pi": [{"type": "NAME", "text": "최현우", "start": 9, "end": 12}], "meta": {"domain": "고객센터 채팅", "style": "공문서풍", "obfuscation": ["jamo_split"], "hard_case": "none"}}

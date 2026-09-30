@@ -1,1 +1,0 @@
-{"id": "A-004113", "text": "김 과장님, 정말 번거로우시겠지만, 제 이름은 슬기고요, 여권 번호는 A1234567890입니다.", "pi": [{"type": "NAME", "text": "슬기", "start": 26, "end": 28}, {"type": "PASSPORT", "text": "A1234567890", "start": 39, "end": 50}], "meta": {"domain": "민원 접수", "style": "길고 장황한 설명", "obfuscation": ["honorific_ref"], "hard_case": "homonym_name"}}

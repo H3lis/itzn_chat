@@ -1,1 +1,0 @@
-{"id": "A-005396", "text": "문의하신 이메일 주소는 abc[at]example.com이 맞을까요? 혹시 다른 주소도 있을까요?", "pi": [{"type": "EMAIL", "text": "abc[at]example.com", "start": 13, "end": 31}], "meta": {"domain": "고객센터 채팅", "style": "존댓말 상담", "obfuscation": ["lookalike_char", "separator_noise"], "hard_case": "none"}}

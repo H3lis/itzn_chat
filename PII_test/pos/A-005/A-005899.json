@@ -1,1 +1,0 @@
-{"id": "A-005899", "text": "제 운전면허 번호가 220912-1234567 방금 말씀드린 건데, 이거 맞나요?", "pi": [{"type": "DRIVER_LICENSE", "text": "220912-1234567", "start": 11, "end": 25}], "meta": {"domain": "회의록", "style": "오타 많은 채팅", "obfuscation": ["korean_reading"], "hard_case": "none"}}

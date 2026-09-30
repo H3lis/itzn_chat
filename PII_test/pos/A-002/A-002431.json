@@ -1,1 +1,0 @@
-{"id": "A-002431", "text": "청구서 상의 담당자분 성함이 '사랑' 씨시고, 연락처는 010-5555-1234입니다.", "pi": [{"type": "NAME", "text": "사랑", "start": 17, "end": 19}, {"type": "PHONE", "text": "010-5555-1234", "start": 31, "end": 44}], "meta": {"domain": "보험 청구", "style": "공문서풍", "obfuscation": ["korean_reading"], "hard_case": "homonym_name"}}

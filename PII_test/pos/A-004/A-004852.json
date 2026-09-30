@@ -1,1 +1,0 @@
-{"id": "A-004852", "text": "제가 가입한 아이디는 바로 'GalaxyDream'이고요, 제 이름은 박지민이에요. 이렇게 되어있는 게 맞나요?", "pi": [{"type": "ACCOUNT", "text": "GalaxyDream", "start": 16, "end": 27}, {"type": "NAME", "text": "박지민", "start": 39, "end": 42}], "meta": {"domain": "커뮤니티 게시글", "style": "존댓말 상담", "obfuscation": ["korean_reading"], "hard_case": "none"}}

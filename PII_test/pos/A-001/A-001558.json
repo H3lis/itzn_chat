@@ -1,1 +1,0 @@
-{"id": "A-001558", "text": "혹시 고객님 성함이 푸름 씨 맞으실까요? 성함이 푸름이라는 분이 맞는지 다시 한번 확인 부탁드립니다.", "pi": [{"type": "NAME", "text": "푸름", "start": 27, "end": 29}], "meta": {"domain": "콜센터 상담 요약", "style": "구어체", "obfuscation": ["honorific_ref"], "hard_case": "homonym_name"}}

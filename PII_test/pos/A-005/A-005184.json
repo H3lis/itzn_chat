@@ -1,1 +1,0 @@
-{"id": "A-005184", "text": "저희 팀의 그룹 채팅 아이디는 k_user100 이고, 비상 연락처는 010-5555-1234 로 남겨주세요.", "pi": [{"type": "ID", "text": "k_user100", "start": 17, "end": 26}, {"type": "PHONE", "text": "010-5555-1234", "start": 39, "end": 52}], "meta": {"domain": "회의록", "style": "구어체", "obfuscation": ["jamo_split"], "hard_case": "none"}}

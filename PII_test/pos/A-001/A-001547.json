@@ -1,1 +1,0 @@
-{"id": "A-001547", "text": "저의 생년월일은 05년 12월 1일이고, 제 이름은 최현우라고 말씀드렸는데요. 혹시 다시 확인 부탁드려요.", "pi": [{"type": "BIRTH", "text": "05년 12월 1일", "start": 9, "end": 19}, {"type": "NAME", "text": "최현우", "start": 29, "end": 32}], "meta": {"domain": "온라인 강의 Q&A", "style": "공문서풍", "obfuscation": ["split_utterance"], "hard_case": "none"}}

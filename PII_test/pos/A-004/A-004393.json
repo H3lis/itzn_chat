@@ -1,1 +1,0 @@
-{"id": "A-004393", "text": "아니, 그 보리 씨가요? 이름이 보리라니 좀 특이하네요. 혹시 보리님 연락처도 아시는 거 있으세요?", "pi": [{"type": "NAME", "text": "보리", "start": 6, "end": 8}, {"type": "NAME", "text": "보리", "start": 35, "end": 37}], "meta": {"domain": "SNS 댓글", "style": "오타 많은 채팅", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

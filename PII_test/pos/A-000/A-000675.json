@@ -1,1 +1,0 @@
-{"id": "A-000675", "text": "도대체 어떤 제품인지요? 받고 싶은 분 성함이 온유 씨고요, 운전면허증 번호는 1234567890 같은데요.", "pi": [{"type": "NAME", "text": "온유", "start": 26, "end": 28}, {"type": "DRIVER_LICENSE", "text": "1234567890", "start": 44, "end": 54}], "meta": {"domain": "택배 문의", "style": "존댓말 상담", "obfuscation": ["korean_reading"], "hard_case": "homonym_name"}}

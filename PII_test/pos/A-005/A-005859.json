@@ -1,1 +1,0 @@
-{"id": "A-005859", "text": "차량 번호는 12가 3344 그리고 55가 6677이에요. 주차 공간이 여유로울까요?", "pi": [{"type": "CAR_PLATE", "text": "12가 3344 그리고 55가 6677", "start": 7, "end": 28}], "meta": {"domain": "학교 행정 문의", "style": "메신저 줄임말", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

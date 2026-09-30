@@ -1,1 +1,0 @@
-{"id": "A-000005", "text": "혹시 연락처가 어떻게 되시나요? 음, 010-1234-5678 번으로 연락 주시면 됩니다.", "pi": [{"type": "PHONE", "text": "010-1234-5678", "start": 21, "end": 34}], "meta": {"domain": "SNS 댓글", "style": "존댓말 상담", "obfuscation": ["stt_error", "korean_reading"], "hard_case": "none"}}

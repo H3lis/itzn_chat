@@ -1,1 +1,0 @@
-{"id": "A-004692", "text": "담당자님 성함은 박민규 씨고요, 연락처는 010-3333-4444 입니다. 혹시요?", "pi": [{"type": "NAME", "text": "박민규", "start": 9, "end": 12}, {"type": "PHONE", "text": "010-3333-4444", "start": 23, "end": 36}], "meta": {"domain": "직장 메신저", "style": "공문서풍", "obfuscation": ["romanized", "stt_error", "self_correction"], "hard_case": "none"}}

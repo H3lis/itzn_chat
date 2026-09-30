@@ -1,1 +1,0 @@
-{"id": "A-001106", "text": "거기 주소는 종로구 인사동에 있어요. 혹시 아이디가 뭐예요?", "pi": [{"type": "ADDRESS", "text": "종로구 인사동", "start": 7, "end": 14}, {"type": "ID", "text": "뭐예요", "start": 29, "end": 32}], "meta": {"domain": "고객센터 채팅", "style": "반말 대화", "obfuscation": ["split_utterance"], "hard_case": "none"}}

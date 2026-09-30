@@ -1,1 +1,0 @@
-{"id": "A-003018", "text": "담당자분은 접수번호 2024-05-15-9998에 신분증 번호로 1234567890을 제출해 주셔야 합니다. 성함은 홍길동이요.", "pi": [{"type": "ID", "text": "2024-05-15-9998", "start": 11, "end": 26}, {"type": "NAME", "text": "홍길동", "start": 65, "end": 68}], "meta": {"domain": "커뮤니티 게시글", "style": "공문서풍", "obfuscation": ["self_correction", "lookalike_char"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-001030", "text": "이메일 주소가 777@qqq.com 이고요, 또 다른 이메일은 aaall@qqq.com 으로 되어있습니다.", "pi": [{"type": "EMAIL", "text": "777@qqq.com", "start": 8, "end": 19}, {"type": "EMAIL", "text": "aaall@qqq.com", "start": 35, "end": 48}], "meta": {"domain": "부동산 상담", "style": "격식체", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

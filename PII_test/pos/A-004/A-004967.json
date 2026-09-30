@@ -1,1 +1,0 @@
-{"id": "A-004967", "text": "차량 번호판이 1가 2나 같은데, 혹시 연락 가능한 전화번호도 알려주시겠어요?", "pi": [{"type": "CAR_PLATE", "text": "1가 2나", "start": 8, "end": 13}, {"type": "PHONE", "text": "전화번호", "start": 29, "end": 33}], "meta": {"domain": "병원 접수", "style": "구어체", "obfuscation": ["split_utterance"], "hard_case": "none"}}

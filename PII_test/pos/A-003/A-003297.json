@@ -1,1 +1,0 @@
-{"id": "A-003297", "text": "여권 번호는 칠공팔 일이삼 사구 삼이구오예요. 그거 다시 말씀해 주시겠어요?", "pi": [{"type": "PASSPORT", "text": "칠공팔 일이삼 사구 삼이구오", "start": 7, "end": 22}], "meta": {"domain": "콜센터 상담 요약", "style": "반말 대화", "obfuscation": ["repeat_expr", "korean_reading"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-001986", "text": "네, 김현준 님 건 확인했어요. 소속은 LG화학이며, 담당자님은 박 팀장님이세요.", "pi": [{"type": "NAME", "text": "김현준", "start": 3, "end": 6}, {"type": "ORG", "text": "LG화학", "start": 22, "end": 26}], "meta": {"domain": "콜센터 상담 요약", "style": "격식체", "obfuscation": ["jamo_split"], "hard_case": "org_person"}}

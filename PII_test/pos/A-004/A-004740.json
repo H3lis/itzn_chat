@@ -1,1 +1,0 @@
-{"id": "A-004740", "text": "제가 아이디가 'bada99'이고, 이름이 '바다'예요. 혹시 이 바다라는 분이 신분증에 기재된 이름과 다른가요?", "pi": [{"type": "ID", "text": "bada99", "start": 9, "end": 15}, {"type": "NAME", "text": "바다", "start": 25, "end": 27}], "meta": {"domain": "민원 접수", "style": "존댓말 상담", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

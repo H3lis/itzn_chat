@@ -1,1 +1,0 @@
-{"id": "A-001618", "text": "확인된 IP 주소는 192.168.1.100이고요, 연락처는 010-5555-4444입니다.", "pi": [{"type": "IP_ADDR", "text": "192.168.1.100", "start": 11, "end": 24}, {"type": "PHONE", "text": "010-5555-4444", "start": 34, "end": 47}], "meta": {"domain": "이메일 본문", "style": "구어체", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

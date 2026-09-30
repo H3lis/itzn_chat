@@ -1,1 +1,0 @@
-{"id": "A-002070", "text": "우주 어머님, 생년월일은 1990년 1월 1일이고 성함은 'ㅇㅈㅎ'으로 부탁드립니다.", "pi": [{"type": "NAME", "text": "우주", "start": 0, "end": 2}, {"type": "BIRTH", "text": "1990년 1월 1일", "start": 14, "end": 25}], "meta": {"domain": "배달 요청사항", "style": "구어체", "obfuscation": ["honorific_ref", "split_utterance"], "hard_case": "homonym_name"}}

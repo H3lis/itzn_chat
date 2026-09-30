@@ -1,1 +1,0 @@
-{"id": "A-003865", "text": "이거 민원 접수서에 이름이 잘못 적혀있어요. 저는 이예나라고요.", "pi": [{"type": "NAME", "text": "이예나", "start": 28, "end": 31}], "meta": {"domain": "민원 접수", "style": "짧은 단답", "obfuscation": ["romanized"], "hard_case": "none"}}

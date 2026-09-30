@@ -1,1 +1,0 @@
-{"id": "A-005214", "text": "신촌역 인근에 위치한 OO개발사는 전화번호가 02-333-4444입니다.", "pi": [{"type": "ADDRESS", "text": "신촌역 인근", "start": 0, "end": 6}, {"type": "ORG", "text": "OO개발사", "start": 12, "end": 17}], "meta": {"domain": "콜센터 상담 요약", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "org_person"}}

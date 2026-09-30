@@ -1,1 +1,0 @@
-{"id": "A-002300", "text": "고객님, 혹시 성함이 김대리님이 맞으신가요? 문의하신 제품은 겨울용 아우터가 맞으실까요?", "pi": [{"type": "NAME", "text": "김대리", "start": 12, "end": 15}], "meta": {"domain": "택배 문의", "style": "존댓말 상담", "obfuscation": ["honorific_ref"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-003447", "text": "김지은 님께서 연락 주셨는데, 성함은 김 지은 이렇게 발음하시면 되고요.", "pi": [{"type": "NAME", "text": "김 지은", "start": 21, "end": 25}], "meta": {"domain": "콜센터 상담 요약", "style": "음성인식(STT) 전사", "obfuscation": ["honorific_ref", "jamo_split"], "hard_case": "none"}}

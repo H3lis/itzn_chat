@@ -1,1 +1,0 @@
-{"id": "A-005355", "text": "오늘 급하게 보내야 할 거라, 제 휴대폰 번호가 010-3333-4444로 바꼈어요. 이거로 해주세요.", "pi": [{"type": "PHONE", "text": "010-3333-4444", "start": 27, "end": 40}], "meta": {"domain": "직장 메신저", "style": "오타 많은 채팅", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

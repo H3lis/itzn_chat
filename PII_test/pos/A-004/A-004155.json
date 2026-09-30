@@ -1,1 +1,0 @@
-{"id": "A-004155", "text": "주문하신 건데요, 조회할 고유 아이디가 'TestUser123'입니다. 그리고 배송 받으실 연락처는 010-3333-4444예요.", "pi": [{"type": "ID", "text": "TestUser123", "start": 23, "end": 34}, {"type": "PHONE", "text": "010-3333-4444", "start": 56, "end": 69}], "meta": {"domain": "택배 문의", "style": "격식체", "obfuscation": ["plain"], "hard_case": "nickname_id"}}

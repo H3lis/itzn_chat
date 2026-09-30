@@ -1,1 +1,0 @@
-{"id": "A-003230", "text": "아니, 저 아이디가 별로예요. 이건 'ㄱㅏㅇㄴㅏㅁ'이고요, 진짜는 '강남'이에요.", "pi": [{"type": "NAME", "text": "ㄱㅏㅇㄴㅏㅁ", "start": 21, "end": 27}, {"type": "NAME", "text": "강남", "start": 38, "end": 40}], "meta": {"domain": "고객센터 채팅", "style": "짧은 단답", "obfuscation": ["jamo_split", "self_correction"], "hard_case": "none"}}

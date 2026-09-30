@@ -1,1 +1,0 @@
-{"id": "A-004296", "text": "여기 장미 얘는 밥만 먹고 좀 조용히 있어라.", "pi": [{"type": "NAME", "text": "장미", "start": 3, "end": 5}, {"type": "NAME", "text": "얘", "start": 6, "end": 7}], "meta": {"domain": "배달 요청사항", "style": "반말 대화", "obfuscation": ["jamo_split"], "hard_case": "none"}}

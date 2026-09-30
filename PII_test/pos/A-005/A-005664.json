@@ -1,1 +1,0 @@
-{"id": "A-005664", "text": "저희 어머니 생년월일은 85년 12월 25일이구요, 제 이름은 김민준이에요.", "pi": [{"type": "BIRTH", "text": "85년 12월 25일", "start": 13, "end": 24}, {"type": "NAME", "text": "김민준", "start": 35, "end": 38}], "meta": {"domain": "쇼핑몰 문의", "style": "메신저 줄임말", "obfuscation": ["split_utterance"], "hard_case": "none"}}

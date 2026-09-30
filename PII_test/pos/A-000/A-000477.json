@@ -1,1 +1,0 @@
-{"id": "A-000477", "text": "제 운전면허증 번호가 십오삼팔 구이이 삼 사 오육 이거 맞습니까?", "pi": [{"type": "DRIVER_LICENSE", "text": "십오삼팔 구이이 삼 사 오육", "start": 12, "end": 27}], "meta": {"domain": "회의록", "style": "구어체", "obfuscation": ["korean_reading", "repeat_expr"], "hard_case": "none"}}

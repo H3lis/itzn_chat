@@ -1,1 +1,0 @@
-{"id": "A-002017", "text": "여권 번호는 ０１２３４５６７이고요, 전화번호는 123-456-7890 같은 건가요?", "pi": [{"type": "PASSPORT", "text": "０１２３４５６７", "start": 7, "end": 15}, {"type": "PHONE", "text": "123-456-7890", "start": 26, "end": 38}], "meta": {"domain": "병원 접수", "style": "오타 많은 채팅", "obfuscation": ["lookalike_char", "repeat_expr"], "hard_case": "none"}}

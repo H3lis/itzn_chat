@@ -1,1 +1,0 @@
-{"id": "A-005004", "text": "가입할 때 쓰신 아이디가 '진주123'이 맞나요? 아, 아니요. '진주' 그 자체예요.", "pi": [{"type": "ID", "text": "진주123", "start": 15, "end": 20}, {"type": "NAME", "text": "진주", "start": 37, "end": 39}], "meta": {"domain": "택배 문의", "style": "구어체", "obfuscation": ["self_correction"], "hard_case": "homonym_name"}}

@@ -1,1 +1,0 @@
-{"id": "A-001379", "text": "궁금한 점이 있으시면, 제가 직접 010-9999-8888로 연락드리겠습니다.", "pi": [{"type": "PHONE", "text": "010-9999-8888", "start": 19, "end": 32}], "meta": {"domain": "콜센터 상담 요약", "style": "음성인식(STT) 전사", "obfuscation": ["plain"], "hard_case": "none"}}

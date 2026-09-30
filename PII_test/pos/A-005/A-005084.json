@@ -1,1 +1,0 @@
-{"id": "A-005084", "text": "저희 고객님 성함은 강민수예요. 이름 철자가 맞는지 다시 한번 확인 부탁드립니다.", "pi": [{"type": "NAME", "text": "강민수", "start": 11, "end": 14}], "meta": {"domain": "민원 접수", "style": "격식체", "obfuscation": ["romanized", "jamo_split"], "hard_case": "none"}}

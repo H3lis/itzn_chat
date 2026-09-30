@@ -1,1 +1,0 @@
-{"id": "A-000075", "text": "안녕하세요. 제 아이피는 192.168.0.5이고요, 닉네임은 행성지기입니다.", "pi": [{"type": "IP_ADDR", "text": "192.168.0.5", "start": 14, "end": 25}, {"type": "NAME", "text": "행성지기", "start": 35, "end": 39}], "meta": {"domain": "커뮤니티 게시글", "style": "오타 많은 채팅", "obfuscation": ["korean_reading"], "hard_case": "none"}}

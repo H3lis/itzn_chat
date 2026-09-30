@@ -1,1 +1,0 @@
-{"id": "A-002917", "text": "제가 사는 곳은 010-5400-1234 근처예요. 정확히는 성북구 삼각동 아파트인데, 혹시 ０１０-５４００-１２３４ 이신가요?", "pi": [{"type": "ADDRESS", "text": "성북구 삼각동", "start": 34, "end": 41}, {"type": "SNS", "text": "０１０-５４００-１２３４", "start": 52, "end": 65}], "meta": {"domain": "SNS 댓글", "style": "길고 장황한 설명", "obfuscation": ["stt_error", "lookalike_char"], "hard_case": "none"}}

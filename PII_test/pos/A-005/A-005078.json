@@ -1,1 +1,0 @@
-{"id": "A-005078", "text": "혹시 하늘 씨가 오늘 저녁 식사로 뭘 드시고 싶어하는지 아세요? 급하게 좀 알아봐야 하거든요.", "pi": [{"type": "NAME", "text": "하늘", "start": 3, "end": 5}], "meta": {"domain": "배달 요청사항", "style": "반말 대화", "obfuscation": ["jamo_split"], "hard_case": "homonym_name"}}

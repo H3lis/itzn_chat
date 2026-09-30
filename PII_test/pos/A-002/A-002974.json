@@ -1,1 +1,0 @@
-{"id": "A-002974", "text": "혹시 주소지가 어디셨나요? 아, 그게 123-45번지 맞으세요? 이름은 '바다' 씨 맞죠?", "pi": [{"type": "ADDRESS", "text": "123-45번지", "start": 21, "end": 29}, {"type": "NAME", "text": "바다", "start": 41, "end": 43}], "meta": {"domain": "보험 청구", "style": "반말 대화", "obfuscation": ["stt_error", "self_correction", "korean_reading"], "hard_case": "homonym_name"}}

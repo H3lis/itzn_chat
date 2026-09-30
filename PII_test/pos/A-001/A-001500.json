@@ -1,1 +1,0 @@
-{"id": "A-001500", "text": "혹시 성함이요? 아, 아니요, 부장님께는 '이서진'으로 해주시고요.", "pi": [{"type": "NAME", "text": "이서진", "start": 24, "end": 27}], "meta": {"domain": "택배 문의", "style": "짧은 단답", "obfuscation": ["self_correction", "jamo_split", "honorific_ref"], "hard_case": "none"}}

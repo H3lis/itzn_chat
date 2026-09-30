@@ -1,1 +1,0 @@
-{"id": "A-003379", "text": "아, 제 아이디는 'SpringTiger' 인데요. 제 이름은 정말 '김춘천'이 맞아요.", "pi": [{"type": "ID", "text": "SpringTiger", "start": 11, "end": 22}, {"type": "NAME", "text": "김춘천", "start": 39, "end": 42}], "meta": {"domain": "온라인 강의 Q&A", "style": "반말 대화", "obfuscation": ["self_correction"], "hard_case": "homonym_name"}}

@@ -1,1 +1,0 @@
-{"id": "A-003039", "text": "차량 번호가 1가2나 3333이 맞는지, 그리고 이름은 박지수님이세요.", "pi": [{"type": "CAR_PLATE", "text": "1가2나 3333", "start": 7, "end": 16}, {"type": "NAME", "text": "박지수", "start": 31, "end": 34}], "meta": {"domain": "학교 행정 문의", "style": "공문서풍", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

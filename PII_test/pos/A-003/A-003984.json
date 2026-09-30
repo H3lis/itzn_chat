@@ -1,1 +1,0 @@
-{"id": "A-003984", "text": "참고로 접속하신 IP 주소는 192.168.1.24가 맞고요, 연락 주실 메일 주소는 contact@server.net이요.", "pi": [{"type": "IP_ADDR", "text": "192.168.1.24", "start": 16, "end": 28}, {"type": "EMAIL", "text": "contact@server.net", "start": 48, "end": 66}], "meta": {"domain": "이메일 본문", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "none"}}

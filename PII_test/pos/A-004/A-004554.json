@@ -1,1 +1,0 @@
-{"id": "A-004554", "text": "네, 선생님. 이메일 주소는 test@naver.com 이고, 이름은 박지성 씨 말씀이신가요? 여기에 한번 확인해 보겠습니다.", "pi": [{"type": "EMAIL", "text": "test@naver.com", "start": 16, "end": 30}, {"type": "NAME", "text": "박지성", "start": 39, "end": 42}], "meta": {"domain": "학교 행정 문의", "style": "길고 장황한 설명", "obfuscation": ["plain"], "hard_case": "none"}}

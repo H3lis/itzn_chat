@@ -1,1 +1,0 @@
-{"id": "A-003521", "text": "회원님께서는 필수적으로 'service_user1234' 계정을 생성해주시고, 비밀번호는 영문 대/소문자 조합으로 설정해주시기 바랍니다.", "pi": [{"type": "ACCOUNT", "text": "service_user1234", "start": 14, "end": 30}], "meta": {"domain": "배달 요청사항", "style": "공문서풍", "obfuscation": ["plain"], "hard_case": "none"}}

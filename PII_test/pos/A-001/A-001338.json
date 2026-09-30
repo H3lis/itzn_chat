@@ -1,1 +1,0 @@
-{"id": "A-001338", "text": "문의사항은 고객센터 이메일 주소로 남겨주시면 돼요. support@example.com 이요.", "pi": [{"type": "EMAIL", "text": "support@example.com", "start": 29, "end": 48}], "meta": {"domain": "고객센터 채팅", "style": "구어체", "obfuscation": ["email_spoken"], "hard_case": "none"}}

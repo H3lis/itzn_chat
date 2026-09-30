@@ -1,1 +1,0 @@
-{"id": "A-001248", "text": "사랑 씨, 지난번에 얘기했던 거요? 아니면 혹시 다른 분이신지요? 성함이 어떻게 되셨는지 다시 한번 알려주시겠어요?", "pi": [{"type": "NAME", "text": "사랑", "start": 0, "end": 2}], "meta": {"domain": "회의록", "style": "짧은 단답", "obfuscation": ["self_correction"], "hard_case": "homonym_name"}}

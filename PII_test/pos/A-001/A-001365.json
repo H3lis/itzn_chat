@@ -1,1 +1,0 @@
-{"id": "A-001365", "text": "받으실 곳 주소는 서울시 강남구 테헤란로 123번지이고, 수신자 ID는 GJH456입니다.", "pi": [{"type": "ADDRESS", "text": "서울시 강남구 테헤란로 123번지", "start": 10, "end": 28}, {"type": "ID", "text": "GJH456", "start": 40, "end": 46}], "meta": {"domain": "택배 문의", "style": "짧은 단답", "obfuscation": ["split_utterance"], "hard_case": "none"}}

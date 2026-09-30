@@ -1,1 +1,0 @@
-{"id": "A-001381", "text": "저의 이름은 김철수고요, 주민등록번호는 기역ㅏㄴ ㅣㄱ ㅣㅁ ㅊㅓㄹ ㅅㅜ 220001-1234567이구요.", "pi": [{"type": "NAME", "text": "김철수", "start": 7, "end": 10}, {"type": "RRN", "text": "기역ㅏㄴ ㅣㄱ ㅣㅁ ㅊㅓㄹ ㅅㅜ 220001-1234567", "start": 22, "end": 54}], "meta": {"domain": "택배 문의", "style": "존댓말 상담", "obfuscation": ["korean_reading", "jamo_split", "lookalike_char"], "hard_case": "none"}}

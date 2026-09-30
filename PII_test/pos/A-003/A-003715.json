@@ -1,1 +1,0 @@
-{"id": "A-003715", "text": "네, 전화번호는 010-7777-8888이고, 주민등록번호는 990515-2xxxxxxx로 알고 있습니다.", "pi": [{"type": "PHONE", "text": "010-7777-8888", "start": 9, "end": 22}, {"type": "RRN", "text": "990515-2xxxxxxx", "start": 34, "end": 49}], "meta": {"domain": "금융 상담", "style": "짧은 단답", "obfuscation": ["plain"], "hard_case": "none"}}

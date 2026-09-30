@@ -1,1 +1,0 @@
-{"id": "A-002718", "text": "여권 정보 다시 한번 확인 부탁드려요. 여권 번호는 999-111-2222이고요, 연락처는 010.5555.1234예요.", "pi": [{"type": "PASSPORT", "text": "999-111-2222", "start": 29, "end": 41}, {"type": "PHONE", "text": "010.5555.1234", "start": 51, "end": 64}], "meta": {"domain": "학교 행정 문의", "style": "오타 많은 채팅", "obfuscation": ["separator_noise"], "hard_case": "none"}}

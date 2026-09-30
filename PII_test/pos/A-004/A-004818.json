@@ -1,1 +1,0 @@
-{"id": "A-004818", "text": "김 과장님께, 오늘 회의는 언제쯤으로 조정하는 게 좋을까요? 박 대리님도 같이 참석하는 게 좋겠어요. 이사님께도 말씀드리겠습니다.", "pi": [{"type": "NAME", "text": "김", "start": 0, "end": 1}, {"type": "NAME", "text": "박", "start": 34, "end": 35}, {"type": "NAME", "text": "이사", "start": 57, "end": 59}], "meta": {"domain": "직장 메신저", "style": "오타 많은 채팅", "obfuscation": ["honorific_ref"], "hard_case": "none"}}

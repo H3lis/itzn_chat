@@ -1,1 +1,0 @@
-{"id": "A-005450", "text": "신청자 계정은 KORID99입니다. 조직명은 교육연구원이고요, 주민번호는 851122입니다.", "pi": [{"type": "ACCOUNT", "text": "KORID99", "start": 8, "end": 15}, {"type": "ORG", "text": "교육연구원", "start": 25, "end": 30}, {"type": "RRN", "text": "851122", "start": 41, "end": 47}], "meta": {"domain": "학교 행정 문의", "style": "공문서풍", "obfuscation": ["plain"], "hard_case": "none"}}

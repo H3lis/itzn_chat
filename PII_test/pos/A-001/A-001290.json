@@ -1,1 +1,0 @@
-{"id": "A-001290", "text": "저희 팀 메일이 project_alpha(at)company.co.kr이라서 이쪽으로 문의드리는 게 빠를 것 같습니다. 조직명도 참고 부탁드려요.", "pi": [{"type": "ORG", "text": "팀", "start": 3, "end": 4}, {"type": "EMAIL", "text": "project_alpha(at)company.co.kr", "start": 9, "end": 39}], "meta": {"domain": "커뮤니티 게시글", "style": "구어체", "obfuscation": ["plain"], "hard_case": "org_person"}}

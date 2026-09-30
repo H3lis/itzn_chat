@@ -1,1 +1,0 @@
-{"id": "A-003830", "text": "카드 번호는 1234로 시작하고요, 이름은 하루라고 해주세요.", "pi": [{"type": "CARD", "text": "1234", "start": 7, "end": 11}, {"type": "NAME", "text": "하루", "start": 24, "end": 26}], "meta": {"domain": "쇼핑몰 문의", "style": "음성인식(STT) 전사", "obfuscation": ["jamo_split", "mixed_reading"], "hard_case": "homonym_name"}}

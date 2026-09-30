@@ -1,1 +1,0 @@
-{"id": "A-002612", "text": "예약 확인되셨어요. 계정은 guest_user_id이고, 주소는 경기도 성남시 분당구에 있는 곳으로 변경할게요.", "pi": [{"type": "ACCOUNT", "text": "guest_user_id", "start": 15, "end": 28}, {"type": "ADDRESS", "text": "경기도 성남시 분", "start": 36, "end": 45}], "meta": {"domain": "여행 예약", "style": "메신저 줄임말", "obfuscation": ["plain"], "hard_case": "none"}}

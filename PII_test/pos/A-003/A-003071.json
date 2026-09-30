@@ -1,1 +1,0 @@
-{"id": "A-003071", "text": "해솔님, 연락처를 남겨주시면 메일로 확인해 드릴게요. 제 이메일은 haesol.user@example.com이에요.", "pi": [{"type": "NAME", "text": "해솔", "start": 0, "end": 2}, {"type": "EMAIL", "text": "haesol.user@example.com", "start": 37, "end": 60}], "meta": {"domain": "고객센터 채팅", "style": "구어체", "obfuscation": ["romanized"], "hard_case": "homonym_name"}}

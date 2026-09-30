@@ -1,1 +1,0 @@
-{"id": "A-003867", "text": "차량번호는 12가 아닙니다. 그리고 학생분 ID는 9876이고, 김과장님은 누구신가요?", "pi": [{"type": "CAR_PLATE", "text": "12", "start": 6, "end": 8}, {"type": "ID", "text": "9876", "start": 28, "end": 32}, {"type": "NAME", "text": "김과장", "start": 36, "end": 39}], "meta": {"domain": "온라인 강의 Q&A", "style": "오타 많은 채팅", "obfuscation": ["stt_error", "honorific_ref"], "hard_case": "none"}}

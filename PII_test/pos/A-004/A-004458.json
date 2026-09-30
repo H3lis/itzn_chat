@@ -1,1 +1,0 @@
-{"id": "A-004458", "text": "고객님 아이디가 User9872이고, 성함은 이지훈 님 맞으실까요?", "pi": [{"type": "ID", "text": "User9872", "start": 9, "end": 17}, {"type": "NAME", "text": "이지훈", "start": 25, "end": 28}], "meta": {"domain": "고객센터 채팅", "style": "격식체", "obfuscation": ["plain"], "hard_case": "none"}}

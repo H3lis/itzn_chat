@@ -1,1 +1,0 @@
-{"id": "A-005622", "text": "저 혹시 주민번호 말씀이신 건가요? 기재해주신 건 910515-1******으로 보이는데, 이거 맞나요?", "pi": [{"type": "RRN", "text": "910515-1******", "start": 28, "end": 42}], "meta": {"domain": "고객센터 채팅", "style": "메신저 줄임말", "obfuscation": ["mixed_reading"], "hard_case": "none"}}

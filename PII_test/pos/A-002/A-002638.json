@@ -1,1 +1,0 @@
-{"id": "A-002638", "text": "예약하신 건 민지 씨 건인데요. 생년월일이 90년 8월 15일이라고 하셨는데, 혹시 92년 8월 15일이 맞을까요?", "pi": [{"type": "NAME", "text": "민지", "start": 7, "end": 9}, {"type": "BIRTH", "text": "92년 8월 15일", "start": 47, "end": 57}], "meta": {"domain": "여행 예약", "style": "오타 많은 채팅", "obfuscation": ["stt_error"], "hard_case": "none"}}

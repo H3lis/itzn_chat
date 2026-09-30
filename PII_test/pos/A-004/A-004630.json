@@ -1,1 +1,0 @@
-{"id": "A-004630", "text": "차량 번호 말씀해주시겠어요? 네, 12가 4번이고, 33이 2번입니다.", "pi": [{"type": "CAR_PLATE", "text": "12가 4번이고, 33이 2번", "start": 19, "end": 35}], "meta": {"domain": "금융 상담", "style": "짧은 단답", "obfuscation": ["separator_noise", "mixed_reading"], "hard_case": "none"}}

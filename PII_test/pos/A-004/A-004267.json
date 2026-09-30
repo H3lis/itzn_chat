@@ -1,1 +1,0 @@
-{"id": "A-004267", "text": "연락하실 주소는 010-1111-2222로 부탁드려요. 메일 주소는 test.user(at)naver.com으로 알고 계시죠?", "pi": [{"type": "PHONE", "text": "010-1111-2222", "start": 9, "end": 22}, {"type": "EMAIL", "text": "test.user(at)naver.com", "start": 38, "end": 60}], "meta": {"domain": "직장 메신저", "style": "짧은 단답", "obfuscation": ["lookalike_char"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-005544", "text": "혹시 고객님 전화번호가 010-9999-8888로 되어있던데, 이거 다른 번호예요.", "pi": [{"type": "PHONE", "text": "010-9999-8888", "start": 13, "end": 26}], "meta": {"domain": "택배 문의", "style": "공문서풍", "obfuscation": ["self_correction"], "hard_case": "none"}}

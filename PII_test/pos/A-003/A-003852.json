@@ -1,1 +1,0 @@
-{"id": "A-003852", "text": "하루 씨가 올린 사진 보고 저도 완전 예쁘다 싶어서요. 연락처는 010-1111-2222예요.", "pi": [{"type": "NAME", "text": "하루", "start": 0, "end": 2}, {"type": "PHONE", "text": "010-1111-2222", "start": 36, "end": 49}], "meta": {"domain": "SNS 댓글", "style": "메신저 줄임말", "obfuscation": ["mixed_reading"], "hard_case": "homonym_name"}}

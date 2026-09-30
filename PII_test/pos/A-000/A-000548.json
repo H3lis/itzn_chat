@@ -1,1 +1,0 @@
-{"id": "A-000548", "text": "환자분 성함이 '이서윤' 씨시고요, 등록된 이름으로 다시 확인 부탁드립니다. '이서윤' 님이 맞으신가요?", "pi": [{"type": "NAME", "text": "이서윤", "start": 9, "end": 12}, {"type": "NAME", "text": "이서윤", "start": 44, "end": 47}], "meta": {"domain": "병원 접수", "style": "격식체", "obfuscation": ["jamo_split"], "hard_case": "none"}}

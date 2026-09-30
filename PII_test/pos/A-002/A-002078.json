@@ -1,1 +1,0 @@
-{"id": "A-002078", "text": "김민준 님은 SNS에 제이엠에스라는 계정을 사용하고 계신가요?", "pi": [{"type": "NAME", "text": "김민준", "start": 0, "end": 3}, {"type": "SNS", "text": "제이엠에스", "start": 12, "end": 17}], "meta": {"domain": "금융 상담", "style": "길고 장황한 설명", "obfuscation": ["romanized"], "hard_case": "none"}}

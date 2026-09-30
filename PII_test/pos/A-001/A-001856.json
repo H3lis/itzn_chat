@@ -1,1 +1,0 @@
-{"id": "A-001856", "text": "제가 아이디는 'coolman'이고요. 연락처는 010 다섯 다섯 다섯, 그 다음으로 1234라고 해주세요.", "pi": [{"type": "ID", "text": "coolman", "start": 9, "end": 16}, {"type": "PHONE", "text": "010 다섯 다섯 다섯", "start": 27, "end": 39}], "meta": {"domain": "금융 상담", "style": "메신저 줄임말", "obfuscation": ["split_utterance", "korean_reading"], "hard_case": "nickname_id"}}

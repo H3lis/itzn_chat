@@ -1,1 +1,0 @@
-{"id": "A-001912", "text": "네, 상담사님. 보람 씨의 이메일은 'bo_ram@mail.com' 맞으신가요? 저희가 측정한 성함이 보람 씨로 되어 있습니다.", "pi": [{"type": "NAME", "text": "보람", "start": 9, "end": 11}, {"type": "EMAIL", "text": "bo_ram@mail.com", "start": 21, "end": 36}], "meta": {"domain": "보험 청구", "style": "음성인식(STT) 전사", "obfuscation": ["honorific_ref"], "hard_case": "homonym_name"}}

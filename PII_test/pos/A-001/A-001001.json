@@ -1,1 +1,0 @@
-{"id": "A-001001", "text": "제 여권 번호는 가상으로 2024년식에 발급된 것으로 999-XXXX-1234입니다. 확인 부탁드립니다.", "pi": [{"type": "PASSPORT", "text": "999-XXXX-1234", "start": 30, "end": 43}], "meta": {"domain": "보험 청구", "style": "길고 장황한 설명", "obfuscation": ["separator_noise"], "hard_case": "none"}}

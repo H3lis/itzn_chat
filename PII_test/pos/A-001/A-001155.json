@@ -1,1 +1,0 @@
-{"id": "A-001155", "text": "문의하신 내용을 확인하려면 제 이메일 주소인 testuser(at)gmail(dot)com으로 회신 부탁드립니다.", "pi": [{"type": "EMAIL", "text": "testuser(at)gmail(dot)com", "start": 25, "end": 50}], "meta": {"domain": "고객센터 채팅", "style": "존댓말 상담", "obfuscation": ["plain"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-003154", "text": "저희가 예약한 건요, 302호 방이에요. 혹시 이용하시는 분이 다른 아이디로 예약하신 건 아닌지 확인해봐야 해요.", "pi": [{"type": "OTHER_ID", "text": "302", "start": 12, "end": 15}], "meta": {"domain": "여행 예약", "style": "반말 대화", "obfuscation": ["stt_error"], "hard_case": "none"}}

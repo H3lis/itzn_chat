@@ -1,1 +1,0 @@
-{"id": "A-000445", "text": "제가 말하는 사람이 김민준이라는 사람이고요, 이 분이 오늘 새로 오셨는데 김준민 씨 맞나요? 여기 담당자님이시죠?", "pi": [{"type": "NAME", "text": "김민준", "start": 11, "end": 14}, {"type": "NAME", "text": "김준민", "start": 41, "end": 44}], "meta": {"domain": "커뮤니티 게시글", "style": "길고 장황한 설명", "obfuscation": ["jamo_split"], "hard_case": "none"}}

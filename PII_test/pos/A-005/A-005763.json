@@ -1,1 +1,0 @@
-{"id": "A-005763", "text": "주소는 강남구 테헤란로 123이고, 카드는 1234-5678-9012-3456이요.", "pi": [{"type": "ADDRESS", "text": "강남구 테헤란로 123", "start": 4, "end": 16}, {"type": "CARD", "text": "1234-5678-9012-3456", "start": 24, "end": 43}], "meta": {"domain": "여행 예약", "style": "오타 많은 채팅", "obfuscation": ["jamo_split", "repeat_expr"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-005497", "text": "저희 기관은 한국전자통신원이고, SNS 계정으로는 @korean_tech_lab 같은 걸 사용하고 있습니다.", "pi": [{"type": "ORG", "text": "한국전자통신원", "start": 7, "end": 14}, {"type": "SNS", "text": "@korean_tech_lab", "start": 28, "end": 44}], "meta": {"domain": "민원 접수", "style": "길고 장황한 설명", "obfuscation": ["lookalike_char"], "hard_case": "org_person"}}

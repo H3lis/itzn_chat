@@ -1,1 +1,0 @@
-{"id": "A-005999", "text": "예약 변경 건이요. 우선 전화번호가 070-3333-4444라 확인됐는데, 아니 그거 아니고 010-5555-6666으로 다시요.", "pi": [{"type": "PHONE", "text": "070-3333-4444", "start": 20, "end": 33}, {"type": "PHONE", "text": "010-5555-6666", "start": 52, "end": 65}], "meta": {"domain": "직장 메신저", "style": "오타 많은 채팅", "obfuscation": ["stt_error", "split_utterance"], "hard_case": "none"}}

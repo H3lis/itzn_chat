@@ -1,1 +1,0 @@
-{"id": "A-004639", "text": "찾으시는 주소는 서울시 강남구 신논현로 123-45번지 근처 맞을까요? 3층에 계신가요?", "pi": [{"type": "ADDRESS", "text": "서울시 강남구 신논현로 123-45번지", "start": 9, "end": 30}], "meta": {"domain": "병원 접수", "style": "길고 장황한 설명", "obfuscation": ["korean_reading"], "hard_case": "none"}}

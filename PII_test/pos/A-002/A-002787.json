@@ -1,1 +1,0 @@
-{"id": "A-002787", "text": "연락 주신 분 전화번호가 010 1111 2222 맞으신가요? 아니면 070-3333-4444예요.", "pi": [{"type": "PHONE", "text": "010 1111 2222", "start": 14, "end": 27}, {"type": "PHONE", "text": "070-3333-4444", "start": 39, "end": 52}], "meta": {"domain": "음성통화 전사문", "style": "격식체", "obfuscation": ["korean_reading", "stt_error"], "hard_case": "none"}}

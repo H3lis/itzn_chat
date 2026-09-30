@@ -1,1 +1,0 @@
-{"id": "A-002536", "text": "접속하시려고 했던 IP 주소가 203.12.87.15가 맞습니까? 이 주소에 혹시 변경된 사항이 있는지요?", "pi": [{"type": "IP_ADDR", "text": "203.12.87.15", "start": 17, "end": 29}], "meta": {"domain": "부동산 상담", "style": "격식체", "obfuscation": ["self_correction"], "hard_case": "none"}}

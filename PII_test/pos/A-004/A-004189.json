@@ -1,1 +1,0 @@
-{"id": "A-004189", "text": "혹시 기쁨 씨가 문의한 건데, 연락처가 ０１０-１１１１-２２２２ 맞나요?", "pi": [{"type": "NAME", "text": "기쁨", "start": 3, "end": 5}, {"type": "PHONE", "text": "０１０-１１１１-２２２２", "start": 22, "end": 35}], "meta": {"domain": "학교 행정 문의", "style": "존댓말 상담", "obfuscation": ["lookalike_char"], "hard_case": "homonym_name"}}

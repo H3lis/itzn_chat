@@ -1,1 +1,0 @@
-{"id": "A-004660", "text": "회원 계정은 test_user_11 이고, 연락처는 010-9999-8888 이니 참고 바랍니다.", "pi": [{"type": "ACCOUNT", "text": "test_user_11", "start": 7, "end": 19}, {"type": "PHONE", "text": "010-9999-8888", "start": 29, "end": 42}], "meta": {"domain": "콜센터 상담 요약", "style": "반말 대화", "obfuscation": ["separator_noise"], "hard_case": "none"}}

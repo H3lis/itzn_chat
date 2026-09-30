@@ -1,1 +1,0 @@
-{"id": "A-005362", "text": "혹시 제 이름이 무엇인지 다시 한번 확인해 주시겠어요? 아, 아니 제가 아니라 김하나예요.", "pi": [{"type": "NAME", "text": "김하나", "start": 44, "end": 47}], "meta": {"domain": "고객센터 채팅", "style": "메신저 줄임말", "obfuscation": ["self_correction"], "hard_case": "none"}}

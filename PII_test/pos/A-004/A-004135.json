@@ -1,1 +1,0 @@
-{"id": "A-004135", "text": "지혜 씨, 어제 말씀하신 그 번호 있잖아. 010-5555-1111이 맞아요?", "pi": [{"type": "NAME", "text": "지혜", "start": 0, "end": 2}, {"type": "PHONE", "text": "010-5555-1111", "start": 24, "end": 37}], "meta": {"domain": "민원 접수", "style": "반말 대화", "obfuscation": ["stt_error"], "hard_case": "homonym_name"}}

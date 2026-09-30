@@ -1,1 +1,0 @@
-{"id": "A-001812", "text": "저희 회원님 생년월일은 1990년 1월 1일로 되어 있는데, 이 정보가 정확한가요?", "pi": [{"type": "BIRTH", "text": "1990년 1월 1일", "start": 13, "end": 24}], "meta": {"domain": "이메일 본문", "style": "공문서풍", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

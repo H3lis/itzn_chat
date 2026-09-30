@@ -1,1 +1,0 @@
-{"id": "A-001160", "text": "회원님은 1990년 12월 31일생이시고, 성함은 김철수님으로 기록되어 있는데, 이 정보가 맞을까요?", "pi": [{"type": "BIRTH", "text": "1990년 12월 31일", "start": 5, "end": 18}, {"type": "NAME", "text": "김철수", "start": 28, "end": 31}], "meta": {"domain": "금융 상담", "style": "공문서풍", "obfuscation": ["repeat_expr"], "hard_case": "none"}}

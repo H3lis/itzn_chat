@@ -1,1 +1,0 @@
-{"id": "A-004348", "text": "전체 주소는 경기도 수원시 권선구로 123-45번지 쪽으로 되어 있습니다. 혹시 제가 잘못 들은 걸까요?", "pi": [{"type": "ADDRESS", "text": "경기도 수원시 권선구로 123-45번지", "start": 7, "end": 28}], "meta": {"domain": "이메일 본문", "style": "짧은 단답", "obfuscation": ["stt_error", "split_utterance"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-004196", "text": "김 과장님께서 연락 주셨는데, 개인 SNS는 인스타지예요. 좀 더 정중하게 말씀해 주시겠어요?", "pi": [{"type": "NAME", "text": "김 과장님", "start": 0, "end": 5}, {"type": "SNS", "text": "인스타지", "start": 25, "end": 29}], "meta": {"domain": "음성통화 전사문", "style": "존댓말 상담", "obfuscation": ["honorific_ref"], "hard_case": "nickname_id"}}

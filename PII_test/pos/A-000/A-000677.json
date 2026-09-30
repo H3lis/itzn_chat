@@ -1,1 +1,0 @@
-{"id": "A-000677", "text": "고객님께서 거주하시는 주소는 서울시 강남구 논현동에 해당하시겠습니까?", "pi": [{"type": "ADDRESS", "text": "서울시 강남구 논현동", "start": 16, "end": 27}], "meta": {"domain": "금융 상담", "style": "격식체", "obfuscation": ["jamo_split"], "hard_case": "none"}}

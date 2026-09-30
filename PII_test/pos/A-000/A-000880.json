@@ -1,1 +1,0 @@
-{"id": "A-000880", "text": "운전면허증 번호가 9103-4455-2211으로 확인되네요. 맞으세요?", "pi": [{"type": "DRIVER_LICENSE", "text": "9103-4455-2211", "start": 10, "end": 24}], "meta": {"domain": "콜센터 상담 요약", "style": "반말 대화", "obfuscation": ["plain"], "hard_case": "none"}}

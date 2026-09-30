@@ -1,1 +1,0 @@
-{"id": "A-001073", "text": "여권 번호가요? 아, 잠시만요. 여기요. 여권 번호는 A1B2C3D4가 맞고요, 그리고 전화번호는 010 1111 2222예요.", "pi": [{"type": "PASSPORT", "text": "여권 번호는 A1B2C3D4", "start": 23, "end": 38}, {"type": "PHONE", "text": "010 1111 2222", "start": 55, "end": 68}], "meta": {"domain": "직장 메신저", "style": "공문서풍", "obfuscation": ["stt_error", "split_utterance"], "hard_case": "none"}}

@@ -1,1 +1,0 @@
-{"id": "A-005191", "text": "예약하신 분의 연락처는 02-7777-8888 이 맞으신가요?", "pi": [{"type": "PHONE", "text": "02-7777-8888", "start": 13, "end": 25}], "meta": {"domain": "민원 접수", "style": "격식체", "obfuscation": ["stt_error"], "hard_case": "none"}}

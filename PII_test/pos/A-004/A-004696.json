@@ -1,1 +1,0 @@
-{"id": "A-004696", "text": "저번에 말씀드렸던 분 이름이요? 혹시 '문준영' 님이라고 불러야 할까요?", "pi": [{"type": "NAME", "text": "문준영", "start": 22, "end": 25}], "meta": {"domain": "음성통화 전사문", "style": "구어체", "obfuscation": ["jamo_split"], "hard_case": "none"}}

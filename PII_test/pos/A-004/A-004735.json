@@ -1,1 +1,0 @@
-{"id": "A-004735", "text": "카드로 결제하고요, 운전면허번호는 2001년 12월 25일로 확인 부탁드립니다.", "pi": [{"type": "CARD", "text": "카드로", "start": 0, "end": 3}, {"type": "DRIVER_LICENSE", "text": "2001년 12월 25일", "start": 19, "end": 32}], "meta": {"domain": "커뮤니티 게시글", "style": "존댓말 상담", "obfuscation": ["split_utterance"], "hard_case": "none"}}

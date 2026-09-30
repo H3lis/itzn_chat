@@ -1,1 +1,0 @@
-{"id": "A-001641", "text": "OOO 같은 경우에 제 학번은 2023-1122-3333이구요, 제가 이름이 '꽃님'이라는 건 좀 아닌가요?", "pi": [{"type": "RRN", "text": "2023-1122-3333", "start": 17, "end": 31}, {"type": "NAME", "text": "꽃님", "start": 44, "end": 46}], "meta": {"domain": "직장 메신저", "style": "음성인식(STT) 전사", "obfuscation": ["self_correction", "lookalike_char"], "hard_case": "homonym_name"}}

@@ -1,1 +1,0 @@
-{"id": "A-003038", "text": "연락처는 010. 1111. 2222-3333-4444로 해주시고, 주민번호는 910101-2222222 같은데요.", "pi": [{"type": "PHONE", "text": "010. 1111. 2222", "start": 5, "end": 20}, {"type": "RRN", "text": "910101-2222222", "start": 44, "end": 58}], "meta": {"domain": "여행 예약", "style": "음성인식(STT) 전사", "obfuscation": ["separator_noise", "self_correction"], "hard_case": "none"}}

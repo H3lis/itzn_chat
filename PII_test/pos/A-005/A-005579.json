@@ -1,1 +1,0 @@
-{"id": "A-005579", "text": "저기요, 제 아이디는 user_test_100으로 되어 있는데 이게 맞을까요?", "pi": [{"type": "ID", "text": "user_test_100", "start": 12, "end": 25}], "meta": {"domain": "병원 접수", "style": "오타 많은 채팅", "obfuscation": ["plain"], "hard_case": "none"}}

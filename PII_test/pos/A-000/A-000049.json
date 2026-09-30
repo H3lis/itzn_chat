@@ -1,1 +1,0 @@
-{"id": "A-000049", "text": "회원가입하려고 하는데 아이디랑 SNS 주소도 꼭 필요하다고 하더라고요. 제 계정은 cool_user01이고, 인스타는 k_user_official에요.", "pi": [{"type": "ACCOUNT", "text": "cool_user01", "start": 46, "end": 57}, {"type": "SNS", "text": "k_user_official", "start": 66, "end": 81}], "meta": {"domain": "민원 접수", "style": "존댓말 상담", "obfuscation": ["korean_reading", "mixed_reading"], "hard_case": "none"}}
