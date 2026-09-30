@@ -53,5 +53,14 @@ validation/
 *validation_report*.json
 *val_analysis*.txt
 val3_analysis_summary.txt
+
+# --- 대화 히스토리 및 시나리오/FAQ 런타임 테스트 데이터 (GitHub 미게시) ---
 *.db
+*.db*
+**/chat_history*
+**/chat_history.db*
+**/*scenario*.tmp
+**/*faq*.tmp
+**/data/*.bak*
+**/data/*.tmp
 !**/data/*.placeholder
