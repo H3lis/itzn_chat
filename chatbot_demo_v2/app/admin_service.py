@@ -606,6 +606,20 @@ class ReindexRunner:
             self.summary = None
             self.logs.clear()
 
+        # 디스크의 이전 실행 라이브 로그 및 상태 파일도 즉시 완전 초기화 (과거 로그 섞임 원천 차단)
+        try:
+            self.live_reports_dir.mkdir(parents=True, exist_ok=True)
+            self.live_log_file.write_text("", encoding="utf-8")
+            self.live_status_file.write_text(json.dumps({
+                "status": "running",
+                "stage": "scan",
+                "progress_pct": 5,
+                "started_at": self.started_at,
+                "updated_at": self.started_at
+            }, ensure_ascii=False, indent=2), encoding="utf-8")
+        except Exception as e:
+            logger.debug("시작 시 live 파일 초기화 실패: %s", e)
+
         mode_text = "전체 완전 재파싱 & 강제 재색인" if force else "고속 증분 재색인 (파싱 캐시 재사용)"
         self._add_log(f"🚀 RAG 전처리 및 재색인 파이프라인을 시작합니다. (모드: {mode_text})", stage="scan", progress=5)
 

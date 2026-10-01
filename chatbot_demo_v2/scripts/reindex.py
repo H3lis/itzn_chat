@@ -133,6 +133,13 @@ def build(settings, force: bool, catalog_path: Path | None = None, docs_dir: Pat
     src_catalog = catalog_path or DEFAULT_CATALOG
     src_docs = docs_dir or DEFAULT_DOCS
 
+    # 이전 실행의 라이브 로그를 초기화하여 이전 로그가 새 화면에 섞이지 않도록 보장
+    try:
+        LIVE_REPORTS_DIR.mkdir(parents=True, exist_ok=True)
+        LIVE_LOG_FILE.write_text("", encoding="utf-8")
+    except Exception:
+        pass
+
     new_dir = Path(settings.ragdata_dir) / "index_new"
     if new_dir.exists():
         for root, dirs, files in os.walk(new_dir):
