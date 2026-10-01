@@ -18,7 +18,10 @@ from fastapi.staticfiles import StaticFiles
 
 from .api import InvalidRequestError, router
 from .dependencies import AppContext, build_context
+from .time_util import init_korean_timezone
 from ..observability.langsmith import configure_langsmith
+
+init_korean_timezone()
 from ..rag.adapter_util import RagBusyError, RagUnavailableError
 from ..scenario.tree import InvalidActionError
 from ..graph.nodes import EmptyInputError

@@ -25,6 +25,7 @@ from fastapi import UploadFile
 from ..config.settings import Settings
 from ..rag.adapter_util import prepare_ragcore_imports
 from ..ragcore.rag3.utils import doc_slug
+from .time_util import now_kst, now_kst_str, now_kst_time_str
 
 logger = logging.getLogger("chatbot_demo_v2.admin")
 
@@ -552,7 +553,7 @@ class ReindexRunner:
             }
 
     def _add_log(self, text: str, stage: Optional[str] = None, progress: Optional[int] = None):
-        stamp = datetime.now().strftime("%H:%M:%S")
+        stamp = now_kst_time_str()
         line = f"[{stamp}] {text}"
         with self._lock:
             self.logs.append(line)
@@ -597,7 +598,7 @@ class ReindexRunner:
             self.status = "running"
             self.stage = "scan"
             self.progress_pct = 5
-            self.started_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            self.started_at = now_kst_str()
             self.finished_at = None
             self.elapsed_s = 0.0
             self.error_msg = None
@@ -659,7 +660,7 @@ class ReindexRunner:
                 self.status = "completed"
                 self.stage = "ready"
                 self.progress_pct = 100
-                self.finished_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                self.finished_at = now_kst_str()
                 self.elapsed_s = elapsed
                 self.summary = summary
 
@@ -691,7 +692,7 @@ class ReindexRunner:
             with self._lock:
                 self.status = "failed"
                 self.stage = "ready"
-                self.finished_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                self.finished_at = now_kst_str()
                 self.elapsed_s = elapsed
                 self.error_msg = err_text
 

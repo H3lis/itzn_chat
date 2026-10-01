@@ -37,6 +37,9 @@ sys.path.insert(0, str(PROJECT_ROOT))
 
 from chatbot_demo_v2.config.settings import load_settings             # noqa: E402
 from chatbot_demo_v2.rag.adapter_util import prepare_ragcore_imports  # noqa: E402
+from chatbot_demo_v2.app.time_util import init_korean_timezone, now_kst, now_kst_str, now_kst_time_str  # noqa: E402
+
+init_korean_timezone()
 
 # 원본 카탈로그/PDF 기본 경로 — 내부 raw_data 우선, 없으면 외부 test_3 폴백
 DEFAULT_CATALOG = PKG_ROOT / "raw_data" / "catalog" / "데이터카탈로그_DCAT_선정파일_RAG최적화.xlsx"
@@ -55,7 +58,7 @@ LIVE_STATUS_FILE = LIVE_REPORTS_DIR / "reindex_status.json"
 def emit_live_log(text: str, stage: str | None = None, progress: int | None = None, status: str = "running"):
     """웹 관리자 콘솔과 실시간 동기화되는 라이브 로그 및 상태 파일에 기록."""
     LIVE_REPORTS_DIR.mkdir(parents=True, exist_ok=True)
-    stamp = datetime.now().strftime("%H:%M:%S")
+    stamp = now_kst_time_str()
     line = f"[{stamp}] {text}"
     try:
         with open(LIVE_LOG_FILE, "a", encoding="utf-8") as f:
@@ -76,7 +79,7 @@ def emit_live_log(text: str, stage: str | None = None, progress: int | None = No
             cur_status["stage"] = stage
         if progress is not None:
             cur_status["progress_pct"] = progress
-        cur_status["updated_at"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        cur_status["updated_at"] = now_kst_str()
         LIVE_STATUS_FILE.write_text(json.dumps(cur_status, ensure_ascii=False, indent=2), encoding="utf-8")
     except Exception:
         pass
@@ -189,7 +192,7 @@ def _safe_promote_dir(new_dir: Path, cur_dir: Path, old_dir: Path, root: Path) -
 
     # 1) 기존 index_old 보존
     if old_dir.exists():
-        stamp = datetime.now().strftime("%Y%m%dT%H%M%S")
+        stamp = now_kst_str("%Y%m%dT%H%M%S")
         dest_old = root / f"index_old_{stamp}"
         try:
             old_dir.rename(dest_old)
@@ -255,7 +258,7 @@ def rollback(settings) -> None:
     if not old.is_dir():
         raise SystemExit(f"되돌릴 직전 색인이 없다: {old}")
     gc.collect()
-    failed = root / ("index_failed_" + datetime.now().strftime("%Y%m%dT%H%M%S"))
+    failed = root / ("index_failed_" + now_kst_str("%Y%m%dT%H%M%S"))
     try:
         cur.rename(failed)
     except Exception:

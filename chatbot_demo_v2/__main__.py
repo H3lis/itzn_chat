@@ -11,6 +11,11 @@ from .config.settings import load_settings
 
 
 def main() -> None:
+    try:
+        from .app.time_util import init_korean_timezone
+        init_korean_timezone()
+    except Exception:
+        pass
     settings = load_settings()
     parser = argparse.ArgumentParser(description="school-network-chatbot-demo-v2")
     parser.add_argument("--host", default="0.0.0.0")
