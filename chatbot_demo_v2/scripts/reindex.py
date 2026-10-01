@@ -131,8 +131,18 @@ def build(settings, force: bool, catalog_path: Path | None = None, docs_dir: Pat
 
     new_dir = Path(settings.ragdata_dir) / "index_new"
     if new_dir.exists():
+        for root, dirs, files in os.walk(new_dir):
+            for fname in files:
+                try:
+                    os.chmod(os.path.join(root, fname), 0o777)
+                except Exception:
+                    pass
         shutil.rmtree(new_dir, ignore_errors=True)
     new_dir.mkdir(parents=True, exist_ok=True)
+    try:
+        os.chmod(new_dir, 0o777)
+    except Exception:
+        pass
 
     try:
         from rag3.index import clear_all_index_caches

@@ -127,6 +127,10 @@ class Config:
             self.chroma_dir,
         ):
             d.mkdir(parents=True, exist_ok=True)
+            try:
+                os.chmod(d, 0o777)
+            except Exception:
+                pass
 
 
 def _resolve(base: Path, value: str) -> Path:

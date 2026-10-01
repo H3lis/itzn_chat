@@ -37,6 +37,11 @@ class HybridIndex:
         self.backend = backend
         self.chroma_dir = config.chroma_dir / backend.backend_id
         self.chroma_dir.mkdir(parents=True, exist_ok=True)
+        try:
+            import os
+            os.chmod(self.chroma_dir, 0o777)
+        except Exception:
+            pass
         self.client = chromadb.PersistentClient(path=str(self.chroma_dir))
         self.collection = self.client.get_or_create_collection(name=name, metadata={"hnsw:space": "cosine"})
         #: 전역(where=None) BM25 캐시 — (ids, docs, metas, tokenized_docs, BM25Okapi). 청크 색인 규모(수천건)에서
