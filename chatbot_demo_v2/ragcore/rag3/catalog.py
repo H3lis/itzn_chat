@@ -164,19 +164,31 @@ class MatchReport:
     matched: list[dict[str, Any]]
     unmatched_catalog_rows: list[dict[str, Any]]
     unmatched_pdfs: list[str]
+    unmatched_documents: list[str] = field(default_factory=list)
+
+    def __post_init__(self):
+        if not self.unmatched_documents and self.unmatched_pdfs:
+            self.unmatched_documents = list(self.unmatched_pdfs)
 
 
 def match_catalog_to_pdfs(
     rows: list[CatalogRow], documents_dir: Path, fuzzy_threshold: float = 88.0
 ) -> MatchReport:
-    supported_exts = {".pdf", ".docx", ".hwpx", ".hwp", ".xlsx", ".xls", ".csv", ".txt", ".md"}
-    doc_paths = sorted([p for p in documents_dir.rglob("*") if p.is_file() and p.suffix.lower() in supported_exts and not p.name.startswith("~$") and not p.name.startswith(".")])
+    supported_exts = {
+        ".pdf", ".pptx", ".ppt", ".docx", ".hwpx", ".hwp",
+        ".xlsx", ".xls", ".csv", ".txt", ".md"
+    }
+    doc_paths = sorted([
+        p for p in documents_dir.rglob("*")
+        if p.is_file() and p.suffix.lower() in supported_exts
+        and not p.name.startswith("~$") and not p.name.startswith(".")
+    ])
     norm_to_path: dict[str, Path] = {}
     for p in doc_paths:
         norm = _normalize_filename(p.name)
         norm_to_path[norm] = p
 
-    used_pdfs: set[str] = set()
+    used_docs: set[str] = set()
     matched: list[dict[str, Any]] = []
     unmatched_rows: list[dict[str, Any]] = []
 
@@ -211,11 +223,11 @@ def match_catalog_to_pdfs(
                 found, method, score = best_path, "fuzzy", best_score
 
         if found is not None:
-            rel = str(found.relative_to(documents_dir))
+            rel = str(found.relative_to(documents_dir)).replace("\\", "/")
             row.matched_file_path = rel
             row.match_method = method
             row.match_score = score
-            used_pdfs.add(rel)
+            used_docs.add(rel)
             matched.append(
                 {
                     "row_id": row.row_id,
@@ -228,17 +240,25 @@ def match_catalog_to_pdfs(
         else:
             unmatched_rows.append({"row_id": row.row_id, "title": title})
 
-    unmatched_pdfs = [str(p.relative_to(documents_dir)) for p in doc_paths if str(p.relative_to(documents_dir)) not in used_pdfs]
+    unmatched_docs = [
+        str(p.relative_to(documents_dir)).replace("\\", "/")
+        for p in doc_paths
+        if str(p.relative_to(documents_dir)).replace("\\", "/") not in used_docs
+    ]
 
     logger.info(
-        "카탈로그-문서 매칭: %d/%d row 매칭, 문서 %d개 중 %d개 미사용",
+        "카탈로그-문서 매칭: %d/%d row 매칭, 지원 문서 %d개 중 %d개 미사용(미등록 신규 문서)",
         len(matched),
         len(rows),
         len(doc_paths),
-        len(unmatched_pdfs),
+        len(unmatched_docs),
     )
-    return MatchReport(matched=matched, unmatched_catalog_rows=unmatched_rows, unmatched_pdfs=unmatched_pdfs)
-
+    return MatchReport(
+        matched=matched,
+        unmatched_catalog_rows=unmatched_rows,
+        unmatched_pdfs=unmatched_docs,
+        unmatched_documents=unmatched_docs,
+    )
 
 
 def save_match_report(report: MatchReport, output_path: Path) -> None:
@@ -249,10 +269,11 @@ def save_match_report(report: MatchReport, output_path: Path) -> None:
                 "matched": report.matched,
                 "unmatched_catalog_rows": report.unmatched_catalog_rows,
                 "unmatched_pdfs": report.unmatched_pdfs,
+                "unmatched_documents": report.unmatched_documents,
                 "summary": {
                     "matched_count": len(report.matched),
                     "unmatched_catalog_rows_count": len(report.unmatched_catalog_rows),
-                    "unmatched_pdfs_count": len(report.unmatched_pdfs),
+                    "unmatched_documents_count": len(report.unmatched_documents),
                 },
             },
             f,

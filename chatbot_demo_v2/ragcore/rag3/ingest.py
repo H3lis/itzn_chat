@@ -270,10 +270,24 @@ def run_ingest(config: Config, backend: Backend, *, force: bool = False, limit_d
     all_page_metas: list[dict] = []
 
     target_rel_paths: list[str] = [r.matched_file_path for r in matched_rows if r.matched_file_path]
-    if not limit_docs and getattr(report, "unmatched_pdfs", None):
-        for un_pdf in report.unmatched_pdfs:
-            if un_pdf not in target_rel_paths:
-                target_rel_paths.append(un_pdf)
+    unmatched_list = getattr(report, "unmatched_documents", None) or getattr(report, "unmatched_pdfs", None) or []
+    if not limit_docs and unmatched_list:
+        for un_doc in unmatched_list:
+            if un_doc not in target_rel_paths:
+                target_rel_paths.append(un_doc)
+
+    # 3중 안전장치: documents_dir 내의 지원 확장자 파일 중 카탈로그/리포트에 누락된 파일 자동 추가
+    if not limit_docs and config.documents_dir and config.documents_dir.is_dir():
+        from .catalog import match_catalog_to_pdfs
+        supported_exts = {
+            ".pdf", ".pptx", ".ppt", ".docx", ".hwpx", ".hwp",
+            ".xlsx", ".xls", ".csv", ".txt", ".md"
+        }
+        for p in sorted(config.documents_dir.rglob("*")):
+            if p.is_file() and p.suffix.lower() in supported_exts and not p.name.startswith("~$") and not p.name.startswith("."):
+                rel = str(p.relative_to(config.documents_dir)).replace("\\", "/")
+                if rel not in target_rel_paths:
+                    target_rel_paths.append(rel)
 
     # 파서 가용성 점검 (MinerU 설치 여부)
     has_mineru = False

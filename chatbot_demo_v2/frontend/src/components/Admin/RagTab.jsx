@@ -422,8 +422,8 @@ export function RagTab({ onUpdateBadge }) {
   const handleStartReindex = async (isForce = false) => {
     if (reindexing) return;
     const confirmMsg = isForce
-      ? "⚠️ [전체 완전 재파싱 & 강제 재색인]을 실행하시겠습니까?\n\n- 기존의 모든 파싱 캐시를 무시하고 1페이지부터 처음부터 끝까지 전체 문서를 다시 정밀 분석합니다.\n- 문서량에 따라 수 분~수십 분이 소요될 수 있습니다."
-      : "⚡ [고속 증분 재색인]을 실행하시겠습니까?\n\n- 이미 분석된 기존 캐시를 재사용하여, 새로 추가되거나 변경된 문서만 빠르게 색인에 반영합니다.\n- 소요 시간: 수십 초 내외 고속 완료.";
+      ? "⚠️ [전체 완전 재파싱 & 강제 재색인]을 실행하시겠습니까?\n\n- 기존의 모든 파싱 캐시를 무시하고 1페이지부터 처음부터 끝까지 전체 문서를 다시 정밀 분석합니다.\n- 소요 시간: 문서량에 따라 수 분~수십 분 소요."
+      : "⚡ [전체 코퍼스 고속 재색인 (캐시 재사용)]을 실행하시겠습니까?\n\n- 기존 문서의 파싱 캐시는 100% 재사용하고, 새로 추가된 신규 문서(PPTX 등)를 파싱하여 전체 RAG 색인을 갱신합니다.\n- 소요 시간: 약 60~70초 소요.\n\n💡 팁: 방금 추가한 1개 문서만 10초 만에 즉시 추가하려면, 하단 문서 목록의 해당 문서 우측 [⚡ 색인] 버튼을 누르시면 됩니다!";
 
     if (!window.confirm(confirmMsg)) {
       return;
@@ -806,12 +806,12 @@ export function RagTab({ onUpdateBadge }) {
                   </td>
                   <td style={{ textAlign: 'center' }}>
                     <div style={{ display: 'inline-flex', gap: '0.35rem' }}>
-                      {doc.is_pdf && (
+                      {(doc.is_supported || doc.is_pdf) && (
                         <button
                           className="btn btn-zap btn-sm"
                           disabled={indexingPath === (doc.rel_path || doc.name)}
                           onClick={() => handleIndexSingleDoc(doc)}
-                          title="단일 문서 즉시 증분 색인 (기존 인덱스에 원자적 추가)"
+                          title="단일 문서 즉시 증분 색인 (기존 인덱스에 원자적 고속 추가, 약 10~20초)"
                         >
                           {indexingPath === (doc.rel_path || doc.name) ? (
                             <Loader2 size={13} className="spin" />
@@ -867,23 +867,23 @@ export function RagTab({ onUpdateBadge }) {
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
-            {/* 버튼 1: 고속 증분 재색인 (캐시 재사용) */}
+            {/* 버튼 1: 고속 재색인 (캐시 재사용) */}
             <button
               className="btn btn-primary"
               onClick={() => handleStartReindex(false)}
               disabled={reindexing}
-              title="기존 파싱 캐시를 재사용하여 새로 추가되거나 변경된 문서만 빠르게 색인에 반영합니다. (수십 초 완료)"
+              title="기존 문서 파싱 캐시는 100% 재사용하고 신규 문서(PPTX 등)를 자동 파싱하여 전체 색인을 갱신합니다. (약 60초 소요)"
               style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', padding: '0.55rem 0.95rem', fontWeight: 600 }}
             >
               {reindexing && !reindexingForce ? (
                 <>
                   <RefreshCw size={15} className="spinner" />
-                  <span>고속 색인 진행 중…</span>
+                  <span>고속 재색인 진행 중…</span>
                 </>
               ) : (
                 <>
                   <Zap size={15} />
-                  <span>⚡ 고속 증분 재색인 (캐시 재사용)</span>
+                  <span>⚡ 고속 재색인 (캐시 재사용)</span>
                 </>
               )}
             </button>
