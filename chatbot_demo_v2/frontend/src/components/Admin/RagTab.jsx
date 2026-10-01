@@ -428,10 +428,10 @@ export function RagTab({ onUpdateBadge }) {
           <h2 className="admin-page-title">RAG 문서관리</h2>
         </div>
         <p className="admin-page-desc">
-          챗봇이 답변 근거로 참고하는 PDF·HWP·엑셀 등 장애 대응 매뉴얼 원본을 업로드하는 공간입니다. 
-          업로드 즉시 내용이 자동 분석되어 챗봇 검색에 반영됩니다. 문서를 수정하거나 새로 올린 경우 '색인' 버튼을 눌러 
-          다시 분석해야 최신 내용이 답변에 반영됩니다.
+          챗봇이 답변 근거로 참고하는 PDF, HWP/HWPX, 워드(DOCX), 엑셀(XLSX/XLS), 텍스트(TXT/MD) 등 장애 대응 매뉴얼 원본을 업로드하는 공간입니다. 
+          DOCX·HWP는 PDF 변환, 엑셀은 시트별 표 추출을 통해 자동 색인되어 챗봇 검색에 반영됩니다.
         </p>
+
       </div>
 
       {/* 1. RAG 상단 통계 대시보드 */}
@@ -483,16 +483,17 @@ export function RagTab({ onUpdateBadge }) {
       >
         <UploadCloud size={36} color="var(--primary)" style={{ margin: '0 auto 0.5rem' }} />
         <div style={{ fontWeight: 600, fontSize: '1rem', color: 'var(--text-main)' }}>
-          PDF, HWP, 엑셀 문서를 이곳으로 드래그하거나 클릭하여 업로드
+          PDF, HWP/HWPX, 워드(DOCX), 엑셀(XLSX/XLS), 텍스트 문서를 이곳으로 드래그하거나 클릭하여 업로드
         </div>
         <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginTop: '0.35rem' }}>
-          업로드 시 raw_data 디렉토리에 자동 보관되며, 재색인 파이프라인에서 즉시 처리됩니다.
+          DOCX·HWP는 PDF 변환, 엑셀은 시트별 표 추출을 거쳐 실시간 증분 색인 파이프라인에서 자동 처리됩니다.
         </div>
         <input
           type="file"
           ref={fileInputRef}
           style={{ display: 'none' }}
           multiple
+          accept=".pdf,.docx,.hwpx,.hwp,.xlsx,.xls,.csv,.txt,.md"
           onChange={(e) => handleFileUpload(e.target.files)}
         />
         {uploading && (
@@ -501,6 +502,7 @@ export function RagTab({ onUpdateBadge }) {
           </div>
         )}
       </div>
+
 
       {/* 업로드 시 즉시 증분 색인 옵션 */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', marginTop: '-0.75rem', marginBottom: '1.25rem', fontSize: '0.85rem' }}>

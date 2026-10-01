@@ -91,7 +91,29 @@ def _parse_with_pdfplumber(abs_path: Path, rel_path: str, config: Config) -> Doc
 
 
 def parse_document(abs_path: Path, rel_path: str, config: Config) -> DocumentInfo:
-    """config.parser 우선 시도, 실패 시 pdfplumber로 폴백(폴백해도 나머지 파이프라인 무변경)."""
+    """확장자별 파서 자동 분기:
+    - .xlsx, .xls, .csv: 시트별 마크다운 표 파서
+    - .docx: PDF 변환 우선 + python-docx 직접 파싱
+    - .hwp, .hwpx: PDF 변환 우선 + XML/pyhwp 직접 파싱
+    - .txt, .md: 텍스트 직접 파싱
+    - .pdf 및 기타: MinerU 우선 시도 후 pdfplumber 폴백
+    """
+    ext = abs_path.suffix.lower()
+
+    if ext in (".xlsx", ".xls", ".csv"):
+        from .converters import parse_excel_file
+        return parse_excel_file(abs_path, rel_path, config)
+    elif ext == ".docx":
+        from .converters import parse_docx_file
+        return parse_docx_file(abs_path, rel_path, config)
+    elif ext in (".hwp", ".hwpx"):
+        from .converters import parse_hwp_file
+        return parse_hwp_file(abs_path, rel_path, config)
+    elif ext in (".txt", ".md"):
+        from .converters import parse_text_file
+        return parse_text_file(abs_path, rel_path, config)
+
+    # 기본 PDF 파싱 로직
     if config.parser == "mineru":
         try:
             return _parse_with_mineru(abs_path, rel_path, config)
@@ -99,6 +121,7 @@ def parse_document(abs_path: Path, rel_path: str, config: Config) -> DocumentInf
             logger.error("%s: MinerU 파싱 실패(%s) -> pdfplumber 폴백", rel_path, e)
             return _parse_with_pdfplumber(abs_path, rel_path, config)
     return _parse_with_pdfplumber(abs_path, rel_path, config)
+
 
 
 def get_or_parse_document(abs_path: Path, rel_path: str, config: Config, *, force: bool = False) -> DocumentInfo:

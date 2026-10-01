@@ -455,8 +455,10 @@ async def admin_upload_documents(
     for file in files:
         try:
             res = await ctx.doc_manager.save_uploaded_file(file, subfolder=subfolder)
-            # auto_index가 켜져 있고 파일이 PDF인 경우 즉시 단일 문서 증분 색인 실행
-            if auto_index and res.get("rel_path", "").lower().endswith(".pdf"):
+            # auto_index가 켜져 있고 지원되는 문서 포맷인 경우 즉시 단일 문서 증분 색인 실행
+            supported_exts = {".pdf", ".docx", ".hwpx", ".hwp", ".xlsx", ".xls", ".csv", ".txt", ".md"}
+            file_ext = os.path.splitext(res.get("rel_path", ""))[1].lower()
+            if auto_index and file_ext in supported_exts:
                 try:
                     idx_res = ctx.doc_manager.index_single_document(res["rel_path"], run_vlm=False)
                     res["indexed"] = True
@@ -468,6 +470,7 @@ async def admin_upload_documents(
             else:
                 res["indexed"] = False
             saved_list.append(res)
+
         except Exception as e:
             errors.append({"filename": file.filename, "error": str(e)})
     return {"saved": saved_list, "errors": errors, "total": len(saved_list)}

@@ -169,9 +169,10 @@ class MatchReport:
 def match_catalog_to_pdfs(
     rows: list[CatalogRow], documents_dir: Path, fuzzy_threshold: float = 88.0
 ) -> MatchReport:
-    pdf_paths = sorted(documents_dir.rglob("*.pdf"))
+    supported_exts = {".pdf", ".docx", ".hwpx", ".hwp", ".xlsx", ".xls", ".csv", ".txt", ".md"}
+    doc_paths = sorted([p for p in documents_dir.rglob("*") if p.is_file() and p.suffix.lower() in supported_exts and not p.name.startswith("~$") and not p.name.startswith(".")])
     norm_to_path: dict[str, Path] = {}
-    for p in pdf_paths:
+    for p in doc_paths:
         norm = _normalize_filename(p.name)
         norm_to_path[norm] = p
 
@@ -227,16 +228,17 @@ def match_catalog_to_pdfs(
         else:
             unmatched_rows.append({"row_id": row.row_id, "title": title})
 
-    unmatched_pdfs = [str(p.relative_to(documents_dir)) for p in pdf_paths if str(p.relative_to(documents_dir)) not in used_pdfs]
+    unmatched_pdfs = [str(p.relative_to(documents_dir)) for p in doc_paths if str(p.relative_to(documents_dir)) not in used_pdfs]
 
     logger.info(
-        "카탈로그-PDF 매칭: %d/%d row 매칭, PDF %d개 중 %d개 미사용",
+        "카탈로그-문서 매칭: %d/%d row 매칭, 문서 %d개 중 %d개 미사용",
         len(matched),
         len(rows),
-        len(pdf_paths),
+        len(doc_paths),
         len(unmatched_pdfs),
     )
     return MatchReport(matched=matched, unmatched_catalog_rows=unmatched_rows, unmatched_pdfs=unmatched_pdfs)
+
 
 
 def save_match_report(report: MatchReport, output_path: Path) -> None:

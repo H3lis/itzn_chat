@@ -300,7 +300,7 @@ def _add_one(config: Config, backend: Backend, rows: list[CatalogRow],
 
     # 2) figure 페이지 vlm-engine 텍스트화(Phase 3) — 실패는 경고 후 계속
     vlm_stats: dict[str, Any] = {"vlm_pages_merged": 0, "note": "생략(--skip-vlm)"}
-    if run_vlm:
+    if run_vlm and abs_pdf.suffix.lower() == ".pdf":
         try:
             vlm_stats = _vlm_reparse_new_doc(config, slug, abs_pdf)
         except Exception as e:
@@ -313,11 +313,12 @@ def _add_one(config: Config, backend: Backend, rows: list[CatalogRow],
     if doc_info is None:
         raise RuntimeError(f"[{document_name}] source_parsed에 manifest가 없음: {manifest_path}")
     rec = collect_chunk_records(config, prefix_map, slug, doc_info)
-    if rec is None:
+    if rec is None or not rec[0]:
         raise RuntimeError(
-            f"[{document_name}] MinerU content_list 없음(parser_used={doc_info.parser_used}) — "
-            "청크 색인 불가. --force-parse로 MinerU 재파싱을 시도하세요.")
+            f"[{document_name}] 청크 생성 실패(parser_used={doc_info.parser_used}) — "
+            "추출 가능한 텍스트 또는 표 데이터가 없습니다.")
     chunk_ids, chunk_texts, chunk_metas, type_counts = rec
+
 
     # 4) 인덱스 증분 갱신 — 신규 청크만 임베딩
     flat = get_flat_chunk_index(config, backend)

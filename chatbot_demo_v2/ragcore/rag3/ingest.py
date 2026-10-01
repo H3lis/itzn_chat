@@ -145,15 +145,29 @@ def collect_chunk_records(
     prefix = prefix_map.get(slug, f"문서: {doc_info.document_name}")
     cl = _load_content_list(config, slug)
     if cl is None:
-        # Fallback: build chunks directly from doc_info.pages (pdfplumber)
+        # Fallback: build chunks directly from doc_info.pages (pdfplumber, excel, docx, hwp, text)
         ids: list[str] = []
         texts: list[str] = []
         metas: list[dict[str, Any]] = []
-        type_counts: dict[str, int] = {"text": 0}
+        type_counts: dict[str, int] = {"text": 0, "table": 0}
         for p in doc_info.pages:
             p_text = (p.text or "").strip()
             if not p_text:
                 continue
+
+            # 페이지가 표 중심(엑셀 시트 등)인 경우: 표를 쪼개지 않고 통째로 청크화
+            if p.has_table or p.page_type == "table":
+                cid = f"{slug}_p{p.page_number:04d}_c01"
+                ids.append(cid)
+                texts.append(f"{prefix} | p{p.page_number}\n{p_text}")
+                m = _page_metadata(doc_info, p)
+                m["chunk_id"] = cid
+                m["block_type"] = "table"
+                m["heading_path"] = ""
+                metas.append(m)
+                type_counts["table"] += 1
+                continue
+
             paras = [para.strip() for para in p_text.split("\n") if para.strip()]
             cur_chunk = ""
             chunk_seq = 1
@@ -183,6 +197,7 @@ def collect_chunk_records(
                 metas.append(m)
                 type_counts["text"] += 1
         return ids, texts, metas, type_counts
+
 
     content_list, images_root = cl
     page_meta_by_num = {p.page_number: _page_metadata(doc_info, p) for p in doc_info.pages}

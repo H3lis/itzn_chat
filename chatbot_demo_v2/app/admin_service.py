@@ -152,6 +152,8 @@ class DocumentManager:
 
             ext = p.suffix.lower()
             is_pdf = ext == ".pdf"
+            supported_exts = {".pdf", ".docx", ".hwpx", ".hwp", ".xlsx", ".xls", ".csv", ".txt", ".md"}
+            is_supported = ext in supported_exts
             is_indexed = (
                 (p.name in indexed_names)
                 or (rel_path in indexed_paths)
@@ -169,12 +171,14 @@ class DocumentManager:
                 "created_at": created_time,
                 "added_timestamp": added_ts,
                 "is_pdf": is_pdf,
+                "is_supported": is_supported,
                 "extension": ext.lstrip("."),
                 "doc_slug": slug,
                 "is_parsed": is_parsed,
                 "is_indexed": is_indexed,
                 "page_count": page_count,
             })
+
 
         # 추가된 시점 기준 최신순 (최신 추가된 문서가 최상단에 위치) 정렬
         items.sort(key=lambda x: (x.get("added_timestamp") or 0, x.get("name", "")), reverse=True)
