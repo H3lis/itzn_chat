@@ -199,9 +199,10 @@ def rollback(settings) -> None:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="색인 재구축 (원자적 교체)")
-    ap.add_argument("--promote", action="store_true", help="빌드 없이 index_new 를 교체")
+    ap.add_argument("--promote", action="store_true", help="색인 빌드 완료 후 서빙 색인(index)으로 즉시 원자적 교체 승격")
+    ap.add_argument("--promote-only", action="store_true", help="빌드 과정 없이 기존 index_new 만 서빙 색인으로 교체 승격")
     ap.add_argument("--rollback", action="store_true", help="index_old 로 되돌리기")
-    ap.add_argument("--force", action="store_true", help="기존 index_new 를 지우고 다시 빌드")
+    ap.add_argument("--force", action="store_true", help="기존 파싱 캐시를 무시하고 1페이지부터 전체 완전 재파싱")
     ap.add_argument("--catalog", type=Path, default=None, help="카탈로그 엑셀 경로")
     ap.add_argument("--docs", type=Path, default=None, help="원본 문서 디렉토리 경로")
     ap.add_argument("--report", default=str(PKG_ROOT / "runtime" / "reports" / "reindex_report.json"))
@@ -213,7 +214,7 @@ def main() -> int:
     if args.rollback:
         rollback(settings)
         return 0
-    if args.promote:
+    if args.promote_only:
         promote(settings)
         return 0
 
@@ -244,10 +245,16 @@ def main() -> int:
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(summary, ensure_ascii=False, indent=1), encoding="utf-8")
     print("\n리포트:", out)
-    print("\n다음 단계: 골든셋으로 새 색인을 검증한 뒤에만 교체할 것")
-    print("  1) RAGDATA 를 index_new 로 가리켜 평가:  run_eval.py --tag reindex")
-    print("  2) ab_compare.py work1256 reindex   ← 악화 문항이 없는지 확인")
-    print("  3) 통과하면:  reindex.py --promote")
+
+    if args.promote:
+        print("\n[승격] 새 색인(index_new)을 서빙 색인(index)으로 즉시 교체 승격합니다...")
+        promote(settings)
+        print("🎉 색인 원자적 교체 완료! 챗봇에서 새 색인이 즉시 사용됩니다.")
+    else:
+        print("\n다음 단계: 골든셋으로 새 색인을 검증한 뒤에 교체하거나, --promote 옵션으로 빌드 즉시 교체할 수 있습니다.")
+        print("  1) RAGDATA 를 index_new 로 가리켜 평가:  run_eval.py --tag reindex")
+        print("  2) ab_compare.py work1256 reindex   ← 악화 문항이 없는지 확인")
+        print("  3) 통과하면:  reindex.py --promote-only")
     return 0
 
 
