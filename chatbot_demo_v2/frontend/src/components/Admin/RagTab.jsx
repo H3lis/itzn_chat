@@ -144,18 +144,18 @@ export function RagTab({ onUpdateBadge }) {
     fetchStats();
     fetchDocs();
 
-    // 초기 마운트 시 재색인 상태 조회 및 이전 로그 복원 / 진행 중이면 SSE 자동 구독
+    // 초기 마운트 시: 현재 실행 중(running)인 재색인이 있을 때만 로그 복원 및 SSE 구독
     fetch('/api/admin/reindex/status')
       .then((res) => res.json())
       .then((statusData) => {
         if (!statusData) return;
-        if (!isClearedRef.current && statusData.recent_logs && statusData.recent_logs.length > 0) {
-          setTerminalLogs(statusData.recent_logs);
-        }
         setReindexStep(getStageStep(statusData.stage, statusData.status));
         if (statusData.status === 'running') {
           setReindexing(true);
           isClearedRef.current = false;
+          if (statusData.recent_logs && statusData.recent_logs.length > 0) {
+            setTerminalLogs(statusData.recent_logs);
+          }
 
           if (!sseRef.current) {
             const es = new EventSource('/api/admin/reindex/stream');
@@ -192,36 +192,33 @@ export function RagTab({ onUpdateBadge }) {
       })
       .catch((err) => console.debug('재색인 상태 복구 실패:', err));
 
-    // 주기적 상태 동기화 (CLI 터미널 실행 실시간 감지 및 웹 콘솔 자동 갱신)
+    // 주기적 상태 동기화 (진행 중일 때만 로그 갱신, 완료/대기 상태일 때는 과거 로그 주입 원천 차단)
     const syncInterval = setInterval(() => {
       fetch('/api/admin/reindex/status')
         .then((res) => res.json())
         .then((statusData) => {
           if (!statusData) return;
 
-          // 지우기를 누른 상태가 아닐 때만 로그를 동기화하고, 새 작업이 시작되면 지움 플래그 자동 해제
+          // 오직 현재 작업이 실제로 running 중일 때만 실시간 로그를 보강
           if (statusData.status === 'running') {
             isClearedRef.current = false;
-          }
-
-          if (!isClearedRef.current && statusData.recent_logs && statusData.recent_logs.length > 0) {
-            setTerminalLogs((prev) => {
-              if (prev.length === 0 || statusData.recent_logs.length > prev.length) {
-                return statusData.recent_logs;
-              }
-              const missing = statusData.recent_logs.filter((l) => !prev.includes(l));
-              return missing.length > 0 ? [...prev, ...missing] : prev;
-            });
-          }
-
-          setReindexStep(getStageStep(statusData.stage, statusData.status));
-          if (statusData.status === 'running') {
             setReindexing(true);
+            if (Array.isArray(statusData.recent_logs) && statusData.recent_logs.length > 0) {
+              setTerminalLogs((prev) => {
+                if (prev.length === 0 || statusData.recent_logs.length > prev.length) {
+                  return statusData.recent_logs;
+                }
+                const missing = statusData.recent_logs.filter((l) => !prev.includes(l));
+                return missing.length > 0 ? [...prev, ...missing] : prev;
+              });
+            }
           } else {
             // running이 아닌 모든 상태(completed, ready, idle, failed)에서는 버튼 활성화 100% 보장
             setReindexing(false);
             setReindexingForce(false);
           }
+
+          setReindexStep(getStageStep(statusData.stage, statusData.status));
         })
         .catch(() => {});
     }, 1000);
@@ -496,16 +493,13 @@ export function RagTab({ onUpdateBadge }) {
       }
 
       const initData = await res.json();
-      if (initData.started === false && initData.status !== 'running') {
-        alert(`재색인 시작 불가: ${initData.error || '파이프라인이 이미 완료되었거나 시작할 수 없는 상태입니다.'}`);
+      if (initData.started === false) {
+        alert("⚠️ 재색인 시작 불가: 서버에서 이미 다른 재색인 작업이 실행 중입니다.\n\n현재 실행 중인 작업이 완료된 후 다시 실행하시거나, 터미널 우측 [초기화] 버튼을 눌러 상태를 리셋해 주세요.");
         setReindexing(false);
         return;
       }
 
-      // 초기 응답의 recent_logs 및 stage 즉시 반영
-      if (Array.isArray(initData.recent_logs) && initData.recent_logs.length > 0) {
-        setTerminalLogs(initData.recent_logs);
-      }
+      // 새 파이프라인 가동: 과거 로그로 덮어쓰지 않고 깨끗한 새 화면에서 시작!
       if (initData.stage) {
         setReindexStep(getStageStep(initData.stage, initData.status));
       }
