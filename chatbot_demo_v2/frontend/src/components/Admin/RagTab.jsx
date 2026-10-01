@@ -102,7 +102,55 @@ export function RagTab({ onUpdateBadge }) {
   useEffect(() => {
     fetchStats();
     fetchDocs();
+
+    // 초기 마운트 시 재색인 상태 조회 및 이전 로그 복원 / 진행 중이면 SSE 자동 구독
+    fetch('/api/admin/reindex/status')
+      .then((res) => res.json())
+      .then((statusData) => {
+        if (!statusData) return;
+        if (statusData.recent_logs && statusData.recent_logs.length > 0) {
+          setTerminalLogs(statusData.recent_logs);
+        }
+        if (statusData.status === 'running') {
+          setReindexing(true);
+          const stageMap = { scan: 1, parse: 2, chunk: 3, embed: 4, promote: 5, ready: 5 };
+          if (stageMap[statusData.stage]) setReindexStep(stageMap[statusData.stage]);
+
+          if (!sseRef.current) {
+            const es = new EventSource('/api/admin/reindex/stream');
+            sseRef.current = es;
+            const onMsg = (event) => {
+              try {
+                if (!event.data || event.data.trim() === '' || event.data.startsWith(':')) return;
+                const d = JSON.parse(event.data);
+                if (d.log) {
+                  setTerminalLogs((prev) => (prev.length > 0 && prev[prev.length - 1] === d.log ? prev : [...prev, d.log]));
+                }
+                if (d.stage && stageMap[d.stage]) setReindexStep(stageMap[d.stage]);
+                if (d.status === 'completed' || d.type === 'completed') {
+                  setReindexing(false);
+                  setReindexingForce(false);
+                  setReindexStep(5);
+                  es.close();
+                  fetchStats();
+                  fetchDocs();
+                } else if (d.status === 'failed' || d.type === 'failed') {
+                  setReindexing(false);
+                  setReindexingForce(false);
+                  es.close();
+                }
+              } catch (e) {}
+            };
+            es.onmessage = onMsg;
+            es.addEventListener('log', onMsg);
+            es.addEventListener('completed', onMsg);
+            es.addEventListener('failed', onMsg);
+          }
+        }
+      })
+      .catch((err) => console.debug('재색인 상태 복구 실패:', err));
   }, [fetchStats, fetchDocs]);
+
 
   // 자동 스크롤
   useEffect(() => {
@@ -367,34 +415,61 @@ export function RagTab({ onUpdateBadge }) {
       const es = new EventSource('/api/admin/reindex/stream');
       sseRef.current = es;
 
-      es.onmessage = (event) => {
+      const handleStreamEvent = (event) => {
         try {
+          if (!event.data || event.data.trim() === '' || event.data.startsWith(':')) return;
           const data = JSON.parse(event.data);
+
+          // 로그 텍스트 적재
           if (data.log) {
-            setTerminalLogs((prev) => [...prev, data.log]);
+            setTerminalLogs((prev) => {
+              // 중복 라인 방지
+              if (prev.length > 0 && prev[prev.length - 1] === data.log) return prev;
+              return [...prev, data.log];
+            });
           }
+
+          // 5단계 스테이지 번호 갱신
           if (data.step) {
             setReindexStep(data.step);
+          } else if (data.stage) {
+            const stageMap = { scan: 1, parse: 2, chunk: 3, embed: 4, promote: 5, ready: 5 };
+            if (stageMap[data.stage]) {
+              setReindexStep(stageMap[data.stage]);
+            }
           }
-          if (data.status === 'completed') {
+
+          // 완료 이벤트 처리
+          if (data.status === 'completed' || data.type === 'completed') {
             setReindexing(false);
+            setReindexingForce(false);
             setReindexStep(5);
             setReindexSummary(data.summary || { message: '재색인 완료' });
             es.close();
             fetchStats();
-          } else if (data.status === 'error') {
+            fetchDocs();
+          } else if (data.status === 'failed' || data.type === 'failed' || data.status === 'error') {
             setReindexing(false);
-            alert(`재색인 실패: ${data.error || '오류 발생'}`);
+            setReindexingForce(false);
+            alert(`재색인 실패: ${data.error || '오류가 발생했습니다.'}`);
             es.close();
           }
         } catch (err) {
-          console.error('SSE 파싱 에러:', err);
+          console.error('SSE 파싱 에러:', err, event.data);
         }
       };
 
-      es.onerror = () => {
-        console.warn('SSE 연결 종료/일시중단');
+      es.onmessage = handleStreamEvent;
+      es.addEventListener('log', handleStreamEvent);
+      es.addEventListener('update', handleStreamEvent);
+      es.addEventListener('init', handleStreamEvent);
+      es.addEventListener('completed', handleStreamEvent);
+      es.addEventListener('failed', handleStreamEvent);
+
+      es.onerror = (e) => {
+        console.warn('SSE 연결 상태 변경:', e);
       };
+
     } catch (e) {
       alert(`재색인 요청 에러: ${e.message}`);
       setReindexing(false);

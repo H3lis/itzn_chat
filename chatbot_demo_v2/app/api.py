@@ -715,19 +715,33 @@ async def admin_reindex_stream(request: Request):
 
     async def event_generator():
         init_state = runner.get_state()
-        yield _sse("init", init_state)
+        # 1) 연결 즉시 지금까지 쌓인 최근 로그들을 먼저 순차 전송
+        for past_log in init_state.get("recent_logs", []):
+            log_payload = json.dumps({"type": "log", "log": past_log}, ensure_ascii=False)
+            yield f"data: {log_payload}\n\n"
+        
+        # 2) 초기 상태 전송 (기본 data: 및 event: init 동시 지원)
+        init_payload = json.dumps({"type": "init", **init_state}, ensure_ascii=False)
+        yield f"data: {init_payload}\n\n"
+        yield f"event: init\ndata: {init_payload}\n\n"
+
         try:
             while True:
                 if await request.is_disconnected():
                     break
                 try:
-                    msg = await asyncio.wait_for(q.get(), timeout=2.0)
+                    msg = await asyncio.wait_for(q.get(), timeout=1.5)
                     event_type = msg.get("type", "update")
-                    yield _sse(event_type, msg)
+                    data_str = json.dumps(msg, ensure_ascii=False)
+                    # es.onmessage 호환용 기본 메시지 전송
+                    yield f"data: {data_str}\n\n"
+                    # 커스텀 리스너(es.addEventListener) 호환용 이벤트 전송
+                    yield f"event: {event_type}\ndata: {data_str}\n\n"
                 except asyncio.TimeoutError:
                     yield ": ping\n\n"
         finally:
             runner.unregister_listener(q)
+
 
     return StreamingResponse(
         event_generator(),
