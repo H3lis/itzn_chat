@@ -25,6 +25,7 @@ from __future__ import annotations
 import argparse
 import json
 import logging
+import os
 import shutil
 import sys
 import time
@@ -290,6 +291,8 @@ def main() -> int:
     # 웹 콘솔 동기화용 실시간 라이브 로거 장착
     live_handler = _LiveFileLogHandler()
     logging.getLogger().addHandler(live_handler)
+    logging.getLogger("chatbot_demo_v2").addHandler(live_handler)
+    logging.getLogger("rag3").addHandler(live_handler)
 
     settings = load_settings()
 

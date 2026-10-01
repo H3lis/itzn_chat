@@ -714,7 +714,8 @@ async def admin_reindex_stream(request: Request):
     runner = ctx.reindex_runner
     q = runner.register_listener()
 
-    live_reports_dir = Path(ctx.settings.ragdata_dir).parent / "runtime" / "reports"
+    pkg_root = Path(__file__).resolve().parents[1]
+    live_reports_dir = pkg_root / "runtime" / "reports"
     live_log_file = live_reports_dir / "reindex_live.log"
 
     async def event_generator():
@@ -735,7 +736,9 @@ async def admin_reindex_stream(request: Request):
         last_file_pos = 0
         if live_log_file.is_file():
             try:
-                last_file_pos = live_log_file.stat().st_size
+                cur_fsize = live_log_file.stat().st_size
+                # 최근 약 50KB 위치부터 테일링 시작 (직전 누락 라인 복구)
+                last_file_pos = max(0, cur_fsize - 51200)
             except Exception:
                 pass
 

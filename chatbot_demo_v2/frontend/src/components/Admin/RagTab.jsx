@@ -172,7 +172,7 @@ export function RagTab({ onUpdateBadge }) {
           }
         })
         .catch(() => {});
-    }, 2500);
+    }, 1500);
 
     return () => {
       clearInterval(syncInterval);
@@ -425,7 +425,7 @@ export function RagTab({ onUpdateBadge }) {
     setReindexing(true);
     setReindexingForce(isForce);
     setReindexStep(1);
-    setTerminalLogs([`[${new Date().toLocaleTimeString()}] ${isForce ? '전체 완전 재파싱 & 강제 재색인' : '고속 증분 재색인'} 파이프라인 가동 요청…`]);
+    setTerminalLogs([`[${new Date().toLocaleTimeString()}] 🚀 ${isForce ? '전체 완전 재파싱 & 강제 재색인' : '고속 증분 재색인'} 파이프라인 가동 요청…`]);
     setReindexSummary(null);
 
     try {

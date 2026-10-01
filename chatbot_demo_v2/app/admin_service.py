@@ -484,7 +484,8 @@ class ReindexRunner:
         self.logs: list[str] = []
         self._listeners: list[asyncio.Queue] = []
         self._loop: Optional[asyncio.AbstractEventLoop] = None
-        self.live_reports_dir = Path(settings.ragdata_dir).parent / "runtime" / "reports"
+        pkg_root = Path(__file__).resolve().parents[1]
+        self.live_reports_dir = pkg_root / "runtime" / "reports"
         self.live_log_file = self.live_reports_dir / "reindex_live.log"
         self.live_status_file = self.live_reports_dir / "reindex_status.json"
 
