@@ -267,8 +267,31 @@ class DocumentMetadataManager:
     extract_and_save = extract_metadata
 
     def _extract_preview_text(self, file_path: Path, max_pages: int = 3, max_chars: int = 4000) -> tuple[str, int]:
-        """PDF 파일에서 앞쪽 몇 페이지의 텍스트를 추출."""
-        if file_path.suffix.lower() != ".pdf":
+        """PDF 또는 PPTX 파일 등에서 앞쪽 몇 페이지/슬라이드의 텍스트를 추출."""
+        ext = file_path.suffix.lower()
+        if ext in (".pptx", ".ppt"):
+            try:
+                from pptx import Presentation
+                prs = Presentation(str(file_path))
+                total_slides = len(prs.slides)
+                slides_to_read = min(max_pages, total_slides)
+                collected = []
+                for idx in range(slides_to_read):
+                    slide = prs.slides[idx]
+                    texts = []
+                    for shape in slide.shapes:
+                        if shape.has_text_frame:
+                            t = shape.text_frame.text.strip()
+                            if t:
+                                texts.append(t)
+                    if texts:
+                        collected.append(f"--- [슬라이드 {idx+1}] ---\n" + "\n".join(texts))
+                return "\n\n".join(collected)[:max_chars], total_slides
+            except Exception as e:
+                logger.warning("PPTX 미리보기 텍스트 추출 실패 [%s]: %s", file_path.name, e)
+                return "", 1
+
+        if ext != ".pdf":
             # 텍스트 파일 등 폴백
             try:
                 txt = file_path.read_text(encoding="utf-8", errors="ignore")[:max_chars]

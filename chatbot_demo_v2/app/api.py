@@ -457,7 +457,7 @@ async def admin_upload_documents(
         try:
             res = await ctx.doc_manager.save_uploaded_file(file, subfolder=subfolder)
             # auto_index가 켜져 있고 지원되는 문서 포맷인 경우 즉시 단일 문서 증분 색인 실행
-            supported_exts = {".pdf", ".docx", ".hwpx", ".hwp", ".xlsx", ".xls", ".csv", ".txt", ".md"}
+            supported_exts = {".pdf", ".pptx", ".ppt", ".docx", ".hwpx", ".hwp", ".xlsx", ".xls", ".csv", ".txt", ".md"}
             file_ext = os.path.splitext(res.get("rel_path", ""))[1].lower()
             if auto_index and file_ext in supported_exts:
                 try:
