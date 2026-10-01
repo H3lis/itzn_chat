@@ -954,17 +954,23 @@ export function RagTab({ onUpdateBadge }) {
         </div>
 
         {/* 터미널 로그 콘솔 */}
-        <div style={{ background: '#090d16', borderRadius: '8px', border: '1px solid rgba(255, 255, 255, 0.1)', padding: '0.75rem 1rem' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255, 255, 255, 0.08)', paddingBottom: '0.4rem', marginBottom: '0.5rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-              <Terminal size={14} />
-              <span>실시간 파이프라인 터미널 출력</span>
+        <div style={{ background: '#0b0f19', borderRadius: '10px', border: '1px solid #1e293b', padding: '0.85rem 1.1rem', boxShadow: 'inset 0 2px 4px rgba(0, 0, 0, 0.4)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #1e293b', paddingBottom: '0.5rem', marginBottom: '0.6rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <div style={{ display: 'flex', gap: '0.35rem', marginRight: '0.2rem' }}>
+                <span style={{ width: '9px', height: '9px', borderRadius: '50%', background: '#ef4444', display: 'inline-block' }} />
+                <span style={{ width: '9px', height: '9px', borderRadius: '50%', background: '#f59e0b', display: 'inline-block' }} />
+                <span style={{ width: '9px', height: '9px', borderRadius: '50%', background: '#10b981', display: 'inline-block' }} />
+              </div>
+              <Terminal size={14} color="#38bdf8" />
+              <span style={{ fontSize: '0.78rem', color: '#94a3b8', fontWeight: 600 }}>실시간 파이프라인 터미널 출력</span>
             </div>
             <div style={{ display: 'flex', gap: '0.5rem' }}>
               <button
                 className="btn btn-secondary btn-sm"
                 onClick={() => navigator.clipboard.writeText(terminalLogs.join('\n'))}
                 title="로그 전체 복사"
+                style={{ background: '#1e293b', border: '1px solid #334155', color: '#cbd5e1' }}
               >
                 <Copy size={12} />
               </button>
@@ -972,29 +978,32 @@ export function RagTab({ onUpdateBadge }) {
                 className="btn btn-secondary btn-sm"
                 onClick={() => setTerminalLogs([])}
                 title="화면 지우기"
+                style={{ background: '#1e293b', border: '1px solid #334155', color: '#cbd5e1' }}
               >
                 지우기
               </button>
             </div>
           </div>
 
-          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', maxHeight: '340px', minHeight: '120px', overflowY: 'auto', lineHeight: '1.5', padding: '0.4rem 0.2rem' }}>
+          <div style={{ fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace', fontSize: '0.83rem', maxHeight: '360px', minHeight: '140px', overflowY: 'auto', lineHeight: '1.6', padding: '0.3rem 0.2rem' }}>
             {terminalLogs.length === 0 ? (
-              <span style={{ color: 'var(--text-muted)' }}>파이프라인 대기 중. 가동 버튼을 누르면 로그가 실시간 스트리밍됩니다.</span>
+              <span style={{ color: '#64748b' }}>파이프라인 대기 중. 가동 버튼을 누르면 로그가 실시간 스트리밍됩니다.</span>
             ) : (
               terminalLogs.map((log, i) => {
-                let color = 'var(--text-main)';
+                let color = '#f1f5f9'; // 기본: 아주 선명하고 시원한 브라이트 화이트!
                 if (log.includes('ERROR') || log.includes('실패') || log.includes('❌')) {
-                  color = 'var(--rose)';
+                  color = '#f87171'; // 에러: 브라이트 레드
                 } else if (log.includes('완료') || log.includes('성공') || log.includes('✅') || log.includes('🎉') || log.includes('✨')) {
-                  color = 'var(--emerald)';
-                } else if (log.includes('WARNING') || log.includes('⚠️')) {
-                  color = '#f59e0b';
-                } else if (log.includes('⚡') || log.includes('📁') || log.includes('🔍') || log.includes('✂️') || log.includes('🧬')) {
-                  color = 'var(--primary)';
+                  color = '#34d399'; // 성공: 브라이트 에메랄드
+                } else if (log.includes('WARNING') || log.includes('⚠️') || log.includes('경고')) {
+                  color = '#fbbf24'; // 경고: 앰버 골드
+                } else if (log.includes('🚀') || log.includes('⚡') || log.includes('📁') || log.includes('🔍') || log.includes('✂️') || log.includes('🧬') || log.includes('🔄') || log.includes('단계:')) {
+                  color = '#38bdf8'; // 단계: 브라이트 스카이블루
+                } else if (log.includes('[INFO]')) {
+                  color = '#93c5fd'; // 안내: 소프트 블루
                 }
                 return (
-                  <div key={i} style={{ color, wordBreak: 'break-all', marginBottom: '0.15rem' }}>
+                  <div key={i} style={{ color, wordBreak: 'break-all', marginBottom: '0.22rem', letterSpacing: '0.01em', textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}>
                     {log}
                   </div>
                 );

@@ -723,6 +723,35 @@ body {
   margin: 0.75rem 0 0.35rem;
 }
 
+.bot-answer code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 0.85em;
+  background: rgba(15, 23, 42, 0.06);
+  color: #0369a1;
+  padding: 0.15rem 0.35rem;
+  border-radius: 4px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.bot-answer pre {
+  background: #0b0f19;
+  color: #f1f5f9;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  margin: 0.6rem 0;
+  border: 1px solid #1e293b;
+}
+
+.bot-answer pre code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  border: none;
+}
+
 /* Collapsible Details */
 .ans-details.collapsible {
   max-height: 0;
