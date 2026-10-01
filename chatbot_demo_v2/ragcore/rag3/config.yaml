@@ -10,8 +10,8 @@ catalog_excel_path: "./_unused_catalog.xlsx"
 documents_dir: "../../raw_data/documents"
 catalog_sheet: "선정파일_Distribution_파일목록"
 
-# 파싱 캐시(페이지 텍스트/이미지/표 크롭)는 v2 ragdata 로 복사된 것을 사용.
-source_parsed_dir: "../../ragdata/parsed_v25"
+# 파싱 캐시(페이지 텍스트/표/구조화 메타데이터)는 v2 ragdata 로 복사된 것을 사용.
+source_parsed_dir: "../../ragdata/source_parsed"
 
 # 색인(chroma + flat_chunk + page_store.json)도 v2 ragdata.
 index_dir: "../../ragdata/index"

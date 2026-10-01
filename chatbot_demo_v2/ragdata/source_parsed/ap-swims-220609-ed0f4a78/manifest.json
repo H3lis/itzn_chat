@@ -1,0 +1,25 @@
+{
+  "document_name": "AP, SWIMS 장애 관련 조치 가이드_220609.xlsx",
+  "rel_path": "AP, SWIMS 장애 관련 조치 가이드_220609.xlsx",
+  "abs_path": "C:\\Users\\ITZN\\Desktop\\챗봇\\chatbot_demo_v2\\raw_data\\documents\\AP, SWIMS 장애 관련 조치 가이드_220609.xlsx",
+  "doc_slug": "ap-swims-220609-ed0f4a78",
+  "page_count": 1,
+  "parser_used": "excel_markdown_table",
+  "pages": [
+    {
+      "document_name": "AP, SWIMS 장애 관련 조치 가이드_220609.xlsx",
+      "file_path": "AP, SWIMS 장애 관련 조치 가이드_220609.xlsx",
+      "doc_slug": "ap-swims-220609-ed0f4a78",
+      "page_number": 1,
+      "page_type": "table",
+      "text": "### [시트: 장애처리 가이드] (데이터 1~22행 / 총 22행)\n\n| AP, SWIMS 장애 관련 조치 가이드 | 열_2 | 열_3 | 열_4 |\n| --- | --- | --- | --- |\n|  |  |  | 22.06.09 |\n| 장애유형 | 장애내역 | 조치방안 | 비고 |\n| 품질/서비스 | WiFi 접속 후 신호가 끊김, 속도가 느릴 경우 | º 단말 WI-FI 재연결 후 확인 |  |\n|  | WiFi신호가 안잡힘 | º 해당AP 통신상태 확인 º SSID 비밀번호 확인 º SSID hidden 설정 확인 | º SSID 명칭 변경 후 테스트 |\n|  | WiFi 연결 후 신호 없음 | º 해당AP 통신상태 확인 º SSID 비밀번호 확인 | º SSID 명칭 변경 후 테스트 |\n|  | 노트북 연결 안됨 | º Wi-Fi IP설정 DHCP 설정 확인 º Wi-Fi 연결 끊기/삭제 후 재연결 |  |\n|  | 전자칠판 사용 문의 | º WiFi6 모델 지원 여부 확인 º 2.4GHz, 5GHz 지원 여부 확인 º WPA 인증방식 확인 (WPA/WPA2/WPA3) |  |\n|  | 학교 전체 WiFi 접속 불가 | º 스쿨넷에 방화벽 확인 요청 후 학교 집선 스위치 확인 | º 판교센터에서 처리 예정 |\n| 설정 관련 | WiFi SSID 2.4G/5G 방사 관련 설정 요청 | º AP WEB 접속하여 enable/disable 설정 가능 |  |\n|  | WiFi SSID 명칭변경 | º SWIMS AP SSID에서 변경 (AP관리 > AP SSID설정) º AP WEB 접속하여 SSID 변경 * SSID의 경우 센터에서는 지원하지 않음. |  |\n|  | SSID 비밀번호 변경 문의 | º SWIMS에서 SSID 비밀번호 변경 방법 안내(AP관리 > AP SSID설정) |  |\n|  | SSID 비밀번호 변경 실패 | º SWIMS에서 AP제어체크 확인 (AP관리 > AP관리)  - AP OFF 일경우 AP WEB 접속하여 재부팅 후 재시도 º AP WEB 접속하여 비밀번호 변경 |  |\n|  | SSID 비밀번호 분실 | º AP WEB 접속하여 비밀번호 변경 |  |\n|  | AP 설치 위치 변경 문의 | º SWIMS 항목에서 설취위치 수정 클릭 후 변경(AP관리 > AP관리) |  |\n| SWIMS 연동 관련 | AP 상태가 OFF일 경우 | º SWIMS에서 AP제어체크 확인 (AP관리 > AP관리)  - AP OFF 일경우 AP WEB 접속하여 재부팅 후 재시도 º AP WEB 접속하여 비밀번호 변경 |  |\n|  | AP 재부팅 실패 | º SWIMS에서 AP제어체크 확인 (AP관리 > AP관리)  - AP OFF 일경우 AP WEB 접속하여 재부팅 후 재시도 |  |\n|  | AP 펌웨어 업데이트 미적용 | º 해당AP 통신상태 확인 º SWIMS 등록 정보와 AP Web 접속하여 MAC, IP 확인  - SWIMS 등록 정보와 상이할 경우 경우 수정 |  |\n|  | AP 접속 단말수 확인 | º AP에서 SWIMS로 정보를 전달하여 30분 단위로 SWIMS에서 정보 수집  - 실제 접속한 단말 수와 차이가 있을 수 있음 |  |\n| 기타 | AP 브라켓 탈거되어 재설치 요청 | º AP WEB 접속하여 비밀번호 변경 |  |\n|  | AP 브라켓 분실 | º AP 제조사에 문의하여 전달 |  |\n|  | AP 장비 교체시 | º 학교 자체 설치하라고 함. 이후 문제 발생시에는 현장지원 요청함. |  |\n| ※ 공통 : AP/PoE 통신 불가시 현장방문하여 확인 필요 |  |  |  |",
+      "is_scanned": false,
+      "has_table": true,
+      "table_markdown": "| AP, SWIMS 장애 관련 조치 가이드 | 열_2 | 열_3 | 열_4 |\n| --- | --- | --- | --- |\n|  |  |  | 22.06.09 |\n| 장애유형 | 장애내역 | 조치방안 | 비고 |\n| 품질/서비스 | WiFi 접속 후 신호가 끊김, 속도가 느릴 경우 | º 단말 WI-FI 재연결 후 확인 |  |\n|  | WiFi신호가 안잡힘 | º 해당AP 통신상태 확인 º SSID 비밀번호 확인 º SSID hidden 설정 확인 | º SSID 명칭 변경 후 테스트 |\n|  | WiFi 연결 후 신호 없음 | º 해당AP 통신상태 확인 º SSID 비밀번호 확인 | º SSID 명칭 변경 후 테스트 |\n|  | 노트북 연결 안됨 | º Wi-Fi IP설정 DHCP 설정 확인 º Wi-Fi 연결 끊기/삭제 후 재연결 |  |\n|  | 전자칠판 사용 문의 | º WiFi6 모델 지원 여부 확인 º 2.4GHz, 5GHz 지원 여부 확인 º WPA 인증방식 확인 (WPA/WPA2/WPA3) |  |\n|  | 학교 전체 WiFi 접속 불가 | º 스쿨넷에 방화벽 확인 요청 후 학교 집선 스위치 확인 | º 판교센터에서 처리 예정 |\n| 설정 관련 | WiFi SSID 2.4G/5G 방사 관련 설정 요청 | º AP WEB 접속하여 enable/disable 설정 가능 |  |\n|  | WiFi SSID 명칭변경 | º SWIMS AP SSID에서 변경 (AP관리 > AP SSID설정) º AP WEB 접속하여 SSID 변경 * SSID의 경우 센터에서는 지원하지 않음. |  |\n|  | SSID 비밀번호 변경 문의 | º SWIMS에서 SSID 비밀번호 변경 방법 안내(AP관리 > AP SSID설정) |  |\n|  | SSID 비밀번호 변경 실패 | º SWIMS에서 AP제어체크 확인 (AP관리 > AP관리)  - AP OFF 일경우 AP WEB 접속하여 재부팅 후 재시도 º AP WEB 접속하여 비밀번호 변경 |  |\n|  | SSID 비밀번호 분실 | º AP WEB 접속하여 비밀번호 변경 |  |\n|  | AP 설치 위치 변경 문의 | º SWIMS 항목에서 설취위치 수정 클릭 후 변경(AP관리 > AP관리) |  |\n| SWIMS 연동 관련 | AP 상태가 OFF일 경우 | º SWIMS에서 AP제어체크 확인 (AP관리 > AP관리)  - AP OFF 일경우 AP WEB 접속하여 재부팅 후 재시도 º AP WEB 접속하여 비밀번호 변경 |  |\n|  | AP 재부팅 실패 | º SWIMS에서 AP제어체크 확인 (AP관리 > AP관리)  - AP OFF 일경우 AP WEB 접속하여 재부팅 후 재시도 |  |\n|  | AP 펌웨어 업데이트 미적용 | º 해당AP 통신상태 확인 º SWIMS 등록 정보와 AP Web 접속하여 MAC, IP 확인  - SWIMS 등록 정보와 상이할 경우 경우 수정 |  |\n|  | AP 접속 단말수 확인 | º AP에서 SWIMS로 정보를 전달하여 30분 단위로 SWIMS에서 정보 수집  - 실제 접속한 단말 수와 차이가 있을 수 있음 |  |\n| 기타 | AP 브라켓 탈거되어 재설치 요청 | º AP WEB 접속하여 비밀번호 변경 |  |\n|  | AP 브라켓 분실 | º AP 제조사에 문의하여 전달 |  |\n|  | AP 장비 교체시 | º 학교 자체 설치하라고 함. 이후 문제 발생시에는 현장지원 요청함. |  |\n| ※ 공통 : AP/PoE 통신 불가시 현장방문하여 확인 필요 |  |  |  |",
+      "table_crop_path": "",
+      "page_image_path": "",
+      "figure_area_ratio": 0.0,
+      "char_count": 1776
+    }
+  ]
+}

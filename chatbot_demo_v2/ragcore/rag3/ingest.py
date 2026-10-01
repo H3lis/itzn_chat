@@ -54,6 +54,8 @@ def _load_source_manifest(config: Config, slug: str) -> DocumentInfo | None:
     """청크화 소스(source_parsed, parsed_dir, cache_dir 다중 탐색)에서 manifest를 로드. MinerU 재파싱 회피."""
     candidates = [
         config.source_parsed / slug / "manifest.json",
+        config.source_parsed.parent / "source_parsed" / slug / "manifest.json",
+        config.source_parsed.parent / "parsed_v25" / slug / "manifest.json",
         config.parsed_dir / slug / "manifest.json",
         config.cache_dir / "parsed" / slug / "manifest.json",
     ]
