@@ -431,6 +431,9 @@ class _LogCapturingHandler(logging.Handler):
         self.setFormatter(logging.Formatter("[%(levelname)s] %(message)s"))
 
     def emit(self, record: logging.LogRecord):
+        # HTTP 액세스 로그나 uvicorn 통신/핑 로그는 필터링
+        if record.name.startswith("uvicorn") or "HTTP/1.1" in record.getMessage() or ": ping" in record.getMessage():
+            return
         try:
             msg = self.format(record)
             self.callback(msg)
@@ -444,6 +447,13 @@ class ReindexRunner:
     def __init__(self, settings: Settings, rag_adapter=None):
         self.settings = settings
         self.rag_adapter = rag_adapter
+        self.docs_dir = Path(settings.raw_data_dir) / "documents" if hasattr(settings, "raw_data_dir") else (
+            Path(settings.project_root) / "chatbot_demo_v2" / "raw_data" / "documents"
+        )
+        if not self.docs_dir.is_dir():
+            self.docs_dir = Path(__file__).resolve().parents[1] / "raw_data" / "documents"
+        self.docs_dir.mkdir(parents=True, exist_ok=True)
+
         self._lock = threading.Lock()
         self.status = "idle"  # idle | running | completed | failed
         self.stage = "ready"  # ready | scan | parse | chunk | embed | promote
@@ -485,7 +495,7 @@ class ReindexRunner:
             if progress is not None:
                 self.progress_pct = max(self.progress_pct, min(progress, 100))
 
-        # SSE 리스너 알림
+        # SSE 리스너 알림 (스레드 안전)
         payload = {
             "type": "log",
             "log": line,
@@ -495,7 +505,10 @@ class ReindexRunner:
         }
         for q in list(self._listeners):
             try:
-                q.put_nowait(payload)
+                if self._loop and self._loop.is_running():
+                    self._loop.call_soon_threadsafe(q.put_nowait, payload)
+                else:
+                    q.put_nowait(payload)
             except Exception:
                 pass
 
@@ -514,6 +527,9 @@ class ReindexRunner:
             self.summary = None
             self.logs.clear()
 
+        mode_text = "전체 완전 재파싱 & 강제 재색인" if force else "고속 증분 재색인 (파싱 캐시 재사용)"
+        self._add_log(f"🚀 RAG 전처리 및 재색인 파이프라인을 시작합니다. (모드: {mode_text})", stage="scan", progress=5)
+
         thread = threading.Thread(
             target=self._run_pipeline,
             args=(force,),
@@ -525,7 +541,6 @@ class ReindexRunner:
 
     def _run_pipeline(self, force: bool):
         t0 = time.time()
-        self._add_log("🚀 RAG 전처리 및 재색인 파이프라인을 시작합니다.", stage="scan", progress=5)
 
         # 로그 인터셉터 설정
         log_handler = _LogCapturingHandler(lambda msg: self._add_log(msg))
@@ -538,7 +553,7 @@ class ReindexRunner:
 
             mode_text = "전체 완전 재파싱 & 강제 재색인" if force else "고속 증분 재색인 (파싱 캐시 재사용)"
             self._add_log(f"📁 1단계: 원본 문서 및 카탈로그 스캔 시작... (모드: {mode_text})", stage="scan", progress=15)
-            self._add_log(f"  - 관리 문서 경로: {self.docs_dir}")
+            self._add_log(f"  - 관리 문서 디렉토리: {self.docs_dir}")
 
             self._add_log("🔍 2단계: 문서 파싱 및 구조 추출 진행 중 (PDF, HWP, DOCX, 엑셀)...", stage="parse", progress=30)
             
@@ -548,7 +563,6 @@ class ReindexRunner:
 
             summary = reindex.build(self.settings, force=force, docs_dir=self.docs_dir)
             self._add_log(f"✅ 새 색인 빌드 완료 (index_new): 총 {summary.get('documents_parsed', 0)}개 문서, {summary.get('total_pages', 0)}개 페이지, {summary.get('total_chunks', 0)}개 청크", progress=85)
-
 
             # 승격 (promote)
             self._add_log("🔄 5단계: 원자적 색인 승격 (index_new → index)...", stage="promote", progress=90)
@@ -586,7 +600,10 @@ class ReindexRunner:
             }
             for q in list(self._listeners):
                 try:
-                    q.put_nowait(done_payload)
+                    if self._loop and self._loop.is_running():
+                        self._loop.call_soon_threadsafe(q.put_nowait, done_payload)
+                    else:
+                        q.put_nowait(done_payload)
                 except Exception:
                     pass
 
@@ -611,7 +628,10 @@ class ReindexRunner:
             }
             for q in list(self._listeners):
                 try:
-                    q.put_nowait(fail_payload)
+                    if self._loop and self._loop.is_running():
+                        self._loop.call_soon_threadsafe(q.put_nowait, fail_payload)
+                    else:
+                        q.put_nowait(fail_payload)
                 except Exception:
                     pass
 
@@ -620,6 +640,10 @@ class ReindexRunner:
 
     def register_listener(self) -> asyncio.Queue:
         """SSE 스트림용 큐 등록."""
+        try:
+            self._loop = asyncio.get_running_loop()
+        except RuntimeError:
+            pass
         q: asyncio.Queue = asyncio.Queue()
         self._listeners.append(q)
         return q

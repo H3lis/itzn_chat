@@ -410,6 +410,24 @@ export function RagTab({ onUpdateBadge }) {
         return;
       }
 
+      const initData = await res.json();
+      if (initData.started === false && initData.status !== 'running') {
+        alert(`재색인 시작 불가: ${initData.error || '파이프라인이 이미 완료되었거나 시작할 수 없는 상태입니다.'}`);
+        setReindexing(false);
+        return;
+      }
+
+      // 초기 응답의 recent_logs 및 stage 즉시 반영
+      if (Array.isArray(initData.recent_logs) && initData.recent_logs.length > 0) {
+        setTerminalLogs(initData.recent_logs);
+      }
+      if (initData.stage) {
+        const stageMap = { scan: 1, parse: 2, chunk: 3, embed: 4, promote: 5, ready: 5 };
+        if (stageMap[initData.stage]) {
+          setReindexStep(stageMap[initData.stage]);
+        }
+      }
+
       // SSE 구독 시작
       if (sseRef.current) sseRef.current.close();
       const es = new EventSource('/api/admin/reindex/stream');
@@ -423,7 +441,6 @@ export function RagTab({ onUpdateBadge }) {
           // 로그 텍스트 적재
           if (data.log) {
             setTerminalLogs((prev) => {
-              // 중복 라인 방지
               if (prev.length > 0 && prev[prev.length - 1] === data.log) return prev;
               return [...prev, data.log];
             });
@@ -469,6 +486,44 @@ export function RagTab({ onUpdateBadge }) {
       es.onerror = (e) => {
         console.warn('SSE 연결 상태 변경:', e);
       };
+
+      // 폴백 폴링 (SSE 지연/누락 시 3초마다 상태 동기화)
+      const pollInterval = setInterval(async () => {
+        try {
+          const sRes = await fetch('/api/admin/reindex/status');
+          if (sRes.ok) {
+            const sData = await sRes.json();
+            if (sData.recent_logs && sData.recent_logs.length > 0) {
+              setTerminalLogs((prev) => {
+                const missing = sData.recent_logs.filter((l) => !prev.includes(l));
+                return missing.length > 0 ? [...prev, ...missing] : prev;
+              });
+            }
+            if (sData.stage) {
+              const stageMap = { scan: 1, parse: 2, chunk: 3, embed: 4, promote: 5, ready: 5 };
+              if (stageMap[sData.stage]) setReindexStep(stageMap[sData.stage]);
+            }
+            if (sData.status === 'completed') {
+              clearInterval(pollInterval);
+              setReindexing(false);
+              setReindexingForce(false);
+              setReindexStep(5);
+              setReindexSummary(sData.summary || { message: '재색인 완료' });
+              if (sseRef.current) sseRef.current.close();
+              fetchStats();
+              fetchDocs();
+            } else if (sData.status === 'failed') {
+              clearInterval(pollInterval);
+              setReindexing(false);
+              setReindexingForce(false);
+              alert(`재색인 실패: ${sData.error || '오류가 발생했습니다.'}`);
+              if (sseRef.current) sseRef.current.close();
+            }
+          }
+        } catch (e) {
+          // ignore polling error
+        }
+      }, 3000);
 
     } catch (e) {
       alert(`재색인 요청 에러: ${e.message}`);
