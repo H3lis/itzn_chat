@@ -719,6 +719,9 @@ async def admin_reindex_stream(request: Request):
     live_log_file = live_reports_dir / "reindex_live.log"
 
     async def event_generator():
+        # 브라우저(크롬/엣지) 및 리버스 프록시의 1KB~2KB 버퍼링을 즉시 관통하기 위한 패딩 전송
+        yield f": {' ' * 2048}\n\n"
+
         init_state = runner.get_state()
         sent_logs = set()
 
@@ -731,7 +734,6 @@ async def admin_reindex_stream(request: Request):
         # 2) 초기 상태 전송
         init_payload = json.dumps({"type": "init", **init_state}, ensure_ascii=False)
         yield f"data: {init_payload}\n\n"
-        yield f"event: init\ndata: {init_payload}\n\n"
 
         last_file_pos = 0
         if live_log_file.is_file():
@@ -753,10 +755,8 @@ async def admin_reindex_stream(request: Request):
                     log_text = msg.get("log")
                     if log_text:
                         sent_logs.add(log_text)
-                    event_type = msg.get("type", "update")
                     data_str = json.dumps(msg, ensure_ascii=False)
                     yield f"data: {data_str}\n\n"
-                    yield f"event: {event_type}\ndata: {data_str}\n\n"
                     continue
                 except asyncio.TimeoutError:
                     pass
@@ -776,7 +776,6 @@ async def admin_reindex_stream(request: Request):
                                     sent_logs.add(sline)
                                     log_payload = json.dumps({"type": "log", "log": sline}, ensure_ascii=False)
                                     yield f"data: {log_payload}\n\n"
-                                    yield f"event: log\ndata: {log_payload}\n\n"
                     except Exception:
                         pass
 

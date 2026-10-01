@@ -439,19 +439,19 @@ class _LogCapturingHandler(logging.Handler):
             msg = self.format(record)
             stage = None
             progress = None
-            if "카탈로그" in msg:
+            if any(k in msg for k in ("카탈로그", "1단계", "스캔", "documents")):
                 stage = "scan"
-                progress = 20
-            elif "파싱" in msg or "캐시" in msg:
+                progress = 15
+            elif any(k in msg for k in ("2단계", "파싱", "캐시", "추출", "슬라이드", "매칭 리포트")):
                 stage = "parse"
                 progress = 35
-            elif "청크" in msg or "위생" in msg:
+            elif any(k in msg for k in ("3단계", "청크", "위생", "청크 분할")):
                 stage = "chunk"
                 progress = 55
-            elif "임베딩" in msg or "FlatChunkIndex" in msg or "페이지 벡터 색인" in msg:
+            elif any(k in msg for k in ("4단계", "임베딩", "FlatChunkIndex", "페이지 벡터 색인", "Chroma DB", "적재 중")):
                 stage = "embed"
                 progress = 75
-            elif "승격" in msg or "교체 완료" in msg:
+            elif any(k in msg for k in ("5단계", "승격", "교체 완료", "핫리로드")):
                 stage = "promote"
                 progress = 92
             self.callback(msg, stage, progress)

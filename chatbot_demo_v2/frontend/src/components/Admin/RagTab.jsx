@@ -56,6 +56,14 @@ export function RagTab({ onUpdateBadge }) {
   const sseRef = useRef(null);
 
 
+  // 재색인 5단계 스테퍼 계산 헬퍼 (ready일 때는 0단계 대기, completed일 때만 5단계 완료)
+  const getStageStep = useCallback((stage, status) => {
+    if (status === 'completed') return 5;
+    if (!stage || stage === 'ready' || stage === 'idle') return 0;
+    const map = { scan: 1, parse: 2, chunk: 3, embed: 4, promote: 5 };
+    return map[stage] || 0;
+  }, []);
+
   const badgeRef = useRef(onUpdateBadge);
   useEffect(() => {
     badgeRef.current = onUpdateBadge;
@@ -111,10 +119,9 @@ export function RagTab({ onUpdateBadge }) {
         if (statusData.recent_logs && statusData.recent_logs.length > 0) {
           setTerminalLogs(statusData.recent_logs);
         }
+        setReindexStep(getStageStep(statusData.stage, statusData.status));
         if (statusData.status === 'running') {
           setReindexing(true);
-          const stageMap = { scan: 1, parse: 2, chunk: 3, embed: 4, promote: 5, ready: 5 };
-          if (stageMap[statusData.stage]) setReindexStep(stageMap[statusData.stage]);
 
           if (!sseRef.current) {
             const es = new EventSource('/api/admin/reindex/stream');
@@ -126,7 +133,7 @@ export function RagTab({ onUpdateBadge }) {
                 if (d.log) {
                   setTerminalLogs((prev) => (prev.length > 0 && prev[prev.length - 1] === d.log ? prev : [...prev, d.log]));
                 }
-                if (d.stage && stageMap[d.stage]) setReindexStep(stageMap[d.stage]);
+                setReindexStep(getStageStep(d.stage, d.status));
                 if (d.status === 'completed' || d.type === 'completed') {
                   setReindexing(false);
                   setReindexingForce(false);
@@ -142,7 +149,6 @@ export function RagTab({ onUpdateBadge }) {
               } catch (e) {}
             };
             es.onmessage = onMsg;
-            es.addEventListener('log', onMsg);
           }
         }
       })
@@ -156,14 +162,14 @@ export function RagTab({ onUpdateBadge }) {
           if (!statusData) return;
           if (statusData.recent_logs && statusData.recent_logs.length > 0) {
             setTerminalLogs((prev) => {
+              if (prev.length === 0 || statusData.recent_logs.length > prev.length) {
+                return statusData.recent_logs;
+              }
               const missing = statusData.recent_logs.filter((l) => !prev.includes(l));
               return missing.length > 0 ? [...prev, ...missing] : prev;
             });
           }
-          const stageMap = { scan: 1, parse: 2, chunk: 3, embed: 4, promote: 5, ready: 5 };
-          if (statusData.stage && stageMap[statusData.stage]) {
-            setReindexStep(stageMap[statusData.stage]);
-          }
+          setReindexStep(getStageStep(statusData.stage, statusData.status));
           if (statusData.status === 'running') {
             setReindexing(true);
           } else if (statusData.status === 'completed') {
@@ -172,7 +178,7 @@ export function RagTab({ onUpdateBadge }) {
           }
         })
         .catch(() => {});
-    }, 1500);
+    }, 1000);
 
     return () => {
       clearInterval(syncInterval);
@@ -454,10 +460,7 @@ export function RagTab({ onUpdateBadge }) {
         setTerminalLogs(initData.recent_logs);
       }
       if (initData.stage) {
-        const stageMap = { scan: 1, parse: 2, chunk: 3, embed: 4, promote: 5, ready: 5 };
-        if (stageMap[initData.stage]) {
-          setReindexStep(stageMap[initData.stage]);
-        }
+        setReindexStep(getStageStep(initData.stage, initData.status));
       }
 
       // SSE 구독 시작
@@ -482,10 +485,7 @@ export function RagTab({ onUpdateBadge }) {
           if (data.step) {
             setReindexStep(data.step);
           } else if (data.stage) {
-            const stageMap = { scan: 1, parse: 2, chunk: 3, embed: 4, promote: 5, ready: 5 };
-            if (stageMap[data.stage]) {
-              setReindexStep(stageMap[data.stage]);
-            }
+            setReindexStep(getStageStep(data.stage, data.status));
           }
 
           // 완료 이벤트 처리
@@ -509,17 +509,12 @@ export function RagTab({ onUpdateBadge }) {
       };
 
       es.onmessage = handleStreamEvent;
-      es.addEventListener('log', handleStreamEvent);
-      es.addEventListener('update', handleStreamEvent);
-      es.addEventListener('init', handleStreamEvent);
-      es.addEventListener('completed', handleStreamEvent);
-      es.addEventListener('failed', handleStreamEvent);
 
       es.onerror = (e) => {
         console.warn('SSE 연결 상태 변경:', e);
       };
 
-      // 폴백 폴링 (SSE 지연/누락 시 3초마다 상태 동기화)
+      // 폴백 폴링 (SSE 지연/누락 시 1.5초마다 상태 동기화)
       const pollInterval = setInterval(async () => {
         try {
           const sRes = await fetch('/api/admin/reindex/status');
@@ -527,14 +522,14 @@ export function RagTab({ onUpdateBadge }) {
             const sData = await sRes.json();
             if (sData.recent_logs && sData.recent_logs.length > 0) {
               setTerminalLogs((prev) => {
+                if (prev.length === 0 || sData.recent_logs.length > prev.length) {
+                  return sData.recent_logs;
+                }
                 const missing = sData.recent_logs.filter((l) => !prev.includes(l));
                 return missing.length > 0 ? [...prev, ...missing] : prev;
               });
             }
-            if (sData.stage) {
-              const stageMap = { scan: 1, parse: 2, chunk: 3, embed: 4, promote: 5, ready: 5 };
-              if (stageMap[sData.stage]) setReindexStep(stageMap[sData.stage]);
-            }
+            setReindexStep(getStageStep(sData.stage, sData.status));
             if (sData.status === 'completed') {
               clearInterval(pollInterval);
               setReindexing(false);
@@ -555,7 +550,7 @@ export function RagTab({ onUpdateBadge }) {
         } catch (e) {
           // ignore polling error
         }
-      }, 3000);
+      }, 1500);
 
     } catch (e) {
       alert(`재색인 요청 에러: ${e.message}`);

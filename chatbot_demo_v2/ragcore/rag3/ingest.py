@@ -285,6 +285,7 @@ def run_ingest(config: Config, backend: Backend, *, force: bool = False, limit_d
             has_mineru = False
 
     total_targets = len(target_rel_paths)
+    logger.info(f"🔍 2단계: 문서 파싱 및 구조화 시작... (총 {total_targets}개 문서 대상)")
     for idx, rel_path in enumerate(target_rel_paths, start=1):
         slug = doc_slug(rel_path)
         doc_name = Path(rel_path).name
@@ -344,15 +345,15 @@ def run_ingest(config: Config, backend: Backend, *, force: bool = False, limit_d
 
         logger.info(f"  └─ 청크 분할 완료: {len(chunk_ids)}개 청크 (텍스트 {type_counts.get('text', 0)}, 표 {type_counts.get('table', 0)})")
 
-    # chatbot_demo_v2 2026-07-27(작업 8): 색인 직전 청크 위생.
-    # 완전중복 제거 · 반복줄 노이즈 압축 · 임베딩 컨텍스트 초과 경고. 실측 근거는
-    # chunk_hygiene 모듈 docstring 참조(중복 5.4% · 노이즈 2.5% · 초과 5.9%).
+    # 3단계: 청크 위생 정제
+    logger.info("✂️ 3단계: 스마트 청킹 및 청크 위생 정제(중복/노이즈 제거) 시작...")
     from .chunk_hygiene import sanitize_chunks
     all_chunk_ids, all_chunk_texts, all_chunk_metas, hygiene_report = sanitize_chunks(
         all_chunk_ids, all_chunk_texts, all_chunk_metas)
     total_chunks = len(all_chunk_ids)
 
-    # 청크 flat 인덱스 1회 빌드(전 문서 누적 -> 임베딩 -> npz+json 저장)
+    # 4단계: 임베딩 연산 및 적재
+    logger.info(f"🧬 4단계: EmbeddingGemma 벡터 연산 및 Chroma DB 적재 시작... (총 {total_chunks}개 청크 임베딩 생성)")
     flat_chunks.build(all_chunk_ids, all_chunk_texts, all_chunk_metas)
     # 페이지 텍스트 flat KV 저장(small-to-big 'big' 조회, B6 회피)
     save_page_store(config, all_page_ids, all_page_texts, all_page_metas)
