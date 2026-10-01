@@ -199,3 +199,22 @@ def get_index(name: str, config: Config, backend: Backend) -> HybridIndex:
     if key not in _INDEX_CACHE:
         _INDEX_CACHE[key] = HybridIndex(name, config, backend)
     return _INDEX_CACHE[key]
+
+
+def clear_all_index_caches() -> None:
+    """ChromaDB PersistentClient 캐시 및 RAG 인덱스 캐시를 완전 초기화.
+    새로운 색인 디렉토리가 생성되거나 승격(promote)될 때 파일 디스크립터 유실로 인한
+    '(code: 1032) attempt to write a readonly database' 오류를 방지합니다.
+    """
+    _INDEX_CACHE.clear()
+    try:
+        from .flat_index import _FLAT_CACHE
+        _FLAT_CACHE.clear()
+    except Exception:
+        pass
+    try:
+        from chromadb.api.client import SharedSystemClient
+        SharedSystemClient.clear_system_cache()
+    except Exception:
+        pass
+

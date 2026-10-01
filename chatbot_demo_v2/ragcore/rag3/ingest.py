@@ -17,7 +17,7 @@ from .catalog import load_catalog, match_catalog_to_pdfs, save_match_report
 from .chunking import build_chunks
 from .config import Config
 from .flat_index import get_flat_chunk_index
-from .index import get_index
+from .index import get_index, clear_all_index_caches
 from .page_store import save_page_store
 from .models import Backend
 from .parse import DocumentInfo, PageRecord, get_or_parse_document
@@ -241,6 +241,7 @@ def run_ingest(config: Config, backend: Backend, *, force: bool = False, limit_d
 
     카탈로그는 게이트가 아니라 청크 프리픽스(메타데이터 주입)와 옵션 게이트용 catalog_index로만 쓴다.
     """
+    clear_all_index_caches()
     config.ensure_dirs()
     t0 = time.monotonic()
 
@@ -274,15 +275,36 @@ def run_ingest(config: Config, backend: Backend, *, force: bool = False, limit_d
             if un_pdf not in target_rel_paths:
                 target_rel_paths.append(un_pdf)
 
+    # 파서 가용성 점검 (MinerU 설치 여부)
+    has_mineru = False
+    if config.parser == "mineru":
+        try:
+            import magic_pdf  # noqa: F401
+            has_mineru = True
+        except ImportError:
+            has_mineru = False
+
     total_targets = len(target_rel_paths)
     for idx, rel_path in enumerate(target_rel_paths, start=1):
         slug = doc_slug(rel_path)
         doc_name = Path(rel_path).name
 
         # 1) 소스 캐시에서 manifest 로드(없으면 MinerU/pdfplumber 재파싱 폴백)
-        doc_info = None if force else _load_source_manifest(config, slug)
+        cached_manifest = _load_source_manifest(config, slug)
+        if force:
+            if has_mineru:
+                doc_info = None
+            elif cached_manifest is not None:
+                logger.info(f"⚡ [{idx}/{total_targets}] '{doc_name}': MinerU 미설치 환경 -> 기존 고품질 파싱 캐시 활용하여 청크 및 벡터 색인 전체 강제 재구축 (총 {cached_manifest.page_count}페이지)")
+                doc_info = cached_manifest
+            else:
+                doc_info = None
+        else:
+            doc_info = cached_manifest
+
         if doc_info is not None:
-            logger.info(f"⚡ [{idx}/{total_targets}] '{doc_name}': 기존 파싱 캐시 재사용 (총 {doc_info.page_count}페이지)")
+            if not force:
+                logger.info(f"⚡ [{idx}/{total_targets}] '{doc_name}': 기존 파싱 캐시 재사용 (총 {doc_info.page_count}페이지)")
         else:
             mode_desc = "강제 완전 재파싱" if force else "신규 문서 파싱"
             logger.info(f"🔍 [{idx}/{total_targets}] '{doc_name}': {mode_desc} 시작...")

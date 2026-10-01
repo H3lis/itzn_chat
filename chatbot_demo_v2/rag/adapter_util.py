@@ -454,6 +454,11 @@ class SubgraphRagAdapter:
     def reload(self) -> None:
         """재색인 후 엔진, 서브그래프, TTL 캐시를 새로 로드."""
         with self._init_lock:
+            try:
+                from ..ragcore.rag3.index import clear_all_index_caches
+                clear_all_index_caches()
+            except Exception:
+                pass
             self._engine = None
             self._deps = None
             self._subgraph = None

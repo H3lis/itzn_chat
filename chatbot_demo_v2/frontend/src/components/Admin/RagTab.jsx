@@ -978,15 +978,27 @@ export function RagTab({ onUpdateBadge }) {
             </div>
           </div>
 
-          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.78rem', maxHeight: '180px', overflowY: 'auto', lineHeight: '1.4' }}>
+          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', maxHeight: '340px', minHeight: '120px', overflowY: 'auto', lineHeight: '1.5', padding: '0.4rem 0.2rem' }}>
             {terminalLogs.length === 0 ? (
               <span style={{ color: 'var(--text-muted)' }}>파이프라인 대기 중. 가동 버튼을 누르면 로그가 실시간 스트리밍됩니다.</span>
             ) : (
-              terminalLogs.map((log, i) => (
-                <div key={i} style={{ color: log.includes('ERROR') ? 'var(--rose)' : (log.includes('완료') || log.includes('성공') ? 'var(--emerald)' : 'var(--text-sub)') }}>
-                  {log}
-                </div>
-              ))
+              terminalLogs.map((log, i) => {
+                let color = 'var(--text-main)';
+                if (log.includes('ERROR') || log.includes('실패') || log.includes('❌')) {
+                  color = 'var(--rose)';
+                } else if (log.includes('완료') || log.includes('성공') || log.includes('✅') || log.includes('🎉') || log.includes('✨')) {
+                  color = 'var(--emerald)';
+                } else if (log.includes('WARNING') || log.includes('⚠️')) {
+                  color = '#f59e0b';
+                } else if (log.includes('⚡') || log.includes('📁') || log.includes('🔍') || log.includes('✂️') || log.includes('🧬')) {
+                  color = 'var(--primary)';
+                }
+                return (
+                  <div key={i} style={{ color, wordBreak: 'break-all', marginBottom: '0.15rem' }}>
+                    {log}
+                  </div>
+                );
+              })
             )}
             <div ref={terminalEndRef} />
           </div>

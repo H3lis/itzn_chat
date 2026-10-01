@@ -425,7 +425,7 @@ class DocumentManager:
 class _LogCapturingHandler(logging.Handler):
     """실시간 로그를 캡처하여 ReindexRunner 버퍼에 전송하는 핸들러."""
 
-    def __init__(self, callback: Callable[[str], None]):
+    def __init__(self, callback: Callable[[str, Optional[str], Optional[int]], None]):
         super().__init__()
         self.callback = callback
         self.setFormatter(logging.Formatter("[%(levelname)s] %(message)s"))
@@ -436,7 +436,24 @@ class _LogCapturingHandler(logging.Handler):
             return
         try:
             msg = self.format(record)
-            self.callback(msg)
+            stage = None
+            progress = None
+            if "카탈로그" in msg:
+                stage = "scan"
+                progress = 20
+            elif "파싱" in msg or "캐시" in msg:
+                stage = "parse"
+                progress = 35
+            elif "청크" in msg or "위생" in msg:
+                stage = "chunk"
+                progress = 55
+            elif "임베딩" in msg or "FlatChunkIndex" in msg or "페이지 벡터 색인" in msg:
+                stage = "embed"
+                progress = 75
+            elif "승격" in msg or "교체 완료" in msg:
+                stage = "promote"
+                progress = 92
+            self.callback(msg, stage, progress)
         except Exception:
             pass
 
@@ -603,26 +620,25 @@ class ReindexRunner:
         t0 = time.time()
 
         # 로그 인터셉터 설정
-        log_handler = _LogCapturingHandler(lambda msg: self._add_log(msg))
+        log_handler = _LogCapturingHandler(lambda msg, stg=None, prg=None: self._add_log(msg, stage=stg, progress=prg))
         root_logger = logging.getLogger()
         root_logger.addHandler(log_handler)
 
         try:
             prepare_ragcore_imports(self.settings)
             from ..scripts import reindex
+            try:
+                from rag3.index import clear_all_index_caches
+                clear_all_index_caches()
+            except Exception:
+                pass
 
             mode_text = "전체 완전 재파싱 & 강제 재색인" if force else "고속 증분 재색인 (파싱 캐시 재사용)"
-            self._add_log(f"📁 1단계: 원본 문서 및 카탈로그 스캔 시작... (모드: {mode_text})", stage="scan", progress=15)
+            self._add_log(f"📁 1단계: 원본 문서 및 카탈로그 스캔 시작... (모드: {mode_text})", stage="scan", progress=10)
             self._add_log(f"  - 관리 문서 디렉토리: {self.docs_dir}")
 
-            self._add_log("🔍 2단계: 문서 파싱 및 구조 추출 진행 중 (PDF, HWP, DOCX, 엑셀)...", stage="parse", progress=30)
-            
-            # 빌드 실행 (웹 UI 실행 시 index_new 자동 정리 빌드)
-            self._add_log("✂️ 3단계: 스마트 청크 분할 및 위생 정제 (sanitize_chunks)...", stage="chunk", progress=55)
-            self._add_log("🧬 4단계: 벡터 임베딩 생성 (embeddinggemma / bge-m3)...", stage="embed", progress=75)
-
             summary = reindex.build(self.settings, force=force, docs_dir=self.docs_dir)
-            self._add_log(f"✅ 새 색인 빌드 완료 (index_new): 총 {summary.get('documents_parsed', 0)}개 문서, {summary.get('total_pages', 0)}개 페이지, {summary.get('total_chunks', 0)}개 청크", progress=85)
+            self._add_log(f"✅ 새 색인 빌드 완료 (index_new): 총 {summary.get('documents_parsed', 0)}개 문서, {summary.get('total_pages', 0)}개 페이지, {summary.get('total_chunks', 0)}개 청크", stage="promote", progress=88)
 
             # 승격 (promote)
             self._add_log("🔄 5단계: 원자적 색인 승격 (index_new → index)...", stage="promote", progress=90)

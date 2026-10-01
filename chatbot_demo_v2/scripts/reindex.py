@@ -120,17 +120,25 @@ def build(settings, force: bool, catalog_path: Path | None = None, docs_dir: Pat
     from rag3.ingest import run_ingest
     from rag3.models import get_backend
 
+    try:
+        from rag3.index import clear_all_index_caches
+        clear_all_index_caches()
+    except Exception:
+        pass
+
     src_catalog = catalog_path or DEFAULT_CATALOG
     src_docs = docs_dir or DEFAULT_DOCS
 
     new_dir = Path(settings.ragdata_dir) / "index_new"
     if new_dir.exists():
-        if not force:
-            # force가 아니더라도 웹 UI 재색인 시에는 index_new를 정리하고 재생성할 수 있도록 안전하게 클리어
-            shutil.rmtree(new_dir, ignore_errors=True)
-        else:
-            shutil.rmtree(new_dir, ignore_errors=True)
+        shutil.rmtree(new_dir, ignore_errors=True)
     new_dir.mkdir(parents=True, exist_ok=True)
+
+    try:
+        from rag3.index import clear_all_index_caches
+        clear_all_index_caches()
+    except Exception:
+        pass
 
     # 카탈로그 엑셀이 없더라도 가상 카탈로그(Virtual Catalog Row)로 전체 문서를 색인할 수 있도록 폴백 처리
     catalog_arg_path = src_catalog
@@ -222,6 +230,11 @@ def promote(settings) -> None:
         raise RuntimeError(f"새 색인 디렉토리가 생성되지 않았습니다: {new}")
     
     _safe_promote_dir(new, cur, old, root)
+    try:
+        from rag3.index import clear_all_index_caches
+        clear_all_index_caches()
+    except Exception:
+        pass
     print("  되돌리려면: --rollback")
 
 
