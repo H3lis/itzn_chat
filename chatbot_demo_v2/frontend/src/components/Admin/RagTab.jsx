@@ -652,17 +652,17 @@ export function RagTab({ onUpdateBadge }) {
       >
         <UploadCloud size={36} color="var(--primary)" style={{ margin: '0 auto 0.5rem' }} />
         <div style={{ fontWeight: 600, fontSize: '1rem', color: 'var(--text-main)' }}>
-          PDF, HWP/HWPX, 워드(DOCX), 엑셀(XLSX/XLS), 텍스트 문서를 이곳으로 드래그하거나 클릭하여 업로드
+          PDF, HWP/HWPX, 워드(DOCX), 파워포인트(PPTX), 엑셀(XLSX/XLS), 텍스트 문서를 이곳으로 드래그하거나 클릭하여 업로드
         </div>
         <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginTop: '0.35rem' }}>
-          DOCX·HWP는 PDF 변환, 엑셀은 시트별 표 추출을 거쳐 실시간 증분 색인 파이프라인에서 자동 처리됩니다.
+          DOCX·HWP·PPTX는 슬라이드/문서 구조화 및 표/이미지 추출, 엑셀은 시트별 표 추출을 거쳐 실시간 파이프라인에서 자동 처리됩니다.
         </div>
         <input
           type="file"
           ref={fileInputRef}
           style={{ display: 'none' }}
           multiple
-          accept=".pdf,.docx,.hwpx,.hwp,.xlsx,.xls,.csv,.txt,.md"
+          accept=".pdf,.docx,.hwpx,.hwp,.xlsx,.xls,.csv,.pptx,.ppt,.txt,.md"
           onChange={(e) => handleFileUpload(e.target.files)}
         />
         {uploading && (

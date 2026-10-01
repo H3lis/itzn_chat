@@ -140,11 +140,28 @@ def parse_pdf_pdfplumber(abs_path: Path, rel_path: str, config: Config) -> Docum
         for p in pages:
             p.is_scanned = True
         logger.warning(
-            "%s: 스캔 문서로 판정(text_ratio=%.2f)되었으나 pdfplumber 폴백은 OCR을 지원하지 않음 "
-            "-> 텍스트 검색 불가, 페이지 이미지만 근거로 남음",
+            "%s: 스캔 문서로 판정(text_ratio=%.2f) — 이미지 OCR(Tesseract/EasyOCR) 추출을 시도합니다.",
             rel_path,
             text_ratio,
         )
+        # 이미지 OCR 지원: 렌더링된 페이지 이미지 기반 OCR 텍스트 추출 시도
+        try:
+            from .converters import try_ocr_image_bytes
+            ocr_success_count = 0
+            for p in pages:
+                if p.page_image_path and Path(p.page_image_path).is_file():
+                    img_bytes = Path(p.page_image_path).read_bytes()
+                    ocr_res = try_ocr_image_bytes(img_bytes)
+                    if ocr_res:
+                        p.text = (p.text + "\n\n### [OCR 추출 텍스트]\n" + ocr_res).strip()
+                        p.char_count = len(p.text)
+                        ocr_success_count += 1
+            if ocr_success_count > 0:
+                logger.info("%s: 스캔 페이지 %d개에 대해 이미지 OCR 텍스트 추출 성공", rel_path, ocr_success_count)
+            else:
+                logger.info("%s: 설치된 OCR 모듈(Tesseract/EasyOCR)이 없어 페이지만 렌더링됨", rel_path)
+        except Exception as oe:
+            logger.debug("%s: 스캔 페이지 OCR 시도 중 예외: %s", rel_path, oe)
 
     return DocumentInfo(
         document_name=Path(rel_path).name,

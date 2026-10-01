@@ -38,6 +38,8 @@ SUPPORTED_DOCUMENT_EXTENSIONS: set[str] = {
     ".xlsx",
     ".xls",
     ".csv",
+    ".pptx",
+    ".ppt",
     ".txt",
     ".md",
 }
@@ -619,3 +621,252 @@ def parse_text_file(abs_path: Path, rel_path: str, config: Config) -> DocumentIn
         parser_used="text_direct",
         pages=pages,
     )
+
+
+# ============================================================================
+# 5. 이미지 OCR 헬퍼 & 파워포인트 (.pptx, .ppt) 슬라이드 구조화 파서
+# ============================================================================
+
+def try_ocr_image_bytes(image_bytes: bytes) -> str:
+    """이미지 바이트에 대해 시스템에 설치된 OCR 엔진(Tesseract, EasyOCR 등)을 시도합니다."""
+    if not image_bytes or len(image_bytes) < 100:
+        return ""
+
+    # 1. pytesseract 시도
+    try:
+        import pytesseract
+        from PIL import Image
+        img = Image.open(io.BytesIO(image_bytes))
+        txt = pytesseract.image_to_string(img, lang="kor+eng").strip()
+        if txt:
+            return txt
+    except Exception:
+        pass
+
+    # 2. easyocr 시도
+    try:
+        import easyocr
+        import numpy as np
+        from PIL import Image
+        img = Image.open(io.BytesIO(image_bytes)).convert("RGB")
+        reader = easyocr.Reader(["ko", "en"], gpu=False, verbose=False)
+        results = reader.readtext(np.array(img), detail=0)
+        txt = "\n".join(results).strip()
+        if txt:
+            return txt
+    except Exception:
+        pass
+
+    return ""
+
+
+def _table_to_markdown(table) -> str:
+    """python-pptx Table 객체를 정돈된 마크다운 테이블 문자열로 변환합니다."""
+    rows = table.rows
+    cols = table.columns
+    if not rows or not cols:
+        return ""
+
+    table_data: list[list[str]] = []
+    for row in rows:
+        row_cells = []
+        for cell in row.cells:
+            cell_txt = cell.text.replace("\r\n", " ").replace("\n", " ").replace("|", "\\|").strip()
+            row_cells.append(cell_txt)
+        table_data.append(row_cells)
+
+    if not table_data:
+        return ""
+
+    # 1행을 헤더로
+    headers = [c if c else f"열_{i+1}" for i, c in enumerate(table_data[0])]
+    header_line = "| " + " | ".join(headers) + " |"
+    sep_line = "| " + " | ".join("---" for _ in headers) + " |"
+
+    body_lines = []
+    for r_vals in table_data[1:]:
+        if any(r_vals):
+            body_lines.append("| " + " | ".join(r_vals) + " |")
+
+    return "\n".join([header_line, sep_line] + body_lines)
+
+
+def _extract_shape_data(shape) -> dict[str, Any]:
+    """도형(Shape)에서 텍스트, 표, 이미지 바이트를 재귀적으로 추출합니다."""
+    texts: list[str] = []
+    tables_md: list[str] = []
+    image_bytes_list: list[bytes] = []
+
+    # 1) 일반 텍스트 프레임
+    if hasattr(shape, "has_text_frame") and shape.has_text_frame:
+        try:
+            t = shape.text_frame.text.strip()
+            if t:
+                texts.append(t)
+        except Exception:
+            pass
+
+    # 2) 표(Table)
+    if hasattr(shape, "has_table") and shape.has_table:
+        try:
+            md = _table_to_markdown(shape.table)
+            if md:
+                tables_md.append(md)
+        except Exception:
+            pass
+
+    # 3) 이미지(Picture)
+    if hasattr(shape, "image"):
+        try:
+            image_bytes_list.append(shape.image.blob)
+        except Exception:
+            pass
+
+    # 4) 그룹 도형(GroupShape) 재귀 탐색
+    if hasattr(shape, "shapes"):
+        for sub_shape in shape.shapes:
+            sub_res = _extract_shape_data(sub_shape)
+            texts.extend(sub_res["texts"])
+            tables_md.extend(sub_res["tables_md"])
+            image_bytes_list.extend(sub_res["images"])
+
+    return {"texts": texts, "tables_md": tables_md, "images": image_bytes_list}
+
+
+def parse_pptx_file(abs_path: Path, rel_path: str, config: Config) -> DocumentInfo:
+    """파워포인트(.pptx, .ppt) 문서를 슬라이드별로 구조화하여 PageRecord로 파싱합니다.
+    - 슬라이드 1장 = 1개 PageRecord (슬라이드 번호 = page_number)
+    - 제목, 본문 텍스트, 표(Table) 마크다운 변환
+    - 발표자 노트(Notes Slide) 추출 결합
+    - 슬라이드 내 이미지 추출 및 OCR(Tesseract/EasyOCR) 적용
+    - LibreOffice 가용 시 슬라이드 고품질 렌더 이미지(page_image_path) 자동 생성
+    """
+    slug = doc_slug(rel_path)
+    document_name = abs_path.name
+    slug_dir = config.parsed_dir / slug
+    images_dir = slug_dir / "images"
+    images_dir.mkdir(parents=True, exist_ok=True)
+
+    # 1. LibreOffice를 통한 슬라이드 PDF 변환 및 고화질 슬라이드 이미지 렌더링 시도
+    rendered_images: dict[int, str] = {}
+    try:
+        tmp_conv_dir = slug_dir / "_pptx_pdf_tmp"
+        pdf_path = try_convert_to_pdf(abs_path, tmp_conv_dir)
+        if pdf_path and pdf_path.is_file():
+            import fitz
+            doc_fitz = fitz.open(pdf_path)
+            for page_idx in range(len(doc_fitz)):
+                fitz_page = doc_fitz[page_idx]
+                pix = fitz_page.get_pixmap(dpi=150)
+                img_file = images_dir / f"slide_{page_idx + 1:04d}.png"
+                pix.save(str(img_file))
+                rendered_images[page_idx + 1] = str(img_file)
+            doc_fitz.close()
+            shutil.rmtree(tmp_conv_dir, ignore_errors=True)
+            logger.info("[%s] PPTX -> PDF 변환 및 슬라이드 이미지 %d장 렌더링 성공", document_name, len(rendered_images))
+    except Exception as e:
+        logger.debug("[%s] 슬라이드 이미지 렌더링 생략 (LibreOffice/PyMuPDF): %s", document_name, e)
+
+    # 2. python-pptx를 통한 슬라이드 콘텐츠 구조화 파싱
+    pages: list[PageRecord] = []
+    try:
+        from pptx import Presentation
+        prs = Presentation(str(abs_path))
+
+        for slide_idx, slide in enumerate(prs.slides, start=1):
+            slide_texts: list[str] = []
+            slide_tables: list[str] = []
+            slide_images: list[bytes] = []
+
+            # 슬라이드 내 도형 순회
+            for shape in slide.shapes:
+                sdata = _extract_shape_data(shape)
+                slide_texts.extend(sdata["texts"])
+                slide_tables.extend(sdata["tables_md"])
+                slide_images.extend(sdata["images"])
+
+            # 발표자 메모(Notes) 추출
+            notes_text = ""
+            try:
+                if slide.has_notes_slide and slide.notes_slide.notes_text_frame:
+                    nt = slide.notes_slide.notes_text_frame.text.strip()
+                    if nt:
+                        notes_text = nt
+            except Exception:
+                pass
+
+            # 이미지 OCR 시도 (이미지가 있고 텍스트가 부족하거나 표가 없을 때 보강)
+            ocr_texts: list[str] = []
+            for img_bytes in slide_images[:3]:  # 슬라이드당 최대 3개 중요 이미지 OCR
+                ocr_t = try_ocr_image_bytes(img_bytes)
+                if ocr_t:
+                    ocr_texts.append(ocr_t)
+
+            # 슬라이드 본문 텍스트 합성
+            parts = [f"## [슬라이드 {slide_idx}] {document_name}"]
+            if slide_texts:
+                parts.append("\n".join(slide_texts))
+            if slide_tables:
+                parts.append("### [슬라이드 내 표 데이터]\n" + "\n\n".join(slide_tables))
+            if ocr_texts:
+                parts.append("### [이미지 OCR 추출 내용]\n" + "\n".join(ocr_texts))
+            if notes_text:
+                parts.append(f"### [발표자 메모 / 보충 설명]\n{notes_text}")
+
+            full_text = "\n\n".join(parts).strip()
+            has_table = len(slide_tables) > 0
+            page_type = "table" if has_table else ("figure" if len(slide_images) > 0 and len(slide_texts) == 0 else "text")
+
+            pages.append(
+                PageRecord(
+                    document_name=document_name,
+                    file_path=rel_path,
+                    doc_slug=slug,
+                    page_number=slide_idx,
+                    page_type=page_type,
+                    text=full_text,
+                    is_scanned=False,
+                    has_table=has_table,
+                    table_markdown="\n\n".join(slide_tables),
+                    table_crop_path="",
+                    page_image_path=rendered_images.get(slide_idx, ""),
+                    figure_area_ratio=0.3 if len(slide_images) > 0 else 0.0,
+                    char_count=len(full_text),
+                )
+            )
+
+    except Exception as pe:
+        logger.error("[%s] python-pptx 파싱 실패: %s", document_name, pe)
+        # python-pptx 실패 시 빈 텍스트 대신 에러 정보 기록
+        raise RuntimeError(f"PPTX 파싱 실패 ({document_name}): {pe}") from pe
+
+    if not pages:
+        pages.append(
+            PageRecord(
+                document_name=document_name,
+                file_path=rel_path,
+                doc_slug=slug,
+                page_number=1,
+                page_type="text",
+                text=f"## [슬라이드 1] {document_name}\n(슬라이드 내용이 비어 있습니다.)",
+                is_scanned=False,
+                has_table=False,
+                table_markdown="",
+                table_crop_path="",
+                page_image_path="",
+                figure_area_ratio=0.0,
+                char_count=50,
+            )
+        )
+
+    logger.info("[%s] PPTX 슬라이드 파싱 완료: 총 %d개 슬라이드 레코드 생성", document_name, len(pages))
+    return DocumentInfo(
+        document_name=document_name,
+        rel_path=rel_path,
+        abs_path=str(abs_path),
+        doc_slug=slug,
+        page_count=len(pages),
+        parser_used="pptx_structured",
+        pages=pages,
+    )
+

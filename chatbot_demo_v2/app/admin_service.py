@@ -153,7 +153,7 @@ class DocumentManager:
 
             ext = p.suffix.lower()
             is_pdf = ext == ".pdf"
-            supported_exts = {".pdf", ".docx", ".hwpx", ".hwp", ".xlsx", ".xls", ".csv", ".txt", ".md"}
+            supported_exts = {".pdf", ".docx", ".hwpx", ".hwp", ".xlsx", ".xls", ".csv", ".pptx", ".ppt", ".txt", ".md"}
             is_supported = ext in supported_exts
             is_indexed = (
                 (p.name in indexed_names)

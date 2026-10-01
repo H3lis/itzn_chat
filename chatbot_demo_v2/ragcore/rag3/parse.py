@@ -106,6 +106,9 @@ def parse_document(abs_path: Path, rel_path: str, config: Config) -> DocumentInf
     elif ext == ".docx":
         from .converters import parse_docx_file
         return parse_docx_file(abs_path, rel_path, config)
+    elif ext in (".pptx", ".ppt"):
+        from .converters import parse_pptx_file
+        return parse_pptx_file(abs_path, rel_path, config)
     elif ext in (".hwp", ".hwpx"):
         from .converters import parse_hwp_file
         return parse_hwp_file(abs_path, rel_path, config)
