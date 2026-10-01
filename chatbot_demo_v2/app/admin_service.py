@@ -618,6 +618,38 @@ class ReindexRunner:
         thread.start()
         return True
 
+    def clear_logs(self) -> None:
+        """터미널 로그 및 라이브 로그 파일을 비운다."""
+        with self._lock:
+            self.logs.clear()
+        try:
+            if self.live_log_file.is_file():
+                self.live_log_file.write_text("", encoding="utf-8")
+        except Exception:
+            pass
+
+    def reset_state(self) -> dict:
+        """비정상 락 또는 오류 발생 시 파이프라인 상태를 강제로 정상 ready/idle 상태로 리셋."""
+        with self._lock:
+            self.status = "idle"
+            self.stage = "ready"
+            self.progress_pct = 0
+            self.error_msg = None
+            self.logs.clear()
+        try:
+            if self.live_status_file.is_file():
+                self.live_status_file.write_text(json.dumps({
+                    "status": "idle",
+                    "stage": "ready",
+                    "progress_pct": 0,
+                    "updated_at": now_kst_str()
+                }, ensure_ascii=False, indent=2), encoding="utf-8")
+            if self.live_log_file.is_file():
+                self.live_log_file.write_text("", encoding="utf-8")
+        except Exception:
+            pass
+        return self.get_state()
+
     def _run_pipeline(self, force: bool):
         t0 = time.time()
 

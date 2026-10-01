@@ -707,6 +707,22 @@ def admin_reindex_status(request: Request) -> dict:
     return ctx.reindex_runner.get_state()
 
 
+@router.delete("/api/admin/reindex/logs")
+def admin_reindex_clear_logs(request: Request) -> dict:
+    """터미널 로그 및 실시간 로그 파일 초기화."""
+    ctx = _ctx(request)
+    ctx.reindex_runner.clear_logs()
+    return {"cleared": True}
+
+
+@router.post("/api/admin/reindex/reset")
+def admin_reindex_reset(request: Request) -> dict:
+    """비정상 락 또는 오류 발생 시 파이프라인 상태 강제 정상화(잠금 해제)."""
+    ctx = _ctx(request)
+    state = ctx.reindex_runner.reset_state()
+    return {"reset": True, **state}
+
+
 @router.get("/api/admin/reindex/stream")
 async def admin_reindex_stream(request: Request):
     """SSE 실시간 재색인 진행률 및 로그 스트리밍 (웹 스레드 큐 + CLI live_log 파일 테일링 동시 지원)."""

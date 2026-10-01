@@ -54,6 +54,7 @@ export function RagTab({ onUpdateBadge }) {
   const [terminalLogs, setTerminalLogs] = useState([]);
   const terminalEndRef = useRef(null);
   const sseRef = useRef(null);
+  const isClearedRef = useRef(false); // 사용자가 지우기 눌렀을 때 과거 로그 부활 방지 플래그
 
 
   // 재색인 5단계 스테퍼 계산 헬퍼 (ready일 때는 0단계 대기, completed일 때만 5단계 완료)
@@ -107,6 +108,37 @@ export function RagTab({ onUpdateBadge }) {
     }
   }, []);
 
+  // 터미널 화면 및 서버 로그 깔끔하게 지우기 (과거 로그 부활 원천 차단)
+  const handleClearLogs = async () => {
+    setTerminalLogs([]);
+    isClearedRef.current = true;
+    try {
+      await fetch('/api/admin/reindex/logs', { method: 'DELETE' });
+    } catch (e) {}
+  };
+
+  // 파이프라인 강제 초기화 및 상태 잠금 해제 (버튼 비활성화/대기 멈춤 복구)
+  const handleResetPipeline = async () => {
+    if (!window.confirm("⚠️ 파이프라인 상태를 강제 초기화(잠금 해제)하시겠습니까?\n\n- 비정상 대기 또는 버튼 비활성화 상태가 즉시 정상 대기 상태로 복구됩니다.\n- 터미널 로그도 함께 초기화됩니다.")) return;
+    try {
+      const res = await fetch('/api/admin/reindex/reset', { method: 'POST' });
+      if (res.ok) {
+        setReindexing(false);
+        setReindexingForce(false);
+        setReindexStep(0);
+        setTerminalLogs([]);
+        isClearedRef.current = true;
+        if (sseRef.current) {
+          sseRef.current.close();
+          sseRef.current = null;
+        }
+        alert("✅ 파이프라인 상태가 성공적으로 초기화되었습니다. 이제 재색인을 다시 실행하실 수 있습니다.");
+      }
+    } catch (e) {
+      alert(`초기화 오류: ${e.message}`);
+    }
+  };
+
   useEffect(() => {
     fetchStats();
     fetchDocs();
@@ -116,12 +148,13 @@ export function RagTab({ onUpdateBadge }) {
       .then((res) => res.json())
       .then((statusData) => {
         if (!statusData) return;
-        if (statusData.recent_logs && statusData.recent_logs.length > 0) {
+        if (!isClearedRef.current && statusData.recent_logs && statusData.recent_logs.length > 0) {
           setTerminalLogs(statusData.recent_logs);
         }
         setReindexStep(getStageStep(statusData.stage, statusData.status));
         if (statusData.status === 'running') {
           setReindexing(true);
+          isClearedRef.current = false;
 
           if (!sseRef.current) {
             const es = new EventSource('/api/admin/reindex/stream');
@@ -131,6 +164,7 @@ export function RagTab({ onUpdateBadge }) {
                 if (!event.data || event.data.trim() === '' || event.data.startsWith(':')) return;
                 const d = JSON.parse(event.data);
                 if (d.log) {
+                  isClearedRef.current = false;
                   setTerminalLogs((prev) => (prev.length > 0 && prev[prev.length - 1] === d.log ? prev : [...prev, d.log]));
                 }
                 setReindexStep(getStageStep(d.stage, d.status));
@@ -150,6 +184,9 @@ export function RagTab({ onUpdateBadge }) {
             };
             es.onmessage = onMsg;
           }
+        } else {
+          setReindexing(false);
+          setReindexingForce(false);
         }
       })
       .catch((err) => console.debug('재색인 상태 복구 실패:', err));
@@ -160,7 +197,13 @@ export function RagTab({ onUpdateBadge }) {
         .then((res) => res.json())
         .then((statusData) => {
           if (!statusData) return;
-          if (statusData.recent_logs && statusData.recent_logs.length > 0) {
+
+          // 지우기를 누른 상태가 아닐 때만 로그를 동기화하고, 새 작업이 시작되면 지움 플래그 자동 해제
+          if (statusData.status === 'running') {
+            isClearedRef.current = false;
+          }
+
+          if (!isClearedRef.current && statusData.recent_logs && statusData.recent_logs.length > 0) {
             setTerminalLogs((prev) => {
               if (prev.length === 0 || statusData.recent_logs.length > prev.length) {
                 return statusData.recent_logs;
@@ -169,10 +212,12 @@ export function RagTab({ onUpdateBadge }) {
               return missing.length > 0 ? [...prev, ...missing] : prev;
             });
           }
+
           setReindexStep(getStageStep(statusData.stage, statusData.status));
           if (statusData.status === 'running') {
             setReindexing(true);
-          } else if (statusData.status === 'completed') {
+          } else {
+            // running이 아닌 모든 상태(completed, ready, idle, failed)에서는 버튼 활성화 100% 보장
             setReindexing(false);
             setReindexingForce(false);
           }
@@ -428,6 +473,7 @@ export function RagTab({ onUpdateBadge }) {
     if (!window.confirm(confirmMsg)) {
       return;
     }
+    isClearedRef.current = false;
     setReindexing(true);
     setReindexingForce(isForce);
     setReindexStep(1);
@@ -971,11 +1017,19 @@ export function RagTab({ onUpdateBadge }) {
               </button>
               <button
                 className="btn btn-secondary btn-sm"
-                onClick={() => setTerminalLogs([])}
-                title="화면 지우기"
+                onClick={handleClearLogs}
+                title="터미널 화면 지우기 (과거 로그 부활 원천 방지)"
                 style={{ background: '#1e293b', border: '1px solid #334155', color: '#cbd5e1' }}
               >
                 지우기
+              </button>
+              <button
+                className="btn btn-secondary btn-sm"
+                onClick={handleResetPipeline}
+                title="파이프라인 비상 상태 초기화 및 잠금 해제 (버튼 비활성화 굳음 복구)"
+                style={{ background: 'rgba(239, 68, 68, 0.15)', border: '1px solid rgba(239, 68, 68, 0.4)', color: '#fca5a5' }}
+              >
+                초기화
               </button>
             </div>
           </div>
