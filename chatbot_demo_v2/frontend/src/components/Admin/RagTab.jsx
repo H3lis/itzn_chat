@@ -49,11 +49,12 @@ export function RagTab({ onUpdateBadge }) {
 
   // 재색인 파이프라인 상태
   const [reindexing, setReindexing] = useState(false);
-  const [forceReindex, setForceReindex] = useState(false);
+  const [reindexingForce, setReindexingForce] = useState(false);
   const [reindexStep, setReindexStep] = useState(0); // 0: 준비, 1~5: 각 파이프라인 단계
   const [terminalLogs, setTerminalLogs] = useState([]);
   const terminalEndRef = useRef(null);
   const sseRef = useRef(null);
+
 
   const badgeRef = useRef(onUpdateBadge);
   useEffect(() => {
@@ -331,23 +332,29 @@ export function RagTab({ onUpdateBadge }) {
     }
   };
 
-  // 재색인 시작 및 SSE 스트리밍 구독
-  const handleStartReindex = async () => {
+  // 재색인 시작 및 SSE 스트리밍 구독 (isForce: true = 전체 완전 재파싱, false = 고속 증분 재색인)
+  const handleStartReindex = async (isForce = false) => {
     if (reindexing) return;
-    if (!window.confirm(`사전 청킹 및 벡터 재색인 파이프라인을 실행하시겠습니까?${forceReindex ? '\n(전체 강제 재색인 모드)' : ''}`)) {
+    const confirmMsg = isForce
+      ? "⚠️ [전체 완전 재파싱 & 강제 재색인]을 실행하시겠습니까?\n\n- 기존의 모든 파싱 캐시를 무시하고 1페이지부터 처음부터 끝까지 전체 문서를 다시 정밀 분석합니다.\n- 문서량에 따라 수 분~수십 분이 소요될 수 있습니다."
+      : "⚡ [고속 증분 재색인]을 실행하시겠습니까?\n\n- 이미 분석된 기존 캐시를 재사용하여, 새로 추가되거나 변경된 문서만 빠르게 색인에 반영합니다.\n- 소요 시간: 수십 초 내외 고속 완료.";
+
+    if (!window.confirm(confirmMsg)) {
       return;
     }
     setReindexing(true);
+    setReindexingForce(isForce);
     setReindexStep(1);
-    setTerminalLogs([`[${new Date().toLocaleTimeString()}] 재색인 파이프라인 가동 요청…`]);
+    setTerminalLogs([`[${new Date().toLocaleTimeString()}] ${isForce ? '전체 완전 재파싱 & 강제 재색인' : '고속 증분 재색인'} 파이프라인 가동 요청…`]);
     setReindexSummary(null);
 
     try {
       const res = await fetch('/api/admin/reindex', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ force: forceReindex })
+        body: JSON.stringify({ force: isForce })
       });
+
       if (!res.ok) {
         const err = await res.json();
         alert(`재색인 시작 실패: ${err.detail || '이미 진행 중이거나 오류'}`);
@@ -702,34 +709,60 @@ export function RagTab({ onUpdateBadge }) {
             </div>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem', cursor: 'pointer' }}>
-              <input
-                type="checkbox"
-                checked={forceReindex}
-                onChange={(e) => setForceReindex(e.target.checked)}
-              />
-              <span>전체 강제 재색인 (--force)</span>
-            </label>
-
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
+            {/* 버튼 1: 고속 증분 재색인 (캐시 재사용) */}
             <button
               className="btn btn-primary"
-              onClick={handleStartReindex}
+              onClick={() => handleStartReindex(false)}
               disabled={reindexing}
+              title="기존 파싱 캐시를 재사용하여 새로 추가되거나 변경된 문서만 빠르게 색인에 반영합니다. (수십 초 완료)"
+              style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', padding: '0.55rem 0.95rem', fontWeight: 600 }}
             >
-              {reindexing ? (
+              {reindexing && !reindexingForce ? (
                 <>
                   <RefreshCw size={15} className="spinner" />
-                  <span>색인 진행 중…</span>
+                  <span>고속 색인 진행 중…</span>
                 </>
               ) : (
                 <>
-                  <Play size={15} />
-                  <span>재색인 파이프라인 가동</span>
+                  <Zap size={15} />
+                  <span>⚡ 고속 증분 재색인 (캐시 재사용)</span>
+                </>
+              )}
+            </button>
+
+            {/* 버튼 2: 전체 완전 재파싱 & 강제 재색인 */}
+            <button
+              className="btn"
+              onClick={() => handleStartReindex(true)}
+              disabled={reindexing}
+              title="기존 캐시를 무시하고 1페이지부터 처음부터 끝까지 전체 문서를 완전히 재파싱 및 벡터 재구축합니다. (수 분 소요)"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.45rem',
+                padding: '0.55rem 0.95rem',
+                background: 'rgba(239, 68, 68, 0.12)',
+                border: '1px solid rgba(239, 68, 68, 0.4)',
+                color: '#f87171',
+                fontWeight: 600,
+                cursor: reindexing ? 'not-allowed' : 'pointer'
+              }}
+            >
+              {reindexing && reindexingForce ? (
+                <>
+                  <RefreshCw size={15} className="spinner" />
+                  <span>전체 재구축 진행 중…</span>
+                </>
+              ) : (
+                <>
+                  <RefreshCw size={15} />
+                  <span>🔄 전체 완전 재파싱 & 강제 재색인</span>
                 </>
               )}
             </button>
           </div>
+
         </div>
 
         {/* 5단계 스테퍼 바 */}

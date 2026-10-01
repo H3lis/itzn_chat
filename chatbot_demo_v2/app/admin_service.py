@@ -536,19 +536,19 @@ class ReindexRunner:
             prepare_ragcore_imports(self.settings)
             from ..scripts import reindex
 
-            self._add_log("📁 1단계: 원본 문서 및 카탈로그 스캔 시작...", stage="scan", progress=15)
-            self._add_log(f"  - 문서 경로: {reindex.DEFAULT_DOCS}")
-            self._add_log(f"  - 카탈로그: {reindex.DEFAULT_CATALOG.name}")
+            mode_text = "전체 완전 재파싱 & 강제 재색인" if force else "고속 증분 재색인 (파싱 캐시 재사용)"
+            self._add_log(f"📁 1단계: 원본 문서 및 카탈로그 스캔 시작... (모드: {mode_text})", stage="scan", progress=15)
+            self._add_log(f"  - 관리 문서 경로: {self.docs_dir}")
 
-            self._add_log("🔍 2단계: PDF 파싱 및 구조 추출 진행 중 (MinerU / pdfplumber)...", stage="parse", progress=30)
+            self._add_log("🔍 2단계: 문서 파싱 및 구조 추출 진행 중 (PDF, HWP, DOCX, 엑셀)...", stage="parse", progress=30)
             
             # 빌드 실행 (웹 UI 실행 시 index_new 자동 정리 빌드)
-            self._add_log("✂️ 3단계: 청크 분할 및 위생 정제 (sanitize_chunks)...", stage="chunk", progress=55)
-            self._add_log("🧬 4단계: 벡터 임베딩 생성 (embeddinggemma)...", stage="embed", progress=75)
+            self._add_log("✂️ 3단계: 스마트 청크 분할 및 위생 정제 (sanitize_chunks)...", stage="chunk", progress=55)
+            self._add_log("🧬 4단계: 벡터 임베딩 생성 (embeddinggemma / bge-m3)...", stage="embed", progress=75)
 
-            # 웹 UI에서는 항상 새 색인 디렉토리를 깨끗하게 정리하고 빌드
-            summary = reindex.build(self.settings, force=True)
+            summary = reindex.build(self.settings, force=force, docs_dir=self.docs_dir)
             self._add_log(f"✅ 새 색인 빌드 완료 (index_new): 총 {summary.get('documents_parsed', 0)}개 문서, {summary.get('total_pages', 0)}개 페이지, {summary.get('total_chunks', 0)}개 청크", progress=85)
+
 
             # 승격 (promote)
             self._add_log("🔄 5단계: 원자적 색인 승격 (index_new → index)...", stage="promote", progress=90)

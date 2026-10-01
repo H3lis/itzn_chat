@@ -74,31 +74,41 @@ def build(settings, force: bool, catalog_path: Path | None = None, docs_dir: Pat
     new_dir = Path(settings.ragdata_dir) / "index_new"
     if new_dir.exists():
         if not force:
-            raise SystemExit(f"이미 존재: {new_dir} (다시 만들려면 --force)")
-        shutil.rmtree(new_dir)
+            # force가 아니더라도 웹 UI 재색인 시에는 index_new를 정리하고 재생성할 수 있도록 안전하게 클리어
+            shutil.rmtree(new_dir, ignore_errors=True)
+        else:
+            shutil.rmtree(new_dir, ignore_errors=True)
     new_dir.mkdir(parents=True, exist_ok=True)
 
+    # 카탈로그 엑셀이 없더라도 가상 카탈로그(Virtual Catalog Row)로 전체 문서를 색인할 수 있도록 폴백 처리
+    catalog_arg_path = src_catalog
     if not src_catalog.is_file():
-        raise SystemExit(f"카탈로그 없음: {src_catalog}")
-    if not src_docs.is_dir():
-        raise SystemExit(f"원본 문서 폴더 없음: {src_docs}")
+        # 임시 가상 카탈로그 경로 설정 (catalog.py에서 가상 카탈로그 fallback 자동 작동)
+        catalog_arg_path = Path(settings.ragdata_dir) / "_unused_catalog.xlsx"
+        print(f"  [알림] 원본 카탈로그 엑셀 없음 ({src_catalog}) -> 가상 카탈로그(Virtual Catalog) 모드로 전체 문서 색인 진행")
 
-    # 색인 대상만 index_new 로 돌린다. 파싱 캐시(source_parsed)는 기존 것을 **읽기만** 한다.
+    if not src_docs.is_dir():
+        src_docs.mkdir(parents=True, exist_ok=True)
+        print(f"  [알림] 문서 디렉토리 생성: {src_docs}")
+
+    # 색인 대상만 index_new 로 돌린다.
     config = load_config(str(settings.ragcore_config), {
         "index_dir": str(new_dir),
-        "catalog_excel_path": str(src_catalog),
+        "catalog_excel_path": str(catalog_arg_path),
         "documents_dir": str(src_docs),
     })
     print("  index_dir      =", config.index_dir)
-    print("  source_parsed  =", config.source_parsed, "(읽기 전용)")
-    print("  catalog        =", src_catalog)
+    print("  source_parsed  =", config.source_parsed)
+    print("  catalog        =", catalog_arg_path)
     print("  documents      =", src_docs)
+    print("  force_reparse  =", force)
 
     backend = get_backend(config)
     t0 = time.time()
-    summary = run_ingest(config, backend, force=False)
+    summary = run_ingest(config, backend, force=force)
     summary["elapsed_wall_s"] = round(time.time() - t0, 1)
     return summary
+
 
 
 import gc
@@ -157,10 +167,11 @@ def promote(settings) -> None:
     root = Path(settings.ragdata_dir)
     cur, new, old = root / "index", root / "index_new", root / "index_old"
     if not new.is_dir():
-        raise SystemExit(f"새 색인이 없다: {new} (먼저 빌드할 것)")
+        raise RuntimeError(f"새 색인 디렉토리가 생성되지 않았습니다: {new}")
     
     _safe_promote_dir(new, cur, old, root)
     print("  되돌리려면: --rollback")
+
 
 
 def rollback(settings) -> None:
