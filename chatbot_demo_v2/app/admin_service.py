@@ -431,8 +431,8 @@ class _LogCapturingHandler(logging.Handler):
         self.setFormatter(logging.Formatter("[%(levelname)s] %(message)s"))
 
     def emit(self, record: logging.LogRecord):
-        # HTTP 액세스 로그나 uvicorn 통신/핑 로그는 필터링
-        if record.name.startswith("uvicorn") or "HTTP/1.1" in record.getMessage() or ": ping" in record.getMessage():
+        # HTTP 액세스 로그나 uvicorn 통신/핑 로그, httpx 내부 통신 로그는 필터링
+        if record.name.startswith("uvicorn") or record.name.startswith("httpx") or "HTTP/1.1" in record.getMessage() or ": ping" in record.getMessage():
             return
         try:
             msg = self.format(record)

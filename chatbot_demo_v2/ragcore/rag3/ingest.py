@@ -274,15 +274,22 @@ def run_ingest(config: Config, backend: Backend, *, force: bool = False, limit_d
             if un_pdf not in target_rel_paths:
                 target_rel_paths.append(un_pdf)
 
-    for rel_path in target_rel_paths:
+    total_targets = len(target_rel_paths)
+    for idx, rel_path in enumerate(target_rel_paths, start=1):
         slug = doc_slug(rel_path)
+        doc_name = Path(rel_path).name
 
-        # 1) 소스 캐시에서 manifest 로드(없으면 MinerU 재파싱 폴백)
-        doc_info = _load_source_manifest(config, slug)
-        if doc_info is None or force:
+        # 1) 소스 캐시에서 manifest 로드(없으면 MinerU/pdfplumber 재파싱 폴백)
+        doc_info = None if force else _load_source_manifest(config, slug)
+        if doc_info is not None:
+            logger.info(f"⚡ [{idx}/{total_targets}] '{doc_name}': 기존 파싱 캐시 재사용 (총 {doc_info.page_count}페이지)")
+        else:
+            mode_desc = "강제 완전 재파싱" if force else "신규 문서 파싱"
+            logger.info(f"🔍 [{idx}/{total_targets}] '{doc_name}': {mode_desc} 시작...")
             abs_path = config.documents_dir / rel_path
             doc_info = get_or_parse_document(abs_path, rel_path, config, force=force)
             reparsed += 1
+            logger.info(f"  └─ 파싱 완료: 총 {doc_info.page_count}페이지 구조 추출 성공")
 
         total_pages += doc_info.page_count
         if any(p.is_scanned for p in doc_info.pages):
@@ -291,6 +298,7 @@ def run_ingest(config: Config, backend: Backend, *, force: bool = False, limit_d
         figure_pages += sum(1 for p in doc_info.pages if p.page_type == "figure")
 
         # 2) page_index (small-to-big의 big)
+        logger.info(f"  └─ Chroma DB(page_index)에 페이지 벡터 색인 적재 중 ({doc_info.page_count}페이지)...")
         page_ids = [f"{slug}_p{p.page_number:04d}" for p in doc_info.pages]
         page_texts = [p.text for p in doc_info.pages]
         page_metas = [_page_metadata(doc_info, p) for p in doc_info.pages]
@@ -302,7 +310,7 @@ def run_ingest(config: Config, backend: Backend, *, force: bool = False, limit_d
         # 3) chunk_index (small) — content_list 블록 기반 청크 + 카탈로그 프리픽스 주입
         rec = collect_chunk_records(config, prefix_map, slug, doc_info)
         if rec is None:
-            logger.warning("[%s] content_list 없음 -> 청크 색인 생략(page_index만)", slug)
+            logger.warning(f"  └─ [{slug}] content_list 없음 -> 청크 색인 생략(page_index만)")
             continue
         chunk_ids, chunk_texts, chunk_metas, type_counts = rec
         all_chunk_ids.extend(chunk_ids)
@@ -312,9 +320,7 @@ def run_ingest(config: Config, backend: Backend, *, force: bool = False, limit_d
             chunk_type_counts[bt] = chunk_type_counts.get(bt, 0) + n
         total_chunks += len(chunk_ids)
 
-        logger.info("[%s] pages=%d chunks=%d (text=%d table=%d)", doc_info.document_name,
-                    doc_info.page_count, len(chunk_ids),
-                    type_counts.get("text", 0), type_counts.get("table", 0))
+        logger.info(f"  └─ 청크 분할 완료: {len(chunk_ids)}개 청크 (텍스트 {type_counts.get('text', 0)}, 표 {type_counts.get('table', 0)})")
 
     # chatbot_demo_v2 2026-07-27(작업 8): 색인 직전 청크 위생.
     # 완전중복 제거 · 반복줄 노이즈 압축 · 임베딩 컨텍스트 초과 경고. 실측 근거는
