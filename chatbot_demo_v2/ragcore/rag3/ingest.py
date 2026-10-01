@@ -51,24 +51,39 @@ def _catalog_prefix_map(rows) -> dict[str, str]:
 
 
 def _load_source_manifest(config: Config, slug: str) -> DocumentInfo | None:
-    """청크화 소스(source_parsed_dir 우선)에서 manifest를 로드. MinerU 재파싱 회피."""
-    path = config.source_parsed / slug / "manifest.json"
-    if not path.exists():
-        return None
-    data = json.loads(path.read_text(encoding="utf-8"))
-    # vlm_reparse가 남긴 _ 접두 마커(_vlm_orig_text 등)는 PageRecord 필드가 아니므로 제거
-    data["pages"] = [PageRecord(**{k: v for k, v in p.items() if not k.startswith("_")})
-                     for p in data["pages"]]
-    return DocumentInfo(**data)
+    """청크화 소스(source_parsed, parsed_dir, cache_dir 다중 탐색)에서 manifest를 로드. MinerU 재파싱 회피."""
+    candidates = [
+        config.source_parsed / slug / "manifest.json",
+        config.parsed_dir / slug / "manifest.json",
+        config.cache_dir / "parsed" / slug / "manifest.json",
+    ]
+    for path in candidates:
+        if path.is_file():
+            try:
+                data = json.loads(path.read_text(encoding="utf-8"))
+                data["pages"] = [PageRecord(**{k: v for k, v in p.items() if not k.startswith("_")})
+                                 for p in data["pages"]]
+                return DocumentInfo(**data)
+            except Exception as e:
+                logger.debug("[%s] manifest 로드 실패 (%s): %s", slug, path, e)
+    return None
 
 
 def _load_content_list(config: Config, slug: str) -> tuple[list[dict], Path] | None:
-    """source_parsed에서 MinerU content_list.json + images_root 반환."""
-    hits = glob.glob(str(config.source_parsed / slug / "mineru" / "*" / "auto" / "*_content_list.json"))
-    if not hits:
-        return None
-    p = Path(hits[0])
-    return json.loads(p.read_text(encoding="utf-8")), p.parent
+    """source_parsed, parsed_dir, cache_dir에서 MinerU content_list.json + images_root 반환."""
+    search_dirs = [config.source_parsed, config.parsed_dir, config.cache_dir / "parsed"]
+    for sdir in search_dirs:
+        if not sdir.exists():
+            continue
+        hits = glob.glob(str(sdir / slug / "mineru" / "*" / "auto" / "*_content_list.json"))
+        if hits:
+            p = Path(hits[0])
+            try:
+                return json.loads(p.read_text(encoding="utf-8")), p.parent
+            except Exception:
+                continue
+    return None
+
 
 
 def _ingest_catalog(config: Config, backend: Backend) -> tuple[list, Any]:
