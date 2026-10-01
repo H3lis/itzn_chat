@@ -47,6 +47,55 @@ DEFAULT_DOCS = PKG_ROOT / "raw_data" / "documents"
 if not DEFAULT_DOCS.is_dir():
     DEFAULT_DOCS = PROJECT_ROOT / "test_3" / "사전데이터" / "데이터 카탈로그 작업 파일"
 
+LIVE_REPORTS_DIR = PKG_ROOT / "runtime" / "reports"
+LIVE_LOG_FILE = LIVE_REPORTS_DIR / "reindex_live.log"
+LIVE_STATUS_FILE = LIVE_REPORTS_DIR / "reindex_status.json"
+
+
+def emit_live_log(text: str, stage: str | None = None, progress: int | None = None, status: str = "running"):
+    """웹 관리자 콘솔과 실시간 동기화되는 라이브 로그 및 상태 파일에 기록."""
+    LIVE_REPORTS_DIR.mkdir(parents=True, exist_ok=True)
+    stamp = datetime.now().strftime("%H:%M:%S")
+    line = f"[{stamp}] {text}"
+    try:
+        with open(LIVE_LOG_FILE, "a", encoding="utf-8") as f:
+            f.write(line + "\n")
+            f.flush()
+    except Exception:
+        pass
+
+    try:
+        cur_status = {}
+        if LIVE_STATUS_FILE.is_file():
+            try:
+                cur_status = json.loads(LIVE_STATUS_FILE.read_text(encoding="utf-8"))
+            except Exception:
+                cur_status = {}
+        cur_status["status"] = status
+        if stage:
+            cur_status["stage"] = stage
+        if progress is not None:
+            cur_status["progress_pct"] = progress
+        cur_status["updated_at"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        LIVE_STATUS_FILE.write_text(json.dumps(cur_status, ensure_ascii=False, indent=2), encoding="utf-8")
+    except Exception:
+        pass
+
+
+class _LiveFileLogHandler(logging.Handler):
+    """표준 로깅 출력을 실시간 live 로그 파일에 미러링."""
+
+    def __init__(self):
+        super().__init__()
+        self.setFormatter(logging.Formatter("[%(levelname)s] %(message)s"))
+
+    def emit(self, record: logging.LogRecord):
+        try:
+            msg = self.format(record)
+            emit_live_log(msg)
+        except Exception:
+            pass
+
 
 def _dir_stats(p: Path) -> dict:
     if not p.is_dir():
@@ -209,14 +258,23 @@ def main() -> int:
     args = ap.parse_args()
 
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s: %(message)s")
+    # 웹 콘솔 동기화용 실시간 라이브 로거 장착
+    live_handler = _LiveFileLogHandler()
+    logging.getLogger().addHandler(live_handler)
+
     settings = load_settings()
 
     if args.rollback:
         rollback(settings)
+        emit_live_log("⏪ 색인 롤백 완료 (index_old -> index)", stage="ready", progress=100, status="completed")
         return 0
     if args.promote_only:
         promote(settings)
+        emit_live_log("🎉 기존 index_new 승격 완료", stage="ready", progress=100, status="completed")
         return 0
+
+    mode_text = "전체 완전 재파싱 & 강제 재색인" if args.force else "고속 증분 재색인 (파싱 캐시 재사용)"
+    emit_live_log(f"🚀 RAG 재색인 파이프라인 가동 (CLI 모드: {mode_text})", stage="scan", progress=5, status="running")
 
     catalog_path = args.catalog or DEFAULT_CATALOG
     docs_dir = args.docs or DEFAULT_DOCS
@@ -224,7 +282,15 @@ def main() -> int:
     print("원본 무결성 기준값(재색인 전):")
     _guard_sources(catalog_path, docs_dir)
     print()
-    summary = build(settings, force=args.force, catalog_path=catalog_path, docs_dir=docs_dir)
+
+    emit_live_log("📁 1단계: 원본 문서 및 카탈로그 스캔 완료", stage="parse", progress=20)
+    emit_live_log("🔍 2단계: 문서 파싱 및 구조 추출 진행 중...", stage="parse", progress=35)
+
+    try:
+        summary = build(settings, force=args.force, catalog_path=catalog_path, docs_dir=docs_dir)
+    except Exception as exc:
+        emit_live_log(f"❌ 색인 빌드 실패: {exc}", stage="ready", progress=0, status="failed")
+        raise
 
     print()
     print("=" * 80)
@@ -246,15 +312,20 @@ def main() -> int:
     out.write_text(json.dumps(summary, ensure_ascii=False, indent=1), encoding="utf-8")
     print("\n리포트:", out)
 
+    emit_live_log(f"✅ 새 색인 빌드 완료 (index_new): 총 {summary.get('documents_parsed', 0)}개 문서, {summary.get('total_pages', 0)}개 페이지, {summary.get('total_chunks', 0)}개 청크", stage="promote", progress=85)
+
     if args.promote:
         print("\n[승격] 새 색인(index_new)을 서빙 색인(index)으로 즉시 교체 승격합니다...")
+        emit_live_log("🔄 5단계: 원자적 색인 승격 (index_new → index)...", stage="promote", progress=90)
         promote(settings)
         print("🎉 색인 원자적 교체 완료! 챗봇에서 새 색인이 즉시 사용됩니다.")
+        emit_live_log("✨ 모든 전처리 및 재색인 작업이 성공적으로 완료되었습니다!", stage="ready", progress=100, status="completed")
     else:
         print("\n다음 단계: 골든셋으로 새 색인을 검증한 뒤에 교체하거나, --promote 옵션으로 빌드 즉시 교체할 수 있습니다.")
         print("  1) RAGDATA 를 index_new 로 가리켜 평가:  run_eval.py --tag reindex")
         print("  2) ab_compare.py work1256 reindex   ← 악화 문항이 없는지 확인")
         print("  3) 통과하면:  reindex.py --promote-only")
+        emit_live_log("✨ 새 색인(index_new) 빌드가 완료되었습니다. (--promote 로 교체 가능)", stage="ready", progress=100, status="completed")
     return 0
 
 

@@ -708,40 +708,77 @@ def admin_reindex_status(request: Request) -> dict:
 
 @router.get("/api/admin/reindex/stream")
 async def admin_reindex_stream(request: Request):
-    """SSE 실시간 재색인 진행률 및 로그 스트리밍."""
+    """SSE 실시간 재색인 진행률 및 로그 스트리밍 (웹 스레드 큐 + CLI live_log 파일 테일링 동시 지원)."""
     ctx = _ctx(request)
     runner = ctx.reindex_runner
     q = runner.register_listener()
 
+    live_reports_dir = Path(ctx.settings.ragdata_dir).parent / "runtime" / "reports"
+    live_log_file = live_reports_dir / "reindex_live.log"
+
     async def event_generator():
         init_state = runner.get_state()
+        sent_logs = set()
+
         # 1) 연결 즉시 지금까지 쌓인 최근 로그들을 먼저 순차 전송
         for past_log in init_state.get("recent_logs", []):
+            sent_logs.add(past_log)
             log_payload = json.dumps({"type": "log", "log": past_log}, ensure_ascii=False)
             yield f"data: {log_payload}\n\n"
         
-        # 2) 초기 상태 전송 (기본 data: 및 event: init 동시 지원)
+        # 2) 초기 상태 전송
         init_payload = json.dumps({"type": "init", **init_state}, ensure_ascii=False)
         yield f"data: {init_payload}\n\n"
         yield f"event: init\ndata: {init_payload}\n\n"
+
+        last_file_pos = 0
+        if live_log_file.is_file():
+            try:
+                last_file_pos = live_log_file.stat().st_size
+            except Exception:
+                pass
 
         try:
             while True:
                 if await request.is_disconnected():
                     break
+
+                # A) 메모리 큐에서 실시간 이벤트 확인
                 try:
-                    msg = await asyncio.wait_for(q.get(), timeout=1.5)
+                    msg = await asyncio.wait_for(q.get(), timeout=1.0)
+                    log_text = msg.get("log")
+                    if log_text:
+                        sent_logs.add(log_text)
                     event_type = msg.get("type", "update")
                     data_str = json.dumps(msg, ensure_ascii=False)
-                    # es.onmessage 호환용 기본 메시지 전송
                     yield f"data: {data_str}\n\n"
-                    # 커스텀 리스너(es.addEventListener) 호환용 이벤트 전송
                     yield f"event: {event_type}\ndata: {data_str}\n\n"
+                    continue
                 except asyncio.TimeoutError:
-                    yield ": ping\n\n"
+                    pass
+
+                # B) CLI 터미널 실행 대응: live_log 파일 신규 라인 실시간 테일링 감지
+                if live_log_file.is_file():
+                    try:
+                        cur_size = live_log_file.stat().st_size
+                        if cur_size > last_file_pos:
+                            with open(live_log_file, "r", encoding="utf-8", errors="replace") as f:
+                                f.seek(last_file_pos)
+                                new_lines = f.readlines()
+                                last_file_pos = f.tell()
+                            for line in new_lines:
+                                sline = line.strip()
+                                if sline and sline not in sent_logs:
+                                    sent_logs.add(sline)
+                                    log_payload = json.dumps({"type": "log", "log": sline}, ensure_ascii=False)
+                                    yield f"data: {log_payload}\n\n"
+                                    yield f"event: log\ndata: {log_payload}\n\n"
+                    except Exception:
+                        pass
+
+                yield ": ping\n\n"
         finally:
             runner.unregister_listener(q)
-
 
     return StreamingResponse(
         event_generator(),

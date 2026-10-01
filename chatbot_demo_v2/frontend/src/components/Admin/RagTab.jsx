@@ -143,12 +143,44 @@ export function RagTab({ onUpdateBadge }) {
             };
             es.onmessage = onMsg;
             es.addEventListener('log', onMsg);
-            es.addEventListener('completed', onMsg);
-            es.addEventListener('failed', onMsg);
           }
         }
       })
       .catch((err) => console.debug('재색인 상태 복구 실패:', err));
+
+    // 주기적 상태 동기화 (CLI 터미널 실행 실시간 감지 및 웹 콘솔 자동 갱신)
+    const syncInterval = setInterval(() => {
+      fetch('/api/admin/reindex/status')
+        .then((res) => res.json())
+        .then((statusData) => {
+          if (!statusData) return;
+          if (statusData.recent_logs && statusData.recent_logs.length > 0) {
+            setTerminalLogs((prev) => {
+              const missing = statusData.recent_logs.filter((l) => !prev.includes(l));
+              return missing.length > 0 ? [...prev, ...missing] : prev;
+            });
+          }
+          const stageMap = { scan: 1, parse: 2, chunk: 3, embed: 4, promote: 5, ready: 5 };
+          if (statusData.stage && stageMap[statusData.stage]) {
+            setReindexStep(stageMap[statusData.stage]);
+          }
+          if (statusData.status === 'running') {
+            setReindexing(true);
+          } else if (statusData.status === 'completed') {
+            setReindexing(false);
+            setReindexingForce(false);
+          }
+        })
+        .catch(() => {});
+    }, 2500);
+
+    return () => {
+      clearInterval(syncInterval);
+      if (sseRef.current) {
+        sseRef.current.close();
+        sseRef.current = null;
+      }
+    };
   }, [fetchStats, fetchDocs]);
 
 

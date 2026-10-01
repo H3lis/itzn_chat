@@ -466,9 +466,60 @@ class ReindexRunner:
         self.logs: list[str] = []
         self._listeners: list[asyncio.Queue] = []
         self._loop: Optional[asyncio.AbstractEventLoop] = None
+        self.live_reports_dir = Path(settings.ragdata_dir).parent / "runtime" / "reports"
+        self.live_log_file = self.live_reports_dir / "reindex_live.log"
+        self.live_status_file = self.live_reports_dir / "reindex_status.json"
 
     def get_state(self) -> dict[str, Any]:
-        """현재 재색인 상태 스냅샷."""
+        """현재 재색인 상태 스냅샷 (메모리 스레드 상태 + CLI live_log 동시 동기화)."""
+        with self._lock:
+            # 1. 만약 웹 스레드가 직접 돌고 있다면 메모리 상태 우선
+            if self.status == "running":
+                return {
+                    "status": self.status,
+                    "stage": self.stage,
+                    "progress_pct": self.progress_pct,
+                    "started_at": self.started_at,
+                    "finished_at": self.finished_at,
+                    "elapsed_seconds": round(self.elapsed_s, 1),
+                    "error": self.error_msg,
+                    "summary": self.summary,
+                    "log_count": len(self.logs),
+                    "recent_logs": self.logs[-50:] if self.logs else [],
+                }
+
+        # 2. 웹 스레드가 idle/completed일 때, CLI에서 실행된 실시간 파일 상태 확인
+        if self.live_status_file.is_file():
+            try:
+                st = json.loads(self.live_status_file.read_text(encoding="utf-8"))
+                file_age = time.time() - self.live_status_file.stat().st_mtime
+                logs = []
+                if self.live_log_file.is_file():
+                    lines = [ln.strip() for ln in self.live_log_file.read_text(encoding="utf-8", errors="replace").splitlines() if ln.strip()]
+                    logs = lines[-50:]
+
+                status_str = st.get("status", "idle")
+                # 파일이 2분 넘게 갱신되지 않았는데 여전히 running이면 완료로 처리
+                if status_str == "running" and file_age > 120:
+                    status_str = "completed"
+
+                # CLI 로그가 있고 최근에 갱신되었다면 반환
+                if logs or status_str in ("running", "completed"):
+                    return {
+                        "status": status_str,
+                        "stage": st.get("stage", "ready"),
+                        "progress_pct": st.get("progress_pct", 100 if status_str == "completed" else 0),
+                        "started_at": st.get("started_at"),
+                        "finished_at": st.get("updated_at") if status_str in ("completed", "failed") else None,
+                        "elapsed_seconds": round(st.get("elapsed_seconds", 0.0), 1),
+                        "error": st.get("error"),
+                        "summary": st.get("summary"),
+                        "log_count": len(logs),
+                        "recent_logs": logs,
+                    }
+            except Exception as e:
+                logger.debug("live_status 읽기 실패: %s", e)
+
         with self._lock:
             return {
                 "status": self.status,
@@ -494,6 +545,15 @@ class ReindexRunner:
                 self.stage = stage
             if progress is not None:
                 self.progress_pct = max(self.progress_pct, min(progress, 100))
+
+        # 라이브 파일에도 실시간 동기화 기록
+        try:
+            self.live_reports_dir.mkdir(parents=True, exist_ok=True)
+            with open(self.live_log_file, "a", encoding="utf-8") as f:
+                f.write(line + "\n")
+                f.flush()
+        except Exception:
+            pass
 
         # SSE 리스너 알림 (스레드 안전)
         payload = {
