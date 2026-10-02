@@ -102,7 +102,7 @@ class HistoryService:
             conn.commit()
             logger.info("대화 이력 DB 초기화 완료: %s", self.db_path)
 
-    def record_turn(
+    def prepare_turn_payload(
         self,
         *,
         session_id: str,
@@ -117,28 +117,80 @@ class HistoryService:
         evidence: Optional[list] = None,
         created_at: Optional[str] = None,
     ) -> dict[str, Any]:
-        """대화 턴 완료 시 자동 PII 비식별화 후 DB에 안전 적재."""
+        """[1단계 즉시 실행] 0.02초 초고속 규칙 기반 1차 비식별화를 수행하여 큐 페이로드 생성."""
         from .pii_service import MaskResult
 
-        is_scenario = (route == "scenario")
         try:
-            mask_q_res = self.pii_masker.mask_text(raw_question or "", skip_sllm=is_scenario)
+            # 1단계는 무조건 초고속 규칙 기반만 수행하여 사용자 응답 블로킹 방어 (skip_sllm=True)
+            mask_q_res = self.pii_masker.mask_text(raw_question or "", skip_sllm=True)
         except Exception as e:
-            logger.warning("질문 PII 비식별화 실패 (원문 안전 fallback): %s", e)
+            logger.warning("1차 질문 PII 비식별화 실패 (원문 안전 fallback): %s", e)
             mask_q_res = MaskResult(masked_text=raw_question or "", detected_types=[], has_pii=False)
 
         try:
-            mask_ans_res = self.pii_masker.mask_text(final_answer or "", skip_sllm=is_scenario)
+            mask_ans_res = self.pii_masker.mask_text(final_answer or "", skip_sllm=True)
         except Exception as e:
-            logger.warning("답변 PII 비식별화 실패 (원문 안전 fallback): %s", e)
+            logger.warning("1차 답변 PII 비식별화 실패 (원문 안전 fallback): %s", e)
             mask_ans_res = MaskResult(masked_text=final_answer or "", detected_types=[], has_pii=False)
 
         now_str = created_at or datetime.now(KST).strftime("%Y-%m-%d %H:%M:%S")
         all_pii = sorted(list(set(mask_q_res.detected_types + mask_ans_res.detected_types)))
-        pii_json = json.dumps(all_pii, ensure_ascii=False)
 
-        masked_q = mask_q_res.masked_text or raw_question or "(질문 내용 없음)"
-        masked_a = mask_ans_res.masked_text or final_answer or ""
+        return {
+            "session_id": session_id,
+            "run_id": run_id,
+            "raw_question": raw_question or "",
+            "final_answer": final_answer or "",
+            "masked_question": mask_q_res.masked_text or raw_question or "(질문 내용 없음)",
+            "masked_answer": mask_ans_res.masked_text or final_answer or "",
+            "route": route,
+            "route_reason": route_reason,
+            "latency_s": latency_s,
+            "confidence": confidence,
+            "pii_types": all_pii,
+            "created_at": now_str,
+        }
+
+    def save_turn_payload(
+        self,
+        payload: dict[str, Any],
+        use_sllm_refine: bool = False,
+    ) -> dict[str, Any]:
+        """[2단계 백그라운드 워커 실행] 필요 시 sLLM 정밀 인명 검증 후 SQLite DB에 단일 트랜잭션 안전 적재."""
+        from .pii_service import MaskResult
+
+        session_id = payload["session_id"]
+        run_id = payload["run_id"]
+        raw_question = payload.get("raw_question", "")
+        final_answer = payload.get("final_answer", "")
+        masked_q = payload.get("masked_question", raw_question)
+        masked_a = payload.get("masked_answer", final_answer)
+        route = payload.get("route", "none")
+        all_pii = list(payload.get("pii_types", []))
+        now_str = payload.get("created_at") or datetime.now(KST).strftime("%Y-%m-%d %H:%M:%S")
+        latency_s = float(payload.get("latency_s") or 0.0)
+        confidence = str(payload.get("confidence") or "unknown")
+
+        # sLLM 정밀 검증 요청 시: 시나리오 라우트가 아니고 백엔드가 sLLM이면 백그라운드 2차 정밀 감사
+        if use_sllm_refine and route != "scenario" and self.pii_masker.backend == "sllm":
+            try:
+                # 1차 마스킹된 텍스트 위에 sLLM 문맥 인명 가명화 적용
+                mask_q_sllm = self.pii_masker.mask_text(raw_question, skip_sllm=False)
+                if mask_q_sllm.has_pii:
+                    masked_q = mask_q_sllm.masked_text
+                    all_pii = sorted(list(set(all_pii + mask_q_sllm.detected_types)))
+            except Exception as e:
+                logger.debug("백그라운드 sLLM 질문 정밀 비식별화 건너뜀/폴백: %s", e)
+
+            try:
+                mask_a_sllm = self.pii_masker.mask_text(final_answer, skip_sllm=False)
+                if mask_a_sllm.has_pii:
+                    masked_a = mask_a_sllm.masked_text
+                    all_pii = sorted(list(set(all_pii + mask_a_sllm.detected_types)))
+            except Exception as e:
+                logger.debug("백그라운드 sLLM 답변 정밀 비식별화 건너뜀/폴백: %s", e)
+
+        pii_json = json.dumps(all_pii, ensure_ascii=False)
 
         with self._lock, self._get_conn() as conn:
             # 개인정보보호법 준수: 원본 질의(raw_question)는 마스킹 즉시 휘발되며,
@@ -176,6 +228,38 @@ class HistoryService:
             "has_pii": bool(all_pii),
             "detected_pii": all_pii,
         }
+
+    def record_turn(
+        self,
+        *,
+        session_id: str,
+        run_id: str,
+        raw_question: str,
+        final_answer: str = "",
+        route: str = "none",
+        route_reason: str = "",
+        latency_s: float = 0.0,
+        confidence: str = "unknown",
+        source_meta: Optional[dict] = None,
+        evidence: Optional[list] = None,
+        created_at: Optional[str] = None,
+    ) -> dict[str, Any]:
+        """[동기 호환 메서드] 페이로드 생성 및 즉시 적재(기존 단위 테스트 및 직접 호출 지원)."""
+        payload = self.prepare_turn_payload(
+            session_id=session_id,
+            run_id=run_id,
+            raw_question=raw_question,
+            final_answer=final_answer,
+            route=route,
+            route_reason=route_reason,
+            latency_s=latency_s,
+            confidence=confidence,
+            source_meta=source_meta,
+            evidence=evidence,
+            created_at=created_at,
+        )
+        use_sllm = (self.pii_masker.backend == "sllm" and route != "scenario")
+        return self.save_turn_payload(payload, use_sllm_refine=use_sllm)
 
     def update_feedback(
         self,

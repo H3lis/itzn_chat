@@ -1,0 +1,25 @@
+{
+  "document_name": "테스트_장비목록.xlsx",
+  "rel_path": "테스트_장비목록.xlsx",
+  "abs_path": "C:\\Users\\ITZN\\AppData\\Local\\Temp\\tmp5jtslyfp\\docs\\테스트_장비목록.xlsx",
+  "doc_slug": "doc-7ead08dd",
+  "page_count": 1,
+  "parser_used": "excel_markdown_table",
+  "pages": [
+    {
+      "document_name": "테스트_장비목록.xlsx",
+      "file_path": "테스트_장비목록.xlsx",
+      "doc_slug": "doc-7ead08dd",
+      "page_number": 1,
+      "page_type": "table",
+      "text": "### [시트: 스위치목록] (데이터 1~2행 / 총 2행)\n\n| 장비ID | 모델명 | 위치 | 장애조치방법 |\n| --- | --- | --- | --- |\n| SW-101 | Cisco Catalyst 9300 | 본관 3층 MDF실 | 전원 리셋 및 광점퍼코드 확인 |\n| SW-102 | Juniper EX3400 | 별관 2층 IDF실 | 포트 재활성화 및 로그 확인 |",
+      "is_scanned": false,
+      "has_table": true,
+      "table_markdown": "| 장비ID | 모델명 | 위치 | 장애조치방법 |\n| --- | --- | --- | --- |\n| SW-101 | Cisco Catalyst 9300 | 본관 3층 MDF실 | 전원 리셋 및 광점퍼코드 확인 |\n| SW-102 | Juniper EX3400 | 별관 2층 IDF실 | 포트 재활성화 및 로그 확인 |",
+      "table_crop_path": "",
+      "page_image_path": "",
+      "figure_area_ratio": 0.0,
+      "char_count": 213
+    }
+  ]
+}

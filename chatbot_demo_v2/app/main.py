@@ -48,7 +48,13 @@ def create_app(ctx: Optional[AppContext] = None) -> FastAPI:
             ctx.settings.web_search_enabled,
             app.state.langsmith.get("tracing_enabled"),
         )
-        yield
+        if getattr(ctx, "history_worker", None) is not None:
+            ctx.history_worker.start()
+        try:
+            yield
+        finally:
+            if getattr(ctx, "history_worker", None) is not None:
+                ctx.history_worker.drain_and_stop()
 
     app = FastAPI(title="school-network-chatbot-demo-v2", lifespan=lifespan)
     app.state.ctx = ctx

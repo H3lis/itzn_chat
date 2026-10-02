@@ -175,9 +175,9 @@ _KOREAN_SPOKEN_EMAIL_PATTERN = re.compile(
     r"([a-zA-Z0-9가-힣_.+-]+)\s*(?:골뱅이|@)\s*([a-zA-Z0-9가-힣.-]+)\s*(?:점\s*컴|점컴|\.com|\.net|\.co\.kr|\.kr|점[가-힣]+)"
 )
 
-# SNS 핸들 (@handle, 인스타그램 @별빛여행러 등)
+# SNS 핸들 (@handle, 인스타그램 @별빛여행러 등 - 이메일 도메인 및 기마스킹 별표 제외)
 _SNS_HANDLE_PATTERN = re.compile(
-    r"(?<![a-zA-Z0-9_가-힣])@([a-zA-Z0-9_가-힣]{2,24})(?![a-zA-Z0-9_가-힣])"
+    r"(?<![a-zA-Z0-9_가-힣*])@([a-zA-Z0-9_가-힣]{2,24})(?![a-zA-Z0-9_가-힣.])"
 )
 
 # 카드 번호 (16자리)
@@ -765,6 +765,12 @@ class PiiMasker:
 
         # 1-8. SNS 핸들 (@별빛여행러, @study_genius 등)
         def _mask_sns(m):
+            prefix = masked[max(0, m.start() - 1):m.start()]
+            suffix = masked[m.end():min(len(masked), m.end() + 10)]
+            if prefix in ("*", "@") or re.match(r"[A-Za-z0-9_.*-]", prefix):
+                return m.group(0)
+            if suffix.startswith((".", "점")):
+                return m.group(0)
             handle = m.group(1)
             if handle in _SAFE_NOUNS:
                 return m.group(0)
@@ -774,13 +780,16 @@ class PiiMasker:
 
         # 1-9. 시스템 계정 및 비밀번호 / 크리덴셜
         def _mask_credential(m):
+            val = m.group("val")
+            # 이미 주민번호나 다른 PII로 마스킹된 별표/하이픈/공백만 있는 경우 건너뜀
+            if set(val) <= {"*", "-", " "}:
+                return m.group(0)
             prefix_ctx = masked[max(0, m.start() - 15):m.start()].strip()
             if any(prefix_ctx.endswith(w) for w in ("재고", "재고관리", "제품", "상품", "모델", "부품", "에러", "오류", "VLAN", "vlan", "포트", "port", "장비", "스위치", "라우터", "세션", "프로세스", "process", "트랜잭션", "스레드", "thread")):
                 return m.group(0)
             detected.add("credential")
             label = m.group("label")
             sep = m.group("sep")
-            val = m.group("val")
             tail = m.group("tail")
             return f"{label}{sep}" + ("*" * len(val)) + tail
         masked = _CREDENTIAL_PATTERN.sub(_mask_credential, masked)
