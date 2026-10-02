@@ -60,6 +60,7 @@ export function RagTab({ onUpdateBadge }) {
     isOpen: false,
     isForce: false,
   });
+  const [reindexSummary, setReindexSummary] = useState(null); // 재색인 완료 후 요약 정보
 
 
   // 재색인 5단계 스테퍼 계산 헬퍼 (running 중일 때는 최소 1단계 이상 상시 점등 보장)
@@ -482,9 +483,9 @@ export function RagTab({ onUpdateBadge }) {
     const startMsg = `[${new Date().toLocaleTimeString()}] 🚀 ${isForce ? '전체 완전 재파싱 & 강제 재색인' : '고속 증분 재색인'} 파이프라인 가동 요청 중…`;
     const waitMsg = `[${new Date().toLocaleTimeString()}] ⏳ 서버 백엔드 연결 및 프로세스 시작 대기 중…`;
     setTerminalLogs([startMsg, waitMsg]);
-    setReindexSummary(null);
 
     try {
+      setReindexSummary(null);
       let res = await fetch('/api/admin/reindex', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
