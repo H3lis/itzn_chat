@@ -55,6 +55,11 @@ export function RagTab({ onUpdateBadge }) {
   const terminalEndRef = useRef(null);
   const sseRef = useRef(null);
   const isClearedRef = useRef(false); // 사용자가 지우기 눌렀을 때 과거 로그 부활 방지 플래그
+  const isStartingRef = useRef(false); // 재색인 가동 버튼 클릭 직후 백엔드 응답 전 단계 리셋 방지 가드
+  const [reindexConfirmModal, setReindexConfirmModal] = useState({
+    isOpen: false,
+    isForce: false,
+  });
 
 
   // 재색인 5단계 스테퍼 계산 헬퍼 (ready일 때는 0단계 대기, completed일 때만 5단계 완료)
@@ -212,13 +217,15 @@ export function RagTab({ onUpdateBadge }) {
                 return missing.length > 0 ? [...prev, ...missing] : prev;
               });
             }
+            setReindexStep(getStageStep(statusData.stage, statusData.status));
           } else {
-            // running이 아닌 모든 상태(completed, ready, idle, failed)에서는 버튼 활성화 100% 보장
-            setReindexing(false);
-            setReindexingForce(false);
+            // 사용자가 막 시작 버튼을 눌렀을 때 백엔드가 아직 running을 리턴하기 전 찰나(isStartingRef)에는 덮어쓰지 않음
+            if (!isStartingRef.current) {
+              setReindexing(false);
+              setReindexingForce(false);
+              setReindexStep(getStageStep(statusData.stage, statusData.status));
+            }
           }
-
-          setReindexStep(getStageStep(statusData.stage, statusData.status));
         })
         .catch(() => {});
     }, 1000);
@@ -462,41 +469,57 @@ export function RagTab({ onUpdateBadge }) {
   };
 
   // 재색인 시작 및 SSE 스트리밍 구독 (isForce: true = 전체 완전 재파싱, false = 고속 증분 재색인)
-  const handleStartReindex = async (isForce = false) => {
-    if (reindexing) return;
-    const confirmMsg = isForce
-      ? "⚠️ [전체 완전 재파싱 & 강제 재색인]을 실행하시겠습니까?\n\n- 기존의 모든 파싱 캐시를 무시하고 1페이지부터 처음부터 끝까지 전체 문서를 다시 정밀 분석합니다.\n- 소요 시간: 문서량에 따라 수 분~수십 분 소요."
-      : "⚡ [전체 코퍼스 고속 재색인 (캐시 재사용)]을 실행하시겠습니까?\n\n- 기존 문서의 파싱 캐시는 100% 재사용하고, 새로 추가된 신규 문서(PPTX 등)를 파싱하여 전체 RAG 색인을 갱신합니다.\n- 소요 시간: 약 60~70초 소요.\n\n💡 팁: 방금 추가한 1개 문서만 10초 만에 즉시 추가하려면, 하단 문서 목록의 해당 문서 우측 [⚡ 색인] 버튼을 누르시면 됩니다!";
-
-    if (!window.confirm(confirmMsg)) {
-      return;
-    }
+  const handleStartReindexAction = async (isForce = false) => {
+    isStartingRef.current = true;
     isClearedRef.current = false;
     setReindexing(true);
     setReindexingForce(isForce);
-    setReindexStep(1);
+    setReindexStep(1); // 1단계 즉시 불 켜기
     setTerminalLogs([`[${new Date().toLocaleTimeString()}] 🚀 ${isForce ? '전체 완전 재파싱 & 강제 재색인' : '고속 증분 재색인'} 파이프라인 가동 요청…`]);
     setReindexSummary(null);
 
     try {
-      const res = await fetch('/api/admin/reindex', {
+      let res = await fetch('/api/admin/reindex', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ force: isForce })
       });
 
       if (!res.ok) {
-        const err = await res.json();
-        alert(`재색인 시작 실패: ${err.detail || '이미 진행 중이거나 오류'}`);
+        const err = await res.json().catch(() => ({}));
+        alert(`재색인 시작 실패: ${err.detail || '통신 오류'}`);
         setReindexing(false);
+        setReindexStep(0);
+        isStartingRef.current = false;
         return;
       }
 
-      const initData = await res.json();
+      let initData = await res.json();
       if (initData.started === false) {
-        alert("⚠️ 재색인 시작 불가: 서버에서 이미 다른 재색인 작업이 실행 중입니다.\n\n현재 실행 중인 작업이 완료된 후 다시 실행하시거나, 터미널 우측 [초기화] 버튼을 눌러 상태를 리셋해 주세요.");
-        setReindexing(false);
-        return;
+        // 서버에 이전 락이 남아있다면 1회 자동 초기화 후 즉시 자동 재시도
+        console.warn('서버 재색인 락 감지: 자동 리셋 후 1회 즉시 재시도');
+        try {
+          await fetch('/api/admin/reindex/reset', { method: 'POST' });
+          await fetch('/api/admin/reindex/logs', { method: 'DELETE' });
+          res = await fetch('/api/admin/reindex', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ force: isForce })
+          });
+          if (res.ok) {
+            initData = await res.json();
+          }
+        } catch (retryErr) {
+          console.error('자동 재시도 실패:', retryErr);
+        }
+
+        if (initData.started === false) {
+          alert("⚠️ 재색인 시작 불가: 서버에서 이미 다른 재색인 작업이 실행 중입니다.\n\n터미널 우측 [초기화] 버튼을 누른 후 다시 실행해 주세요.");
+          setReindexing(false);
+          setReindexStep(0);
+          isStartingRef.current = false;
+          return;
+        }
       }
 
       // 새 파이프라인 가동: 과거 로그로 덮어쓰지 않고 깨끗한 새 화면에서 시작!
@@ -596,6 +619,11 @@ export function RagTab({ onUpdateBadge }) {
     } catch (e) {
       alert(`재색인 요청 에러: ${e.message}`);
       setReindexing(false);
+      setReindexStep(0);
+    } finally {
+      setTimeout(() => {
+        isStartingRef.current = false;
+      }, 3000);
     }
   };
 
@@ -911,8 +939,13 @@ export function RagTab({ onUpdateBadge }) {
             {/* 버튼 1: 고속 재색인 (캐시 재사용) */}
             <button
               className="btn btn-primary"
-              onClick={() => handleStartReindex(false)}
-              disabled={reindexing}
+              onClick={() => {
+                if (reindexing) {
+                  alert("현재 재색인이 이미 진행 중입니다.\n\n터미널 로그를 확인하시거나, 멈추어 있는 경우 우측 [초기화] 버튼을 눌러 상태를 잠금 해제해 주세요.");
+                  return;
+                }
+                setReindexConfirmModal({ isOpen: true, isForce: false });
+              }}
               title="기존 문서 파싱 캐시는 100% 재사용하고 신규 문서(PPTX 등)를 자동 파싱하여 전체 색인을 갱신합니다. (약 60초 소요)"
               style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', padding: '0.55rem 0.95rem', fontWeight: 600 }}
             >
@@ -932,8 +965,13 @@ export function RagTab({ onUpdateBadge }) {
             {/* 버튼 2: 전체 완전 재파싱 & 강제 재색인 */}
             <button
               className="btn"
-              onClick={() => handleStartReindex(true)}
-              disabled={reindexing}
+              onClick={() => {
+                if (reindexing) {
+                  alert("현재 재색인이 이미 진행 중입니다.\n\n터미널 로그를 확인하시거나, 멈추어 있는 경우 우측 [초기화] 버튼을 눌러 상태를 잠금 해제해 주세요.");
+                  return;
+                }
+                setReindexConfirmModal({ isOpen: true, isForce: true });
+              }}
               title="기존 캐시를 무시하고 1페이지부터 처음부터 끝까지 전체 문서를 완전히 재파싱 및 벡터 재구축합니다. (수 분 소요)"
               style={{
                 display: 'flex',
@@ -944,7 +982,7 @@ export function RagTab({ onUpdateBadge }) {
                 border: '1px solid rgba(239, 68, 68, 0.4)',
                 color: '#f87171',
                 fontWeight: 600,
-                cursor: reindexing ? 'not-allowed' : 'pointer'
+                cursor: 'pointer'
               }}
             >
               {reindexing && reindexingForce ? (
@@ -1252,6 +1290,95 @@ export function RagTab({ onUpdateBadge }) {
                 <button type="submit" className="btn btn-primary" disabled={metaLoading}>메타데이터 저장</button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* 재색인 파이프라인 가동 확인 커스텀 모달 (브라우저 window.confirm 차단 100% 회피) */}
+      {reindexConfirmModal.isOpen && (
+        <div className="modal-backdrop active" onClick={() => setReindexConfirmModal({ isOpen: false, isForce: false })}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '560px' }}>
+            <div className="modal-header">
+              <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                {reindexConfirmModal.isForce ? (
+                  <>
+                    <RefreshCw size={18} color="#ef4444" />
+                    <span>전체 완전 재파싱 & 강제 재색인 가동</span>
+                  </>
+                ) : (
+                  <>
+                    <Zap size={18} color="#10b981" />
+                    <span>고속 증분 재색인 (캐시 재사용) 가동</span>
+                  </>
+                )}
+              </h3>
+              <button className="btn-close" onClick={() => setReindexConfirmModal({ isOpen: false, isForce: false })}>×</button>
+            </div>
+            <div className="modal-body" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <div style={{
+                background: reindexConfirmModal.isForce ? 'rgba(239, 68, 68, 0.08)' : 'rgba(16, 185, 129, 0.08)',
+                border: `1px solid ${reindexConfirmModal.isForce ? 'rgba(239, 68, 68, 0.25)' : 'rgba(16, 185, 129, 0.25)'}`,
+                padding: '1rem',
+                borderRadius: '8px',
+                fontSize: '0.9rem',
+                lineHeight: 1.6
+              }}>
+                {reindexConfirmModal.isForce ? (
+                  <>
+                    <div style={{ fontWeight: 700, color: '#f87171', marginBottom: '0.5rem' }}>
+                      ⚠️ 주의: 전체 문서를 처음부터 완전히 다시 파싱합니다.
+                    </div>
+                    <ul style={{ paddingLeft: '1.2rem', margin: 0, color: 'var(--text-muted)' }}>
+                      <li>기존의 모든 파싱 캐시를 무시하고 1페이지부터 끝까지 정밀 분석합니다.</li>
+                      <li>문서량에 따라 수 분~수십 분이 소요될 수 있습니다.</li>
+                      <li>임베딩 및 Chroma DB 벡터 인덱스가 백그라운드에서 완전히 새로 구축됩니다.</li>
+                    </ul>
+                  </>
+                ) : (
+                  <>
+                    <div style={{ fontWeight: 700, color: '#10b981', marginBottom: '0.5rem' }}>
+                      ⚡ 고속 증분 모드로 안전하고 빠르게 색인을 갱신합니다.
+                    </div>
+                    <ul style={{ paddingLeft: '1.2rem', margin: 0, color: 'var(--text-muted)' }}>
+                      <li>기존 문서의 파싱 캐시는 100% 재사용하여 즉시 통과합니다.</li>
+                      <li>새로 추가된 문서(PPTX 등)만 고속 파싱하여 전체 RAG 색인을 갱신합니다.</li>
+                      <li>예상 소요 시간: <strong>약 60~80초</strong> 내외로 빠르게 완료됩니다.</li>
+                    </ul>
+                  </>
+                )}
+              </div>
+
+              <div style={{ fontSize: '0.83rem', color: 'var(--text-muted)' }}>
+                💡 [가동 시작]을 누르면 즉시 1단계 스캔부터 5단계 원자적 승격까지 자동으로 실행되며 실시간 로그가 터미널에 출력됩니다.
+              </div>
+            </div>
+
+            <div className="modal-footer" style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.6rem' }}>
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={() => setReindexConfirmModal({ isOpen: false, isForce: false })}
+              >
+                취소
+              </button>
+              <button
+                type="button"
+                className={reindexConfirmModal.isForce ? "btn" : "btn btn-primary"}
+                style={reindexConfirmModal.isForce ? {
+                  background: 'rgba(239, 68, 68, 0.85)',
+                  color: '#fff',
+                  border: 'none',
+                  fontWeight: 600
+                } : { fontWeight: 600 }}
+                onClick={() => {
+                  const force = reindexConfirmModal.isForce;
+                  setReindexConfirmModal({ isOpen: false, isForce: false });
+                  handleStartReindexAction(force);
+                }}
+              >
+                🚀 지금 바로 가동 시작
+              </button>
+            </div>
           </div>
         </div>
       )}

@@ -492,8 +492,8 @@ class ReindexRunner:
     def get_state(self) -> dict[str, Any]:
         """현재 재색인 상태 스냅샷 (메모리 스레드 상태 + CLI live_log 동시 동기화)."""
         with self._lock:
-            # 1. 만약 웹 스레드가 직접 돌고 있다면 메모리 상태 우선
-            if self.status == "running":
+            # 1. 만약 웹 스레드가 직접 돌고 있거나 이미 메모리에 완료/실패 상태가 있다면 메모리 상태 우선
+            if self.status in ("running", "completed", "failed") and self.started_at:
                 return {
                     "status": self.status,
                     "stage": self.stage,
@@ -507,7 +507,7 @@ class ReindexRunner:
                     "recent_logs": self.logs[-50:] if self.logs else [],
                 }
 
-        # 2. 웹 스레드가 idle/completed일 때, CLI에서 실행된 실시간 파일 상태 확인
+        # 2. 웹 스레드가 아직 한 번도 돌지 않은 idle 상태일 때만 CLI에서 실행된 실시간 파일 상태 확인
         if self.live_status_file.is_file():
             try:
                 st = json.loads(self.live_status_file.read_text(encoding="utf-8"))
@@ -713,6 +713,21 @@ class ReindexRunner:
 
             self._add_log(f"✨ 모든 전처리 및 재색인 작업이 성공적으로 완료되었습니다! (총 소요 시간: {elapsed}초)", progress=100)
 
+            # 디스크 라이브 상태 파일도 100% 완료 상태로 즉시 동기화
+            try:
+                self.live_status_file.write_text(json.dumps({
+                    "status": "completed",
+                    "stage": "ready",
+                    "progress_pct": 100,
+                    "started_at": self.started_at,
+                    "updated_at": self.finished_at,
+                    "finished_at": self.finished_at,
+                    "elapsed_seconds": elapsed,
+                    "summary": summary,
+                }, ensure_ascii=False, indent=2), encoding="utf-8")
+            except Exception:
+                pass
+
             # 완료 이벤트 발송
             done_payload = {
                 "type": "completed",
@@ -742,6 +757,21 @@ class ReindexRunner:
                 self.finished_at = now_kst_str()
                 self.elapsed_s = elapsed
                 self.error_msg = err_text
+
+            # 디스크 라이브 상태 파일도 실패 상태로 즉시 동기화
+            try:
+                self.live_status_file.write_text(json.dumps({
+                    "status": "failed",
+                    "stage": "ready",
+                    "progress_pct": 0,
+                    "started_at": self.started_at,
+                    "updated_at": self.finished_at,
+                    "finished_at": self.finished_at,
+                    "elapsed_seconds": elapsed,
+                    "error": err_text,
+                }, ensure_ascii=False, indent=2), encoding="utf-8")
+            except Exception:
+                pass
 
             fail_payload = {
                 "type": "failed",
