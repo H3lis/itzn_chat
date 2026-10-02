@@ -436,6 +436,40 @@ class DocumentManager:
             except Exception as e:
                 logger.debug("폴백 메타데이터 이름변경 동기화 실패: %s", e)
 
+        # 활성 색인(page_store.json, flat_chunk docs.json, vectors.npz) 식별자 및 내용 원자적 이전
+        try:
+            prepare_ragcore_imports(self.settings)
+            from ..ragcore.rag3.config import load_config
+            from ..ragcore.rag3.models import get_backend
+            from ..ragcore.rag3.add_doc import rename_document_index, invalidate_flat_cache
+
+            rag_config = load_config(str(self.settings.ragcore_config))
+            rag_config.documents_dir = self.docs_dir.resolve()
+            rag_backend = get_backend(rag_config)
+
+            idx_res = rename_document_index(
+                rag_config,
+                rag_backend,
+                old_slug=old_slug,
+                new_slug=new_slug,
+                old_rel_path=clean_old,
+                new_rel_path=new_rel_path,
+                old_name=old_target.name,
+                new_name=safe_new_name,
+            )
+            invalidate_flat_cache()
+
+            if idx_res.get("index_updated") and self.rag_adapter and hasattr(self.rag_adapter, "reload"):
+                try:
+                    self.rag_adapter.reload()
+                except Exception as rel_err:
+                    logger.debug("RAG 어댑터 리로드 알림: %s", rel_err)
+
+            logger.info("[%s -> %s] 색인 내용 원자적 이전 완료 (페이지: %d, 청크: %d)",
+                        old_slug, new_slug, idx_res.get("pages_migrated", 0), idx_res.get("chunks_migrated", 0))
+        except Exception as e:
+            logger.warning("[%s -> %s] 색인 내용 이전 건너뜀/실패 (색인 전 파일이거나 경고): %s", old_slug, new_slug, e)
+
         stat = new_target.stat()
         return {
             "old_rel_path": clean_old,

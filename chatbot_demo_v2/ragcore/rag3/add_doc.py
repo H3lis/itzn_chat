@@ -27,6 +27,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+import numpy as np
 from rapidfuzz import fuzz
 
 from .catalog import CatalogRow, load_catalog, match_catalog_to_pdfs, save_match_report
@@ -416,4 +417,174 @@ def remove_document(config: Config, backend: Backend, pdf_or_slug: str) -> dict[
         "total_chunks": flat.count(),
         "total_pages": len(load_page_store(config)),
         "note": "파싱 캐시(source_parsed)와 Chroma(게이트 경로)는 보존됨",
+    }
+
+
+def rename_document_index(
+    config: Config,
+    backend: Backend,
+    old_slug: str,
+    new_slug: str,
+    old_rel_path: str,
+    new_rel_path: str,
+    old_name: str,
+    new_name: str,
+) -> dict[str, Any]:
+    """문서 파일명 변경 시 활성 인덱스(page_store.json, flat_chunk docs.json, vectors.npz) 내의 식별자 원자적 동기화."""
+    config.ensure_dirs()
+    index_updated = False
+    pages_migrated = 0
+    chunks_migrated = 0
+
+    old_slugs = {s for s in (old_slug, doc_slug(old_name), doc_slug(Path(old_rel_path).name)) if s}
+
+    # 1. page_store.json 동기화
+    try:
+        page_store_path = config.index_dir / "page_store.json"
+        if page_store_path.is_file():
+            store = json.loads(page_store_path.read_text(encoding="utf-8"))
+            new_store = {}
+            for k, v in store.items():
+                matched_old_slug = None
+                for os_slug in old_slugs:
+                    if k.startswith(f"{os_slug}_p") or v.get("meta", {}).get("doc_slug") == os_slug or v.get("meta", {}).get("document_name") == old_name:
+                        matched_old_slug = os_slug
+                        break
+
+                if matched_old_slug:
+                    # 새 키 생성: {new_slug}_p{page_num}
+                    if "_p" in k:
+                        suffix = "_p" + k.split("_p", 1)[1]
+                        new_k = f"{new_slug}{suffix}"
+                    else:
+                        new_k = k
+
+                    meta = v.get("meta", {})
+                    meta["doc_slug"] = new_slug
+                    meta["document_name"] = new_name
+                    meta["file_path"] = new_rel_path.replace("/", "\\")
+
+                    for pkey in ("page_image_path", "table_crop_path", "figure_crop_path"):
+                        if meta.get(pkey):
+                            meta[pkey] = meta[pkey].replace(matched_old_slug, new_slug)
+
+                    v["meta"] = meta
+                    new_store[new_k] = v
+                    pages_migrated += 1
+                else:
+                    new_store[k] = v
+
+            if pages_migrated > 0:
+                temp_ps = page_store_path.with_suffix(".tmp")
+                temp_ps.write_text(json.dumps(new_store, ensure_ascii=False), encoding="utf-8")
+                temp_ps.replace(page_store_path)
+                index_updated = True
+                logger.info("page_store.json [%s -> %s] %d개 페이지 식별자 이전 완료", old_slug, new_slug, pages_migrated)
+    except Exception as e:
+        logger.warning("page_store.json 이름변경 동기화 실패: %s", e)
+
+    # 2. flat_chunk/<backend_id>/ (docs.json + vectors.npz) 동기화
+    try:
+        flat_dir = config.index_dir / "flat_chunk" / backend.backend_id
+        doc_path = flat_dir / "docs.json"
+        vec_path = flat_dir / "vectors.npz"
+
+        if doc_path.is_file() and vec_path.is_file():
+            data = json.loads(doc_path.read_text(encoding="utf-8"))
+            ids = data.get("ids", [])
+            docs = data.get("docs", [])
+            metas = data.get("metas", [])
+
+            new_ids = []
+            new_docs = []
+            new_metas = []
+
+            for cid, cdoc, cmeta in zip(ids, docs, metas):
+                matched_old_slug = None
+                for os_slug in old_slugs:
+                    if cmeta.get("doc_slug") == os_slug or cid.startswith(f"{os_slug}_p") or cmeta.get("document_name") == old_name:
+                        matched_old_slug = os_slug
+                        break
+
+                if matched_old_slug:
+                    chunks_migrated += 1
+                    # 새 chunk_id 생성
+                    if "_p" in cid:
+                        suffix = "_p" + cid.split("_p", 1)[1]
+                        new_cid = f"{new_slug}{suffix}"
+                    else:
+                        new_cid = cid.replace(matched_old_slug, new_slug, 1)
+
+                    # doc 텍스트 내 헤더 치환
+                    new_cdoc = cdoc
+                    if old_name and new_name and f"문서: {old_name} |" in new_cdoc:
+                        new_cdoc = new_cdoc.replace(f"문서: {old_name} |", f"문서: {new_name} |")
+
+                    # 메타데이터 업데이트
+                    cmeta["doc_slug"] = new_slug
+                    cmeta["document_name"] = new_name
+                    cmeta["doc_name"] = new_name
+                    cmeta["source_path"] = new_rel_path
+                    if "chunk_id" in cmeta:
+                        if "_p" in cmeta["chunk_id"]:
+                            cmeta["chunk_id"] = f"{new_slug}_p" + cmeta["chunk_id"].split("_p", 1)[1]
+                        else:
+                            cmeta["chunk_id"] = cmeta["chunk_id"].replace(matched_old_slug, new_slug, 1)
+
+                    for pkey in ("page_image_path", "table_crop_path", "figure_crop_path"):
+                        if cmeta.get(pkey):
+                            cmeta[pkey] = cmeta[pkey].replace(matched_old_slug, new_slug)
+
+                    new_ids.append(new_cid)
+                    new_docs.append(new_cdoc)
+                    new_metas.append(cmeta)
+                else:
+                    new_ids.append(cid)
+                    new_docs.append(cdoc)
+                    new_metas.append(cmeta)
+
+            if chunks_migrated > 0:
+                # docs.json 저장
+                temp_doc = doc_path.with_suffix(".tmp")
+                temp_doc.write_text(
+                    json.dumps({"ids": new_ids, "docs": new_docs, "metas": new_metas}, ensure_ascii=False),
+                    encoding="utf-8"
+                )
+                temp_doc.replace(doc_path)
+
+                # vectors.npz 저장 (기존 임베딩 벡터 행렬 그대로 유지, ids 배열만 교체)
+                with np.load(vec_path, allow_pickle=True) as npz:
+                    emb = npz["emb"].copy()
+
+                temp_vec = vec_path.with_suffix(".tmp.npz")
+                np.savez(temp_vec, ids=np.array(new_ids, dtype=object), emb=emb)
+
+                import gc
+                gc.collect()
+                time.sleep(0.02)
+                replaced = False
+                for _ in range(5):
+                    try:
+                        temp_vec.replace(vec_path)
+                        replaced = True
+                        break
+                    except PermissionError:
+                        gc.collect()
+                        time.sleep(0.05)
+                if not replaced:
+                    temp_vec.replace(vec_path)
+
+                index_updated = True
+                logger.info("FlatChunkIndex [%s -> %s] %d개 청크 식별자 이전 완료", old_slug, new_slug, chunks_migrated)
+    except Exception as e:
+        logger.warning("FlatChunkIndex 이름변경 동기화 실패: %s", e)
+
+    # 3. 인메모리 캐시 무효화
+    if index_updated:
+        invalidate_flat_cache()
+
+    return {
+        "index_updated": index_updated,
+        "pages_migrated": pages_migrated,
+        "chunks_migrated": chunks_migrated,
     }
