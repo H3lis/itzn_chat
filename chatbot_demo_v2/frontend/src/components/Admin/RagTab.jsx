@@ -129,14 +129,14 @@ export function RagTab({ onUpdateBadge }) {
 
   // 파이프라인 강제 초기화 및 상태 잠금 해제 (버튼 비활성화/대기 멈춤 복구)
   const handleResetPipeline = async () => {
-    if (!window.confirm("⚠️ 파이프라인 상태를 강제 초기화(잠금 해제)하시겠습니까?\n\n- 비정상 대기 또는 버튼 비활성화 상태가 즉시 정상 대기 상태로 복구됩니다.\n- 터미널 로그도 함께 초기화됩니다.")) return;
-
     // 로컬 UI 상태는 서버 응답 여부와 무관하게 100% 무조건 즉시 정상화
     setReindexing(false);
     setReindexingForce(false);
     setReindexStep(0);
     setTerminalLogs([]);
+    setReindexSummary(null);
     isClearedRef.current = true;
+    isStartingRef.current = false;
     if (sseRef.current) {
       sseRef.current.close();
       sseRef.current = null;
@@ -146,8 +146,6 @@ export function RagTab({ onUpdateBadge }) {
       await fetch('/api/admin/reindex/reset', { method: 'POST' });
       await fetch('/api/admin/reindex/logs', { method: 'DELETE' });
     } catch (e) {}
-
-    alert("✅ 파이프라인 상태가 성공적으로 초기화되었습니다. 이제 재색인을 다시 실행하실 수 있습니다.");
   };
 
   useEffect(() => {
@@ -210,8 +208,8 @@ export function RagTab({ onUpdateBadge }) {
           if (!statusData) return;
 
           // 오직 현재 작업이 실제로 running 중일 때만 실시간 로그를 보강
-          if (statusData.status === 'running') {
-            isClearedRef.current = false;
+          // (단, 사용자가 초기화/지우기를 실행한 직후에는 이전 로그 복원 원천 차단)
+          if (statusData.status === 'running' && !isClearedRef.current) {
             setReindexing(true);
             if (Array.isArray(statusData.recent_logs) && statusData.recent_logs.length > 0) {
               setTerminalLogs((prev) => {

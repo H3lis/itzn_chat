@@ -648,7 +648,11 @@ class ReindexRunner:
             self.status = "idle"
             self.stage = "ready"
             self.progress_pct = 0
+            self.started_at = None
+            self.finished_at = None
+            self.elapsed_s = 0.0
             self.error_msg = None
+            self.summary = None
             self.logs.clear()
         try:
             if self.live_status_file.is_file():
