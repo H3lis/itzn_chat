@@ -507,35 +507,38 @@ class ReindexRunner:
                     "recent_logs": self.logs[-50:] if self.logs else [],
                 }
 
-        # 2. 웹 스레드가 아직 한 번도 돌지 않은 idle 상태일 때만 CLI에서 실행된 실시간 파일 상태 확인
+        # 2. 웹 스레드가 아직 한 번도 돌지 않은 idle 상태일 때만 CLI에서 최근 실행된 실시간 파일 상태 확인
         if self.live_status_file.is_file():
             try:
                 st = json.loads(self.live_status_file.read_text(encoding="utf-8"))
                 file_age = time.time() - self.live_status_file.stat().st_mtime
-                logs = []
-                if self.live_log_file.is_file():
-                    lines = [ln.strip() for ln in self.live_log_file.read_text(encoding="utf-8", errors="replace").splitlines() if ln.strip()]
-                    logs = lines[-50:]
-
                 status_str = st.get("status", "idle")
-                # 파일이 2분 넘게 갱신되지 않았는데 여전히 running이면 완료로 처리
-                if status_str == "running" and file_age > 120:
-                    status_str = "completed"
 
-                # CLI 로그가 있고 최근에 갱신되었다면 반환
-                if logs or status_str in ("running", "completed"):
-                    return {
-                        "status": status_str,
-                        "stage": st.get("stage", "ready"),
-                        "progress_pct": st.get("progress_pct", 100 if status_str == "completed" else 0),
-                        "started_at": st.get("started_at"),
-                        "finished_at": st.get("updated_at") if status_str in ("completed", "failed") else None,
-                        "elapsed_seconds": round(st.get("elapsed_seconds", 0.0), 1),
-                        "error": st.get("error"),
-                        "summary": st.get("summary"),
-                        "log_count": len(logs),
-                        "recent_logs": logs,
-                    }
+                # idle 상태이거나 10분 이상 지난 과거 파일이면 무시하여 과거 좀비 로그 주입 원천 차단
+                if status_str != "idle" and file_age < 600:
+                    logs = []
+                    if self.live_log_file.is_file():
+                        lines = [ln.strip() for ln in self.live_log_file.read_text(encoding="utf-8", errors="replace").splitlines() if ln.strip()]
+                        logs = lines[-50:]
+
+                    # 파일이 2분 넘게 갱신되지 않았는데 여전히 running이면 완료로 처리
+                    if status_str == "running" and file_age > 120:
+                        status_str = "completed"
+
+                    # CLI 로그가 있고 최근에 갱신되었다면 반환
+                    if logs or status_str in ("running", "completed"):
+                        return {
+                            "status": status_str,
+                            "stage": st.get("stage", "ready"),
+                            "progress_pct": st.get("progress_pct", 100 if status_str == "completed" else 0),
+                            "started_at": st.get("started_at"),
+                            "finished_at": st.get("updated_at") if status_str in ("completed", "failed") else None,
+                            "elapsed_seconds": round(st.get("elapsed_seconds", 0.0), 1),
+                            "error": st.get("error"),
+                            "summary": st.get("summary"),
+                            "log_count": len(logs),
+                            "recent_logs": logs,
+                        }
             except Exception as e:
                 logger.debug("live_status 읽기 실패: %s", e)
 
@@ -591,6 +594,15 @@ class ReindexRunner:
             except Exception:
                 pass
 
+    def _drain_listeners(self) -> None:
+        """대기 중인 모든 SSE 큐의 잔여 메시지를 비워 이전 로그가 흘러가지 않도록 방지."""
+        for q in list(self._listeners):
+            while not q.empty():
+                try:
+                    q.get_nowait()
+                except Exception:
+                    break
+
     def start_reindex(self, force: bool = False) -> bool:
         """비동기 스레드로 재색인 파이프라인 시작."""
         with self._lock:
@@ -605,10 +617,16 @@ class ReindexRunner:
             self.error_msg = None
             self.summary = None
             self.logs.clear()
+            self._drain_listeners()
 
-        # 디스크의 이전 실행 라이브 로그 및 상태 파일도 즉시 완전 초기화 (과거 로그 섞임 원천 차단)
+        # 디스크의 이전 실행 라이브 로그 및 상태 파일도 물리적으로 완전 삭제 후 새 파일로 생성 (과거 좀비 로그 섞임 100% 원천 차단)
         try:
             self.live_reports_dir.mkdir(parents=True, exist_ok=True)
+            if self.live_log_file.is_file():
+                self.live_log_file.unlink(missing_ok=True)
+            if self.live_status_file.is_file():
+                self.live_status_file.unlink(missing_ok=True)
+
             self.live_log_file.write_text("", encoding="utf-8")
             self.live_status_file.write_text(json.dumps({
                 "status": "running",
@@ -633,17 +651,20 @@ class ReindexRunner:
         return True
 
     def clear_logs(self) -> None:
-        """터미널 로그 및 라이브 로그 파일을 비운다."""
+        """터미널 로그 및 재색인 전용 임시 로그/상태 파일을 물리적으로 완전 삭제한다 (메인 서버 로그는 절대 보존)."""
         with self._lock:
             self.logs.clear()
+            self._drain_listeners()
         try:
             if self.live_log_file.is_file():
-                self.live_log_file.write_text("", encoding="utf-8")
-        except Exception:
-            pass
+                self.live_log_file.unlink(missing_ok=True)
+            if self.live_status_file.is_file():
+                self.live_status_file.unlink(missing_ok=True)
+        except Exception as e:
+            logger.debug("재색인 전용 임시 로그 파일 삭제 실패: %s", e)
 
     def reset_state(self) -> dict:
-        """비정상 락 또는 오류 발생 시 파이프라인 상태를 강제로 정상 ready/idle 상태로 리셋."""
+        """비정상 락 또는 오류 발생 시 파이프라인 상태를 강제로 정상 ready/idle 상태로 리셋하고 잔류 재색인 파일을 완전 삭제."""
         with self._lock:
             self.status = "idle"
             self.stage = "ready"
@@ -654,18 +675,14 @@ class ReindexRunner:
             self.error_msg = None
             self.summary = None
             self.logs.clear()
+            self._drain_listeners()
         try:
-            if self.live_status_file.is_file():
-                self.live_status_file.write_text(json.dumps({
-                    "status": "idle",
-                    "stage": "ready",
-                    "progress_pct": 0,
-                    "updated_at": now_kst_str()
-                }, ensure_ascii=False, indent=2), encoding="utf-8")
             if self.live_log_file.is_file():
-                self.live_log_file.write_text("", encoding="utf-8")
-        except Exception:
-            pass
+                self.live_log_file.unlink(missing_ok=True)
+            if self.live_status_file.is_file():
+                self.live_status_file.unlink(missing_ok=True)
+        except Exception as e:
+            logger.debug("재색인 상태 리셋 파일 삭제 실패: %s", e)
         return self.get_state()
 
     def _run_pipeline(self, force: bool):

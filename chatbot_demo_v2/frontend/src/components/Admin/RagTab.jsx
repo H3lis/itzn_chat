@@ -143,8 +143,10 @@ export function RagTab({ onUpdateBadge }) {
     }
 
     try {
-      await fetch('/api/admin/reindex/reset', { method: 'POST' });
-      await fetch('/api/admin/reindex/logs', { method: 'DELETE' });
+      await Promise.all([
+        fetch('/api/admin/reindex/reset', { method: 'POST' }),
+        fetch('/api/admin/reindex/logs', { method: 'DELETE' }),
+      ]);
     } catch (e) {}
   };
 

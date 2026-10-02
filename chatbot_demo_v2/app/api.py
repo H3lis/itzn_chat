@@ -741,11 +741,12 @@ async def admin_reindex_stream(request: Request):
         init_state = runner.get_state()
         sent_logs = set()
 
-        # 1) 연결 즉시 지금까지 쌓인 최근 로그들을 먼저 순차 전송
-        for past_log in init_state.get("recent_logs", []):
-            sent_logs.add(past_log)
-            log_payload = json.dumps({"type": "log", "log": past_log}, ensure_ascii=False)
-            yield f"data: {log_payload}\n\n"
+        # 1) 현재 실제로 재색인이 실행 중(running)일 때만 최근 진행 로그를 전송 (idle/리셋 시 과거 로그 주입 원천 차단)
+        if init_state.get("status") == "running":
+            for past_log in init_state.get("recent_logs", []):
+                sent_logs.add(past_log)
+                log_payload = json.dumps({"type": "log", "log": past_log}, ensure_ascii=False)
+                yield f"data: {log_payload}\n\n"
         
         # 2) 초기 상태 전송
         init_payload = json.dumps({"type": "init", **init_state}, ensure_ascii=False)
@@ -754,9 +755,8 @@ async def admin_reindex_stream(request: Request):
         last_file_pos = 0
         if live_log_file.is_file():
             try:
-                cur_fsize = live_log_file.stat().st_size
-                # 최근 약 50KB 위치부터 테일링 시작 (직전 누락 라인 복구)
-                last_file_pos = max(0, cur_fsize - 51200)
+                # SSE 연결 시점의 현재 파일 크기를 기준으로 하여 과거 로그의 재방출을 방지
+                last_file_pos = live_log_file.stat().st_size
             except Exception:
                 pass
 
