@@ -62,9 +62,13 @@ export function RagTab({ onUpdateBadge }) {
   });
 
 
-  // 재색인 5단계 스테퍼 계산 헬퍼 (ready일 때는 0단계 대기, completed일 때만 5단계 완료)
+  // 재색인 5단계 스테퍼 계산 헬퍼 (running 중일 때는 최소 1단계 이상 상시 점등 보장)
   const getStageStep = useCallback((stage, status) => {
     if (status === 'completed') return 5;
+    if (status === 'running') {
+      const map = { scan: 1, parse: 2, chunk: 3, embed: 4, promote: 5 };
+      return map[stage] || 1; // 실행 중일 때는 절대로 불이 꺼지지 않음 (최소 1단계 보장)
+    }
     if (!stage || stage === 'ready' || stage === 'idle') return 0;
     const map = { scan: 1, parse: 2, chunk: 3, embed: 4, promote: 5 };
     return map[stage] || 0;
@@ -475,7 +479,9 @@ export function RagTab({ onUpdateBadge }) {
     setReindexing(true);
     setReindexingForce(isForce);
     setReindexStep(1); // 1단계 즉시 불 켜기
-    setTerminalLogs([`[${new Date().toLocaleTimeString()}] 🚀 ${isForce ? '전체 완전 재파싱 & 강제 재색인' : '고속 증분 재색인'} 파이프라인 가동 요청…`]);
+    const startMsg = `[${new Date().toLocaleTimeString()}] 🚀 ${isForce ? '전체 완전 재파싱 & 강제 재색인' : '고속 증분 재색인'} 파이프라인 가동 요청 중…`;
+    const waitMsg = `[${new Date().toLocaleTimeString()}] ⏳ 서버 백엔드 연결 및 프로세스 시작 대기 중…`;
+    setTerminalLogs([startMsg, waitMsg]);
     setReindexSummary(null);
 
     try {
@@ -522,9 +528,14 @@ export function RagTab({ onUpdateBadge }) {
         }
       }
 
-      // 새 파이프라인 가동: 과거 로그로 덮어쓰지 않고 깨끗한 새 화면에서 시작!
+      // 새 파이프라인 가동 성공: 서버 초기 로그 즉시 반영
+      const serverLogs = Array.isArray(initData.recent_logs) && initData.recent_logs.length > 0
+        ? initData.recent_logs
+        : [`[${new Date().toLocaleTimeString()}] ✅ 서버 파이프라인 정상 가동 확인! 실시간 처리 로그 수신 중…`];
+      setTerminalLogs([startMsg, ...serverLogs]);
+
       if (initData.stage) {
-        setReindexStep(getStageStep(initData.stage, initData.status));
+        setReindexStep(Math.max(1, getStageStep(initData.stage, initData.status)));
       }
 
       // SSE 구독 시작
@@ -1326,12 +1337,12 @@ export function RagTab({ onUpdateBadge }) {
                 {reindexConfirmModal.isForce ? (
                   <>
                     <div style={{ fontWeight: 700, color: '#f87171', marginBottom: '0.5rem' }}>
-                      ⚠️ 주의: 전체 문서를 처음부터 완전히 다시 파싱합니다.
+                      ⚠️ 주의: 전체 문서를 처음부터 완전히 다시 파싱합니다. (최소 30분~1시간 소요)
                     </div>
                     <ul style={{ paddingLeft: '1.2rem', margin: 0, color: 'var(--text-muted)' }}>
-                      <li>기존의 모든 파싱 캐시를 무시하고 1페이지부터 끝까지 정밀 분석합니다.</li>
-                      <li>문서량에 따라 수 분~수십 분이 소요될 수 있습니다.</li>
-                      <li>임베딩 및 Chroma DB 벡터 인덱스가 백그라운드에서 완전히 새로 구축됩니다.</li>
+                      <li>기존의 모든 파싱 캐시를 무시하고 1,000여 페이지를 처음부터 정밀 분석합니다.</li>
+                      <li>문서량이 많아 <strong>최소 30분~1시간 이상</strong>의 긴 시간이 소요될 수 있습니다.</li>
+                      <li>💡 <strong>권장:</strong> 새로 추가된 파일(PPTX 등)을 즉시 반영하시려면 취소 후 <strong>[⚡ 고속 재색인]</strong>(약 70초 소요)을 사용해 주세요!</li>
                     </ul>
                   </>
                 ) : (
