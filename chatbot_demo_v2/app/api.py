@@ -433,6 +433,8 @@ def admin_list_documents(request: Request) -> dict:
         meta = all_meta.get(slug)
         if not meta:
             meta = all_meta.get(doc_slug(doc.get("name") or ""))
+        if not meta and ctx.metadata_manager:
+            meta = ctx.metadata_manager.get_metadata(doc.get("rel_path") or doc.get("name") or "")
         doc["has_metadata"] = meta is not None
         if meta:
             doc["meta_title"] = meta.get("title")
@@ -505,10 +507,16 @@ def admin_delete_document(request: Request, doc_path: str) -> dict:
 
 @router.post("/api/admin/documents/rename")
 def admin_rename_document(request: Request, body: DocRenameRequest) -> dict:
-    """RAG 문서 파일명 변경 및 파싱 캐시 동기화."""
+    """RAG 문서 파일명 변경 및 파싱 캐시, 메타데이터 카탈로그 동기화."""
     ctx = _ctx(request)
     try:
         res = ctx.doc_manager.rename_document(body.old_rel_path, body.new_name)
+        # 메타데이터도 확실하게 동기화 보장 (이중 안전장치)
+        if ctx.metadata_manager and res.get("new_rel_path"):
+            try:
+                ctx.metadata_manager.rename_metadata(body.old_rel_path, res["new_rel_path"])
+            except Exception as meta_err:
+                logger.debug("API 수준 메타데이터 동기화 건너뜀 (이미 서비스 내부 처리됨): %s", meta_err)
         return res
     except ValueError as ve:
         raise HTTPException(status_code=400, detail=str(ve))

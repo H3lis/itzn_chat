@@ -162,6 +162,94 @@ class DocumentMetadataManager:
         docs = self._read_catalog().get("documents", {})
         return {k: self._enrich_metadata_dict(v) for k, v in docs.items()}
 
+    def rename_metadata(self, old_rel_path: str, new_rel_path: str) -> Optional[dict[str, Any]]:
+        """문서 파일 이름 변경 시 document_metadata.json 내의 slug 및 메타데이터를 안전하게 이전/보존."""
+        catalog = self._read_catalog()
+        docs = catalog.get("documents", {})
+
+        old_clean = old_rel_path.replace("\\", "/").lstrip("/")
+        new_clean = new_rel_path.replace("\\", "/").lstrip("/")
+
+        old_slug = doc_slug(old_clean)
+        old_base_slug = doc_slug(Path(old_clean).name)
+        new_slug = doc_slug(new_clean)
+        new_name = Path(new_clean).name
+
+        # 기존 메타데이터 탐색 (1. 전체경로 slug -> 2. 파일명 slug -> 3. rel_path/name 속성 검색)
+        target_meta = None
+        found_keys = []
+
+        if old_slug in docs:
+            target_meta = docs[old_slug]
+            found_keys.append(old_slug)
+        elif old_base_slug in docs:
+            target_meta = docs[old_base_slug]
+            found_keys.append(old_base_slug)
+        else:
+            for s, d in list(docs.items()):
+                if d.get("rel_path") == old_clean or d.get("name") == Path(old_clean).name:
+                    target_meta = d
+                    found_keys.append(s)
+                    break
+
+        if not target_meta:
+            logger.info("이름변경 대상 문서의 기존 메타데이터가 존재하지 않음 [%s]", old_clean)
+            return None
+
+        # 메타데이터 정보 갱신 및 새 slug로 이전
+        updated_meta = dict(target_meta)
+        updated_meta["doc_slug"] = new_slug
+        updated_meta["rel_path"] = new_clean
+        updated_meta["name"] = new_name
+        updated_meta["updated_at"] = datetime.now().isoformat()
+
+        # 만약 제목(title)이 이전 파일명 자체였던 경우, 새 파일명 stem으로 자연스럽게 동기화
+        old_stem = Path(old_clean).stem
+        if updated_meta.get("title") in (old_stem, Path(old_clean).name):
+            updated_meta["title"] = Path(new_name).stem
+
+        # 기존 식별 키 제거 (새 키와 다를 때)
+        for k in found_keys:
+            if k != new_slug:
+                docs.pop(k, None)
+
+        docs[new_slug] = updated_meta
+        catalog["documents"] = docs
+        self._write_catalog(catalog)
+
+        logger.info("문서 메타데이터 이전 및 보존 완료: [%s] -> [%s] (slug: %s -> %s)", old_clean, new_clean, old_slug, new_slug)
+        return self._enrich_metadata_dict(updated_meta)
+
+    def delete_metadata(self, doc_rel_path: str) -> bool:
+        """문서 삭제 시 메타데이터 카탈로그에서도 영구 제거."""
+        catalog = self._read_catalog()
+        docs = catalog.get("documents", {})
+
+        clean_path = doc_rel_path.replace("\\", "/").lstrip("/")
+        slug = doc_slug(clean_path)
+        base_slug = doc_slug(Path(clean_path).name)
+
+        deleted = False
+        keys_to_remove = set()
+        for s in (slug, base_slug):
+            if s in docs:
+                keys_to_remove.add(s)
+
+        for s, d in docs.items():
+            if d.get("rel_path") == clean_path or d.get("name") == Path(clean_path).name:
+                keys_to_remove.add(s)
+
+        for k in keys_to_remove:
+            docs.pop(k, None)
+            deleted = True
+
+        if deleted:
+            catalog["documents"] = docs
+            self._write_catalog(catalog)
+            logger.info("문서 메타데이터 삭제 완료 [%s]", clean_path)
+
+        return deleted
+
     def update_metadata(self, doc_rel_path: str, payload: dict[str, Any]) -> dict[str, Any]:
         """관리자가 직접 수정한 메타데이터 반영."""
         try:

@@ -43,9 +43,10 @@ def _format_size(size_bytes: int) -> str:
 class DocumentManager:
     """RAG 원본 문서(raw_data/documents) 파일 관리."""
 
-    def __init__(self, settings: Settings, rag_adapter=None):
+    def __init__(self, settings: Settings, rag_adapter=None, metadata_manager=None):
         self.settings = settings
         self.rag_adapter = rag_adapter
+        self.metadata_manager = metadata_manager
         self.docs_dir = Path(settings.raw_data_dir) / "documents" if hasattr(settings, "raw_data_dir") else (
             Path(settings.project_root) / "chatbot_demo_v2" / "raw_data" / "documents"
         )
@@ -375,10 +376,17 @@ class DocumentManager:
         except Exception as e:
             logger.info("[%s] 인덱스에서 문서 제거 건너뜀/실패 (색인 전 파일이거나 오류): %s", slug, e)
 
+        # 메타데이터 카탈로그 정리
+        if self.metadata_manager:
+            try:
+                self.metadata_manager.delete_metadata(clean_rel)
+            except Exception as e:
+                logger.debug("메타데이터 삭제 동기화 실패 [%s]: %s", clean_rel, e)
+
         return True
 
     def rename_document(self, old_rel_path: str, new_name: str) -> dict[str, Any]:
-        """문서 파일 이름 변경 및 파싱 캐시 디렉터리 동기화."""
+        """문서 파일 이름 변경 및 파싱 캐시 디렉터리, 메타데이터 카탈로그 동기화."""
         clean_old = os.path.normpath(old_rel_path).lstrip(r"\/").replace("..", "")
         old_target = (self.docs_dir / clean_old).resolve()
         if not str(old_target).startswith(str(self.docs_dir.resolve())) or not old_target.is_file():
@@ -413,6 +421,20 @@ class DocumentManager:
                 logger.info("파싱 캐시 이름변경 완료 [%s -> %s]", old_slug, new_slug)
             except Exception as e:
                 logger.warning("파싱 캐시 이름변경 실패 [%s -> %s]: %s", old_slug, new_slug, e)
+
+        # 메타데이터 카탈로그 동기화 (이름 변경 시 메타데이터 초기화/손실 100% 영구 방지)
+        if self.metadata_manager:
+            try:
+                self.metadata_manager.rename_metadata(clean_old, new_rel_path)
+            except Exception as e:
+                logger.warning("메타데이터 이름변경 동기화 실패 [%s -> %s]: %s", clean_old, new_rel_path, e)
+        else:
+            try:
+                from .metadata_service import DocumentMetadataManager
+                meta_mgr = DocumentMetadataManager(self.settings)
+                meta_mgr.rename_metadata(clean_old, new_rel_path)
+            except Exception as e:
+                logger.debug("폴백 메타데이터 이름변경 동기화 실패: %s", e)
 
         stat = new_target.stat()
         return {

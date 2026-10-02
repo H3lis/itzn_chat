@@ -170,11 +170,11 @@ def build_context(
     from .pii_service import PiiMasker
     from .history_service import HistoryService
 
-    doc_manager = DocumentManager(settings, rag_adapter=rag_adapter)
+    metadata_manager = DocumentMetadataManager(settings)
+    doc_manager = DocumentManager(settings, rag_adapter=rag_adapter, metadata_manager=metadata_manager)
     reindex_runner = ReindexRunner(settings, rag_adapter=rag_adapter)
     faq_manager = FaqManager(settings)
     scenario_manager = ScenarioManager(settings)
-    metadata_manager = DocumentMetadataManager(settings)
     pii_masker = PiiMasker(
         backend=settings.pii_backend,
         sllm_model=settings.pii_sllm_model,
