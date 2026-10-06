@@ -489,7 +489,7 @@ class PiiMasker:
             return clean[0] + ("*" * (len(clean) - 1))
         return name
 
-    def _filter_name_candidate(self, name: str) -> Optional[str]:
+    def _filter_name_candidate(self, name: str, original_text: str = "") -> Optional[str]:
         """sLLM 추출 후보 단어에서 호칭/조사 제거 및 인명 유효성 검증."""
         if not name or not isinstance(name, str):
             return None
@@ -501,31 +501,69 @@ class PiiMasker:
             if clean.endswith(title) and len(clean) > len(title):
                 clean = clean[:-len(title)].strip()
         # 조사 분리
-        for p in ("이", "가", "은", "는", "을", "를", "의", "에게", "한테", "께", "도", "와", "과", "랑", "이나", "나", "씨", "님", "이라고"):
+        for p in ("이", "가", "은", "는", "을", "를", "의", "에게", "한테", "께", "도", "와", "과", "랑", "이나", "나", "씨", "님", "이라고", "라는"):
             if clean.endswith(p) and len(clean) > len(p) + 1:
                 clean = clean[:-len(p)].strip()
+
         if 2 <= len(clean) <= 4:
-            if not any(clean.endswith(t) for t in ("선생님", "선생", "교사", "주무관", "실장", "교장", "교감", "부장", "팀장", "주임", "기사", "담당자", "학교", "센터", "대학", "병원")):
-                if clean not in ("나", "너", "본인", "그", "그녀", "상품", "지하철", "도시", "지역", "회사", "이것", "저것"):
+            # 명백한 비(非)인명 명사 및 지명/기관 블랙리스트
+            non_name_words = {
+                "사랑", "보람", "지혜", "노을", "우주", "나무", "푸름", "보리", "장미", "꽃님",
+                "서울", "한결", "해솔", "다솜", "행복은행", "행복", "성적표", "기록부", "생활기록부",
+                "성함", "본명", "이름", "장식용", "백화점", "카페", "등록금", "마감일", "공원",
+                "고객", "회원", "학생", "담당자", "강사", "과장", "대리", "팀장", "선생님",
+                "나", "너", "본인", "그", "그녀", "상품", "지하철", "도시", "지역", "회사", "이것", "저것"
+            }
+            if clean in non_name_words:
+                # 단, 원문에서 뒤에 사람 호칭(씨, 님, 학생 등)이 바로 붙어있는 진짜 인명 문맥이면 허용
+                if original_text and re.search(rf"{re.escape(clean)}['\"]?\s*(?:씨|님|학생|작가|선생)", original_text):
                     return clean
+                return None
+
+
+            if not any(clean.endswith(t) for t in ("선생님", "선생", "교사", "주무관", "실장", "교장", "교감", "부장", "팀장", "주임", "기사", "담당자", "학교", "센터", "대학", "병원", "은행")):
+                return clean
         return None
 
     @staticmethod
     def _check_ambiguous_name_context(text: str, masked: str) -> bool:
         """규칙 엔진이 처리하지 못한 애매한 인명/문맥이 있는지 고속 판별 (1ms 미만)."""
+        # 비인명 문맥 수식어 패턴 (의미, 가치, 소재, 브랜드, 코스, 지역, 색깔, 서류 등)
+        non_name_context_pattern = re.compile(
+            r"['\"]([가-힣]{2,4})['\"]\s*(?:의\s*의미|이라는\s*(?:이름의\s*)?(?:브랜드|가치|소재|옷|키워드|동네)|쪽\s*코스|동네|지역|관련|색깔|색상|색|벽지|씨가\s*아니라|이\s*맞을까요|서류|이\s*많이|라인|명칭)"
+        )
+
         # 1. 따옴표('...', "...")로 강조된 2~4글자 한글 단어가 마스킹되지 않은 채 존재하는 경우
-        quoted = re.findall(r"['\"]([가-힣]{2,4})['\"]", masked)
-        if any(w not in _SAFE_NOUNS for w in quoted):
+        quoted_matches = re.finditer(r"['\"]([가-힣]{2,4})['\"]", masked)
+        has_valid_quoted = False
+        for qm in quoted_matches:
+            w = qm.group(1)
+            full_match_start = qm.start()
+            surrounding = text[full_match_start:min(len(text), full_match_start + 40)]
+            if non_name_context_pattern.search(surrounding):
+                continue
+            # 따옴표 뒤에 바로 인명 호칭(씨, 님, 학생, 작가, 선생)이 붙는 경우 진짜 인명으로 처리
+            if re.search(r"['\"]\s*(?:씨|님|학생|작가|선생)", surrounding):
+                has_valid_quoted = True
+                break
+            if w in ("사랑", "보람", "지혜", "노을", "우주", "나무", "푸름", "보리", "한결", "해솔", "다솜", "행복은행", "성적표", "서울"):
+                continue
+            if w not in _SAFE_NOUNS:
+                has_valid_quoted = True
+                break
+
+        if has_valid_quoted:
             return True
 
-        # 2. 인명 유도 핵심 키워드가 포함되어 있는데 문장에 * 마스킹이 없는 경우
-        name_cues = ("성함", "본명", "이름은", "이름이", "환자분", "담당자분", "작성자", "상담자", "예약자", "닉네임", "별명")
-        if any(cue in text for cue in name_cues) and ("*" not in masked):
+        # 2. 인명 유도 핵심 키워드가 포함되어 있고 뒤에 실제 2~4글자 이름 후보가 나오는 경우
+        name_cue_matches = re.findall(r"(?:성함|본명|이름)이?\s*(?:은|는|이|가|:)?\s*([가-힣]{2,4})", text)
+        if any(w not in _SAFE_NOUNS and w not in ("어떻게", "무엇", "혹시", "다시", "맞는지") and w in masked for w in name_cue_matches):
             return True
 
-        # 3. 호칭/존칭 결합(씨, 님, 에게, 한테) 앞 단어가 마스킹되지 않은 경우
+        # 3. 호칭/존칭 결합(씨, 님, 에게, 한테) 앞 단어가 마스킹되지 않은 경우 (일반 단어 제외)
         suffix_matches = re.findall(r"([가-힣]{2,4})\s*(?:씨|님|에게|한테|이라고|라고\s*하)", text)
-        if any(w not in _SAFE_NOUNS and w not in _TITLES and w in masked for w in suffix_matches):
+        non_name_stems = ("고객", "회원", "담당자", "강사", "사장", "교수", "선생", "대리", "과장", "팀장", "원장", "꽃", "보리")
+        if any(w not in _SAFE_NOUNS and w not in _TITLES and w not in non_name_stems and w in masked for w in suffix_matches):
             return True
 
         # 4. 영문 병기 인명 패턴 (예: 김민준(Kim Minjun))
@@ -535,11 +573,17 @@ class PiiMasker:
         return False
 
     def _extract_names_with_sllm(self, text: str) -> list[str]:
-        """sLLM(Gemini 또는 Ollama)에 요청하여 JSON 형태로 인명 목록 추출."""
+        """sLLM(Gemini 또는 Ollama)에 요청하여 JSON 형태로 순수 인명 목록 추출."""
         prompt = (
-            "아래 텍스트에서 사람의 성명, 이름, 닉네임(예: 홍길동, 남궁민수, 박서연, 온유, 보람, 장미, 민수, 지훈 등)만 JSON 형식 {\"names\": [\"이름1\", \"이름2\"]} 으로 추출하세요.\n"
-            "- 직책, 호칭(선생님, 교사, 주무관, 팀장, 학생, 담당자 등), 대명사(나, 너, 본인), 감탄사(네), 조사, 일반 명사(이 상품, 지하철역 등)는 절대 제외하고 순수 인명/닉네임만 추출하세요.\n"
-            "- 사람 이름이 없으면 {\"names\": []} 을 반환하세요.\n"
+            "아래 텍스트에서 실제 사람의 성명, 이름, 닉네임(예: 홍길동, 박서연, 온유 님 등)만 JSON 형식 {\"names\": [\"이름\"]} 으로 추출하세요.\n"
+            "■ 엄격한 제외 규칙 (인명이 아니므로 절대 추출 금지):\n"
+            "1. 감정, 가치, 추상 개념: '사랑', '보람', '지혜', '행복', '희망' 등\n"
+            "2. 자연, 색상, 식물, 곡물: '노을', '푸름', '우주', '나무', '보리', '장미색', '꽃' 등\n"
+            "3. 상표, 브랜드, 코스, 의류 라인: '한결 브랜드', '해솔 코스', '다솜 라인' 등\n"
+            "4. 지명, 도시, 기관, 시설: '서울', '행복은행', '백화점', '카페', '학교', '도서관' 등\n"
+            "5. 일반 안내 어휘, 서류, 직급: '성함', '이름', '성적표', '생활기록부', '등록금', '선생님', '과장' 등\n"
+            "- 위와 같은 일반 명사나 브랜드/지명은 절대 인명으로 추출하지 마세요.\n"
+            "- 실제 사람의 이름이나 닉네임이 없으면 반드시 {\"names\": []} 을 반환하세요.\n"
             "- 오직 유효한 JSON 형식만 응답하세요.\n\n"
             f"텍스트: {text}"
         )
@@ -583,12 +627,13 @@ class PiiMasker:
 
         return []
 
+
     def _mask_names_with_sllm(self, text: str) -> tuple[str, bool]:
         """sLLM을 호출하여 문맥 인명을 탐지 후 안전하게 In-place 치환."""
         names = self._extract_names_with_sllm(text)
         valid_names = []
         for n in names:
-            v = self._filter_name_candidate(n)
+            v = self._filter_name_candidate(n, original_text=text)
             if v:
                 valid_names.append(v)
 
