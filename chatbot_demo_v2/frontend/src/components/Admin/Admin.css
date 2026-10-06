@@ -2510,6 +2510,18 @@
   box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
 }
 
+.form-input:disabled,
+.form-select:disabled,
+.form-textarea:disabled,
+input:disabled,
+textarea:disabled {
+  background-color: #f1f5f9 !important;
+  color: #64748b !important;
+  border: 1.5px dashed #cbd5e1 !important;
+  cursor: not-allowed !important;
+  opacity: 0.88;
+}
+
 .form-textarea {
   resize: vertical;
   line-height: 1.5;

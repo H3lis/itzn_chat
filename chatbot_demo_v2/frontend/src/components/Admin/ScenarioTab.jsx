@@ -1,9 +1,24 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import {
   GitFork, Plus, Edit2, Trash2, CheckCircle2, AlertTriangle, RefreshCw, Search, Folder,
-  LayoutGrid, List, Eye
+  LayoutGrid, List, Eye, ArrowUp, CornerUpLeft, Lock
 } from 'lucide-react';
 import { ScenarioVisualTree } from './ScenarioVisualTree';
+
+/**
+ * 버튼명을 기반으로 안전한 노드 식별자(ID) 자동 생성 헬퍼
+ */
+function generateNodeIdFromLabel(label, parentId, type) {
+  const prefix = parentId || 'node';
+  const tag = type === 'terminal' ? 'ans' : 'step';
+  if (!label || !label.trim()) {
+    const randomSuffix = Math.random().toString(36).substring(2, 6);
+    return `${prefix}.${tag}_${randomSuffix}`;
+  }
+  const clean = label.trim().replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_\uAC00-\uD7A3]/g, '').slice(0, 16);
+  const randomSuffix = Math.random().toString(36).substring(2, 5);
+  return `${prefix}.${tag}_${clean || randomSuffix}`;
+}
 
 /**
  * FastAPI 및 백엔드 JSON 에러(배열/객체/문자열)를 사람이 읽기 쉬운 한국어로 포맷팅
@@ -177,12 +192,36 @@ export function ScenarioTab({ onUpdateBadge }) {
     fetchTree();
   }, [fetchTree]);
 
-  // 신규 노드 추가 모달
+  // ★ 상위 -> 하위뿐만 아니라 하위 -> 상위 역추적 맵 구축
+  const incomingParentsMap = useMemo(() => {
+    const map = {};
+    if (!draftNodes) return map;
+    Object.entries(draftNodes).forEach(([pId, pNode]) => {
+      const opts = pNode.options || [];
+      opts.forEach((opt) => {
+        const targetId = opt.next_node_id || opt.next_node;
+        if (targetId) {
+          if (!map[targetId]) map[targetId] = [];
+          map[targetId].push({
+            parentId: pId,
+            parentText: pNode.text || pNode.answer?.text || pId,
+            parentType: pNode.type,
+            buttonLabel: opt.label || '선택지'
+          });
+        }
+      });
+    });
+    return map;
+  }, [draftNodes]);
+
+  // 신규 노드 추가 모달 (버튼명 기반 자동 ID 부여)
   const handleOpenCreate = () => {
     setModalMode('create');
+    const flow = selectedNode?.scenario_id || 'general';
+    const initId = generateNodeIdFromLabel('', flow, 'question');
     setNodeForm({
-      node_id: '',
-      scenario_id: selectedNode?.scenario_id || 'general',
+      node_id: initId,
+      scenario_id: flow,
       parentNodeId: null,
       parentOptionLabel: '',
       type: 'question',
@@ -193,27 +232,26 @@ export function ScenarioTab({ onUpdateBadge }) {
     setModalOpen(true);
   };
 
-  // 하위 자식 노드 추가 모달 (고유 ID 자동 생성 및 부모 노드 바인딩)
+  // 하위 자식 노드 추가 모달 (버튼명 기반 고유 ID 자동 생성 및 부모 노드 바인딩)
   const handleOpenCreateChild = (parentNode, defaultChildType = 'terminal') => {
     if (!parentNode) {
       handleOpenCreate();
       return;
     }
-    // parentNode 가 nodeId 문자열일 경우 draftNodes 에서 객체 조회
     const parentObj = typeof parentNode === 'string'
       ? (draftNodes[parentNode] || { node_id: parentNode })
       : parentNode;
     const parentId = parentObj.node_id || parentObj.id || 'node';
-    const randomSuffix = Math.random().toString(36).substring(2, 6);
     const isTerminal = defaultChildType === 'terminal';
-    const childId = isTerminal ? `${parentId}.ans_${randomSuffix}` : `${parentId}.step_${randomSuffix}`;
+    const initialLabel = isTerminal ? '해결 방법 확인' : '상세 점검 진행';
+    const childId = generateNodeIdFromLabel(initialLabel, parentId, defaultChildType);
 
     setModalMode('create');
     setNodeForm({
       node_id: childId,
       scenario_id: parentObj.scenario_id || (parentId.includes('.') ? parentId.split('.')[0] : 'general'),
       parentNodeId: parentId,
-      parentOptionLabel: isTerminal ? '해결 방법 확인' : '상세 점검 진행',
+      parentOptionLabel: initialLabel,
       type: defaultChildType,
       text: isTerminal ? '해결 조치 가이드 내용을 확인하세요.' : '',
       options: isTerminal
@@ -726,29 +764,38 @@ export function ScenarioTab({ onUpdateBadge }) {
                   <Edit2 size={13} />
                   <span>이 노드 수정</span>
                 </button>
-                <button
-                  className="btn btn-emerald btn-sm"
-                  onClick={() => handleOpenCreateChild(selectedNode, 'terminal')}
-                  title="이 노드의 하위 최종 해결 답변 노드('처음으로' 리셋 포함) 생성"
-                  style={{
-                    background: 'rgba(5, 150, 105, 0.15)',
-                    color: 'var(--emerald)',
-                    border: '1px solid var(--emerald)',
-                    fontWeight: 700
-                  }}
-                >
-                  <Plus size={13} />
-                  <span>하위 답변 추가</span>
-                </button>
-                <button
-                  className="btn btn-secondary btn-sm"
-                  onClick={() => handleOpenCreateChild(selectedNode, 'question')}
-                  title="이 노드의 하위 질문/분기 노드 생성"
-                  style={{ fontWeight: 600 }}
-                >
-                  <Plus size={13} />
-                  <span>하위 질문 추가</span>
-                </button>
+                {selectedNode.type !== 'terminal' ? (
+                  <>
+                    <button
+                      className="btn btn-emerald btn-sm"
+                      onClick={() => handleOpenCreateChild(selectedNode, 'terminal')}
+                      title="이 노드의 하위 최종 해결 답변 노드('처음으로' 리셋 포함) 생성"
+                      style={{
+                        background: 'rgba(5, 150, 105, 0.15)',
+                        color: 'var(--emerald)',
+                        border: '1px solid var(--emerald)',
+                        fontWeight: 700
+                      }}
+                    >
+                      <Plus size={13} />
+                      <span>하위 답변 추가</span>
+                    </button>
+                    <button
+                      className="btn btn-secondary btn-sm"
+                      onClick={() => handleOpenCreateChild(selectedNode, 'question')}
+                      title="이 노드의 하위 질문/분기 노드 생성"
+                      style={{ fontWeight: 600 }}
+                    >
+                      <Plus size={13} />
+                      <span>하위 질문 추가</span>
+                    </button>
+                  </>
+                ) : (
+                  <span style={{ fontSize: '0.78rem', color: 'var(--emerald)', fontWeight: 700, padding: '0.2rem 0.55rem', background: 'rgba(5, 150, 105, 0.1)', borderRadius: '6px', border: '1px solid rgba(5, 150, 105, 0.3)', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
+                    <Lock size={12} />
+                    <span>최종 상담 종결 노드 (하위 분기 불가)</span>
+                  </span>
+                )}
               </div>
             </div>
           )}
@@ -930,6 +977,72 @@ export function ScenarioTab({ onUpdateBadge }) {
                   </div>
                 </div>
 
+                {/* ★ [요청 ②] 상위 경로 (이전 노드 / 유입 버튼) 양방향 확인 네비게이션 */}
+                {(() => {
+                  const currentId = selectedNode.node_id || selectedNode.id;
+                  const parents = incomingParentsMap[currentId] || [];
+                  const isRoot = currentId === rootId;
+
+                  return (
+                    <div style={{
+                      background: 'rgba(37, 99, 235, 0.04)',
+                      border: '1px solid rgba(37, 99, 235, 0.2)',
+                      borderRadius: '8px',
+                      padding: '0.85rem 1rem'
+                    }}>
+                      <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--primary)', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                        <CornerUpLeft size={14} />
+                        <span>상위 경로 (이전 노드 및 유입 버튼)</span>
+                      </div>
+                      {isRoot ? (
+                        <div style={{ fontSize: '0.84rem', color: 'var(--text-sub)', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                          <span>🏁 최상위 시작(Root) 노드입니다. (상위 노드 없음)</span>
+                        </div>
+                      ) : parents.length === 0 ? (
+                        <div style={{ fontSize: '0.82rem', color: 'var(--rose)', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                          <span>⚠️ 현재 이 노드로 연결된 상위 노드가 없습니다 (고립 노드).</span>
+                        </div>
+                      ) : (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                          {parents.map((p, idx) => (
+                            <div
+                              key={idx}
+                              style={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                background: '#ffffff',
+                                border: '1px solid var(--border-color)',
+                                padding: '0.45rem 0.75rem',
+                                borderRadius: '6px',
+                                fontSize: '0.84rem'
+                              }}
+                            >
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', overflow: 'hidden' }}>
+                                <span style={{ fontWeight: 700, color: 'var(--primary)', background: 'rgba(37, 99, 235, 0.1)', padding: '0.1rem 0.45rem', borderRadius: '4px', fontSize: '0.78rem' }}>
+                                  버튼: {p.buttonLabel}
+                                </span>
+                                <span style={{ color: 'var(--text-muted)', fontSize: '0.78rem' }}>from</span>
+                                <code style={{ fontSize: '0.8rem', fontWeight: 600 }}>{p.parentId}</code>
+                              </div>
+                              <button
+                                type="button"
+                                className="btn btn-secondary btn-sm"
+                                onClick={() => setSelectedNodeId(p.parentId)}
+                                style={{ fontSize: '0.74rem', padding: '0.15rem 0.5rem', display: 'flex', alignItems: 'center', gap: '0.2rem' }}
+                                title="상위 노드로 이동"
+                              >
+                                <ArrowUp size={11} />
+                                <span>상위로 이동</span>
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })()}
+
                 <div>
                   <label className="form-label" style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-sub)', marginBottom: '0.4rem', display: 'block' }}>
                     💬 안내 및 질문 문구
@@ -952,7 +1065,7 @@ export function ScenarioTab({ onUpdateBadge }) {
 
                 <div>
                   <label className="form-label" style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-sub)', marginBottom: '0.4rem', display: 'block' }}>
-                    🔀 하위 분기 선택지 ({selectedNode.options?.length || 0}개)
+                    🔀 버튼 목록 (버튼명 - 버튼 ID) ({selectedNode.options?.length || 0}개)
                   </label>
                   {selectedNode.options && selectedNode.options.length > 0 ? (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '0.25rem' }}>
@@ -974,7 +1087,7 @@ export function ScenarioTab({ onUpdateBadge }) {
                           }}
                         >
                           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', overflow: 'hidden' }}>
-                            <span style={{ fontWeight: 600, color: 'var(--text-main)' }}>{opt.label}</span>
+                            <span style={{ fontWeight: 600, color: 'var(--text-main)' }}>버튼: {opt.label}</span>
                             {opt.action && (
                               <span className="badge-pill" style={{ fontSize: '0.7rem' }}>
                                 액션: {opt.action}
@@ -982,14 +1095,14 @@ export function ScenarioTab({ onUpdateBadge }) {
                             )}
                           </div>
                           <div style={{ color: opt.next_node ? 'var(--primary)' : 'var(--text-muted)', fontSize: '0.82rem', fontFamily: 'var(--font-mono)', fontWeight: 600, flexShrink: 0, paddingLeft: '0.5rem' }}>
-                            ➔ {opt.next_node || '종료'}
+                            ➔ 버튼 ID: {opt.next_node || '종료'}
                           </div>
                         </div>
                       ))}
                     </div>
                   ) : (
                     <div style={{ background: '#f8fafc', border: '1px solid var(--border-color)', padding: '1.25rem', borderRadius: '8px', fontSize: '0.85rem', color: 'var(--text-muted)', textAlign: 'center' }}>
-                      {selectedNode.type === 'terminal' ? '🎉 상담 종결 리프(Leaf) 노드입니다.' : '설정된 하위 선택지가 없습니다.'}
+                      {selectedNode.type === 'terminal' ? '🎉 상담 종결 리프(Leaf) 노드입니다. (하위 질문/선택지 없음)' : '설정된 하위 버튼이 없습니다.'}
                     </div>
                   )}
                 </div>
@@ -1003,10 +1116,10 @@ export function ScenarioTab({ onUpdateBadge }) {
         </div>
       )}
 
-      {/* 노드 생성/수정 모달 */}
+      {/* 노드 생성/수정 모달 - ★ [요청 ⑦] X 버튼 또는 취소 버튼을 누를 때만 닫히도록 backdrop onClick 제거 */}
       {modalOpen && (
-        <div className="modal-backdrop active" onClick={() => setModalOpen(false)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '600px' }}>
+        <div className="modal-backdrop active">
+          <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '620px' }}>
             <div className="modal-header">
               <h3>{modalMode === 'create' ? (nodeForm.parentNodeId ? `하위 노드 추가 ([${nodeForm.parentNodeId}]에 연결)` : '새 시나리오 노드 등록') : `노드 수정 (${nodeForm.node_id})`}</h3>
               <button className="btn-close" onClick={() => setModalOpen(false)}>×</button>
@@ -1027,29 +1140,55 @@ export function ScenarioTab({ onUpdateBadge }) {
                       <GitFork size={14} />
                       <span>부모 노드 <code>{nodeForm.parentNodeId}</code>의 하위 단계로 자동 연결됩니다.</span>
                     </div>
+                    {/* ★ [요청 ①] 버튼명 입력 시 내부 노드 ID 자동 생성 통합 */}
                     <div className="form-group" style={{ margin: 0 }}>
-                      <label className="form-label" style={{ fontSize: '0.74rem', marginBottom: '0.2rem' }}>부모 노드에 노출될 선택지 버튼 명칭</label>
+                      <label className="form-label" style={{ fontSize: '0.74rem', marginBottom: '0.2rem' }}>
+                        버튼명 (부모 노드에 노출될 선택지 명칭)
+                      </label>
                       <input
                         type="text"
                         className="form-input"
                         value={nodeForm.parentOptionLabel}
-                        onChange={(e) => setNodeForm({ ...nodeForm, parentOptionLabel: e.target.value })}
-                        placeholder="예: 상세 점검 진행, 네 맞아요"
+                        onChange={(e) => {
+                          const newLabel = e.target.value;
+                          setNodeForm((prev) => ({
+                            ...prev,
+                            parentOptionLabel: newLabel,
+                            node_id: modalMode === 'create'
+                              ? generateNodeIdFromLabel(newLabel, prev.parentNodeId || prev.scenario_id, prev.type)
+                              : prev.node_id
+                          }));
+                        }}
+                        placeholder="예: 상세 점검 진행, 네 맞아요, 공유기 재부팅 완료"
                         required
                       />
                     </div>
                   </div>
                 )}
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+
+                <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '1rem' }}>
+                  {/* ★ [요청 ③] 입력 불가(disabled) 필드 가시적 구분 스타일 */}
                   <div className="form-group">
-                    <label className="form-label">노드 식별자 (ID)</label>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
+                      <label className="form-label" style={{ margin: 0 }}>노드 식별자 (ID)</label>
+                      <span style={{ fontSize: '0.68rem', color: '#64748b', background: '#f1f5f9', padding: '0.1rem 0.4rem', borderRadius: '4px', fontWeight: 700 }}>
+                        🔒 자동 생성
+                      </span>
+                    </div>
                     <input
                       type="text"
                       className="form-input"
                       value={nodeForm.node_id}
                       onChange={(e) => setNodeForm({ ...nodeForm, node_id: e.target.value })}
-                      disabled={modalMode === 'edit'}
-                      placeholder="예: wired_ip_check"
+                      disabled
+                      style={{
+                        background: '#f8fafc',
+                        color: '#64748b',
+                        border: '1.5px dashed #cbd5e1',
+                        cursor: 'not-allowed',
+                        fontWeight: 600
+                      }}
+                      placeholder="버튼명에 따라 자동 생성됩니다"
                       required
                     />
                   </div>
@@ -1074,15 +1213,13 @@ export function ScenarioTab({ onUpdateBadge }) {
                     onChange={(e) => {
                       const newType = e.target.value;
                       setNodeForm((prev) => {
-                        const randomSuffix = Math.random().toString(36).substring(2, 6);
                         const basePrefix = prev.parentNodeId || prev.scenario_id || 'node';
+                        const autoId = generateNodeIdFromLabel(prev.parentOptionLabel, basePrefix, newType);
                         if (newType === 'terminal') {
                           return {
                             ...prev,
                             type: 'terminal',
-                            node_id: prev.node_id.includes('.step_')
-                              ? prev.node_id.replace('.step_', '.ans_')
-                              : (modalMode === 'create' ? `${basePrefix}.ans_${randomSuffix}` : prev.node_id),
+                            node_id: modalMode === 'create' ? autoId : prev.node_id,
                             parentOptionLabel: prev.parentOptionLabel === '상세 점검 진행' ? '해결 방법 확인' : prev.parentOptionLabel,
                             text: prev.text || '해결 조치 가이드 내용을 확인하세요.',
                             options: [{ option_id: '__restart__', label: '처음으로', next_node_id: rootId || 'root' }],
@@ -1092,9 +1229,7 @@ export function ScenarioTab({ onUpdateBadge }) {
                           return {
                             ...prev,
                             type: 'question',
-                            node_id: prev.node_id.includes('.ans_')
-                              ? prev.node_id.replace('.ans_', '.step_')
-                              : (modalMode === 'create' ? `${basePrefix}.step_${randomSuffix}` : prev.node_id),
+                            node_id: modalMode === 'create' ? autoId : prev.node_id,
                             parentOptionLabel: prev.parentOptionLabel === '해결 방법 확인' ? '상세 점검 진행' : prev.parentOptionLabel,
                             text: prev.text === '해결 조치 가이드 내용을 확인하세요.' ? '' : prev.text,
                             options: [{ label: '다음 단계', next_node: '', next_node_id: '' }],
@@ -1105,18 +1240,21 @@ export function ScenarioTab({ onUpdateBadge }) {
                     }}
                   >
                     <option value="terminal">✅ 최종 답변 및 조치 노드 (Terminal - '처음으로' 리셋 포함)</option>
-                    <option value="question">❓ 질문 / 분기 선택 노드 (Question - 중간 단계)</option>
+                    <option value="question">❓ 중간 단계 노드 (Question - 하위 분기 및 질문)</option>
                   </select>
                 </div>
 
+                {/* ★ [요청 ⑥] 중간 노드 추가 시 '최종조치' 대신 '버튼선택시 내용'으로 명칭 수정 */}
                 <div className="form-group">
-                  <label className="form-label">안내 및 질문 문구</label>
+                  <label className="form-label">
+                    {nodeForm.type === 'terminal' ? '최종 조치 안내 문구' : '버튼선택시 내용 (안내 및 질문 문구)'}
+                  </label>
                   <textarea
                     className="form-textarea"
                     rows={3}
                     value={nodeForm.text}
                     onChange={(e) => setNodeForm({ ...nodeForm, text: e.target.value })}
-                    placeholder="사용자에게 보여줄 질문 또는 안내 문구"
+                    placeholder={nodeForm.type === 'terminal' ? '사용자에게 최종 조치 안내 시 보여줄 문구' : '버튼을 클릭했을 때 사용자에게 안내할 상세 질문 또는 내용'}
                     required
                   />
                 </div>
@@ -1132,16 +1270,29 @@ export function ScenarioTab({ onUpdateBadge }) {
                       placeholder="사용자가 최종적으로 확인하고 조치할 표준 답변 가이드를 입력하세요."
                       required
                     />
+                    {/* ★ [요청 ④] 마지막 노드에서 질문/선택지 추가 차단 안내 */}
+                    <div style={{ marginTop: '0.45rem', fontSize: '0.78rem', color: 'var(--emerald)', background: 'rgba(5, 150, 105, 0.08)', padding: '0.5rem 0.75rem', borderRadius: '6px', border: '1px solid rgba(5, 150, 105, 0.25)', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                      <Lock size={13} />
+                      <span>최종 종결 노드이므로 하위 질문 및 선택지가 추가되지 않으며, '처음으로' 버튼이 자동 제공됩니다.</span>
+                    </div>
                   </div>
                 ) : (
+                  /* ★ [요청 ⑤] 노드 수정 시 '하위분기선택지' 대신 '버튼 - 버튼 아이디' 형식으로 수정 */
                   <div className="form-group">
-                    <label className="form-label">하위 분기 선택지 목록 ({nodeForm.options.length}개)</label>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+                      <label className="form-label" style={{ margin: 0 }}>
+                        버튼 - 버튼 아이디 ({nodeForm.options.length}개)
+                      </label>
+                      <span style={{ fontSize: '0.74rem', color: 'var(--text-muted)' }}>
+                        버튼명: 사용자 화면 노출 / 버튼 ID: 이동할 노드 ID
+                      </span>
+                    </div>
                     {nodeForm.options.map((opt, i) => (
                       <div key={i} style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr auto', gap: '0.4rem', marginBottom: '0.4rem' }}>
                         <input
                           type="text"
                           className="form-input"
-                          placeholder="버튼 라벨 (예: 네, 불이 켜져 있어요)"
+                          placeholder="버튼 (버튼명: 예: 네, 불이 켜져 있어요)"
                           value={opt.label}
                           onChange={(e) => {
                             const opts = [...nodeForm.options];
@@ -1153,11 +1304,12 @@ export function ScenarioTab({ onUpdateBadge }) {
                         <input
                           type="text"
                           className="form-input"
-                          placeholder="다음 이동 노드 ID"
-                          value={opt.next_node || ''}
+                          placeholder="버튼 아이디 (연결 노드 ID)"
+                          value={opt.next_node || opt.next_node_id || ''}
                           onChange={(e) => {
                             const opts = [...nodeForm.options];
                             opts[i].next_node = e.target.value;
+                            opts[i].next_node_id = e.target.value;
                             setNodeForm({ ...nodeForm, options: opts });
                           }}
                         />
@@ -1165,6 +1317,7 @@ export function ScenarioTab({ onUpdateBadge }) {
                           type="button"
                           className="btn btn-danger btn-sm"
                           onClick={() => setNodeForm({ ...nodeForm, options: nodeForm.options.filter((_, idx) => idx !== i) })}
+                          title="선택지 삭제"
                         >
                           ×
                         </button>
@@ -1174,9 +1327,9 @@ export function ScenarioTab({ onUpdateBadge }) {
                       type="button"
                       className="btn btn-secondary btn-sm"
                       style={{ marginTop: '0.4rem' }}
-                      onClick={() => setNodeForm({ ...nodeForm, options: [...nodeForm.options, { label: '', next_node: '' }] })}
+                      onClick={() => setNodeForm({ ...nodeForm, options: [...nodeForm.options, { label: '', next_node: '', next_node_id: '' }] })}
                     >
-                      + 선택지 추가
+                      + 버튼 추가
                     </button>
                   </div>
                 )}
@@ -1193,9 +1346,9 @@ export function ScenarioTab({ onUpdateBadge }) {
         </div>
       )}
 
-      {/* 5. 신규 플로우 생성 모달 */}
+      {/* 5. 신규 플로우 생성 모달 - ★ [요청 ⑦] X 버튼 또는 취소 시에만 닫힘 */}
       {createFlowModalOpen && (
-        <div className="modal-backdrop" onClick={() => setCreateFlowModalOpen(false)}>
+        <div className="modal-backdrop">
           <div className="modal-content" style={{ maxWidth: '520px' }} onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <h3 className="modal-title">✨ 새로운 대화 플로우 생성</h3>

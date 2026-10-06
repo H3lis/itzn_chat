@@ -345,6 +345,22 @@ export function ScenarioVisualTree({
     }
   }, [nodes, rootId, activeFlow, collapsedNodes, applyLayout]);
 
+  // ★ [요청 ⑧] 각 노드로 유입되는 상위 버튼명(라벨) 맵 구축
+  const incomingLabelsMap = useMemo(() => {
+    const map = {};
+    if (!nodes) return map;
+    Object.entries(nodes).forEach(([pId, pNode]) => {
+      const opts = pNode?.options || [];
+      opts.forEach((opt) => {
+        const targetId = opt.next_node_id || opt.next_node;
+        if (targetId && !map[targetId]) {
+          map[targetId] = opt.label;
+        }
+      });
+    });
+    return map;
+  }, [nodes]);
+
   // 플로우 선택 핸들러 (사용자가 탭을 바꿨을 때는 해당 플로우로 시점 맞춤)
   const handleSelectFlow = (flowKey) => {
     setActiveFlow(flowKey);
@@ -1547,19 +1563,45 @@ export function ScenarioVisualTree({
                   >
                     {isRoot ? 'START' : isTerminal ? 'FINAL' : theme.badge}
                   </span>
-                  <span
-                    style={{
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: '0.78rem',
-                      fontWeight: 700,
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap'
-                    }}
-                    title={nid}
-                  >
-                    {nid}
-                  </span>
+                  {/* ★ [요청 ⑧] 노드상 아이디 대신 버튼명이 보이게끔 수정 */}
+                  {(() => {
+                    const buttonName = incomingLabelsMap[nid] || node.parentOptionLabel;
+                    const mainTitle = isRoot ? '시작 (Root)' : (buttonName || node.title || nid);
+                    const showSubId = !isRoot && mainTitle !== nid;
+
+                    return (
+                      <div style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden', minWidth: 0 }}>
+                        <span
+                          style={{
+                            fontSize: '0.82rem',
+                            fontWeight: 800,
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                            lineHeight: 1.2
+                          }}
+                          title={buttonName ? `버튼: ${buttonName} (ID: ${nid})` : nid}
+                        >
+                          {buttonName ? `🔘 ${buttonName}` : mainTitle}
+                        </span>
+                        {showSubId && (
+                          <span
+                            style={{
+                              fontFamily: 'var(--font-mono)',
+                              fontSize: '0.67rem',
+                              opacity: isRoot || isTerminal ? 0.85 : 0.65,
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              whiteSpace: 'nowrap',
+                              lineHeight: 1.1
+                            }}
+                          >
+                            id: {nid}
+                          </span>
+                        )}
+                      </div>
+                    );
+                  })()}
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.2rem', flexShrink: 0 }}>
@@ -1674,56 +1716,59 @@ export function ScenarioVisualTree({
                       <span style={{ fontSize: '0.7rem', fontWeight: 700, color: 'var(--text-muted)' }}>
                         선택 분기 ({node.options.length}개):
                       </span>
-                      <div style={{ display: 'flex', gap: '0.35rem', alignItems: 'center' }}>
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            if (onCreateChildNode) onCreateChildNode(nid, 'terminal');
-                          }}
-                          style={{
-                            background: 'rgba(5, 150, 105, 0.12)',
-                            border: '1px solid rgba(5, 150, 105, 0.35)',
-                            borderRadius: '4px',
-                            padding: '0.15rem 0.4rem',
-                            color: 'var(--emerald)',
-                            fontSize: '0.68rem',
-                            fontWeight: 700,
-                            cursor: 'pointer',
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '0.15rem'
-                          }}
-                          title="이 분기에 연결될 최종 해결 답변 노드('처음으로' 리셋 포함) 생성"
-                        >
-                          <Plus size={10} />
-                          답변 추가
-                        </button>
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            if (onCreateChildNode) onCreateChildNode(nid, 'question');
-                          }}
-                          style={{
-                            background: 'rgba(37, 99, 235, 0.12)',
-                            border: '1px solid rgba(37, 99, 235, 0.35)',
-                            borderRadius: '4px',
-                            padding: '0.15rem 0.4rem',
-                            color: 'var(--primary)',
-                            fontSize: '0.68rem',
-                            fontWeight: 700,
-                            cursor: 'pointer',
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '0.15rem'
-                          }}
-                          title="이 분기에 연결될 추가 하위 질문 노드 생성"
-                        >
-                          <Plus size={10} />
-                          질문 추가
-                        </button>
-                      </div>
+                      {/* ★ [요청 ④] 종결 노드(isTerminal)에서는 추가 질문이나 답변이 추가되지 않도록 차단 */}
+                      {!isTerminal && (
+                        <div style={{ display: 'flex', gap: '0.35rem', alignItems: 'center' }}>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              if (onCreateChildNode) onCreateChildNode(nid, 'terminal');
+                            }}
+                            style={{
+                              background: 'rgba(5, 150, 105, 0.12)',
+                              border: '1px solid rgba(5, 150, 105, 0.35)',
+                              borderRadius: '4px',
+                              padding: '0.15rem 0.4rem',
+                              color: 'var(--emerald)',
+                              fontSize: '0.68rem',
+                              fontWeight: 700,
+                              cursor: 'pointer',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '0.15rem'
+                            }}
+                            title="이 분기에 연결될 최종 해결 답변 노드('처음으로' 리셋 포함) 생성"
+                          >
+                            <Plus size={10} />
+                            답변 추가
+                          </button>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              if (onCreateChildNode) onCreateChildNode(nid, 'question');
+                            }}
+                            style={{
+                              background: 'rgba(37, 99, 235, 0.12)',
+                              border: '1px solid rgba(37, 99, 235, 0.35)',
+                              borderRadius: '4px',
+                              padding: '0.15rem 0.4rem',
+                              color: 'var(--primary)',
+                              fontSize: '0.68rem',
+                              fontWeight: 700,
+                              cursor: 'pointer',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '0.15rem'
+                            }}
+                            title="이 분기에 연결될 추가 하위 질문 노드 생성"
+                          >
+                            <Plus size={10} />
+                            질문 추가
+                          </button>
+                        </div>
+                      )}
                     </div>
 
                     {node.options.map((opt, optIndex) => {

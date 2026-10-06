@@ -531,15 +531,34 @@ export function HistoryTab({ onUpdateBadge }) {
                       className={`admin-session-item ${isSelected ? 'active' : ''}`}
                       onClick={() => setSelectedSessionId(sess.session_id)}
                     >
+                      {/* ★ [요청 ⑨] 개별 사용자 식별 ID 뱃지 추가 */}
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
+                        <span style={{
+                          fontFamily: 'var(--font-mono)',
+                          fontSize: '0.72rem',
+                          fontWeight: 700,
+                          color: 'var(--primary)',
+                          background: 'rgba(37, 99, 235, 0.09)',
+                          padding: '0.1rem 0.4rem',
+                          borderRadius: '4px',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '0.25rem'
+                        }}>
+                          <User size={10} />
+                          <span>usr-{sess.session_id ? sess.session_id.slice(0, 8) : 'unknown'}</span>
+                        </span>
+                        <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>
+                          {sess.turn_count || 1}턴 질의
+                        </span>
+                      </div>
+
                       <div className="admin-session-item-title" title={sess.title}>
                         {sess.title || '(질문 내용 없음)'}
                       </div>
 
                       <div className="admin-session-item-meta">
                         <span>{sess.last_activity_at || sess.started_at || '-'}</span>
-                        <span style={{ fontWeight: 600, color: 'var(--text-sub)' }}>
-                          답변 {sess.turn_count || 1}개
-                        </span>
                       </div>
 
                       <div className="admin-session-item-badges">
@@ -776,8 +795,9 @@ export function HistoryTab({ onUpdateBadge }) {
             <table className="faq-table">
               <thead>
                 <tr>
-                  <th style={{ width: '160px' }}>일시 / 세션</th>
-                  <th style={{ width: '110px' }}>경로</th>
+                  <th style={{ width: '135px' }}>일시</th>
+                  <th style={{ width: '155px' }}>사용자 ID (세션)</th>
+                  <th style={{ width: '95px' }}>경로</th>
                   <th>사용자 질의 (개인정보 비식별화)</th>
                   <th>챗봇 응답 내용</th>
                   <th style={{ width: '90px', textAlign: 'center' }}>만족도</th>
@@ -787,11 +807,11 @@ export function HistoryTab({ onUpdateBadge }) {
               <tbody>
                 {loadingTable ? (
                   <tr>
-                    <td colSpan={6} className="text-center muted" style={{ padding: '2rem' }}>대화 이력 로드 중…</td>
+                    <td colSpan={7} className="text-center muted" style={{ padding: '2rem' }}>대화 이력 로드 중…</td>
                   </tr>
                 ) : items.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="text-center muted" style={{ padding: '2rem' }}>기록된 대화 이력이 없습니다.</td>
+                    <td colSpan={7} className="text-center muted" style={{ padding: '2rem' }}>기록된 대화 이력이 없습니다.</td>
                   </tr>
                 ) : (
                   items.map((it) => {
@@ -805,11 +825,57 @@ export function HistoryTab({ onUpdateBadge }) {
                           <div style={{ fontSize: '0.8rem', color: 'var(--text-sub)', fontWeight: 600 }}>
                             {it.created_at || (it.timestamp ? new Date(it.timestamp).toLocaleString('ko-KR') : '-')}
                           </div>
-                          {it.session_id && (
-                            <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
-                              세션: {it.session_id.slice(0, 8)}
-                            </div>
-                          )}
+                        </td>
+                        {/* ★ [요청 ⑨] 개별 사용자 ID 컬럼 및 사용자별 질문 모아보기 필터 버튼 */}
+                        <td>
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                if (it.session_id) {
+                                  setKeyword(it.session_id);
+                                  setPage(1);
+                                }
+                              }}
+                              title={`이 사용자(${it.session_id || '알 수 없음'})의 질문 모아보기`}
+                              style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '0.3rem',
+                                background: 'rgba(37, 99, 235, 0.08)',
+                                border: '1px solid rgba(37, 99, 235, 0.22)',
+                                borderRadius: '5px',
+                                padding: '0.2rem 0.45rem',
+                                color: 'var(--primary)',
+                                fontSize: '0.74rem',
+                                fontFamily: 'var(--font-mono)',
+                                fontWeight: 700,
+                                cursor: 'pointer',
+                                textAlign: 'left',
+                                width: 'fit-content'
+                              }}
+                            >
+                              <User size={11} />
+                              <span>{it.session_id ? `usr-${it.session_id.slice(0, 8)}` : '익명'}</span>
+                            </button>
+                            {it.session_id && (
+                              <span
+                                onClick={() => {
+                                  setSelectedSessionId(it.session_id);
+                                  setViewMode('sessions');
+                                }}
+                                style={{
+                                  fontSize: '0.67rem',
+                                  color: 'var(--text-muted)',
+                                  textDecoration: 'underline',
+                                  cursor: 'pointer'
+                                }}
+                                title="이 사용자의 전체 대화 타임라인 보기"
+                              >
+                                대화 흐름 보기 ➔
+                              </span>
+                            )}
+                          </div>
                         </td>
                         <td>
                           <span className="badge-pill" style={{ fontSize: '0.72rem' }}>
@@ -910,9 +976,9 @@ export function HistoryTab({ onUpdateBadge }) {
         </>
       )}
 
-      {/* PII 비식별화 검증 모달 (단건 테이블 뷰용) */}
+      {/* PII 비식별화 검증 모달 (단건 테이블 뷰용) - ★ [요청 ⑦] X 버튼 또는 닫기 버튼으로만 닫힘 */}
       {inspectItem && (
-        <div className="modal-backdrop active" onClick={() => setInspectItem(null)}>
+        <div className="modal-backdrop active">
           <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '640px' }}>
             <div className="modal-header">
               <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
