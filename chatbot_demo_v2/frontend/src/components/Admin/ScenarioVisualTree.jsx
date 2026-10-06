@@ -1563,26 +1563,28 @@ export function ScenarioVisualTree({
                   >
                     {isRoot ? 'START' : isTerminal ? 'FINAL' : theme.badge}
                   </span>
-                  {/* ★ [요청 ⑧] 노드상 아이디 대신 버튼명이 보이게끔 수정 */}
+                  {/* ★ [요청 ⑧ 및 사용자 피드백] 사용자가 정한 노드 이름을 최우선으로 크게 표시 */}
                   {(() => {
+                    const customName = node.name || node.title;
                     const buttonName = incomingLabelsMap[nid] || node.parentOptionLabel;
-                    const mainTitle = isRoot ? '시작 (Root)' : (buttonName || node.title || nid);
+                    const mainTitle = isRoot ? '시작 (Root)' : (customName || buttonName || nid);
+                    const tagIcon = customName ? '🏷️ ' : (buttonName ? '🔘 ' : '');
                     const showSubId = !isRoot && mainTitle !== nid;
 
                     return (
                       <div style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden', minWidth: 0 }}>
                         <span
                           style={{
-                            fontSize: '0.82rem',
+                            fontSize: '0.84rem',
                             fontWeight: 800,
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
                             whiteSpace: 'nowrap',
                             lineHeight: 1.2
                           }}
-                          title={buttonName ? `버튼: ${buttonName} (ID: ${nid})` : nid}
+                          title={customName ? `노드: ${customName} (ID: ${nid})` : (buttonName ? `버튼: ${buttonName} (ID: ${nid})` : nid)}
                         >
-                          {buttonName ? `🔘 ${buttonName}` : mainTitle}
+                          {tagIcon}{mainTitle}
                         </span>
                         {showSubId && (
                           <span

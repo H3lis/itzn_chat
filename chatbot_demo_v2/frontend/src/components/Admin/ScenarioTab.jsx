@@ -214,12 +214,13 @@ export function ScenarioTab({ onUpdateBadge }) {
     return map;
   }, [draftNodes]);
 
-  // 신규 노드 추가 모달 (버튼명 기반 자동 ID 부여)
+  // 신규 노드 추가 모달 (사용자가 이름을 직접 정할 수 있도록 지원)
   const handleOpenCreate = () => {
     setModalMode('create');
     const flow = selectedNode?.scenario_id || 'general';
     const initId = generateNodeIdFromLabel('', flow, 'question');
     setNodeForm({
+      name: '',
       node_id: initId,
       scenario_id: flow,
       parentNodeId: null,
@@ -232,7 +233,7 @@ export function ScenarioTab({ onUpdateBadge }) {
     setModalOpen(true);
   };
 
-  // 하위 자식 노드 추가 모달 (버튼명 기반 고유 ID 자동 생성 및 부모 노드 바인딩)
+  // 하위 자식 노드 추가 모달 (사용자 지정 노드 이름 및 자동 내부 ID 매핑)
   const handleOpenCreateChild = (parentNode, defaultChildType = 'terminal') => {
     if (!parentNode) {
       handleOpenCreate();
@@ -248,6 +249,7 @@ export function ScenarioTab({ onUpdateBadge }) {
 
     setModalMode('create');
     setNodeForm({
+      name: initialLabel,
       node_id: childId,
       scenario_id: parentObj.scenario_id || (parentId.includes('.') ? parentId.split('.')[0] : 'general'),
       parentNodeId: parentId,
@@ -262,11 +264,14 @@ export function ScenarioTab({ onUpdateBadge }) {
     setModalOpen(true);
   };
 
-  // 노드 수정 모달
+  // 노드 수정 모달 (사용자가 지정한 노드 이름 반영)
   const handleOpenEdit = (node) => {
     if (!node) return;
     setModalMode('edit');
+    const incomingName = incomingParentsMap[node.node_id || node.id]?.[0]?.buttonLabel;
+    const initialName = node.name || node.title || incomingName || node.parentOptionLabel || node.node_id || '';
     setNodeForm({
+      name: initialName,
       node_id: node.node_id || node.id,
       scenario_id: node.scenario_id || '',
       parentNodeId: null,
@@ -353,7 +358,12 @@ export function ScenarioTab({ onUpdateBadge }) {
       }
     }
 
+    const cleanName = (nodeForm.name || '').trim();
+
     const updatedNode = {
+      ...(draftNodes[cleanId] || {}),
+      name: cleanName || cleanId,
+      title: cleanName || cleanId,
       node_id: cleanId,
       scenario_id: nodeForm.scenario_id.trim() || cleanId.split('.')[0] || 'general',
       type: nodeForm.type,
@@ -944,8 +954,8 @@ export function ScenarioTab({ onUpdateBadge }) {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.75rem', flexWrap: 'wrap', gap: '0.5rem' }}>
                   <div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
-                      <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--text-main)', margin: 0 }}>
-                        <code>{selectedNode.node_id || selectedNode.id}</code>
+                      <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-main)', margin: 0 }}>
+                        {selectedNode.name || selectedNode.title || selectedNode.node_id || selectedNode.id}
                       </h3>
                       <span style={{
                         fontSize: '0.72rem',
@@ -959,8 +969,9 @@ export function ScenarioTab({ onUpdateBadge }) {
                         {selectedNode.type === 'terminal' ? '최종 답변 노드' : '질문/분기 노드'}
                       </span>
                     </div>
-                    <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>
-                      시나리오 그룹: <strong style={{ color: 'var(--text-main)' }}>{selectedNode.scenario_id || '미지정'}</strong>
+                    <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '0.25rem', display: 'flex', gap: '0.8rem', flexWrap: 'wrap' }}>
+                      <span>시나리오: <strong style={{ color: 'var(--text-main)' }}>{selectedNode.scenario_id || '미지정'}</strong></span>
+                      <span>내부 ID: <code style={{ fontSize: '0.74rem' }}>{selectedNode.node_id || selectedNode.id}</code></span>
                     </div>
                   </div>
 
@@ -1121,11 +1132,43 @@ export function ScenarioTab({ onUpdateBadge }) {
         <div className="modal-backdrop active">
           <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '620px' }}>
             <div className="modal-header">
-              <h3>{modalMode === 'create' ? (nodeForm.parentNodeId ? `하위 노드 추가 ([${nodeForm.parentNodeId}]에 연결)` : '새 시나리오 노드 등록') : `노드 수정 (${nodeForm.node_id})`}</h3>
+              <h3>{modalMode === 'create' ? (nodeForm.parentNodeId ? '새 하위 노드 추가' : '새 시나리오 노드 등록') : `노드 수정: ${nodeForm.name || nodeForm.node_id}`}</h3>
               <button className="btn-close" onClick={() => setModalOpen(false)}>×</button>
             </div>
             <form onSubmit={handleSubmitNode}>
               <div className="modal-body" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                {/* ★ [사용자 피드백 반영] 의미 없는 ID 대신 사용자가 직접 노드 이름을 지정할 수 있는 전용 필드 */}
+                <div className="form-group" style={{ margin: 0 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.3rem' }}>
+                    <label className="form-label" style={{ margin: 0, fontWeight: 700, fontSize: '0.88rem', color: 'var(--text-main)' }}>
+                      🏷️ 노드 이름 (사용자 지정 명칭)
+                    </label>
+                    <span style={{ fontSize: '0.72rem', color: 'var(--primary)', fontWeight: 600 }}>
+                      * 캔버스와 관리 화면에 노출될 명칭
+                    </span>
+                  </div>
+                  <input
+                    type="text"
+                    className="form-input"
+                    value={nodeForm.name}
+                    onChange={(e) => {
+                      const newName = e.target.value;
+                      setNodeForm((prev) => ({
+                        ...prev,
+                        name: newName,
+                        // 신규 생성 시 노드 이름에 맞춰 부모 버튼명 및 내부 식별 ID 자동 동기화
+                        parentOptionLabel: modalMode === 'create' && (!prev.parentOptionLabel || prev.parentOptionLabel === prev.name) ? newName : prev.parentOptionLabel,
+                        node_id: modalMode === 'create'
+                          ? generateNodeIdFromLabel(newName, prev.parentNodeId || prev.scenario_id, prev.type)
+                          : prev.node_id
+                      }));
+                    }}
+                    placeholder="예: 와이파이 전원 확인, 공유기 리셋 안내, 랜선 점검"
+                    required
+                    style={{ fontWeight: 600, fontSize: '0.92rem' }}
+                  />
+                </div>
+
                 {nodeForm.parentNodeId && (
                   <div style={{
                     background: 'rgba(37, 99, 235, 0.05)',
@@ -1140,25 +1183,15 @@ export function ScenarioTab({ onUpdateBadge }) {
                       <GitFork size={14} />
                       <span>부모 노드 <code>{nodeForm.parentNodeId}</code>의 하위 단계로 자동 연결됩니다.</span>
                     </div>
-                    {/* ★ [요청 ①] 버튼명 입력 시 내부 노드 ID 자동 생성 통합 */}
                     <div className="form-group" style={{ margin: 0 }}>
                       <label className="form-label" style={{ fontSize: '0.74rem', marginBottom: '0.2rem' }}>
-                        버튼명 (부모 노드에 노출될 선택지 명칭)
+                        부모 노드에 노출될 선택지 버튼 명칭
                       </label>
                       <input
                         type="text"
                         className="form-input"
                         value={nodeForm.parentOptionLabel}
-                        onChange={(e) => {
-                          const newLabel = e.target.value;
-                          setNodeForm((prev) => ({
-                            ...prev,
-                            parentOptionLabel: newLabel,
-                            node_id: modalMode === 'create'
-                              ? generateNodeIdFromLabel(newLabel, prev.parentNodeId || prev.scenario_id, prev.type)
-                              : prev.node_id
-                          }));
-                        }}
+                        onChange={(e) => setNodeForm({ ...nodeForm, parentOptionLabel: e.target.value })}
                         placeholder="예: 상세 점검 진행, 네 맞아요, 공유기 재부팅 완료"
                         required
                       />
@@ -1166,41 +1199,26 @@ export function ScenarioTab({ onUpdateBadge }) {
                   </div>
                 )}
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '1rem' }}>
-                  {/* ★ [요청 ③] 입력 불가(disabled) 필드 가시적 구분 스타일 */}
-                  <div className="form-group">
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
-                      <label className="form-label" style={{ margin: 0 }}>노드 식별자 (ID)</label>
-                      <span style={{ fontSize: '0.68rem', color: '#64748b', background: '#f1f5f9', padding: '0.1rem 0.4rem', borderRadius: '4px', fontWeight: 700 }}>
-                        🔒 자동 생성
-                      </span>
-                    </div>
+                {/* 시나리오 그룹 및 내부 관리 ID (보조 정보로 깔끔하게 정리) */}
+                <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '0.75rem', background: '#f8fafc', padding: '0.65rem 0.85rem', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                  <div className="form-group" style={{ margin: 0 }}>
+                    <label className="form-label" style={{ fontSize: '0.74rem', color: '#64748b', marginBottom: '0.2rem' }}>시나리오 그룹</label>
                     <input
                       type="text"
                       className="form-input"
-                      value={nodeForm.node_id}
-                      onChange={(e) => setNodeForm({ ...nodeForm, node_id: e.target.value })}
-                      disabled
-                      style={{
-                        background: '#f8fafc',
-                        color: '#64748b',
-                        border: '1.5px dashed #cbd5e1',
-                        cursor: 'not-allowed',
-                        fontWeight: 600
-                      }}
-                      placeholder="버튼명에 따라 자동 생성됩니다"
-                      required
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label className="form-label">시나리오 그룹</label>
-                    <input
-                      type="text"
-                      className="form-input"
+                      style={{ fontSize: '0.82rem', padding: '0.4rem 0.6rem' }}
                       value={nodeForm.scenario_id}
                       onChange={(e) => setNodeForm({ ...nodeForm, scenario_id: e.target.value })}
                       placeholder="예: wired_network"
                     />
+                  </div>
+                  <div className="form-group" style={{ margin: 0 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.2rem' }}>
+                      <label className="form-label" style={{ fontSize: '0.74rem', color: '#64748b', margin: 0 }}>내부 시스템 ID (자동 관리)</label>
+                    </div>
+                    <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.76rem', color: '#64748b', padding: '0.4rem 0.6rem', background: '#f1f5f9', borderRadius: '6px', border: '1px dashed #cbd5e1', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={nodeForm.node_id}>
+                      {nodeForm.node_id}
+                    </div>
                   </div>
                 </div>
 
