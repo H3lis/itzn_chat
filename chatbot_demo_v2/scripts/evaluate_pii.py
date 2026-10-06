@@ -22,6 +22,13 @@ from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any
 
+# dotenv 안전 로드
+try:
+    from dotenv import load_dotenv
+    load_dotenv("chatbot_demo_v2/.env")
+except Exception:
+    pass
+
 # 프로젝트 루트를 sys.path 에 자동 등록
 _ROOT_DIR = Path(__file__).resolve().parents[2]
 if str(_ROOT_DIR) not in sys.path:
@@ -36,6 +43,7 @@ if sys.platform == "win32":
         pass
 
 from chatbot_demo_v2.app.pii_service import PiiMasker
+
 
 
 def split_dataset(
@@ -136,8 +144,13 @@ def evaluate_split(
                 print(f" • [경고] 정제 라벨 로드 실패: {e}")
 
     # PiiMasker 초기화 및 워밍업
-    masker = PiiMasker(backend=backend)
+    masker = PiiMasker(
+        backend=backend,
+        sllm_host=os.environ.get("OLLAMA_HOST", "http://127.0.0.1:11434"),
+        gemini_api_key=os.environ.get("GEMINI_API_KEY", ""),
+    )
     masker.warmup()
+
 
     tp = 0  # POS에서 PII 탐지 성공 (정상 마스킹)
     fn = 0  # POS에서 PII 탐지 실패 (미탐, 보안 위험)
