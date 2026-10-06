@@ -108,6 +108,8 @@ def evaluate_split(
     manifest_path: Path,
     split_name: str = "validation",
     output_result_path: Path | None = None,
+    backend: str = "hybrid",
+    use_cleaned_labels: bool = True,
 ) -> dict[str, Any]:
     """지정된 분할(validation 또는 test_set)에 대해 PiiMasker 검증 실행."""
     if not manifest_path.exists():
@@ -120,10 +122,21 @@ def evaluate_split(
     if not target_rel_paths:
         raise ValueError(f"매니페스트에 '{split_name}' 목록이 비어있습니다.")
 
-    print(f"\n🚀 [{split_name.upper()} 비식별화 검증 시작] 총 {len(target_rel_paths):,}건 평가 중...")
+    print(f"\n🚀 [{split_name.upper()} 비식별화 검증 시작 (엔진: {backend.upper()})] 총 {len(target_rel_paths):,}건 평가 중...")
+
+    relabel_dict = {}
+    if use_cleaned_labels:
+        relabel_path = dataset_dir / "hybrid_relabel_summary.json"
+        if relabel_path.is_file():
+            try:
+                with open(relabel_path, "r", encoding="utf-8") as rf:
+                    relabel_dict = json.load(rf).get("results", {})
+                print(f" • [Cleaned Labels] LLM 전수 정제 라벨 {len(relabel_dict):,}건 적용")
+            except Exception as e:
+                print(f" • [경고] 정제 라벨 로드 실패: {e}")
 
     # PiiMasker 초기화 및 워밍업
-    masker = PiiMasker(backend="rule")
+    masker = PiiMasker(backend=backend)
     masker.warmup()
 
     tp = 0  # POS에서 PII 탐지 성공 (정상 마스킹)
@@ -147,6 +160,16 @@ def evaluate_split(
         item_id = sample.get("id", rel_path)
         text = sample.get("text", "")
         gt_pi = sample.get("pi", [])
+
+        # LLM 정제 라벨 적용
+        if use_cleaned_labels and item_id in relabel_dict:
+            r_item = relabel_dict[item_id]
+            st = r_item.get("status", "VALID")
+            if st == "LABEL_ERROR":
+                gt_pi = []  # 가짜 PII 제거 (정상 문장으로 교정)
+            elif st == "MODIFIED":
+                gt_pi = r_item.get("correct_pi", gt_pi)
+
         meta = sample.get("meta", {})
         domain = meta.get("domain", "기타")
 
@@ -294,20 +317,37 @@ def main():
     parser.add_argument("--eval-val", action="store_true", help="validation(20%) 평가 수행")
     parser.add_argument("--eval-test", action="store_true", help="test_set(80%) 평가 수행")
     parser.add_argument("--split-and-eval-val", action="store_true", help="분할 후 validation 평가 수행")
+    parser.add_argument("--backend", type=str, default="hybrid", choices=["rule", "hybrid", "sllm"], help="비식별화 엔진 백엔드 (기본: hybrid)")
+    parser.add_argument("--original-labels", action="store_true", help="정제 라벨 대신 원본 라벨 사용")
     args = parser.parse_args()
 
     ds_dir = Path(args.dataset_dir)
     manifest_p = Path(args.manifest)
+    use_cleaned = not args.original_labels
 
     if args.split_and_eval_val or args.split_only or not manifest_p.exists():
         split_dataset(ds_dir, test_ratio=0.8, seed=42, manifest_path=manifest_p)
 
     if args.split_and_eval_val or args.eval_val:
         out_p = ds_dir / "validation_report.json"
-        evaluate_split(ds_dir, manifest_p, split_name="validation", output_result_path=out_p)
+        evaluate_split(
+            ds_dir,
+            manifest_p,
+            split_name="validation",
+            output_result_path=out_p,
+            backend=args.backend,
+            use_cleaned_labels=use_cleaned,
+        )
     elif args.eval_test:
         out_p = ds_dir / "test_report.json"
-        evaluate_split(ds_dir, manifest_p, split_name="test_set", output_result_path=out_p)
+        evaluate_split(
+            ds_dir,
+            manifest_p,
+            split_name="test_set",
+            output_result_path=out_p,
+            backend=args.backend,
+            use_cleaned_labels=use_cleaned,
+        )
 
 
 if __name__ == "__main__":

@@ -416,11 +416,15 @@ class PiiMasker:
         sllm_model: str = "qwen2.5:1.5b",
         sllm_host: str = "http://127.0.0.1:11434",
         timeout_s: float = 3.0,
+        sllm_provider: str = "auto",
+        gemini_api_key: Optional[str] = None,
     ):
         self.backend = backend
         self.sllm_model = sllm_model
         self.sllm_host = (sllm_host or "http://127.0.0.1:11434").rstrip("/")
         self.timeout_s = float(timeout_s)
+        self.sllm_provider = sllm_provider
+        self.gemini_api_key = gemini_api_key or os.environ.get("GEMINI_API_KEY", "")
         self._kiwi = None
         self._kiwi_checked = False
 
@@ -490,48 +494,97 @@ class PiiMasker:
         if not name or not isinstance(name, str):
             return None
         clean = name.strip()
+        # 따옴표/괄호 제거
+        clean = clean.strip("'\"`()[]")
         # 직책/호칭 접미사 분리
         for title in sorted(_TITLES, key=len, reverse=True):
             if clean.endswith(title) and len(clean) > len(title):
                 clean = clean[:-len(title)].strip()
         # 조사 분리
-        for p in ("이", "가", "은", "는", "을", "를", "의", "에게", "한테", "께", "도", "와", "과", "랑"):
+        for p in ("이", "가", "은", "는", "을", "를", "의", "에게", "한테", "께", "도", "와", "과", "랑", "이나", "나", "씨", "님", "이라고"):
             if clean.endswith(p) and len(clean) > len(p) + 1:
                 clean = clean[:-len(p)].strip()
-        if self.is_korean_name(clean):
-            return clean
+        if 2 <= len(clean) <= 4:
+            if not any(clean.endswith(t) for t in ("선생님", "선생", "교사", "주무관", "실장", "교장", "교감", "부장", "팀장", "주임", "기사", "담당자", "학교", "센터", "대학", "병원")):
+                if clean not in ("나", "너", "본인", "그", "그녀", "상품", "지하철", "도시", "지역", "회사", "이것", "저것"):
+                    return clean
         return None
 
+    @staticmethod
+    def _check_ambiguous_name_context(text: str, masked: str) -> bool:
+        """규칙 엔진이 처리하지 못한 애매한 인명/문맥이 있는지 고속 판별 (1ms 미만)."""
+        # 1. 따옴표('...', "...")로 강조된 2~4글자 한글 단어가 마스킹되지 않은 채 존재하는 경우
+        quoted = re.findall(r"['\"]([가-힣]{2,4})['\"]", masked)
+        if any(w not in _SAFE_NOUNS for w in quoted):
+            return True
+
+        # 2. 인명 유도 핵심 키워드가 포함되어 있는데 문장에 * 마스킹이 없는 경우
+        name_cues = ("성함", "본명", "이름은", "이름이", "환자분", "담당자분", "작성자", "상담자", "예약자", "닉네임", "별명")
+        if any(cue in text for cue in name_cues) and ("*" not in masked):
+            return True
+
+        # 3. 호칭/존칭 결합(씨, 님, 에게, 한테) 앞 단어가 마스킹되지 않은 경우
+        suffix_matches = re.findall(r"([가-힣]{2,4})\s*(?:씨|님|에게|한테|이라고|라고\s*하)", text)
+        if any(w not in _SAFE_NOUNS and w not in _TITLES and w in masked for w in suffix_matches):
+            return True
+
+        # 4. 영문 병기 인명 패턴 (예: 김민준(Kim Minjun))
+        if re.search(r"[가-힣]{2,4}\s*\([A-Za-z\s]+\)", text):
+            return True
+
+        return False
+
     def _extract_names_with_sllm(self, text: str) -> list[str]:
-        """로컬 Ollama sLLM에 요청하여 JSON 형태로 인명 목록 추출."""
+        """sLLM(Gemini 또는 Ollama)에 요청하여 JSON 형태로 인명 목록 추출."""
         prompt = (
-            "아래 텍스트에서 사람의 성명 또는 이름(예: 홍길동, 남궁민수, 김성겸, 민수, 지훈, 영희)만 JSON 형식 {\"names\": [\"이름1\", \"이름2\"]} 으로 추출하세요.\n"
-            "- 직책, 호칭(선생님, 교사, 주무관, 팀장, 학생, 담당자 등), 조사, 일반 명사는 제외하고 순수 인명만 추출하세요.\n"
+            "아래 텍스트에서 사람의 성명, 이름, 닉네임(예: 홍길동, 남궁민수, 박서연, 온유, 보람, 장미, 민수, 지훈 등)만 JSON 형식 {\"names\": [\"이름1\", \"이름2\"]} 으로 추출하세요.\n"
+            "- 직책, 호칭(선생님, 교사, 주무관, 팀장, 학생, 담당자 등), 대명사(나, 너, 본인), 감탄사(네), 조사, 일반 명사(이 상품, 지하철역 등)는 절대 제외하고 순수 인명/닉네임만 추출하세요.\n"
             "- 사람 이름이 없으면 {\"names\": []} 을 반환하세요.\n"
             "- 오직 유효한 JSON 형식만 응답하세요.\n\n"
             f"텍스트: {text}"
         )
-        url = f"{self.sllm_host}/api/generate"
-        payload = {
-            "model": self.sllm_model,
-            "prompt": prompt,
-            "stream": False,
-            "format": "json",
-            "options": {"temperature": 0.0}
-        }
-        resp = requests.post(url, json=payload, timeout=self.timeout_s)
-        if resp.status_code != 200:
-            raise RuntimeError(f"sLLM HTTP {resp.status_code}: {resp.text[:100]}")
-        raw = resp.json().get("response", "{}")
+
+        use_gemini = (self.sllm_provider == "gemini") or (self.sllm_provider == "auto" and bool(self.gemini_api_key))
+
+        if use_gemini and self.gemini_api_key:
+            try:
+                url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent"
+                payload = {
+                    "contents": [{"parts": [{"text": prompt}]}],
+                    "generationConfig": {"temperature": 0.0, "responseMimeType": "application/json"}
+                }
+                resp = requests.post(url, params={"key": self.gemini_api_key}, json=payload, timeout=self.timeout_s)
+                if resp.status_code == 200:
+                    raw = resp.json()["candidates"][0]["content"]["parts"][0]["text"]
+                    data = json.loads(raw)
+                    names = data.get("names", [])
+                    return names if isinstance(names, list) else []
+            except Exception as e:
+                logger.debug("Gemini sLLM 인명 추출 실패, Ollama 폴백: %s", e)
+
+        # Ollama 호출 (로컬 또는 원격 L4 GPU)
         try:
-            data = json.loads(raw)
-            names = data.get("names", [])
-            return names if isinstance(names, list) else []
-        except Exception:
-            return []
+            url = f"{self.sllm_host}/api/generate"
+            payload = {
+                "model": self.sllm_model,
+                "prompt": prompt,
+                "stream": False,
+                "format": "json",
+                "options": {"temperature": 0.0}
+            }
+            resp = requests.post(url, json=payload, timeout=self.timeout_s)
+            if resp.status_code == 200:
+                raw = resp.json().get("response", "{}")
+                data = json.loads(raw)
+                names = data.get("names", [])
+                return names if isinstance(names, list) else []
+        except Exception as e:
+            logger.debug("Ollama sLLM 인명 추출 실패: %s", e)
+
+        return []
 
     def _mask_names_with_sllm(self, text: str) -> tuple[str, bool]:
-        """sLLM(Ollama)을 호출하여 문맥 인명을 탐지 후 안전하게 In-place 치환."""
+        """sLLM을 호출하여 문맥 인명을 탐지 후 안전하게 In-place 치환."""
         names = self._extract_names_with_sllm(text)
         valid_names = []
         for n in names:
@@ -907,8 +960,15 @@ class PiiMasker:
         if rule_detected:
             detected.add("name")
 
-        # 2-2. sLLM 추가 문맥 인명 가명화 (sLLM 모드일 때 비정형 문맥 인명 추가 보강)
-        if self.backend == "sllm" and not skip_sllm:
+        # 2-2. sLLM 추가 문맥 인명 가명화 (sLLM 모드이거나 hybrid 모드의 애매한 문맥일 때 선택적 가동)
+        should_run_sllm = False
+        if not skip_sllm:
+            if self.backend == "sllm":
+                should_run_sllm = True
+            elif self.backend == "hybrid":
+                should_run_sllm = self._check_ambiguous_name_context(text, masked)
+
+        if should_run_sllm:
             try:
                 masked, sllm_detected = self._mask_names_with_sllm(masked)
                 if sllm_detected:
