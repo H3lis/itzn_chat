@@ -180,8 +180,16 @@ _SNS_HANDLE_PATTERN = re.compile(
     r"(?<![a-zA-Z0-9_가-힣*])@([a-zA-Z0-9_가-힣]{2,24})(?![a-zA-Z0-9_가-힣.])"
 )
 
-# 카드 번호 (16자리)
-_CARD_PATTERN = re.compile(r"\b(?:\d{4}[- ]?){3}\d{4}\b")
+# 카드 번호 (16자리 및 마스킹된 x/별표 포함 형태)
+_CARD_PATTERN = re.compile(
+    r"\b(?:\d{4}[- ]?)(?:[xX\*0-9]{4}[- ]?){2}(?:[xX\*0-9]{4})\b"
+)
+
+# 카드 끝자리/부분 4자리 명시 패턴 (카드 번호 4444, 끝자리 5678, 마지막 네 자리 번호는 7777 등)
+_CARD_DIGIT_CUE_PATTERN = re.compile(
+    r"(?i)(?:카드\s*(?:번호)?(?:\s*는|\s*가|\s*로|\s*의)?(?:\s*(?:끝|뒤|마지막|앞))?\s*(?:네|4)?\s*자리(?:\s*번호[는이가]?)?|(?:끝|뒤|마지막|앞)\s*(?:네|4)\s*자리(?:\s*번호[는이가]?)?|카드\s*번호(?:는|가|로|:)?)\s*[:#=\s]?\s*(\d{4})(?!\d)"
+)
+
 
 # 기기 시리얼 번호 / 일련번호 / 기기번호 (S/N: ABC12345, 시리얼 2102353001, SN: WS-C2960 등)
 _SERIAL_PATTERN = re.compile(
@@ -193,12 +201,12 @@ _MAC_PATTERN = re.compile(
     r"\b(?:[0-9A-Fa-f]{2}[:-]){5}[0-9A-Fa-f]{2}\b|\b[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}\b"
 )
 
-# 시스템 계정 및 비밀번호 / 크리덴셜 (회원 ID, 사번, 학생증, 식별번호, PW, 비번 등 한국어 조사 및 따옴표 유연 지원)
+# 시스템 계정 및 비밀번호 / 크리덴셜 (회원 ID, 사용자 아이디, 닉네임, 사번 등 한국어 조사, 요, 만, 인가요 및 한글 닉네임 지원)
 _CREDENTIAL_PATTERN = re.compile(
-    r"(?i)(?P<label>회원\s*ID|회원\s*아이디|아이디|ID|계정\s*번호|계정|회원\s*번호|회원번호|신청\s*번호|신청번호|사번|고유\s*식별번호|식별번호|학생증\s*번호|학생증|등록번호|수험\s*번호|수험번호|접수\s*번호|접수번호|인증\s*코드|보안\s*코드|비밀\s*코드|신분\s*확인\s*코드|신분확인코드|PW|비밀번호|패스워드|비번|passwd|password|암호)"
+    r"(?i)(?P<label>회원\s*ID|회원\s*아이디|사용자\s*아이디|아이디|ID|닉네임|별명|계정\s*번호|계정|회원\s*번호|회원번호|신청\s*번호|신청번호|사번|고유\s*식별번호|식별번호|학생증\s*번호|학생증|등록번호|수험\s*번호|수험번호|접수\s*번호|접수번호|인증\s*코드|보안\s*코드|비밀\s*코드|신분\s*확인\s*코드|신분확인코드|PW|비밀번호|패스워드|비번|passwd|password|암호)"
     r"(?P<sep>[은는이가의를을인]?\s*[:#=\-]?\s*|\s+)"
-    r"['\"]?(?P<val>[A-Za-z0-9!@#$%^&*()_\-+=\[\]{}|;:.<>?~]{3,32})['\"]?"
-    r"(?P<tail>(?:입니다|이에요|예요|이다|이고|이며|인데|인데요|거든|거든요|야|다|라고|라|으로|로)?(?=[^\w가-힣]|$|\s))"
+    r"['\"]?(?P<val>[A-Za-z0-9!@#$%^&*()_\-+=\[\]{}|;:.<>?~가-힣ㄱ-ㅎ]{2,32})['\"]?"
+    r"(?P<tail>(?:입니다|이에요|예요|이다|이고|이며|인데|인데요|거든|거든요|야|다|라고|라|으로|로|요|만|인가요|인지|인지요)?(?=[^\w가-힣]|$|\s))"
 )
 
 # 은행 계좌번호 (은행명/계좌 라벨 및 10~16자리 하이픈 연결 번호)
@@ -219,10 +227,11 @@ _PASSPORT_PATTERN = re.compile(
     r"(?<![A-Za-z0-9])([MSGRD][0-9A-Z]{7,8})(?![A-Za-z0-9])"
 )
 
-# 학번 (학번 라벨 뒤 4~10자리 숫자)
+# 학번 (학번 라벨 뒤 4~10자리 숫자 및 하이픈 연결 학번)
 _STUDENT_ID_PATTERN = re.compile(
-    r"(?<![가-힣\w])(학번\s*[:#=\s]?\s*)(\d{4,10})(?!\d)"
+    r"(?<![가-힣\w])(학번\s*[:#=\s]?\s*)(\d{4}(?:-\d{2,6}){1,3}|\d{4,10})(?!\d)"
 )
+
 
 # 학적 정보 (학년-반-번 표기)
 _SCHOOL_RECORD_PATTERN = re.compile(
@@ -526,65 +535,74 @@ class PiiMasker:
         return None
 
     @staticmethod
-    def _check_ambiguous_name_context(text: str, masked: str) -> bool:
-        """규칙 엔진이 처리하지 못한 애매한 인명/문맥이 있는지 고속 판별 (1ms 미만)."""
-        # 비인명 문맥 수식어 패턴 (의미, 가치, 소재, 브랜드, 코스, 지역, 색깔, 서류 등)
+    def _check_ambiguous_pii_context(text: str, masked: str) -> bool:
+        """규칙 엔진이 처리하지 못한 애매한 인명, 비정형 카드, 시스템 ID 문맥이 있는지 고속 판별 (1ms 미만)."""
+        # 1. 비정형 신용카드 / 결제 번호 문맥 검사
+        if re.search(r"(?:신용카드|체크카드|카드\s*번호|카드|삼성페이|결제)", text):
+            # 4자리 연속 숫자나 마스킹된 카드 패턴, 구어체 숫자가 아직 마스킹 안 된 경우
+            if re.search(r"(?:끝|뒤|마지막|앞|번호|자리가?)\s*[:#=\s]?[^\d\n]{0,10}?\d{4}", masked):
+                return True
+            if re.search(r"\d{4}[- ]?[xX\*]{2,4}", masked) or re.search(r"(?:하나|둘|두|세|네|다섯|여섯|일곱|여덟|아홉|나인)", text):
+                return True
+
+        # 2. 비정형 시스템 ID / 닉네임 / 계정 문맥 검사
+        if re.search(r"(?:사용자\s*아이디|회원\s*아이디|아이디|ID|닉네임|계정|학번)\s*[:#=\s이인가요은는이가]", text):
+            # 라벨 뒤에 마스킹되지 않은 2자 이상 단어나 자모가 남아있는 경우
+            id_cand = re.search(r"(?:아이디|ID|닉네임|계정|학번)\s*(?:[은는이가의를을인]?\s*[:#=\-]?\s*|\s+)(['\"]?[A-Za-z0-9가-힣ㄱ-ㅎ_-]{2,30}['\"]?)", masked)
+            if id_cand and not id_cand.group(1).startswith("*"):
+                return True
+
+        # 3. 비정형 인명 문맥 검사 (기존 3중 방어선)
         non_name_context_pattern = re.compile(
             r"['\"]([가-힣]{2,4})['\"]\s*(?:의\s*의미|이라는\s*(?:이름의\s*)?(?:브랜드|가치|소재|옷|키워드|동네)|쪽\s*코스|동네|지역|관련|색깔|색상|색|벽지|씨가\s*아니라|이\s*맞을까요|서류|이\s*많이|라인|명칭)"
         )
 
-        # 1. 따옴표('...', "...")로 강조된 2~4글자 한글 단어가 마스킹되지 않은 채 존재하는 경우
+        # 3-1. 따옴표('...', "...")로 강조된 2~4글자 한글 단어가 마스킹되지 않은 채 존재하는 경우
         quoted_matches = re.finditer(r"['\"]([가-힣]{2,4})['\"]", masked)
-        has_valid_quoted = False
         for qm in quoted_matches:
             w = qm.group(1)
             full_match_start = qm.start()
             surrounding = text[full_match_start:min(len(text), full_match_start + 40)]
             if non_name_context_pattern.search(surrounding):
                 continue
-            # 따옴표 뒤에 바로 인명 호칭(씨, 님, 학생, 작가, 선생)이 붙는 경우 진짜 인명으로 처리
             if re.search(r"['\"]\s*(?:씨|님|학생|작가|선생)", surrounding):
-                has_valid_quoted = True
-                break
+                return True
             if w in ("사랑", "보람", "지혜", "노을", "우주", "나무", "푸름", "보리", "한결", "해솔", "다솜", "행복은행", "성적표", "서울"):
                 continue
             if w not in _SAFE_NOUNS:
-                has_valid_quoted = True
-                break
+                return True
 
-        if has_valid_quoted:
-            return True
-
-        # 2. 인명 유도 핵심 키워드가 포함되어 있고 뒤에 실제 2~4글자 이름 후보가 나오는 경우
+        # 3-2. 인명 유도 핵심 키워드가 포함되어 있고 뒤에 실제 2~4글자 이름 후보가 나오는 경우
         name_cue_matches = re.findall(r"(?:성함|본명|이름)이?\s*(?:은|는|이|가|:)?\s*([가-힣]{2,4})", text)
         if any(w not in _SAFE_NOUNS and w not in ("어떻게", "무엇", "혹시", "다시", "맞는지") and w in masked for w in name_cue_matches):
             return True
 
-        # 3. 호칭/존칭 결합(씨, 님, 에게, 한테) 앞 단어가 마스킹되지 않은 경우 (일반 단어 제외)
+        # 3-3. 호칭/존칭 결합(씨, 님, 에게, 한테) 앞 단어가 마스킹되지 않은 경우
         suffix_matches = re.findall(r"([가-힣]{2,4})\s*(?:씨|님|에게|한테|이라고|라고\s*하)", text)
         non_name_stems = ("고객", "회원", "담당자", "강사", "사장", "교수", "선생", "대리", "과장", "팀장", "원장", "꽃", "보리")
         if any(w not in _SAFE_NOUNS and w not in _TITLES and w not in non_name_stems and w in masked for w in suffix_matches):
             return True
 
-        # 4. 영문 병기 인명 패턴 (예: 김민준(Kim Minjun))
+        # 3-4. 영문 병기 인명 패턴 (예: 김민준(Kim Minjun))
         if re.search(r"[가-힣]{2,4}\s*\([A-Za-z\s]+\)", text):
             return True
 
         return False
 
-    def _extract_names_with_sllm(self, text: str) -> list[str]:
-        """sLLM(Gemini 또는 Ollama)에 요청하여 JSON 형태로 순수 인명 목록 추출."""
+    def _extract_pii_with_sllm(self, text: str) -> dict[str, list[str]]:
+        """sLLM(Gemini 또는 Ollama)에 요청하여 JSON 형태로 인명, 계정/ID, 카드번호 다중 추출."""
         prompt = (
-            "아래 텍스트에서 실제 사람의 성명, 이름, 닉네임(예: 홍길동, 박서연, 온유 님 등)만 JSON 형식 {\"names\": [\"이름\"]} 으로 추출하세요.\n"
-            "■ 엄격한 제외 규칙 (인명이 아니므로 절대 추출 금지):\n"
-            "1. 감정, 가치, 추상 개념: '사랑', '보람', '지혜', '행복', '희망' 등\n"
-            "2. 자연, 색상, 식물, 곡물: '노을', '푸름', '우주', '나무', '보리', '장미색', '꽃' 등\n"
-            "3. 상표, 브랜드, 코스, 의류 라인: '한결 브랜드', '해솔 코스', '다솜 라인' 등\n"
-            "4. 지명, 도시, 기관, 시설: '서울', '행복은행', '백화점', '카페', '학교', '도서관' 등\n"
-            "5. 일반 안내 어휘, 서류, 직급: '성함', '이름', '성적표', '생활기록부', '등록금', '선생님', '과장' 등\n"
-            "- 위와 같은 일반 명사나 브랜드/지명은 절대 인명으로 추출하지 마세요.\n"
-            "- 실제 사람의 이름이나 닉네임이 없으면 반드시 {\"names\": []} 을 반환하세요.\n"
-            "- 오직 유효한 JSON 형식만 응답하세요.\n\n"
+            "아래 텍스트에서 비식별화가 필요한 개인정보를 JSON 형식으로 정확히 추출하세요:\n"
+            "{\n"
+            "  \"names\": [\"사람의 성명 또는 닉네임 (예: 홍길동, 온유 님 등)\"],\n"
+            "  \"credentials\": [\"시스템 ID, 사용자 아이디, 계정명, 학번, 사번\"],\n"
+            "  \"cards\": [\"신용카드/체크카드 번호 전체 또는 끝 4자리, 구어체 카드 표현\"]\n"
+            "}\n\n"
+            "■ 엄격한 제외 규칙 (개인정보가 아니므로 절대 추출 금지):\n"
+            "1. 일반 감정/가치/자연 명사: '사랑', '보람', '지혜', '노을', '푸름', '우주', '나무', '서울', '행복은행' 등\n"
+            "2. 일반 안내 어휘: '성함', '이름', '아이디', '카드', '번호', '생활기록부', '성적표', '등록금' 등\n"
+            "3. 해당 범주에 속하는 개인정보가 없으면 빈 배열 [] 로 반환하세요.\n"
+            "4. 오직 유효한 JSON 형식만 응답하세요.\n\n"
             f"텍스트: {text}"
         )
 
@@ -601,10 +619,9 @@ class PiiMasker:
                 if resp.status_code == 200:
                     raw = resp.json()["candidates"][0]["content"]["parts"][0]["text"]
                     data = json.loads(raw)
-                    names = data.get("names", [])
-                    return names if isinstance(names, list) else []
+                    return data if isinstance(data, dict) else {}
             except Exception as e:
-                logger.debug("Gemini sLLM 인명 추출 실패, Ollama 폴백: %s", e)
+                logger.debug("Gemini sLLM PII 추출 실패, Ollama 폴백: %s", e)
 
         # Ollama 호출 (로컬 또는 원격 L4 GPU)
         try:
@@ -620,28 +637,26 @@ class PiiMasker:
             if resp.status_code == 200:
                 raw = resp.json().get("response", "{}")
                 data = json.loads(raw)
-                names = data.get("names", [])
-                return names if isinstance(names, list) else []
+                return data if isinstance(data, dict) else {}
         except Exception as e:
-            logger.debug("Ollama sLLM 인명 추출 실패: %s", e)
+            logger.debug("Ollama sLLM PII 추출 실패: %s", e)
 
-        return []
+        return {}
 
+    def _mask_pii_with_sllm(self, text: str, original_text: str = "") -> tuple[str, set[str]]:
+        """sLLM 추출 결과(인명, 계정/ID, 카드)를 바탕으로 안전하게 마스킹 수행."""
+        pii_dict = self._extract_pii_with_sllm(text)
+        detected_types: set[str] = set()
+        masked = text
 
-    def _mask_names_with_sllm(self, text: str) -> tuple[str, bool]:
-        """sLLM을 호출하여 문맥 인명을 탐지 후 안전하게 In-place 치환."""
-        names = self._extract_names_with_sllm(text)
+        # 1. 인명(names) 마스킹
+        raw_names = pii_dict.get("names", [])
         valid_names = []
-        for n in names:
-            v = self._filter_name_candidate(n, original_text=text)
+        for n in raw_names:
+            v = self._filter_name_candidate(n, original_text=original_text or text)
             if v:
                 valid_names.append(v)
 
-        if not valid_names:
-            return text, False
-
-        detected = False
-        masked = text
         for name in sorted(set(valid_names), key=len, reverse=True):
             clean_name = name.replace(" ", "")
             rep = self._mask_single_name(clean_name)
@@ -649,11 +664,36 @@ class PiiMasker:
             pattern = re.compile(r"(?<![가-힣])" + char_pattern + r"(?![가-힣])")
             if pattern.search(masked):
                 masked = pattern.sub(rep, masked)
-                detected = True
+                detected_types.add("name")
             elif name in masked:
                 masked = masked.replace(name, rep)
-                detected = True
-        return masked, detected
+                detected_types.add("name")
+
+        # 2. 시스템 ID / 크리덴셜(credentials) 마스킹
+        raw_creds = pii_dict.get("credentials", [])
+        for cred in raw_creds:
+            if not isinstance(cred, str):
+                continue
+            clean_c = cred.strip("'\"`()[] ")
+            if 2 <= len(clean_c) <= 30 and clean_c in masked:
+                if clean_c not in ("아이디", "계정", "ID", "닉네임", "사번", "학번", "비밀번호"):
+                    # ID 마스킹 (첫 글자 보존 또는 전체 마스킹)
+                    masked = masked.replace(clean_c, "*" * len(clean_c))
+                    detected_types.add("credential")
+
+        # 3. 신용카드(cards) 마스킹
+        raw_cards = pii_dict.get("cards", [])
+        for card_val in raw_cards:
+            if not isinstance(card_val, str):
+                continue
+            clean_card = card_val.strip("'\"`()[] ")
+            if len(clean_card) >= 3 and clean_card in masked:
+                if clean_card not in ("카드", "신용카드", "체크카드", "카드번호", "결제"):
+                    masked = masked.replace(clean_card, "*" * len(clean_card))
+                    detected_types.add("card")
+
+        return masked, detected_types
+
 
     def _mask_korean_names_rule(self, text: str) -> tuple[str, bool]:
         """룰(정규식 + Kiwi 형태소 분석기) 기반 한국어 인명 가명화."""
@@ -766,11 +806,18 @@ class PiiMasker:
             return "******-*******"
         masked = _RRN_PATTERN.sub(_mask_rrn, masked)
 
-        # 1-4. 카드 번호
+        # 1-4. 카드 번호 (16자리 및 마스킹된 x/별표 포함 형태)
         def _mask_card(m):
             detected.add("card")
             return "****-****-****-****"
         masked = _CARD_PATTERN.sub(_mask_card, masked)
+
+        def _mask_card_tail(m):
+            detected.add("card")
+            val = m.group(1)
+            return m.group(0).replace(val, "****")
+        masked = _CARD_DIGIT_CUE_PATTERN.sub(_mask_card_tail, masked)
+
 
         # 1-5. 전화번호 (식별/지역번호 포함 번호 및 국번없는 8자리 번호 마스킹)
         def _mask_phone(m):
@@ -1005,21 +1052,21 @@ class PiiMasker:
         if rule_detected:
             detected.add("name")
 
-        # 2-2. sLLM 추가 문맥 인명 가명화 (sLLM 모드이거나 hybrid 모드의 애매한 문맥일 때 선택적 가동)
+        # 2-2. sLLM 추가 문맥 PII 가명화 (인명, 비정형 카드, 시스템 ID 모호 문맥 선택적 가동)
         should_run_sllm = False
         if not skip_sllm:
             if self.backend == "sllm":
                 should_run_sllm = True
             elif self.backend == "hybrid":
-                should_run_sllm = self._check_ambiguous_name_context(text, masked)
+                should_run_sllm = self._check_ambiguous_pii_context(text, masked)
 
         if should_run_sllm:
             try:
-                masked, sllm_detected = self._mask_names_with_sllm(masked)
-                if sllm_detected:
-                    detected.add("name")
+                masked, sllm_detected_types = self._mask_pii_with_sllm(masked, original_text=text)
+                detected.update(sllm_detected_types)
             except Exception as e:
-                logger.debug("sLLM PII 인명 추출 건너뜀: %s", e)
+                logger.debug("sLLM PII 다중 추출 건너뜀: %s", e)
+
 
         return MaskResult(
             masked_text=masked,
