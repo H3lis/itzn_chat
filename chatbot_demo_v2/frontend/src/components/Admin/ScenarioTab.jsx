@@ -246,6 +246,7 @@ export function ScenarioTab({ onUpdateBadge }) {
     const isTerminal = defaultChildType === 'terminal';
     const initialLabel = isTerminal ? '해결 방법 확인' : '상세 점검 진행';
     const childId = generateNodeIdFromLabel(initialLabel, parentId, defaultChildType);
+    const initialContent = isTerminal ? '해결 가이드 내용을 확인하세요.' : '';
 
     setModalMode('create');
     setNodeForm({
@@ -255,21 +256,22 @@ export function ScenarioTab({ onUpdateBadge }) {
       parentNodeId: parentId,
       parentOptionLabel: initialLabel,
       type: defaultChildType,
-      text: isTerminal ? '해결 조치 가이드 내용을 확인하세요.' : '',
+      text: initialContent,
       options: isTerminal
         ? [{ option_id: '__restart__', label: '처음으로', next_node_id: rootId || 'root' }]
         : [{ label: '다음 단계', next_node: '', next_node_id: '' }],
-      answer_text: isTerminal ? '최종 조치 및 가이드 내용입니다.' : ''
+      answer_text: initialContent
     });
     setModalOpen(true);
   };
 
-  // 노드 수정 모달 (사용자가 지정한 노드 이름 반영)
+  // 노드 수정 모달 (사용자가 지정한 노드 이름 및 버튼선택시 내용 반영)
   const handleOpenEdit = (node) => {
     if (!node) return;
     setModalMode('edit');
     const incomingName = incomingParentsMap[node.node_id || node.id]?.[0]?.buttonLabel;
     const initialName = node.name || node.title || incomingName || node.parentOptionLabel || node.node_id || '';
+    const nodeContent = node.text || node.answer?.text || node.answer_text || '';
     setNodeForm({
       name: initialName,
       node_id: node.node_id || node.id,
@@ -277,9 +279,9 @@ export function ScenarioTab({ onUpdateBadge }) {
       parentNodeId: null,
       parentOptionLabel: '',
       type: node.type || 'question',
-      text: node.text || '',
+      text: nodeContent,
       options: node.options ? node.options.map(o => ({ ...o })) : [],
-      answer_text: node.answer?.text || node.answer_text || ''
+      answer_text: nodeContent
     });
     setModalOpen(true);
   };
@@ -1056,23 +1058,12 @@ export function ScenarioTab({ onUpdateBadge }) {
 
                 <div>
                   <label className="form-label" style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-sub)', marginBottom: '0.4rem', display: 'block' }}>
-                    💬 안내 및 질문 문구
+                    💬 버튼선택시 내용
                   </label>
                   <div style={{ background: '#f8fafc', border: '1px solid var(--border-color)', padding: '1rem', borderRadius: '8px', fontSize: '0.92rem', color: 'var(--text-main)', lineHeight: 1.6, wordBreak: 'break-word', whiteSpace: 'pre-wrap' }}>
-                    {selectedNode.text || '(안내 텍스트 없음)'}
+                    {selectedNode.text || selectedNode.answer?.text || selectedNode.answer_text || '(내용 없음)'}
                   </div>
                 </div>
-
-                {selectedNode.type === 'terminal' && (selectedNode.answer || selectedNode.answer_text) && (
-                  <div>
-                    <label className="form-label" style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--emerald)', marginBottom: '0.4rem', display: 'block' }}>
-                      ✅ 최종 조치 가이드 답변
-                    </label>
-                    <div style={{ background: 'rgba(5, 150, 105, 0.05)', border: '1px solid rgba(5, 150, 105, 0.25)', padding: '1rem', borderRadius: '8px', fontSize: '0.9rem', color: 'var(--text-main)', lineHeight: 1.6, wordBreak: 'break-word', whiteSpace: 'pre-wrap' }}>
-                      {selectedNode.answer?.text || selectedNode.answer_text || '(상세 조치 답변 없음)'}
-                    </div>
-                  </div>
-                )}
 
                 <div>
                   <label className="form-label" style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-sub)', marginBottom: '0.4rem', display: 'block' }}>
@@ -1262,39 +1253,31 @@ export function ScenarioTab({ onUpdateBadge }) {
                   </select>
                 </div>
 
-                {/* ★ [요청 ⑥] 중간 노드 추가 시 '최종조치' 대신 '버튼선택시 내용'으로 명칭 수정 */}
+                {/* ★ [사용자 피드백 반영] '최종 조치 안내 문구'와 '최종 조치 답변 본문'을 '버튼선택시 내용'으로 단일화 통일 */}
                 <div className="form-group">
-                  <label className="form-label">
-                    {nodeForm.type === 'terminal' ? '최종 조치 안내 문구' : '버튼선택시 내용 (안내 및 질문 문구)'}
+                  <label className="form-label" style={{ fontWeight: 700, fontSize: '0.88rem', color: 'var(--text-main)' }}>
+                    버튼선택시 내용
                   </label>
                   <textarea
                     className="form-textarea"
-                    rows={3}
+                    rows={4}
                     value={nodeForm.text}
-                    onChange={(e) => setNodeForm({ ...nodeForm, text: e.target.value })}
-                    placeholder={nodeForm.type === 'terminal' ? '사용자에게 최종 조치 안내 시 보여줄 문구' : '버튼을 클릭했을 때 사용자에게 안내할 상세 질문 또는 내용'}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      setNodeForm({ ...nodeForm, text: val, answer_text: val });
+                    }}
+                    placeholder="버튼을 클릭했을 때 사용자에게 안내할 상세 내용 또는 해결 가이드를 입력하세요."
                     required
                   />
-                </div>
-
-                {nodeForm.type === 'terminal' ? (
-                  <div className="form-group">
-                    <label className="form-label">최종 조치 답변 본문</label>
-                    <textarea
-                      className="form-textarea"
-                      rows={4}
-                      value={nodeForm.answer_text}
-                      onChange={(e) => setNodeForm({ ...nodeForm, answer_text: e.target.value })}
-                      placeholder="사용자가 최종적으로 확인하고 조치할 표준 답변 가이드를 입력하세요."
-                      required
-                    />
-                    {/* ★ [요청 ④] 마지막 노드에서 질문/선택지 추가 차단 안내 */}
+                  {nodeForm.type === 'terminal' && (
                     <div style={{ marginTop: '0.45rem', fontSize: '0.78rem', color: 'var(--emerald)', background: 'rgba(5, 150, 105, 0.08)', padding: '0.5rem 0.75rem', borderRadius: '6px', border: '1px solid rgba(5, 150, 105, 0.25)', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                       <Lock size={13} />
                       <span>최종 종결 노드이므로 하위 질문 및 선택지가 추가되지 않으며, '처음으로' 버튼이 자동 제공됩니다.</span>
                     </div>
-                  </div>
-                ) : (
+                  )}
+                </div>
+
+                {nodeForm.type !== 'terminal' && (
                   /* ★ [요청 ⑤] 노드 수정 시 '하위분기선택지' 대신 '버튼 - 버튼 아이디' 형식으로 수정 */
                   <div className="form-group">
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
