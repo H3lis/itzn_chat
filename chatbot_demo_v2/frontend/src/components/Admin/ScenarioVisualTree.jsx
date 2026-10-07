@@ -1482,19 +1482,19 @@ export function ScenarioVisualTree({
                 border: isConnectTargetCandidate
                   ? '2px dashed #2563eb'
                   : isSelected
-                  ? '2px solid #2563eb'
-                  : isHighlighted
-                  ? `2px solid ${theme.color}`
-                  : `1px solid ${theme.border}`,
+                    ? '2px solid #2563eb'
+                    : isHighlighted
+                      ? `2px solid ${theme.color}`
+                      : `1px solid ${theme.border}`,
                 boxShadow: isConnectTargetCandidate
                   ? '0 0 20px rgba(37, 99, 235, 0.35)'
                   : isDragging
-                  ? '0 16px 36px rgba(0, 0, 0, 0.18)'
-                  : isSelected
-                  ? '0 10px 28px rgba(37, 99, 235, 0.28), 0 0 0 3px rgba(37, 99, 235, 0.15)'
-                  : isHighlighted
-                  ? `0 8px 24px ${theme.color}33`
-                  : '0 3px 10px rgba(0, 0, 0, 0.05)',
+                    ? '0 16px 36px rgba(0, 0, 0, 0.18)'
+                    : isSelected
+                      ? '0 10px 28px rgba(37, 99, 235, 0.28), 0 0 0 3px rgba(37, 99, 235, 0.15)'
+                      : isHighlighted
+                        ? `0 8px 24px ${theme.color}33`
+                        : '0 3px 10px rgba(0, 0, 0, 0.05)',
                 cursor: isConnectTargetCandidate ? 'pointer' : isDragging ? 'grabbing' : 'grab',
                 opacity: isDimmed ? 0.22 : 1,
                 transform: 'none',
@@ -1541,8 +1541,8 @@ export function ScenarioVisualTree({
                   background: isRoot
                     ? 'linear-gradient(135deg, #1e40af, #2563eb)'
                     : isTerminal
-                    ? 'linear-gradient(135deg, #065f46, #059669)'
-                    : theme.bg,
+                      ? 'linear-gradient(135deg, #065f46, #059669)'
+                      : theme.bg,
                   color: isRoot || isTerminal ? '#ffffff' : theme.color,
                   borderBottom: `1px solid ${isRoot || isTerminal ? 'transparent' : theme.border}`,
                   cursor: isDragging ? 'grabbing' : 'grab'
@@ -1563,28 +1563,26 @@ export function ScenarioVisualTree({
                   >
                     {isRoot ? 'START' : isTerminal ? 'FINAL' : theme.badge}
                   </span>
-                  {/* ★ [요청 ⑧ 및 사용자 피드백] 사용자가 정한 노드 이름을 최우선으로 크게 표시 */}
+                  {/* ★ [요청 ⑧] 노드상 아이디 대신 버튼명이 보이게끔 수정 */}
                   {(() => {
-                    const customName = node.name || node.title;
                     const buttonName = incomingLabelsMap[nid] || node.parentOptionLabel;
-                    const mainTitle = isRoot ? '시작 (Root)' : (customName || buttonName || nid);
-                    const tagIcon = customName ? '🏷️ ' : (buttonName ? '🔘 ' : '');
+                    const mainTitle = isRoot ? '시작 (Root)' : (buttonName || node.title || nid);
                     const showSubId = !isRoot && mainTitle !== nid;
 
                     return (
                       <div style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden', minWidth: 0 }}>
                         <span
                           style={{
-                            fontSize: '0.84rem',
+                            fontSize: '0.82rem',
                             fontWeight: 800,
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
                             whiteSpace: 'nowrap',
                             lineHeight: 1.2
                           }}
-                          title={customName ? `노드: ${customName} (ID: ${nid})` : (buttonName ? `버튼: ${buttonName} (ID: ${nid})` : nid)}
+                          title={buttonName ? `버튼: ${buttonName} (ID: ${nid})` : nid}
                         >
-                          {tagIcon}{mainTitle}
+                          {buttonName ? `🔘 ${buttonName}` : mainTitle}
                         </span>
                         {showSubId && (
                           <span
@@ -1893,8 +1891,8 @@ export function ScenarioVisualTree({
                                 background: connectingPort?.sourceId === nid && connectingPort?.optionIndex === optIndex
                                   ? '#ef4444'
                                   : hasNext
-                                  ? '#3b82f6'
-                                  : '#f59e0b',
+                                    ? '#3b82f6'
+                                    : '#f59e0b',
                                 border: '2px solid #ffffff',
                                 boxShadow: connectingPort?.sourceId === nid && connectingPort?.optionIndex === optIndex
                                   ? '0 0 10px #ef4444'
