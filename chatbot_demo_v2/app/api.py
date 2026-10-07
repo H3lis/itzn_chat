@@ -244,6 +244,7 @@ def _safe_record_history(ctx: AppContext, session_id: str, run_id: str, body: Ch
         # 1단계 초고속 규칙 비식별화(0.02초 이내) 및 페이로드 조립
         payload = ctx.history_service.prepare_turn_payload(
             session_id=session_id,
+            user_id=getattr(body, "user_id", None),
             run_id=run_id,
             raw_question=raw_q,
             final_answer=final_ans,
@@ -1055,6 +1056,7 @@ def admin_get_history(
     route: Optional[str] = None,
     feedback: Optional[str] = None,
     keyword: Optional[str] = None,
+    user_id: Optional[str] = None,
     session_id: Optional[str] = None,
     page: int = 1,
     page_size: int = 20,
@@ -1069,6 +1071,7 @@ def admin_get_history(
         route=route,
         feedback=feedback,
         keyword=keyword,
+        user_id=user_id,
         session_id=session_id,
         page=page,
         page_size=page_size,
@@ -1083,11 +1086,12 @@ def admin_get_history_sessions(
     route: Optional[str] = None,
     feedback: Optional[str] = None,
     keyword: Optional[str] = None,
+    user_id: Optional[str] = None,
     session_id: Optional[str] = None,
     page: int = 1,
     page_size: int = 20,
 ) -> dict:
-    """세션 단위 대화 이력 다차원 필터링 및 페이징 검색 (고객 화면형 대화 뷰 및 사용자별 분류 지원)."""
+    """세션 단위 대화 이력 다차원 필터링 및 페이징 검색 (특정 사용자의 모든 세션 목록 일괄 조회)."""
     ctx = _ctx(request)
     if not ctx.history_service:
         return {"total": 0, "page": 1, "page_size": page_size, "total_pages": 1, "sessions": []}
@@ -1097,6 +1101,7 @@ def admin_get_history_sessions(
         route=route,
         feedback=feedback,
         keyword=keyword,
+        user_id=user_id,
         session_id=session_id,
         page=page,
         page_size=page_size,
@@ -1121,9 +1126,10 @@ def admin_export_history_excel(
     route: Optional[str] = None,
     feedback: Optional[str] = None,
     keyword: Optional[str] = None,
+    user_id: Optional[str] = None,
     session_id: Optional[str] = None,
 ):
-    """대화 이력 다차원 필터링 결과 엑셀(XLSX) 서식 파일 스트리밍 다운로드 (사용자별 필터 연동)."""
+    """대화 이력 다차원 필터링 결과 엑셀(XLSX) 서식 파일 스트리밍 다운로드 (특정 사용자의 전체 세션 연동)."""
     ctx = _ctx(request)
     if not ctx.history_service:
         raise HTTPException(status_code=503, detail="이력 서비스가 초기화되지 않았습니다.")
@@ -1134,11 +1140,13 @@ def admin_export_history_excel(
         route=route,
         feedback=feedback,
         keyword=keyword,
+        user_id=user_id,
         session_id=session_id,
     )
 
     from datetime import datetime
-    user_prefix = f"user_{session_id[:8]}_" if session_id else ""
+    target_ident = user_id or session_id or ""
+    user_prefix = f"user_{target_ident[:8]}_" if target_ident else ""
     if start_date and end_date:
         filename = f"chat_history_{user_prefix}{start_date.replace('-', '')}_{end_date.replace('-', '')}.xlsx"
     elif start_date:

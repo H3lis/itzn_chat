@@ -1,7 +1,24 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 
 const SESSION_KEY = 'chatbot_demo_v2_sid';
+const USER_KEY = 'chatbot_demo_v2_uid';
 const MESSAGES_KEY = 'chatbot_demo_v2_messages';
+
+/**
+ * 브라우저 기기별 영구 고유 사용자 식별자 (세션이 리셋되어도 유지됨)
+ */
+function getOrCreateUserId() {
+  try {
+    let uid = localStorage.getItem(USER_KEY);
+    if (!uid) {
+      uid = 'usr_' + Math.random().toString(36).substring(2, 10);
+      localStorage.setItem(USER_KEY, uid);
+    }
+    return uid;
+  } catch {
+    return 'usr_guest';
+  }
+}
 
 export function useChatStream() {
   const [sessionId, setSessionId] = useState(() => sessionStorage.getItem(SESSION_KEY) || null);
@@ -203,6 +220,7 @@ export function useChatStream() {
     try {
       await executeChatStream({
         session_id: sessionId,
+        user_id: getOrCreateUserId(),
         message: text.trim(),
       });
     } catch (e) {
@@ -258,6 +276,7 @@ export function useChatStream() {
     try {
       await executeChatStream({
         session_id: sessionId,
+        user_id: getOrCreateUserId(),
         action: {
           type: 'scenario_option',
           scenario_id: option.scenario_id,
@@ -289,6 +308,7 @@ export function useChatStream() {
     try {
       await executeChatStream({
         session_id: sessionId,
+        user_id: getOrCreateUserId(),
         clarify_response: { choice },
       });
     } catch (e) {

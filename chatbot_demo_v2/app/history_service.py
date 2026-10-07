@@ -90,6 +90,13 @@ class HistoryService:
             conn.execute("CREATE INDEX IF NOT EXISTS idx_chat_history_feedback ON chat_history (feedback)")
             conn.execute("CREATE INDEX IF NOT EXISTS idx_chat_history_session ON chat_history (session_id)")
             conn.execute("CREATE INDEX IF NOT EXISTS idx_chat_history_run_id ON chat_history (run_id)")
+            # 사용자(유저) 고유 식별자 컬럼 자동 마이그레이션
+            try:
+                conn.execute("ALTER TABLE chat_history ADD COLUMN user_id TEXT;")
+            except Exception:
+                pass
+            conn.execute("CREATE INDEX IF NOT EXISTS idx_chat_history_user_id ON chat_history (user_id)")
+
             # 시스템 타임존(UTC) 영향으로 2026-09-22 08:xx대로 오저장된 레코드 KST(+9h) 1회 자동 보정
             try:
                 conn.execute("""
@@ -108,6 +115,7 @@ class HistoryService:
         session_id: str,
         run_id: str,
         raw_question: str,
+        user_id: Optional[str] = None,
         final_answer: str = "",
         route: str = "none",
         route_reason: str = "",
@@ -138,6 +146,7 @@ class HistoryService:
 
         return {
             "session_id": session_id,
+            "user_id": user_id or "",
             "run_id": run_id,
             "raw_question": raw_question or "",
             "final_answer": final_answer or "",
@@ -160,6 +169,7 @@ class HistoryService:
         from .pii_service import MaskResult
 
         session_id = payload["session_id"]
+        user_id = payload.get("user_id", "")
         run_id = payload["run_id"]
         raw_question = payload.get("raw_question", "")
         final_answer = payload.get("final_answer", "")
@@ -198,13 +208,14 @@ class HistoryService:
             conn.execute(
                 """
                 INSERT OR REPLACE INTO chat_history (
-                    session_id, run_id, created_at, raw_question, masked_question,
+                    session_id, user_id, run_id, created_at, raw_question, masked_question,
                     final_answer, route, route_reason, latency_s, confidence,
                     source_meta, evidence, pii_types
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                 (
                     session_id,
+                    user_id,
                     run_id,
                     now_str,
                     "",  # raw_question 영구 저장 금지 (개인정보보호법 준수)
@@ -235,6 +246,7 @@ class HistoryService:
         session_id: str,
         run_id: str,
         raw_question: str,
+        user_id: Optional[str] = None,
         final_answer: str = "",
         route: str = "none",
         route_reason: str = "",
@@ -247,6 +259,7 @@ class HistoryService:
         """[동기 호환 메서드] 페이로드 생성 및 즉시 적재(기존 단위 테스트 및 직접 호출 지원)."""
         payload = self.prepare_turn_payload(
             session_id=session_id,
+            user_id=user_id,
             run_id=run_id,
             raw_question=raw_question,
             final_answer=final_answer,
@@ -286,17 +299,18 @@ class HistoryService:
             return cur.rowcount > 0
 
     def get_user_list(self, limit: int = 200) -> list[dict[str, Any]]:
-        """사용자(세션) 고유 목록 및 최근 활동 통계 조회 (관리자 유저별 드롭다운 필터용)."""
+        """사용자(유저) 고유 목록 및 통계 조회 (이 아이디를 사용한 사람의 모든 세션 수 및 턴 집계)."""
         with self._lock, self._get_conn() as conn:
             cur = conn.execute(
                 """
                 SELECT 
-                    session_id,
+                    COALESCE(NULLIF(user_id, ''), session_id) as uid,
+                    COUNT(DISTINCT session_id) as session_count,
                     COUNT(*) as turn_count,
                     MIN(created_at) as first_seen,
                     MAX(created_at) as last_seen
                 FROM chat_history
-                GROUP BY session_id
+                GROUP BY COALESCE(NULLIF(user_id, ''), session_id)
                 ORDER BY last_seen DESC
                 LIMIT ?
                 """,
@@ -304,11 +318,12 @@ class HistoryService:
             )
             users = []
             for row in cur.fetchall():
-                sid = row["session_id"]
-                short_id = f"usr-{sid[:8]}" if sid else "익명"
+                uid = row["uid"]
+                short_id = uid if uid.startswith("usr_") else f"usr-{uid[:8]}"
                 users.append({
-                    "session_id": sid,
+                    "user_id": uid,
                     "display_name": short_id,
+                    "session_count": row["session_count"],
                     "turn_count": row["turn_count"],
                     "last_seen": row["last_seen"],
                 })
@@ -322,11 +337,12 @@ class HistoryService:
         route: Optional[str] = None,
         feedback: Optional[str] = None,
         keyword: Optional[str] = None,
+        user_id: Optional[str] = None,
         session_id: Optional[str] = None,
         page: int = 1,
         page_size: int = 20,
     ) -> dict[str, Any]:
-        """다차원 필터링 대화 이력 검색 (페이징 및 사용자별 분류 지원)."""
+        """다차원 필터링 대화 이력 검색 (특정 사용자의 모든 세션 질의 일괄 조회 지원)."""
         where_clauses: list[str] = []
         params: list[Any] = []
 
@@ -342,13 +358,16 @@ class HistoryService:
         if feedback and feedback != "all":
             where_clauses.append("feedback = ?")
             params.append(feedback.upper())
+        if user_id and user_id != "all":
+            where_clauses.append("(user_id = ? OR (user_id IS NULL AND session_id = ?))")
+            params.extend([user_id, user_id])
         if session_id and session_id != "all":
             where_clauses.append("session_id = ?")
             params.append(session_id)
         if keyword:
             kw = f"%{keyword.strip()}%"
-            where_clauses.append("(masked_question LIKE ? OR final_answer LIKE ? OR session_id LIKE ?)")
-            params.extend([kw, kw, kw])
+            where_clauses.append("(masked_question LIKE ? OR final_answer LIKE ? OR session_id LIKE ? OR user_id LIKE ?)")
+            params.extend([kw, kw, kw, kw])
 
         where_sql = ("WHERE " + " AND ".join(where_clauses)) if where_clauses else ""
 
@@ -360,7 +379,7 @@ class HistoryService:
             # 페이징 조회
             offset = max(0, (page - 1) * page_size)
             query_sql = f"""
-                SELECT id, session_id, run_id, created_at, masked_question, final_answer,
+                SELECT id, session_id, user_id, run_id, created_at, masked_question, final_answer,
                        route, route_reason, latency_s, confidence, feedback, feedback_reason,
                        feedback_at, pii_types
                 FROM chat_history
@@ -394,11 +413,12 @@ class HistoryService:
         route: Optional[str] = None,
         feedback: Optional[str] = None,
         keyword: Optional[str] = None,
+        user_id: Optional[str] = None,
         session_id: Optional[str] = None,
         page: int = 1,
         page_size: int = 20,
     ) -> dict[str, Any]:
-        """세션 단위 다차원 필터링 및 페이징 검색 (고객 화면형 대화 뷰 및 사용자별 분류 지원)."""
+        """세션 단위 다차원 필터링 및 페이징 검색 (특정 사용자의 모든 세션 목록 일괄 조회 지원)."""
         where_clauses: list[str] = []
         params: list[Any] = []
 
@@ -414,13 +434,16 @@ class HistoryService:
         if feedback and feedback != "all":
             where_clauses.append("feedback = ?")
             params.append(feedback.upper())
+        if user_id and user_id != "all":
+            where_clauses.append("(user_id = ? OR (user_id IS NULL AND session_id = ?))")
+            params.extend([user_id, user_id])
         if session_id and session_id != "all":
             where_clauses.append("session_id = ?")
             params.append(session_id)
         if keyword:
             kw = f"%{keyword.strip()}%"
-            where_clauses.append("(masked_question LIKE ? OR final_answer LIKE ? OR session_id LIKE ?)")
-            params.extend([kw, kw, kw])
+            where_clauses.append("(masked_question LIKE ? OR final_answer LIKE ? OR session_id LIKE ? OR user_id LIKE ?)")
+            params.extend([kw, kw, kw, kw])
 
         where_sql = ("WHERE " + " AND ".join(where_clauses)) if where_clauses else ""
 
@@ -631,10 +654,11 @@ class HistoryService:
         route: Optional[str] = None,
         feedback: Optional[str] = None,
         keyword: Optional[str] = None,
+        user_id: Optional[str] = None,
         session_id: Optional[str] = None,
         max_rows: int = 10000,
     ) -> io.BytesIO:
-        """필터 조건에 일치하는 대화 이력을 스타일링된 Excel(XLSX) 바이트 버퍼로 내보내기 (사용자별 구분 지원)."""
+        """필터 조건에 일치하는 대화 이력을 스타일링된 Excel(XLSX) 바이트 버퍼로 내보내기 (특정 사용자의 모든 세션 이력 일괄 추출)."""
         import openpyxl
         from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
         from openpyxl.utils import get_column_letter
@@ -654,19 +678,22 @@ class HistoryService:
         if feedback and feedback != "all":
             where_clauses.append("feedback = ?")
             params.append(feedback.upper())
+        if user_id and user_id != "all":
+            where_clauses.append("(user_id = ? OR (user_id IS NULL AND session_id = ?))")
+            params.extend([user_id, user_id])
         if session_id and session_id != "all":
             where_clauses.append("session_id = ?")
             params.append(session_id)
         if keyword:
             kw = f"%{keyword.strip()}%"
-            where_clauses.append("(masked_question LIKE ? OR final_answer LIKE ? OR session_id LIKE ?)")
-            params.extend([kw, kw, kw])
+            where_clauses.append("(masked_question LIKE ? OR final_answer LIKE ? OR session_id LIKE ? OR user_id LIKE ?)")
+            params.extend([kw, kw, kw, kw])
 
         where_sql = ("WHERE " + " AND ".join(where_clauses)) if where_clauses else ""
 
         with self._lock, self._get_conn() as conn:
             query_sql = f"""
-                SELECT id, session_id, run_id, created_at, masked_question, final_answer,
+                SELECT id, session_id, user_id, run_id, created_at, masked_question, final_answer,
                        route, route_reason, latency_s, confidence, feedback, feedback_reason,
                        feedback_at, pii_types
                 FROM chat_history
@@ -710,6 +737,7 @@ class HistoryService:
             "번호",
             "상담일시",
             "사용자 ID (유저 구분)",
+            "세션 ID",
             "처리 경로",
             "사용자 질문 (비식별화)",
             "챗봇 응답",
@@ -762,9 +790,13 @@ class HistoryService:
             route_raw = r.get("route") or ""
             route_text = route_map.get(route_raw, route_raw or "-")
 
+            raw_uid = r.get("user_id") or r.get("session_id") or "-"
+            uid_display = raw_uid if raw_uid.startswith("usr_") else f"usr-{raw_uid[:8]}"
+
             values = [
                 row_idx - 1,
                 r.get("created_at") or "-",
+                uid_display,
                 r.get("session_id") or "-",
                 route_text,
                 user_q,
@@ -780,7 +812,7 @@ class HistoryService:
                 cell.font = cell_font
                 cell.fill = fill
                 cell.border = thin_border
-                if col_idx in (1, 2, 3, 4, 7, 8, 10):
+                if col_idx in (1, 2, 3, 4, 5, 8, 9, 11):
                     cell.alignment = align_center
                 else:
                     cell.alignment = align_left
@@ -788,14 +820,15 @@ class HistoryService:
         col_widths = {
             1: 8,
             2: 20,
-            3: 16,
-            4: 15,
-            5: 42,
-            6: 52,
-            7: 13,
+            3: 18,
+            4: 20,
+            5: 15,
+            6: 42,
+            7: 52,
             8: 13,
-            9: 22,
-            10: 18,
+            9: 13,
+            10: 22,
+            11: 18,
         }
         for col_idx, width in col_widths.items():
             col_letter = get_column_letter(col_idx)

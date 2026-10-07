@@ -26,6 +26,7 @@ class ClarifyResponse(BaseModel):
 
 class ChatRequest(BaseModel):
     session_id: Optional[str] = None
+    user_id: Optional[str] = None
     message: Optional[str] = None
     action: Optional[ScenarioAction] = None
     clarify_response: Optional[ClarifyResponse] = None

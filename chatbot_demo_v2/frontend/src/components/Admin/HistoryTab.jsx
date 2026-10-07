@@ -143,7 +143,7 @@ export function HistoryTab({ onUpdateBadge }) {
       const params = new URLSearchParams();
       if (startDate) params.append('start_date', startDate);
       if (endDate) params.append('end_date', endDate);
-      if (userFilter) params.append('session_id', userFilter);
+      if (userFilter) params.append('user_id', userFilter);
       if (routeFilter) params.append('route', routeFilter);
       if (feedbackFilter) params.append('feedback', feedbackFilter);
       if (keyword) params.append('keyword', keyword);
@@ -192,7 +192,7 @@ export function HistoryTab({ onUpdateBadge }) {
     }
   }, []);
 
-  // 세션 목록 조회
+  // 세션 목록 조회 (특정 사용자 선택 시 그 사용자의 모든 세션이 일괄 표시됨)
   const fetchSessions = useCallback(async () => {
     setLoadingSessions(true);
     try {
@@ -202,7 +202,7 @@ export function HistoryTab({ onUpdateBadge }) {
       });
       if (startDate) params.append('start_date', startDate);
       if (endDate) params.append('end_date', endDate);
-      if (userFilter) params.append('session_id', userFilter);
+      if (userFilter) params.append('user_id', userFilter);
       if (routeFilter) params.append('route', routeFilter);
       if (feedbackFilter) params.append('feedback', feedbackFilter);
       if (keyword) params.append('keyword', keyword);
@@ -264,7 +264,7 @@ export function HistoryTab({ onUpdateBadge }) {
       });
       if (startDate) params.append('start_date', startDate);
       if (endDate) params.append('end_date', endDate);
-      if (userFilter) params.append('session_id', userFilter);
+      if (userFilter) params.append('user_id', userFilter);
       if (routeFilter) params.append('route', routeFilter);
       if (feedbackFilter) params.append('feedback', feedbackFilter);
       if (keyword) params.append('keyword', keyword);
@@ -454,10 +454,10 @@ export function HistoryTab({ onUpdateBadge }) {
             }}
             title="특정 사용자(유저)의 대화 이력만 분류하여 모아보기"
           >
-            <option value="">👤 전체 사용자 (전체 보기)</option>
+            <option value="">👤 전체 사용자 (모든 세션 보기)</option>
             {userList.map((u) => (
-              <option key={u.session_id} value={u.session_id}>
-                👤 {u.display_name} ({u.turn_count}건 · {u.last_seen ? u.last_seen.slice(5, 16) : ''})
+              <option key={u.user_id} value={u.user_id}>
+                👤 {u.display_name} (세션 {u.session_count || 1}개 · 총 {u.turn_count}건)
               </option>
             ))}
           </select>
@@ -880,55 +880,65 @@ export function HistoryTab({ onUpdateBadge }) {
                         </td>
                         {/* ★ [요청 ⑨] 개별 사용자 ID 컬럼 및 사용자별 질문 모아보기 필터 버튼 */}
                         <td>
-                          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
-                            <button
-                              type="button"
-                              onClick={() => {
-                                if (it.session_id) {
-                                  setUserFilter(it.session_id);
-                                  setPage(1);
-                                  setSessionPage(1);
-                                }
-                              }}
-                              title={`이 사용자(${it.session_id || '알 수 없음'})의 대화만 드롭다운 필터로 분류하여 모아보기`}
-                              style={{
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: '0.3rem',
-                                background: userFilter === it.session_id ? 'rgba(37, 99, 235, 0.2)' : 'rgba(37, 99, 235, 0.08)',
-                                border: userFilter === it.session_id ? '1.5px solid var(--primary)' : '1px solid rgba(37, 99, 235, 0.22)',
-                                borderRadius: '5px',
-                                padding: '0.2rem 0.45rem',
-                                color: 'var(--primary)',
-                                fontSize: '0.74rem',
-                                fontFamily: 'var(--font-mono)',
-                                fontWeight: 700,
-                                cursor: 'pointer',
-                                textAlign: 'left',
-                                width: 'fit-content'
-                              }}
-                            >
-                              <User size={11} />
-                              <span>{it.session_id ? `usr-${it.session_id.slice(0, 8)}` : '익명'}</span>
-                            </button>
-                            {it.session_id && (
-                              <span
-                                onClick={() => {
-                                  setSelectedSessionId(it.session_id);
-                                  setViewMode('sessions');
-                                }}
-                                style={{
-                                  fontSize: '0.67rem',
-                                  color: 'var(--text-muted)',
-                                  textDecoration: 'underline',
-                                  cursor: 'pointer'
-                                }}
-                                title="이 사용자의 전체 대화 타임라인 보기"
-                              >
-                                대화 흐름 보기 ➔
-                              </span>
-                            )}
-                          </div>
+                          {(() => {
+                            const userIdent = it.user_id || it.session_id || '';
+                            const userDisplay = it.user_id
+                              ? (it.user_id.startsWith('usr_') ? it.user_id : `usr-${it.user_id.slice(0, 8)}`)
+                              : (it.session_id ? `usr-${it.session_id.slice(0, 8)}` : '익명');
+
+                            return (
+                              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    if (userIdent) {
+                                      setUserFilter(userIdent);
+                                      setPage(1);
+                                      setSessionPage(1);
+                                    }
+                                  }}
+                                  title={`이 사용자(${userIdent})의 모든 세션 및 대화 모아보기`}
+                                  style={{
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '0.3rem',
+                                    background: userFilter === userIdent ? 'rgba(37, 99, 235, 0.2)' : 'rgba(37, 99, 235, 0.08)',
+                                    border: userFilter === userIdent ? '1.5px solid var(--primary)' : '1px solid rgba(37, 99, 235, 0.22)',
+                                    borderRadius: '5px',
+                                    padding: '0.2rem 0.45rem',
+                                    color: 'var(--primary)',
+                                    fontSize: '0.74rem',
+                                    fontFamily: 'var(--font-mono)',
+                                    fontWeight: 700,
+                                    cursor: 'pointer',
+                                    textAlign: 'left',
+                                    width: 'fit-content'
+                                  }}
+                                >
+                                  <User size={11} />
+                                  <span>{userDisplay}</span>
+                                </button>
+                                {it.session_id && (
+                                  <span
+                                    onClick={() => {
+                                      if (userIdent) setUserFilter(userIdent);
+                                      setSelectedSessionId(it.session_id);
+                                      setViewMode('sessions');
+                                    }}
+                                    style={{
+                                      fontSize: '0.67rem',
+                                      color: 'var(--text-muted)',
+                                      textDecoration: 'underline',
+                                      cursor: 'pointer'
+                                    }}
+                                    title="이 사용자의 세션별 대화 흐름 열람"
+                                  >
+                                    전체 세션 보기 ➔
+                                  </span>
+                                )}
+                              </div>
+                            );
+                          })()}
                         </td>
                         <td>
                           <span className="badge-pill" style={{ fontSize: '0.72rem' }}>

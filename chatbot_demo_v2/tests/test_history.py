@@ -130,6 +130,7 @@ def test_export_history_excel(history_service):
         "번호",
         "상담일시",
         "사용자 ID (유저 구분)",
+        "세션 ID",
         "처리 경로",
         "사용자 질문 (비식별화)",
         "챗봇 응답",
@@ -144,28 +145,30 @@ def test_export_history_excel(history_service):
     # 첫 번째 행 값 검증 (최신순이므로 run_ex_2가 먼저)
     row2 = [cell.value for cell in ws[2]]
     assert row2[0] == 1
-    assert row2[2] == "sess_excel_2"
-    assert row2[3] == "RAG 심층검색"
-    assert "인터넷 속도" in row2[4]
-    assert "👎 불만족" in row2[7]
-    assert row2[8] == "개선안 불명확"
+    assert "usr-" in str(row2[2])
+    assert row2[3] == "sess_excel_2"
+    assert row2[4] == "RAG 심층검색"
+    assert "인터넷 속도" in row2[5]
+    assert "👎 불만족" in row2[8]
+    assert row2[9] == "개선안 불명확"
 
     # 두 번째 행 값 검증 (run_ex_1)
     row3 = [cell.value for cell in ws[3]]
     assert row3[0] == 2
-    assert row3[2] == "sess_excel_1"
-    assert row3[3] == "FAQ 매칭"
-    assert "홍**" in row3[4]
-    assert "010-****-5432" in row3[4]
-    assert "👍 만족" in row3[7]
-    assert "인명" in row3[9] or "전화번호" in row3[9]
+    assert "usr-" in str(row3[2])
+    assert row3[3] == "sess_excel_1"
+    assert row3[4] == "FAQ 매칭"
+    assert "홍**" in row3[5]
+    assert "010-****-5432" in row3[5]
+    assert "👍 만족" in row3[8]
+    assert "인명" in row3[10] or "전화번호" in row3[10]
 
     # 3. 필터 조건(feedback='POSITIVE') 지정 내보내기 검증
     buf_pos = history_service.export_history_excel(feedback="POSITIVE")
     wb_pos = openpyxl.load_workbook(buf_pos)
     ws_pos = wb_pos["대화상담이력"]
     assert ws_pos.max_row == 2  # 헤더 1 + 데이터 1건
-    assert "👍 만족" in ws_pos.cell(row=2, column=8).value
+    assert "👍 만족" in ws_pos.cell(row=2, column=9).value
 
     # 4. 날짜 필터링(start_date, end_date) 지정 내보내기 검증
     from datetime import datetime
