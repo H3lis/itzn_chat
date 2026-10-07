@@ -54,10 +54,14 @@ export function HistoryTab({ onUpdateBadge }) {
   // 필터 공통 상태
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [userFilter, setUserFilter] = useState('');
   const [routeFilter, setRouteFilter] = useState('');
   const [feedbackFilter, setFeedbackFilter] = useState('');
   const [keyword, setKeyword] = useState('');
   const [downloadingExcel, setDownloadingExcel] = useState(false);
+
+  // 등록된 사용자(유저) 고유 목록
+  const [userList, setUserList] = useState([]);
 
   // 분석 요약
   const [analytics, setAnalytics] = useState(null);
@@ -86,6 +90,19 @@ export function HistoryTab({ onUpdateBadge }) {
   useEffect(() => {
     badgeRef.current = onUpdateBadge;
   }, [onUpdateBadge]);
+
+  // 사용자(유저) 고유 목록 조회
+  const fetchUserList = useCallback(async () => {
+    try {
+      const res = await fetch('/api/admin/history/users?limit=100');
+      if (res.ok) {
+        const data = await res.json();
+        setUserList(data.users || []);
+      }
+    } catch (e) {
+      console.error('사용자 목록 로드 실패:', e);
+    }
+  }, []);
 
   // 날짜 프리셋
   const setDatePreset = (preset) => {
@@ -119,13 +136,14 @@ export function HistoryTab({ onUpdateBadge }) {
     setPage(1);
   };
 
-  // 엑셀 다운로드
+  // 엑셀 다운로드 (사용자별 필터 연동)
   const handleExportExcel = async () => {
     try {
       setDownloadingExcel(true);
       const params = new URLSearchParams();
       if (startDate) params.append('start_date', startDate);
       if (endDate) params.append('end_date', endDate);
+      if (userFilter) params.append('session_id', userFilter);
       if (routeFilter) params.append('route', routeFilter);
       if (feedbackFilter) params.append('feedback', feedbackFilter);
       if (keyword) params.append('keyword', keyword);
@@ -184,6 +202,7 @@ export function HistoryTab({ onUpdateBadge }) {
       });
       if (startDate) params.append('start_date', startDate);
       if (endDate) params.append('end_date', endDate);
+      if (userFilter) params.append('session_id', userFilter);
       if (routeFilter) params.append('route', routeFilter);
       if (feedbackFilter) params.append('feedback', feedbackFilter);
       if (keyword) params.append('keyword', keyword);
@@ -213,7 +232,7 @@ export function HistoryTab({ onUpdateBadge }) {
     } finally {
       setLoadingSessions(false);
     }
-  }, [sessionPage, startDate, endDate, routeFilter, feedbackFilter, keyword]);
+  }, [sessionPage, startDate, endDate, userFilter, routeFilter, feedbackFilter, keyword]);
 
   // 선택된 세션 대화 턴 일괄 조회
   const fetchSessionTurns = useCallback(async (sid) => {
@@ -245,6 +264,7 @@ export function HistoryTab({ onUpdateBadge }) {
       });
       if (startDate) params.append('start_date', startDate);
       if (endDate) params.append('end_date', endDate);
+      if (userFilter) params.append('session_id', userFilter);
       if (routeFilter) params.append('route', routeFilter);
       if (feedbackFilter) params.append('feedback', feedbackFilter);
       if (keyword) params.append('keyword', keyword);
@@ -261,12 +281,13 @@ export function HistoryTab({ onUpdateBadge }) {
     } finally {
       setLoadingTable(false);
     }
-  }, [page, startDate, endDate, routeFilter, feedbackFilter, keyword]);
+  }, [page, startDate, endDate, userFilter, routeFilter, feedbackFilter, keyword]);
 
   // 초기화 및 필터 변경 트리거
   useEffect(() => {
     fetchAnalytics();
-  }, [fetchAnalytics]);
+    fetchUserList();
+  }, [fetchAnalytics, fetchUserList]);
 
   useEffect(() => {
     if (viewMode === 'sessions') {
@@ -415,6 +436,32 @@ export function HistoryTab({ onUpdateBadge }) {
             </button>
           </div>
 
+          {/* ★ [사용자 피드백 반영] 유저별 분류 드롭다운 버튼 필터 */}
+          <select
+            className="faq-select"
+            value={userFilter}
+            onChange={(e) => {
+              setUserFilter(e.target.value);
+              setSessionPage(1);
+              setPage(1);
+            }}
+            style={{
+              fontWeight: 700,
+              color: userFilter ? 'var(--primary)' : 'inherit',
+              border: userFilter ? '1.5px solid var(--primary)' : '1px solid var(--border-color)',
+              background: userFilter ? 'rgba(37, 99, 235, 0.06)' : 'inherit',
+              minWidth: '160px'
+            }}
+            title="특정 사용자(유저)의 대화 이력만 분류하여 모아보기"
+          >
+            <option value="">👤 전체 사용자 (전체 보기)</option>
+            {userList.map((u) => (
+              <option key={u.session_id} value={u.session_id}>
+                👤 {u.display_name} ({u.turn_count}건 · {u.last_seen ? u.last_seen.slice(5, 16) : ''})
+              </option>
+            ))}
+          </select>
+
           <select
             className="faq-select"
             value={routeFilter}
@@ -450,8 +497,13 @@ export function HistoryTab({ onUpdateBadge }) {
 
           <button
             className="btn btn-secondary btn-sm"
-            onClick={() => { fetchAnalytics(); if (viewMode === 'sessions') fetchSessions(); else fetchTableHistory(); }}
-            title="새로고침"
+            onClick={() => {
+              fetchAnalytics();
+              fetchUserList();
+              if (viewMode === 'sessions') fetchSessions();
+              else fetchTableHistory();
+            }}
+            title="목록 및 통계 새로고침"
           >
             <RefreshCw size={14} className={loadingSessions || loadingTable ? 'spinner' : ''} />
           </button>
@@ -460,11 +512,11 @@ export function HistoryTab({ onUpdateBadge }) {
             className="btn btn-excel btn-sm"
             onClick={handleExportExcel}
             disabled={downloadingExcel}
-            title="현재 필터 조건으로 엑셀(XLSX) 다운로드"
+            title={userFilter ? `선택된 사용자(${userFilter.slice(0, 8)})의 대화 엑셀(XLSX) 다운로드` : '현재 필터 조건으로 엑셀(XLSX) 다운로드'}
             style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', fontWeight: 600 }}
           >
             {downloadingExcel ? <RefreshCw size={14} className="spinner" /> : <Download size={14} />}
-            <span>엑셀 다운로드</span>
+            <span>{userFilter ? '유저별 엑셀 다운로드' : '엑셀 다운로드'}</span>
           </button>
         </div>
 
@@ -833,17 +885,18 @@ export function HistoryTab({ onUpdateBadge }) {
                               type="button"
                               onClick={() => {
                                 if (it.session_id) {
-                                  setKeyword(it.session_id);
+                                  setUserFilter(it.session_id);
                                   setPage(1);
+                                  setSessionPage(1);
                                 }
                               }}
-                              title={`이 사용자(${it.session_id || '알 수 없음'})의 질문 모아보기`}
+                              title={`이 사용자(${it.session_id || '알 수 없음'})의 대화만 드롭다운 필터로 분류하여 모아보기`}
                               style={{
                                 display: 'inline-flex',
                                 alignItems: 'center',
                                 gap: '0.3rem',
-                                background: 'rgba(37, 99, 235, 0.08)',
-                                border: '1px solid rgba(37, 99, 235, 0.22)',
+                                background: userFilter === it.session_id ? 'rgba(37, 99, 235, 0.2)' : 'rgba(37, 99, 235, 0.08)',
+                                border: userFilter === it.session_id ? '1.5px solid var(--primary)' : '1px solid rgba(37, 99, 235, 0.22)',
                                 borderRadius: '5px',
                                 padding: '0.2rem 0.45rem',
                                 color: 'var(--primary)',

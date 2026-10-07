@@ -1037,6 +1037,16 @@ def submit_chat_feedback(request: Request, body: FeedbackRequest) -> dict:
     return {"ok": True, "run_id": body.run_id, "feedback": fb}
 
 
+@router.get("/api/admin/history/users")
+def admin_get_history_users(request: Request, limit: int = 100) -> dict:
+    """사용자(세션) 고유 목록 및 최근 활동 통계 조회 (관리자 유저별 드롭다운 필터용)."""
+    ctx = _ctx(request)
+    if not ctx.history_service:
+        return {"users": [], "total": 0}
+    users = ctx.history_service.get_user_list(limit=limit)
+    return {"users": users, "total": len(users)}
+
+
 @router.get("/api/admin/history")
 def admin_get_history(
     request: Request,
@@ -1045,10 +1055,11 @@ def admin_get_history(
     route: Optional[str] = None,
     feedback: Optional[str] = None,
     keyword: Optional[str] = None,
+    session_id: Optional[str] = None,
     page: int = 1,
     page_size: int = 20,
 ) -> dict:
-    """대화 이력 다차원 필터링 및 페이징 검색."""
+    """대화 이력 다차원 필터링 및 페이징 검색 (사용자별 분류 지원)."""
     ctx = _ctx(request)
     if not ctx.history_service:
         return {"total": 0, "page": 1, "page_size": page_size, "total_pages": 1, "items": []}
@@ -1058,6 +1069,7 @@ def admin_get_history(
         route=route,
         feedback=feedback,
         keyword=keyword,
+        session_id=session_id,
         page=page,
         page_size=page_size,
     )
@@ -1071,10 +1083,11 @@ def admin_get_history_sessions(
     route: Optional[str] = None,
     feedback: Optional[str] = None,
     keyword: Optional[str] = None,
+    session_id: Optional[str] = None,
     page: int = 1,
     page_size: int = 20,
 ) -> dict:
-    """세션 단위 대화 이력 다차원 필터링 및 페이징 검색 (고객 화면형 대화 뷰 지원)."""
+    """세션 단위 대화 이력 다차원 필터링 및 페이징 검색 (고객 화면형 대화 뷰 및 사용자별 분류 지원)."""
     ctx = _ctx(request)
     if not ctx.history_service:
         return {"total": 0, "page": 1, "page_size": page_size, "total_pages": 1, "sessions": []}
@@ -1084,6 +1097,7 @@ def admin_get_history_sessions(
         route=route,
         feedback=feedback,
         keyword=keyword,
+        session_id=session_id,
         page=page,
         page_size=page_size,
     )
@@ -1107,8 +1121,9 @@ def admin_export_history_excel(
     route: Optional[str] = None,
     feedback: Optional[str] = None,
     keyword: Optional[str] = None,
+    session_id: Optional[str] = None,
 ):
-    """대화 이력 다차원 필터링 결과 엑셀(XLSX) 서식 파일 스트리밍 다운로드."""
+    """대화 이력 다차원 필터링 결과 엑셀(XLSX) 서식 파일 스트리밍 다운로드 (사용자별 필터 연동)."""
     ctx = _ctx(request)
     if not ctx.history_service:
         raise HTTPException(status_code=503, detail="이력 서비스가 초기화되지 않았습니다.")
@@ -1119,17 +1134,19 @@ def admin_export_history_excel(
         route=route,
         feedback=feedback,
         keyword=keyword,
+        session_id=session_id,
     )
 
     from datetime import datetime
+    user_prefix = f"user_{session_id[:8]}_" if session_id else ""
     if start_date and end_date:
-        filename = f"chat_history_{start_date.replace('-', '')}_{end_date.replace('-', '')}.xlsx"
+        filename = f"chat_history_{user_prefix}{start_date.replace('-', '')}_{end_date.replace('-', '')}.xlsx"
     elif start_date:
-        filename = f"chat_history_from_{start_date.replace('-', '')}.xlsx"
+        filename = f"chat_history_{user_prefix}from_{start_date.replace('-', '')}.xlsx"
     elif end_date:
-        filename = f"chat_history_until_{end_date.replace('-', '')}.xlsx"
+        filename = f"chat_history_{user_prefix}until_{end_date.replace('-', '')}.xlsx"
     else:
-        filename = f"chat_history_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx"
+        filename = f"chat_history_{user_prefix}{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx"
 
     headers = {
         "Content-Disposition": f'attachment; filename="{filename}"',

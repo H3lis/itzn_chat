@@ -285,6 +285,35 @@ class HistoryService:
             conn.commit()
             return cur.rowcount > 0
 
+    def get_user_list(self, limit: int = 200) -> list[dict[str, Any]]:
+        """사용자(세션) 고유 목록 및 최근 활동 통계 조회 (관리자 유저별 드롭다운 필터용)."""
+        with self._lock, self._get_conn() as conn:
+            cur = conn.execute(
+                """
+                SELECT 
+                    session_id,
+                    COUNT(*) as turn_count,
+                    MIN(created_at) as first_seen,
+                    MAX(created_at) as last_seen
+                FROM chat_history
+                GROUP BY session_id
+                ORDER BY last_seen DESC
+                LIMIT ?
+                """,
+                (limit,)
+            )
+            users = []
+            for row in cur.fetchall():
+                sid = row["session_id"]
+                short_id = f"usr-{sid[:8]}" if sid else "익명"
+                users.append({
+                    "session_id": sid,
+                    "display_name": short_id,
+                    "turn_count": row["turn_count"],
+                    "last_seen": row["last_seen"],
+                })
+            return users
+
     def search_history(
         self,
         *,
@@ -293,10 +322,11 @@ class HistoryService:
         route: Optional[str] = None,
         feedback: Optional[str] = None,
         keyword: Optional[str] = None,
+        session_id: Optional[str] = None,
         page: int = 1,
         page_size: int = 20,
     ) -> dict[str, Any]:
-        """다차원 필터링 대화 이력 검색 (페이징 지원)."""
+        """다차원 필터링 대화 이력 검색 (페이징 및 사용자별 분류 지원)."""
         where_clauses: list[str] = []
         params: list[Any] = []
 
@@ -312,6 +342,9 @@ class HistoryService:
         if feedback and feedback != "all":
             where_clauses.append("feedback = ?")
             params.append(feedback.upper())
+        if session_id and session_id != "all":
+            where_clauses.append("session_id = ?")
+            params.append(session_id)
         if keyword:
             kw = f"%{keyword.strip()}%"
             where_clauses.append("(masked_question LIKE ? OR final_answer LIKE ? OR session_id LIKE ?)")
@@ -361,10 +394,11 @@ class HistoryService:
         route: Optional[str] = None,
         feedback: Optional[str] = None,
         keyword: Optional[str] = None,
+        session_id: Optional[str] = None,
         page: int = 1,
         page_size: int = 20,
     ) -> dict[str, Any]:
-        """세션 단위 다차원 필터링 및 페이징 검색 (고객 화면형 대화 뷰 지원)."""
+        """세션 단위 다차원 필터링 및 페이징 검색 (고객 화면형 대화 뷰 및 사용자별 분류 지원)."""
         where_clauses: list[str] = []
         params: list[Any] = []
 
@@ -380,6 +414,9 @@ class HistoryService:
         if feedback and feedback != "all":
             where_clauses.append("feedback = ?")
             params.append(feedback.upper())
+        if session_id and session_id != "all":
+            where_clauses.append("session_id = ?")
+            params.append(session_id)
         if keyword:
             kw = f"%{keyword.strip()}%"
             where_clauses.append("(masked_question LIKE ? OR final_answer LIKE ? OR session_id LIKE ?)")
@@ -594,9 +631,10 @@ class HistoryService:
         route: Optional[str] = None,
         feedback: Optional[str] = None,
         keyword: Optional[str] = None,
+        session_id: Optional[str] = None,
         max_rows: int = 10000,
     ) -> io.BytesIO:
-        """필터 조건에 일치하는 대화 이력을 스타일링된 Excel(XLSX) 바이트 버퍼로 내보내기."""
+        """필터 조건에 일치하는 대화 이력을 스타일링된 Excel(XLSX) 바이트 버퍼로 내보내기 (사용자별 구분 지원)."""
         import openpyxl
         from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
         from openpyxl.utils import get_column_letter
@@ -616,6 +654,9 @@ class HistoryService:
         if feedback and feedback != "all":
             where_clauses.append("feedback = ?")
             params.append(feedback.upper())
+        if session_id and session_id != "all":
+            where_clauses.append("session_id = ?")
+            params.append(session_id)
         if keyword:
             kw = f"%{keyword.strip()}%"
             where_clauses.append("(masked_question LIKE ? OR final_answer LIKE ? OR session_id LIKE ?)")
@@ -668,7 +709,7 @@ class HistoryService:
         headers = [
             "번호",
             "상담일시",
-            "세션 ID",
+            "사용자 ID (유저 구분)",
             "처리 경로",
             "사용자 질문 (비식별화)",
             "챗봇 응답",
