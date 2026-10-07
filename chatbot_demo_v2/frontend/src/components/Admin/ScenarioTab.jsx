@@ -214,6 +214,23 @@ export function ScenarioTab({ onUpdateBadge }) {
     return map;
   }, [draftNodes]);
 
+  // ★ [사용자 피드백 반영] 연결 가능한 모든 대상 노드 목록 (버튼명/노드명 중심)
+  const availableTargetNodes = useMemo(() => {
+    if (!draftNodes) return [];
+    return Object.entries(draftNodes)
+      .filter(([nid]) => nid !== nodeForm.node_id) // 자기 자신 제외
+      .map(([nid, n]) => {
+        const displayName = n.name || n.title || incomingParentsMap[nid]?.[0]?.buttonLabel || n.parentOptionLabel || nid;
+        const typeLabel = n.type === 'terminal' ? '종결 답변' : '중간 질문';
+        return {
+          id: nid,
+          name: displayName,
+          typeLabel
+        };
+      })
+      .sort((a, b) => a.name.localeCompare(b.name, 'ko'));
+  }, [draftNodes, nodeForm.node_id, incomingParentsMap]);
+
   // 신규 노드 추가 모달 (사용자가 이름을 직접 정할 수 있도록 지원)
   const handleOpenCreate = () => {
     setModalMode('create');
@@ -1278,52 +1295,70 @@ export function ScenarioTab({ onUpdateBadge }) {
                 </div>
 
                 {nodeForm.type !== 'terminal' && (
-                  /* ★ [요청 ⑤] 노드 수정 시 '하위분기선택지' 대신 '버튼 - 버튼 아이디' 형식으로 수정 */
+                  /* ★ [사용자 피드백 반영] 버튼 아이디 대신 직관적인 대상 노드 이름 선택 드롭다운 제공 */
                   <div className="form-group">
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
-                      <label className="form-label" style={{ margin: 0 }}>
-                        버튼 - 버튼 아이디 ({nodeForm.options.length}개)
+                      <label className="form-label" style={{ margin: 0, fontWeight: 700 }}>
+                        버튼 목록 및 이동할 다음 노드 선택 ({nodeForm.options.length}개)
                       </label>
                       <span style={{ fontSize: '0.74rem', color: 'var(--text-muted)' }}>
-                        버튼명: 사용자 화면 노출 / 버튼 ID: 이동할 노드 ID
+                        버튼 클릭 시 이동할 대상 노드를 이름으로 선택 (또는 캔버스에서 드래그 연결)
                       </span>
                     </div>
-                    {nodeForm.options.map((opt, i) => (
-                      <div key={i} style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr auto', gap: '0.4rem', marginBottom: '0.4rem' }}>
-                        <input
-                          type="text"
-                          className="form-input"
-                          placeholder="버튼 (버튼명: 예: 네, 불이 켜져 있어요)"
-                          value={opt.label}
-                          onChange={(e) => {
-                            const opts = [...nodeForm.options];
-                            opts[i].label = e.target.value;
-                            setNodeForm({ ...nodeForm, options: opts });
-                          }}
-                          required
-                        />
-                        <input
-                          type="text"
-                          className="form-input"
-                          placeholder="버튼 아이디 (연결 노드 ID)"
-                          value={opt.next_node || opt.next_node_id || ''}
-                          onChange={(e) => {
-                            const opts = [...nodeForm.options];
-                            opts[i].next_node = e.target.value;
-                            opts[i].next_node_id = e.target.value;
-                            setNodeForm({ ...nodeForm, options: opts });
-                          }}
-                        />
-                        <button
-                          type="button"
-                          className="btn btn-danger btn-sm"
-                          onClick={() => setNodeForm({ ...nodeForm, options: nodeForm.options.filter((_, idx) => idx !== i) })}
-                          title="선택지 삭제"
-                        >
-                          ×
-                        </button>
-                      </div>
-                    ))}
+                    {nodeForm.options.map((opt, i) => {
+                      const currentNext = opt.next_node || opt.next_node_id || '';
+                      const isUnknownTarget = currentNext && !availableTargetNodes.some((t) => t.id === currentNext);
+
+                      return (
+                        <div key={i} style={{ display: 'grid', gridTemplateColumns: '1.2fr 1.3fr auto', gap: '0.4rem', marginBottom: '0.4rem', alignItems: 'center' }}>
+                          <input
+                            type="text"
+                            className="form-input"
+                            placeholder="버튼명 (예: 네, 불이 켜져 있어요)"
+                            value={opt.label}
+                            onChange={(e) => {
+                              const opts = [...nodeForm.options];
+                              opts[i].label = e.target.value;
+                              setNodeForm({ ...nodeForm, options: opts });
+                            }}
+                            required
+                          />
+                          <select
+                            className="form-select"
+                            value={currentNext}
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              const opts = [...nodeForm.options];
+                              opts[i].next_node = val;
+                              opts[i].next_node_id = val;
+                              setNodeForm({ ...nodeForm, options: opts });
+                            }}
+                            style={{ fontSize: '0.82rem', fontWeight: 600, padding: '0.55rem 0.7rem' }}
+                          >
+                            <option value="">🔗 이동할 다음 노드 선택 (선택 안 하면 캔버스 드래그 연결)</option>
+                            {availableTargetNodes.map((target) => (
+                              <option key={target.id} value={target.id}>
+                                🏷️ {target.name} [{target.typeLabel}]
+                              </option>
+                            ))}
+                            {isUnknownTarget && (
+                              <option value={currentNext}>
+                                🏷️ {currentNext} (연결됨)
+                              </option>
+                            )}
+                          </select>
+                          <button
+                            type="button"
+                            className="btn btn-danger btn-sm"
+                            onClick={() => setNodeForm({ ...nodeForm, options: nodeForm.options.filter((_, idx) => idx !== i) })}
+                            title="선택지 삭제"
+                            style={{ height: '36px', padding: '0 0.6rem' }}
+                          >
+                            ×
+                          </button>
+                        </div>
+                      );
+                    })}
                     <button
                       type="button"
                       className="btn btn-secondary btn-sm"
