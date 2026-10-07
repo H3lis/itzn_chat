@@ -201,12 +201,36 @@ _MAC_PATTERN = re.compile(
     r"\b(?:[0-9A-Fa-f]{2}[:-]){5}[0-9A-Fa-f]{2}\b|\b[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}\b"
 )
 
+# 시스템 ID/크리덴셜 오탐 방지용 비(非)ID 일반 명사, 시스템/상담 기능어 및 동사/형용사 블랙리스트
+_NON_CREDENTIAL_WORDS = {
+    # 일반 명사 및 시스템/상담 기능어
+    "정보", "정보가", "정보는", "정보를", "정보의", "정보에", "정보로",
+    "안내", "안내문", "안내글", "문의", "문의처", "도움", "도움말",
+    "확인", "확인서", "조회", "검색", "찾기", "분실", "분실신고",
+    "오류", "에러", "문제", "상태", "설정", "관리", "접속", "로그인",
+    "보안", "보안관제", "관제", "관제시스템", "시스템", "프로그램",
+    "변경", "수정", "입력", "등록", "생성", "삭제", "초기화", "재설정",
+    "재발급", "발급", "연동", "해제", "잠금", "잠김", "차단", "이용", "사용",
+    "서비스", "화면", "페이지", "사이트", "포털", "센터", "콜센터",
+    "번호", "이름", "성함", "내용", "항목", "구분", "종류", "유형",
+    "방법", "절차", "과정", "이유", "원인", "해결", "조치", "처리",
+    # 동사/형용사/서술어 어근 및 구어체 종결형
+    "몰라", "몰라요", "모름", "모릅니다", "모르는", "모르겠", "모르겠어요", "모르겠습니다",
+    "기억", "기억나", "기억나요", "기억나지", "기억납니다", "기억이",
+    "잊어", "잊었어요", "잊어버려", "잊어버렸", "잊어버렸어요", "잊어버렸습니다",
+    "잃어", "잃었어요", "잃어버려", "잃어버렸", "잃어버렸어요", "잃어버렸습니다",
+    "분실해", "분실했", "분실했어요", "분실했습니다",
+    "알려", "알려줘", "알려주세요", "가르쳐", "가르쳐줘", "가르쳐주세요",
+    "어떻게", "어떡해", "무엇", "뭔지", "뭔가요", "부탁", "부탁드려요", "부탁드립니다",
+    "해주세요", "하나요", "있나요", "없나요", "맞나요", "되나요",
+}
+
 # 시스템 계정 및 비밀번호 / 크리덴셜 (회원 ID, 사용자 아이디, 닉네임, 사번 등 한국어 조사, 요, 만, 인가요 및 한글 닉네임 지원)
 _CREDENTIAL_PATTERN = re.compile(
     r"(?i)(?P<label>회원\s*ID|회원\s*아이디|사용자\s*아이디|아이디|ID|닉네임|별명|계정\s*번호|계정|회원\s*번호|회원번호|신청\s*번호|신청번호|사번|고유\s*식별번호|식별번호|학생증\s*번호|학생증|등록번호|수험\s*번호|수험번호|접수\s*번호|접수번호|인증\s*코드|보안\s*코드|비밀\s*코드|신분\s*확인\s*코드|신분확인코드|PW|비밀번호|패스워드|비번|passwd|password|암호)"
     r"(?P<sep>[은는이가의를을인]?\s*[:#=\-]?\s*|\s+)"
-    r"['\"]?(?P<val>[A-Za-z0-9!@#$%^&*()_\-+=\[\]{}|;:.<>?~가-힣ㄱ-ㅎ]{2,32})['\"]?"
-    r"(?P<tail>(?:입니다|이에요|예요|이다|이고|이며|인데|인데요|거든|거든요|야|다|라고|라|으로|로|요|만|인가요|인지|인지요)?(?=[^\w가-힣]|$|\s))"
+    r"['\"]?(?P<val>[A-Za-z0-9!@#$%^&*()_\-+=\[\]{}|<>ㄱ-ㅎ]+|[가-힣]{2,10})['\"]?"
+    r"(?P<tail>(?:입니다|이에요|예요|이다|이고|이며|인데|인데요|거든|거든요|야|다|라고|라|으로|로|요|만|인가요|인지|인지요)?(?=[^\w가-힣]|$|\s|[.,?!]))"
 )
 
 # 은행 계좌번호 (은행명/계좌 라벨 및 10~16자리 하이픈 연결 번호)
@@ -547,10 +571,12 @@ class PiiMasker:
 
         # 2. 비정형 시스템 ID / 닉네임 / 계정 문맥 검사
         if re.search(r"(?:사용자\s*아이디|회원\s*아이디|아이디|ID|닉네임|계정|학번)\s*[:#=\s이인가요은는이가]", text):
-            # 라벨 뒤에 마스킹되지 않은 2자 이상 단어나 자모가 남아있는 경우
+            # 라벨 뒤에 마스킹되지 않은 2자 이상 단어나 자모가 남아있는 경우 (일반 명사/동사 제외)
             id_cand = re.search(r"(?:아이디|ID|닉네임|계정|학번)\s*(?:[은는이가의를을인]?\s*[:#=\-]?\s*|\s+)(['\"]?[A-Za-z0-9가-힣ㄱ-ㅎ_-]{2,30}['\"]?)", masked)
-            if id_cand and not id_cand.group(1).startswith("*"):
-                return True
+            if id_cand:
+                cand_val = id_cand.group(1).strip("'\"`.,?!~;: ")
+                if not cand_val.startswith("*") and cand_val not in _NON_CREDENTIAL_WORDS and not any(cand_val.startswith(w) for w in _NON_CREDENTIAL_WORDS):
+                    return True
 
         # 3. 비정형 인명 문맥 검사 (기존 3중 방어선)
         non_name_context_pattern = re.compile(
@@ -676,7 +702,9 @@ class PiiMasker:
                 continue
             clean_c = cred.strip("'\"`()[] ")
             if 2 <= len(clean_c) <= 30 and clean_c in masked:
-                if clean_c not in ("아이디", "계정", "ID", "닉네임", "사번", "학번", "비밀번호"):
+                if (clean_c not in ("아이디", "계정", "ID", "닉네임", "사번", "학번", "비밀번호")
+                        and clean_c not in _NON_CREDENTIAL_WORDS
+                        and not any(clean_c.startswith(w) for w in _NON_CREDENTIAL_WORDS)):
                     # ID 마스킹 (첫 글자 보존 또는 전체 마스킹)
                     masked = masked.replace(clean_c, "*" * len(clean_c))
                     detected_types.add("credential")
@@ -927,15 +955,34 @@ class PiiMasker:
         def _mask_credential(m):
             val = m.group("val")
             # 이미 주민번호나 다른 PII로 마스킹된 별표/하이픈/공백만 있는 경우 건너뜀
-            if set(val) <= {"*", "-", " "}:
+            if not val or len(val) < 2 or set(val) <= {"*", "-", " "}:
                 return m.group(0)
+
+            clean_val = val.strip(".,?!~;: ")
+            if not clean_val or len(clean_val) < 2:
+                return m.group(0)
+
             prefix_ctx = masked[max(0, m.start() - 15):m.start()].strip()
             if any(prefix_ctx.endswith(w) for w in ("재고", "재고관리", "제품", "상품", "모델", "부품", "에러", "오류", "VLAN", "vlan", "포트", "port", "장비", "스위치", "라우터", "세션", "프로세스", "process", "트랜잭션", "스레드", "thread")):
                 return m.group(0)
+
+            sep = m.group("sep")
+            # sep에 목적격/소유격 조사(을/를/의)가 포함되어 있는데 따옴표로 감싸진 ID나 영숫자 조합이 아닌 경우 건너뜀
+            if any(p in sep for p in ("을", "를", "의")) and not (m.group(0).startswith(('"', "'")) or re.search(r"[A-Za-z0-9]", clean_val)):
+                return m.group(0)
+
+            # 한글이 포함된 경우 블랙리스트 필터링 (정보가, 몰라요, 찾기 등 오탐 차단)
+            if re.search(r"[가-힣]", clean_val):
+                if clean_val in _NON_CREDENTIAL_WORDS:
+                    return m.group(0)
+                if any(clean_val.startswith(bw) or clean_val.endswith(bw) for bw in _NON_CREDENTIAL_WORDS):
+                    return m.group(0)
+                if clean_val.endswith(("몰라요", "모릅니다", "모름", "알려주세요", "가르쳐주세요", "부탁드립니다", "해주세요", "있나요", "없나요", "맞나요", "되나요", "하세요")):
+                    return m.group(0)
+
             detected.add("credential")
             label = m.group("label")
-            sep = m.group("sep")
-            tail = m.group("tail")
+            tail = m.group("tail") or ""
             return f"{label}{sep}" + ("*" * len(val)) + tail
         masked = _CREDENTIAL_PATTERN.sub(_mask_credential, masked)
 
