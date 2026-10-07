@@ -892,7 +892,7 @@ export function ScenarioVisualTree({
               title="현재 플로우에 새 질문 노드 추가"
             >
               <Plus size={12} style={{ marginRight: '0.15rem' }} />
-              <span>질문 노드</span>
+              <span>질문 추가</span>
             </button>
 
             <button
@@ -911,7 +911,7 @@ export function ScenarioVisualTree({
               title="현재 플로우에 새 최종 답변 노드 추가"
             >
               <Plus size={12} style={{ marginRight: '0.15rem' }} />
-              <span>답변 노드</span>
+              <span>답변 추가</span>
             </button>
           </div>
         )}
@@ -941,7 +941,7 @@ export function ScenarioVisualTree({
             {validationResult.is_valid ? <CheckCircle2 size={13} /> : <AlertTriangle size={13} />}
             <span>
               {validationResult.is_valid
-                ? '무결성 정상'
+                ? '연결 상태 정상'
                 : `오류 ${validationResult.errors?.length || 0}건`}
             </span>
           </button>
@@ -1051,7 +1051,7 @@ export function ScenarioVisualTree({
           <Search size={13} style={{ position: 'absolute', left: '8px', color: 'var(--text-muted)' }} />
           <input
             type="text"
-            placeholder="노드 검색..."
+            placeholder="상담 항목 검색..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             style={{
@@ -1561,12 +1561,12 @@ export function ScenarioVisualTree({
                       flexShrink: 0
                     }}
                   >
-                    {isRoot ? 'START' : isTerminal ? 'FINAL' : theme.badge}
+                    {isRoot ? '상담 시작' : isTerminal ? 'FINAL' : theme.badge}
                   </span>
                   {/* ★ [요청 ⑧] 노드상 아이디 대신 버튼명이 보이게끔 수정 */}
                   {(() => {
                     const buttonName = incomingLabelsMap[nid] || node.parentOptionLabel;
-                    const mainTitle = isRoot ? '시작 (Root)' : (buttonName || node.title || nid);
+                    const mainTitle = isRoot ? '상담 시작' : (buttonName || node.title || nid);
                     const showSubId = !isRoot && mainTitle !== nid;
 
                     return (
@@ -1714,7 +1714,7 @@ export function ScenarioVisualTree({
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem', marginTop: '0.4rem' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <span style={{ fontSize: '0.7rem', fontWeight: 700, color: 'var(--text-muted)' }}>
-                        선택 분기 ({node.options.length}개):
+                        선택 버튼 ({node.options.length}개):
                       </span>
                       {/* ★ [요청 ④] 종결 노드(isTerminal)에서는 추가 질문이나 답변이 추가되지 않도록 차단 */}
                       {!isTerminal && (

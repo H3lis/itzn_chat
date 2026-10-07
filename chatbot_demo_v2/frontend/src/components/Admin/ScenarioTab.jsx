@@ -659,7 +659,7 @@ export function ScenarioTab({ onUpdateBadge }) {
       {/* 1. 상단 헤더 및 메뉴 설명 블록 */}
       <div className="admin-page-header">
         <div className="admin-page-header-top">
-          <h2 className="admin-page-title">대화 시나리오 관리</h2>
+          <h2 className="admin-page-title">장애 상담 흐름 관리</h2>
         </div>
         <p className="admin-page-desc">
           자주 묻는 질문에 버튼 클릭만으로 답변을 받을 수 있도록, 질문-답변이 이어지는 대화 흐름을 트리 구조로 설계하는 공간입니다.
@@ -671,8 +671,8 @@ export function ScenarioTab({ onUpdateBadge }) {
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
           <div className="faq-stat-pill primary">
             <GitFork size={15} />
-            <span>총 시나리오 노드:</span>
-            <span className="val">{data?.total_nodes || 0} 개</span>
+            <span>전체 상담 항목 :</span>
+            <span className="val">{data?.total_nodes || 0}개</span>
           </div>
 
           {validation && (
@@ -691,7 +691,7 @@ export function ScenarioTab({ onUpdateBadge }) {
               {validation.is_valid ? <CheckCircle2 size={14} /> : <AlertTriangle size={14} />}
               <span>
                 {validation.is_valid
-                  ? `트리 무결성 정상 (도달 가능 ${validation.reachable_count}개)`
+                  ? `상담 흐름 상태 : 정상 (도달 가능 ${validation.reachable_count}개)`
                   : `오류 ${validation.errors?.length || 0}건 / 미도달 ${validation.unreachable_count || 0}개`}
               </span>
             </div>
@@ -714,7 +714,7 @@ export function ScenarioTab({ onUpdateBadge }) {
               title="인터랙티브 캔버스에서 노드를 클릭하고 드래그하며 시각적으로 편집"
             >
               <LayoutGrid size={13} style={{ marginRight: '0.3rem' }} />
-              <span>비주얼 캔버스</span>
+              <span>상담 흐름 보기</span>
             </button>
             <button
               type="button"
@@ -729,7 +729,7 @@ export function ScenarioTab({ onUpdateBadge }) {
               title="그룹별 트리 목록과 상세 에디터 2분할 뷰"
             >
               <List size={13} style={{ marginRight: '0.3rem' }} />
-              <span>목록 뷰</span>
+              <span>목록으로 보기</span>
             </button>
           </div>
 
@@ -739,7 +739,7 @@ export function ScenarioTab({ onUpdateBadge }) {
           </button>
           <button className="btn btn-primary btn-sm" onClick={handleOpenCreate}>
             <Plus size={14} />
-            <span>신규 노드 추가</span>
+            <span>상담 항목 추가</span>
           </button>
         </div>
       </div>
@@ -1026,7 +1026,7 @@ export function ScenarioTab({ onUpdateBadge }) {
                       </div>
                       {isRoot ? (
                         <div style={{ fontSize: '0.84rem', color: 'var(--text-sub)', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                          <span>🏁 최상위 시작(Root) 노드입니다. (상위 노드 없음)</span>
+                          <span>🏁 최상위 상담 시작 노드입니다. (상위 노드 없음)</span>
                         </div>
                       ) : parents.length === 0 ? (
                         <div style={{ fontSize: '0.82rem', color: 'var(--rose)', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>

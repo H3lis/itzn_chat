@@ -152,7 +152,7 @@ export function AdminLayout({ onNavigate }) {
             className={`nav-tab-btn ${activeTab === 'scenario' ? 'active' : ''}`}
             onClick={() => setActiveTab('scenario')}
           >
-            <span>🌳 대화 시나리오 관리</span>
+            <span>🌳 장애 상담 흐름 관리</span>
             <span className="tab-badge">{badges.scenario}</span>
           </button>
 
