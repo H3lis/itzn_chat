@@ -223,6 +223,8 @@ _NON_CREDENTIAL_WORDS = {
     "알려", "알려줘", "알려주세요", "가르쳐", "가르쳐줘", "가르쳐주세요",
     "어떻게", "어떡해", "무엇", "뭔지", "뭔가요", "부탁", "부탁드려요", "부탁드립니다",
     "해주세요", "하나요", "있나요", "없나요", "맞나요", "되나요",
+    # 강조 및 일반 부사/수식어 (오탐 방어)
+    "진짜", "진짜로", "정말", "정말로", "도무지", "전혀", "아예", "절대", "그냥", "다시", "따로", "확실히", "직접",
 }
 
 # 시스템 계정 및 비밀번호 / 크리덴셜 (회원 ID, 사용자 아이디, 닉네임, 사번 등 한국어 조사, 요, 만, 인가요 및 한글 닉네임 지원)
@@ -569,13 +571,23 @@ class PiiMasker:
             if re.search(r"\d{4}[- ]?[xX\*]{2,4}", masked) or re.search(r"(?:하나|둘|두|세|네|다섯|여섯|일곱|여덟|아홉|나인)", text):
                 return True
 
-        # 2. 비정형 시스템 ID / 닉네임 / 계정 문맥 검사
-        if re.search(r"(?:사용자\s*아이디|회원\s*아이디|아이디|ID|닉네임|계정|학번)\s*[:#=\s이인가요은는이가]", text):
-            # 라벨 뒤에 마스킹되지 않은 2자 이상 단어나 자모가 남아있는 경우 (일반 명사/동사 제외)
-            id_cand = re.search(r"(?:아이디|ID|닉네임|계정|학번)\s*(?:[은는이가의를을인]?\s*[:#=\-]?\s*|\s+)(['\"]?[A-Za-z0-9가-힣ㄱ-ㅎ_-]{2,30}['\"]?)", masked)
+        # 2. 비정형 시스템 ID / 닉네임 / 계정 / 크리덴셜 문맥 검사 (규칙 미처리 시 sLLM 정밀 판정 위임)
+        cred_label_pattern = re.compile(
+            r"(?:사용자\s*아이디|회원\s*아이디|아이디|ID|id|닉네임|별명|계정\s*번호|계정\s*이름|계정|학번|사번|수험\s*번호|수험번호|접수\s*번호|접수번호|회원\s*번호|회원번호|학생증|비밀번호|패스워드|PW|비번)",
+            re.IGNORECASE
+        )
+        if cred_label_pattern.search(text):
+            # 2-1) 문장 내에 따옴표('...', "...")로 감싸진 2자 이상 값이 남아있는 경우
+            if re.search(r"['\"][A-Za-z0-9가-힣ㄱ-ㅎ_\-.]{2,30}['\"]", masked):
+                return True
+            # 2-2) 라벨 주변에 영문+숫자 혼합 또는 영문/숫자 코드(3자 이상)가 마스킹되지 않은 채 존재하는 경우
+            if re.search(r"(?:[A-Za-z]+[0-9]+|[0-9]+[A-Za-z]+|[A-Za-z_-]{3,20}|\d{5,15})", masked):
+                return True
+            # 2-3) 라벨 뒤에 마스킹되지 않은 2자 이상 단어나 한글 닉네임 후보가 남아있는 경우
+            id_cand = re.search(r"(?:아이디|ID|닉네임|계정|학번|사번|수험번호|접수번호|회원번호|학생증)\s*(?:[은는이가의를을인]?\s*[:#=\-]?\s*|\s+)(['\"]?[A-Za-z0-9가-힣ㄱ-ㅎ_-]{2,30}['\"]?)", masked)
             if id_cand:
                 cand_val = id_cand.group(1).strip("'\"`.,?!~;: ")
-                if not cand_val.startswith("*") and cand_val not in _NON_CREDENTIAL_WORDS and not any(cand_val.startswith(w) for w in _NON_CREDENTIAL_WORDS):
+                if not cand_val.startswith("*"):
                     return True
 
         # 3. 비정형 인명 문맥 검사 (기존 3중 방어선)
@@ -620,13 +632,13 @@ class PiiMasker:
         prompt = (
             "아래 텍스트에서 비식별화가 필요한 개인정보를 JSON 형식으로 정확히 추출하세요:\n"
             "{\n"
-            "  \"names\": [\"사람의 성명 또는 닉네임 (예: 홍길동, 온유 님 등)\"],\n"
-            "  \"credentials\": [\"시스템 ID, 사용자 아이디, 계정명, 학번, 사번\"],\n"
+            "  \"names\": [\"사람의 성명 또는 한글/영문 닉네임 (예: 홍길동, 온유 님 등)\"],\n"
+            "  \"credentials\": [\"시스템 ID, 사용자 아이디, 계정명, 학번, 사번, 수험번호, 접수번호 (예: user123, cute_bunny123, 20201015 등)\"],\n"
             "  \"cards\": [\"신용카드/체크카드 번호 전체 또는 끝 4자리, 구어체 카드 표현\"]\n"
             "}\n\n"
             "■ 엄격한 제외 규칙 (개인정보가 아니므로 절대 추출 금지):\n"
             "1. 일반 감정/가치/자연 명사: '사랑', '보람', '지혜', '노을', '푸름', '우주', '나무', '서울', '행복은행' 등\n"
-            "2. 일반 안내 어휘: '성함', '이름', '아이디', '카드', '번호', '생활기록부', '성적표', '등록금' 등\n"
+            "2. 일반 안내/시스템 어휘: '성함', '이름', '아이디', '계정', '카드', '번호', '정보', '확인', '몰라요', '기억', '보안', '진짜로', '중요한', '등록금' 등\n"
             "3. 해당 범주에 속하는 개인정보가 없으면 빈 배열 [] 로 반환하세요.\n"
             "4. 오직 유효한 JSON 형식만 응답하세요.\n\n"
             f"텍스트: {text}"
@@ -675,6 +687,9 @@ class PiiMasker:
         detected_types: set[str] = set()
         masked = text
 
+        # 2. 시스템 ID / 크리덴셜(credentials) 마스킹
+        raw_creds = list(pii_dict.get("credentials", []))
+
         # 1. 인명(names) 마스킹
         raw_names = pii_dict.get("names", [])
         valid_names = []
@@ -682,6 +697,12 @@ class PiiMasker:
             v = self._filter_name_candidate(n, original_text=original_text or text)
             if v:
                 valid_names.append(v)
+            else:
+                # 영문/숫자 혼합 닉네임인 경우 credentials로 이관하여 마스킹
+                clean_n = str(n).strip("'\"`()[] ")
+                if re.search(r"[A-Za-z0-9]", clean_n) and 2 <= len(clean_n) <= 30:
+                    if clean_n not in _NON_CREDENTIAL_WORDS and not any(clean_n.startswith(w) for w in _NON_CREDENTIAL_WORDS):
+                        raw_creds.append(clean_n)
 
         for name in sorted(set(valid_names), key=len, reverse=True):
             clean_name = name.replace(" ", "")
@@ -695,8 +716,6 @@ class PiiMasker:
                 masked = masked.replace(name, rep)
                 detected_types.add("name")
 
-        # 2. 시스템 ID / 크리덴셜(credentials) 마스킹
-        raw_creds = pii_dict.get("credentials", [])
         for cred in raw_creds:
             if not isinstance(cred, str):
                 continue
