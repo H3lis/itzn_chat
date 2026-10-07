@@ -1295,74 +1295,142 @@ export function ScenarioTab({ onUpdateBadge }) {
                 </div>
 
                 {nodeForm.type !== 'terminal' && (
-                  /* ★ [사용자 피드백 반영] 버튼 아이디 대신 직관적인 대상 노드 이름 선택 드롭다운 제공 */
+                  /* ★ [사용자 피드백 반영] 직접 입력 + 목록 선택 하이브리드 지원 및 카드형 가시성 극대화 */
                   <div className="form-group">
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
-                      <label className="form-label" style={{ margin: 0, fontWeight: 700 }}>
-                        버튼 목록 및 이동할 다음 노드 선택 ({nodeForm.options.length}개)
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                      <label className="form-label" style={{ margin: 0, fontWeight: 700, fontSize: '0.88rem' }}>
+                        버튼 목록 및 이동할 다음 노드 ({nodeForm.options.length}개)
                       </label>
                       <span style={{ fontSize: '0.74rem', color: 'var(--text-muted)' }}>
-                        버튼 클릭 시 이동할 대상 노드를 이름으로 선택 (또는 캔버스에서 드래그 연결)
+                        직접 타이핑하거나 목록에서 선택 가능 (미지정 시 캔버스 드래그 연결)
                       </span>
                     </div>
-                    {nodeForm.options.map((opt, i) => {
-                      const currentNext = opt.next_node || opt.next_node_id || '';
-                      const isUnknownTarget = currentNext && !availableTargetNodes.some((t) => t.id === currentNext);
 
-                      return (
-                        <div key={i} style={{ display: 'grid', gridTemplateColumns: '1.2fr 1.3fr auto', gap: '0.4rem', marginBottom: '0.4rem', alignItems: 'center' }}>
-                          <input
-                            type="text"
-                            className="form-input"
-                            placeholder="버튼명 (예: 네, 불이 켜져 있어요)"
-                            value={opt.label}
-                            onChange={(e) => {
-                              const opts = [...nodeForm.options];
-                              opts[i].label = e.target.value;
-                              setNodeForm({ ...nodeForm, options: opts });
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
+                      {nodeForm.options.map((opt, i) => {
+                        const currentNext = opt.next_node || opt.next_node_id || '';
+                        const matchedNode = availableTargetNodes.find(
+                          (t) => t.id === currentNext || t.name === currentNext
+                        );
+
+                        return (
+                          <div
+                            key={i}
+                            style={{
+                              padding: '0.65rem 0.75rem',
+                              background: 'var(--card-bg, #ffffff)',
+                              borderRadius: '8px',
+                              border: '1px solid var(--border-color, #e2e8f0)',
+                              boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+                              display: 'flex',
+                              flexDirection: 'column',
+                              gap: '0.45rem'
                             }}
-                            required
-                          />
-                          <select
-                            className="form-select"
-                            value={currentNext}
-                            onChange={(e) => {
-                              const val = e.target.value;
-                              const opts = [...nodeForm.options];
-                              opts[i].next_node = val;
-                              opts[i].next_node_id = val;
-                              setNodeForm({ ...nodeForm, options: opts });
-                            }}
-                            style={{ fontSize: '0.82rem', fontWeight: 600, padding: '0.55rem 0.7rem' }}
                           >
-                            <option value="">🔗 이동할 다음 노드 선택 (선택 안 하면 캔버스 드래그 연결)</option>
-                            {availableTargetNodes.map((target) => (
-                              <option key={target.id} value={target.id}>
-                                🏷️ {target.name} [{target.typeLabel}]
-                              </option>
-                            ))}
-                            {isUnknownTarget && (
-                              <option value={currentNext}>
-                                🏷️ {currentNext} (연결됨)
-                              </option>
-                            )}
-                          </select>
-                          <button
-                            type="button"
-                            className="btn btn-danger btn-sm"
-                            onClick={() => setNodeForm({ ...nodeForm, options: nodeForm.options.filter((_, idx) => idx !== i) })}
-                            title="선택지 삭제"
-                            style={{ height: '36px', padding: '0 0.6rem' }}
-                          >
-                            ×
-                          </button>
-                        </div>
-                      );
-                    })}
+                            {/* 1행: 버튼명 입력 + 삭제 버튼 */}
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                              <span style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--text-secondary)', minWidth: '58px' }}>
+                                버튼명:
+                              </span>
+                              <input
+                                type="text"
+                                className="form-input"
+                                placeholder="사용자 화면에 노출될 버튼 이름 (예: 네, 전원이 켜져 있어요)"
+                                value={opt.label}
+                                onChange={(e) => {
+                                  const opts = [...nodeForm.options];
+                                  opts[i].label = e.target.value;
+                                  setNodeForm({ ...nodeForm, options: opts });
+                                }}
+                                style={{ flex: 1, height: '36px' }}
+                                required
+                              />
+                              <button
+                                type="button"
+                                className="btn btn-danger btn-sm"
+                                onClick={() => setNodeForm({ ...nodeForm, options: nodeForm.options.filter((_, idx) => idx !== i) })}
+                                title="버튼 삭제"
+                                style={{ height: '36px', padding: '0 0.65rem', minWidth: '36px' }}
+                              >
+                                ×
+                              </button>
+                            </div>
+
+                            {/* 2행: 이동할 다음 노드 (직접 입력창 + 빠른 드롭다운 선택) */}
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                              <span style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--text-secondary)', minWidth: '58px' }}>
+                                연결 노드:
+                              </span>
+                              {/* ✏️ 직접 텍스트 입력창 (노드 이름 또는 ID 모두 인식) */}
+                              <input
+                                type="text"
+                                className="form-input"
+                                placeholder="노드 이름 또는 ID 직접 타이핑"
+                                value={opt.custom_target_text !== undefined ? opt.custom_target_text : (matchedNode ? matchedNode.name : currentNext)}
+                                onChange={(e) => {
+                                  const val = e.target.value;
+                                  const found = availableTargetNodes.find(
+                                    (t) => t.name.trim().toLowerCase() === val.trim().toLowerCase() || t.id.trim().toLowerCase() === val.trim().toLowerCase()
+                                  );
+                                  const opts = [...nodeForm.options];
+                                  opts[i].custom_target_text = val;
+                                  const targetId = found ? found.id : val.trim();
+                                  opts[i].next_node = targetId;
+                                  opts[i].next_node_id = targetId;
+                                  setNodeForm({ ...nodeForm, options: opts });
+                                }}
+                                style={{ flex: 1, height: '36px', fontSize: '0.84rem' }}
+                              />
+
+                              {/* 📋 빠른 목록 선택 드롭다운 */}
+                              <select
+                                className="form-select"
+                                value={matchedNode ? matchedNode.id : (availableTargetNodes.some(t => t.id === currentNext) ? currentNext : '')}
+                                onChange={(e) => {
+                                  const chosenId = e.target.value;
+                                  const found = availableTargetNodes.find((t) => t.id === chosenId);
+                                  const opts = [...nodeForm.options];
+                                  opts[i].custom_target_text = found ? found.name : '';
+                                  opts[i].next_node = chosenId;
+                                  opts[i].next_node_id = chosenId;
+                                  setNodeForm({ ...nodeForm, options: opts });
+                                }}
+                                style={{ width: '165px', flexShrink: 0, height: '36px', fontSize: '0.8rem', fontWeight: 600 }}
+                              >
+                                <option value="">📋 목록에서 선택</option>
+                                {availableTargetNodes.map((target) => (
+                                  <option key={target.id} value={target.id}>
+                                    {target.name} [{target.typeLabel}]
+                                  </option>
+                                ))}
+                              </select>
+                            </div>
+
+                            {/* 3행: 연결 상태 가시성 실시간 배지 */}
+                            <div style={{ paddingLeft: '63px', fontSize: '0.74rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                              {matchedNode ? (
+                                <span style={{ color: '#059669', background: 'rgba(5, 150, 105, 0.08)', padding: '0.15rem 0.5rem', borderRadius: '4px', fontWeight: 600 }}>
+                                  ✓ 연결 완료: <strong>{matchedNode.name}</strong> ({matchedNode.typeLabel} / ID: {matchedNode.id})
+                                </span>
+                              ) : currentNext ? (
+                                <span style={{ color: '#d97706', background: 'rgba(217, 119, 6, 0.08)', padding: '0.15rem 0.5rem', borderRadius: '4px', fontWeight: 600 }}>
+                                  ✎ 직접 지정 ID: <strong>{currentNext}</strong> (목록 외 노드)
+                                </span>
+                              ) : (
+                                <span style={{ color: 'var(--text-muted)', background: 'rgba(100, 116, 139, 0.08)', padding: '0.15rem 0.5rem', borderRadius: '4px' }}>
+                                  ⚪ 미연결 상태 (저장 후 캔버스에서 노드를 마우스로 드래그하여 연결할 수 있습니다)
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+
                     <button
                       type="button"
                       className="btn btn-secondary btn-sm"
-                      style={{ marginTop: '0.4rem' }}
+                      style={{ marginTop: '0.5rem' }}
                       onClick={() => setNodeForm({ ...nodeForm, options: [...nodeForm.options, { label: '', next_node: '', next_node_id: '' }] })}
                     >
                       + 버튼 추가
