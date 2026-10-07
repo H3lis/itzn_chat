@@ -788,10 +788,10 @@ export function ScenarioTab({ onUpdateBadge }) {
                 <button
                   className="btn btn-primary btn-sm"
                   onClick={() => handleOpenEdit(selectedNode)}
-                  title="선택된 노드 내용 및 분기 옵션 수정"
+                  title="선택된 상담 흐름 내용 및 분기 옵션 수정"
                 >
                   <Edit2 size={13} />
-                  <span>이 노드 수정</span>
+                  <span>상담 흐름 수정</span>
                 </button>
                 {selectedNode.type !== 'terminal' ? (
                   <>
@@ -1140,7 +1140,7 @@ export function ScenarioTab({ onUpdateBadge }) {
         <div className="modal-backdrop active">
           <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '620px' }}>
             <div className="modal-header">
-              <h3>{modalMode === 'create' ? (nodeForm.parentNodeId ? '새 하위 노드 추가' : '새 시나리오 노드 등록') : `노드 수정: ${nodeForm.name || nodeForm.node_id}`}</h3>
+              <h3>{modalMode === 'create' ? (nodeForm.parentNodeId ? '새 하위 노드 추가' : '새 시나리오 노드 등록') : `상담 흐름 수정: ${nodeForm.name || nodeForm.node_id}`}</h3>
               <button className="btn-close" onClick={() => setModalOpen(false)}>×</button>
             </div>
             <form onSubmit={handleSubmitNode}>
