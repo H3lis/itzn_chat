@@ -455,11 +455,14 @@ export function HistoryTab({ onUpdateBadge }) {
             title="특정 사용자(유저)의 대화 이력만 분류하여 모아보기"
           >
             <option value="">👤 전체 사용자 (모든 세션 보기)</option>
-            {userList.map((u) => (
-              <option key={u.user_id} value={u.user_id}>
-                👤 {u.display_name} (세션 {u.session_count || 1}개 · 총 {u.turn_count}건)
-              </option>
-            ))}
+            {userList.map((u) => {
+              const isLegacy = u.user_id === 'usr_legacy_test';
+              return (
+                <option key={u.user_id} value={u.user_id}>
+                  {isLegacy ? '📁 과거 테스트' : `👤 ${u.display_name}`} ({u.session_count || 1}개 세션 · {u.turn_count}건)
+                </option>
+              );
+            })}
           </select>
 
           <select
@@ -584,26 +587,34 @@ export function HistoryTab({ onUpdateBadge }) {
                       onClick={() => setSelectedSessionId(sess.session_id)}
                     >
                       {/* ★ [요청 ⑨] 개별 사용자 식별 ID 뱃지 추가 */}
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
-                        <span style={{
-                          fontFamily: 'var(--font-mono)',
-                          fontSize: '0.72rem',
-                          fontWeight: 700,
-                          color: 'var(--primary)',
-                          background: 'rgba(37, 99, 235, 0.09)',
-                          padding: '0.1rem 0.4rem',
-                          borderRadius: '4px',
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '0.25rem'
-                        }}>
-                          <User size={10} />
-                          <span>usr-{sess.session_id ? sess.session_id.slice(0, 8) : 'unknown'}</span>
-                        </span>
-                        <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>
-                          {sess.turn_count || 1}턴 질의
-                        </span>
-                      </div>
+                      {(() => {
+                        const rawUid = sess.user_id || '';
+                        const isLegacy = rawUid === 'usr_legacy_test';
+                        const displayUid = isLegacy ? '과거 테스트' : (rawUid.startsWith('usr_') ? rawUid : (sess.session_id ? `usr-${sess.session_id.slice(0, 8)}` : 'unknown'));
+                        return (
+                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
+                            <span style={{
+                              fontFamily: isLegacy ? 'inherit' : 'var(--font-mono)',
+                              fontSize: '0.72rem',
+                              fontWeight: 700,
+                              color: isLegacy ? '#b45309' : 'var(--primary)',
+                              background: isLegacy ? '#fef3c7' : 'rgba(37, 99, 235, 0.09)',
+                              border: isLegacy ? '1px solid #fde68a' : 'none',
+                              padding: '0.1rem 0.4rem',
+                              borderRadius: '4px',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '0.25rem'
+                            }}>
+                              <User size={10} />
+                              <span>{displayUid}</span>
+                            </span>
+                            <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>
+                              {sess.turn_count || 1}턴 질의
+                            </span>
+                          </div>
+                        );
+                      })()}
 
                       <div className="admin-session-item-title" title={sess.title}>
                         {sess.title || '(질문 내용 없음)'}
@@ -882,9 +893,12 @@ export function HistoryTab({ onUpdateBadge }) {
                         <td>
                           {(() => {
                             const userIdent = it.user_id || it.session_id || '';
-                            const userDisplay = it.user_id
-                              ? (it.user_id.startsWith('usr_') ? it.user_id : `usr-${it.user_id.slice(0, 8)}`)
-                              : (it.session_id ? `usr-${it.session_id.slice(0, 8)}` : '익명');
+                            const isLegacy = it.user_id === 'usr_legacy_test';
+                            const userDisplay = isLegacy
+                              ? '과거 테스트'
+                              : (it.user_id
+                                ? (it.user_id.startsWith('usr_') ? it.user_id : `usr-${it.user_id.slice(0, 8)}`)
+                                : (it.session_id ? `usr-${it.session_id.slice(0, 8)}` : '익명'));
 
                             return (
                               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
@@ -897,18 +911,18 @@ export function HistoryTab({ onUpdateBadge }) {
                                       setSessionPage(1);
                                     }
                                   }}
-                                  title={`이 사용자(${userIdent})의 모든 세션 및 대화 모아보기`}
+                                  title={`이 사용자(${userDisplay})의 모든 세션 및 대화 모아보기`}
                                   style={{
                                     display: 'inline-flex',
                                     alignItems: 'center',
                                     gap: '0.3rem',
-                                    background: userFilter === userIdent ? 'rgba(37, 99, 235, 0.2)' : 'rgba(37, 99, 235, 0.08)',
-                                    border: userFilter === userIdent ? '1.5px solid var(--primary)' : '1px solid rgba(37, 99, 235, 0.22)',
+                                    background: userFilter === userIdent ? (isLegacy ? '#fef3c7' : 'rgba(37, 99, 235, 0.2)') : (isLegacy ? '#fffbeb' : 'rgba(37, 99, 235, 0.08)'),
+                                    border: userFilter === userIdent ? (isLegacy ? '1.5px solid #d97706' : '1.5px solid var(--primary)') : (isLegacy ? '1px solid #fde68a' : '1px solid rgba(37, 99, 235, 0.22)'),
                                     borderRadius: '5px',
                                     padding: '0.2rem 0.45rem',
-                                    color: 'var(--primary)',
+                                    color: isLegacy ? '#b45309' : 'var(--primary)',
                                     fontSize: '0.74rem',
-                                    fontFamily: 'var(--font-mono)',
+                                    fontFamily: isLegacy ? 'inherit' : 'var(--font-mono)',
                                     fontWeight: 700,
                                     cursor: 'pointer',
                                     textAlign: 'left',

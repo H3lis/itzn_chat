@@ -97,6 +97,16 @@ class HistoryService:
                 pass
             conn.execute("CREATE INDEX IF NOT EXISTS idx_chat_history_user_id ON chat_history (user_id)")
 
+            # 과거 user_id가 누락된 대화 기록(레거시 세션)을 '과거 테스트'로 일괄 자동 마이그레이션
+            try:
+                conn.execute("""
+                    UPDATE chat_history
+                    SET user_id = 'usr_legacy_test'
+                    WHERE user_id IS NULL OR user_id = ''
+                """)
+            except Exception:
+                pass
+
             # 시스템 타임존(UTC) 영향으로 2026-09-22 08:xx대로 오저장된 레코드 KST(+9h) 1회 자동 보정
             try:
                 conn.execute("""
@@ -319,10 +329,15 @@ class HistoryService:
             users = []
             for row in cur.fetchall():
                 uid = row["uid"]
-                short_id = uid if uid.startswith("usr_") else f"usr-{uid[:8]}"
+                if uid == "usr_legacy_test":
+                    display_name = f"과거 테스트 ({row['session_count']}개 세션 / {row['turn_count']}턴)"
+                elif uid.startswith("usr_"):
+                    display_name = uid
+                else:
+                    display_name = f"usr-{uid[:8]}"
                 users.append({
                     "user_id": uid,
-                    "display_name": short_id,
+                    "display_name": display_name,
                     "session_count": row["session_count"],
                     "turn_count": row["turn_count"],
                     "last_seen": row["last_seen"],
@@ -459,13 +474,14 @@ class HistoryService:
             offset = max(0, (page - 1) * page_size)
             query_sql = f"""
                 WITH filtered AS (
-                    SELECT id, session_id, created_at, masked_question, final_answer, route, feedback, pii_types
+                    SELECT id, session_id, user_id, created_at, masked_question, final_answer, route, feedback, pii_types
                     FROM chat_history
                     {where_sql}
                 ),
                 session_agg AS (
                     SELECT 
                         session_id,
+                        MAX(user_id) as user_id,
                         COUNT(*) as turn_count,
                         MIN(created_at) as started_at,
                         MAX(created_at) as last_activity_at,
@@ -479,6 +495,7 @@ class HistoryService:
                 )
                 SELECT 
                     sa.session_id,
+                    sa.user_id,
                     sa.turn_count,
                     sa.started_at,
                     sa.last_activity_at,
@@ -791,7 +808,12 @@ class HistoryService:
             route_text = route_map.get(route_raw, route_raw or "-")
 
             raw_uid = r.get("user_id") or r.get("session_id") or "-"
-            uid_display = raw_uid if raw_uid.startswith("usr_") else f"usr-{raw_uid[:8]}"
+            if raw_uid == "usr_legacy_test":
+                uid_display = "과거 테스트"
+            elif raw_uid.startswith("usr_"):
+                uid_display = raw_uid
+            else:
+                uid_display = f"usr-{raw_uid[:8]}" if raw_uid != "-" else "-"
 
             values = [
                 row_idx - 1,
