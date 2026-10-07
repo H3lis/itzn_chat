@@ -108,15 +108,15 @@ export function ScenarioTab({ onUpdateBadge }) {
 
     // 1. 루트 존재
     if (!nodesMap[targetRootId]) {
-      errors.push(`루트 노드 '${targetRootId}'가 존재하지 않습니다.`);
+      errors.push(`상담 시작 항목 '${targetRootId}'가 존재하지 않습니다.`);
     }
 
-    // 2. 개별 노드 검증
+    // 2. 개별 항목 검증
     for (const [nid, node] of Object.entries(nodesMap)) {
       if (node.type === 'terminal') {
         const hasText = node.answer?.text || node.answer_text;
         if (!hasText) {
-          errors.push(`답변 노드 [${nid}]에 최종 답변 내용이 없습니다.`);
+          errors.push(`답변 항목 [${nid}]에 최종 답변 내용이 없습니다.`);
         }
       }
 
@@ -124,9 +124,9 @@ export function ScenarioTab({ onUpdateBadge }) {
       (node.options || []).forEach((opt, idx) => {
         const nxt = opt.next_node_id || opt.next_node;
         if (!nxt) {
-          errors.push(`노드 [${nid}]의 선택지 "${opt.label || `#${idx + 1}`}"에 연결된 대상 노드가 없습니다.`);
+          errors.push(`항목 [${nid}]의 버튼 "${opt.label || `#${idx + 1}`}"에 연결된 대상 항목이 없습니다.`);
         } else if (!nodesMap[nxt]) {
-          errors.push(`노드 [${nid}]의 선택지가 미존재 노드 '${nxt}'를 가리킵니다.`);
+          errors.push(`항목 [${nid}]의 버튼이 존재하지 않는 항목 '${nxt}'를 가리킵니다.`);
         }
       });
     }
@@ -152,7 +152,7 @@ export function ScenarioTab({ onUpdateBadge }) {
 
     const unreachable = Object.keys(nodesMap).filter((nid) => !reachable.has(nid));
     if (unreachable.length > 0) {
-      warnings.push(`시작(루트)에서 도달할 수 없는 고립 노드가 ${unreachable.length}개 있습니다.`);
+      warnings.push(`상담 시작에서 도달할 수 없는 고립 항목이 ${unreachable.length}개 있습니다.`);
     }
 
     const result = {
@@ -303,13 +303,14 @@ export function ScenarioTab({ onUpdateBadge }) {
     setModalOpen(true);
   };
 
-  // 노드 삭제 (캔버스 드래프트 완전 동기화)
+  // 상담 항목 삭제 (캔버스 드래프트 완전 동기화)
   const handleDeleteNode = (nodeId) => {
     if (nodeId === rootId) {
-      alert('루트 노드(시작점)는 삭제할 수 없습니다.');
+      alert('상담 시작(시작점) 항목은 삭제할 수 없습니다.');
       return;
     }
-    if (!window.confirm(`시나리오 노드 [${nodeId}]을(를) 삭제하시겠습니까?\n이 노드로 연결된 분기 선들도 함께 정리됩니다.`)) {
+    const targetName = draftNodes[nodeId]?.name || nodeId;
+    if (!window.confirm(`상담 항목 [${targetName}]을(를) 삭제하시겠습니까?\n이 항목과 연결된 버튼 선들도 함께 정리됩니다.`)) {
       return;
     }
 
@@ -317,7 +318,7 @@ export function ScenarioTab({ onUpdateBadge }) {
       const nextMap = { ...prev };
       delete nextMap[nodeId];
 
-      // 이 노드를 가리키던 다른 노드들의 연결 선(next_node_id) 자동 해제
+      // 이 항목을 가리키던 다른 항목들의 연결 선(next_node_id) 자동 해제
       Object.keys(nextMap).forEach((nid) => {
         const n = nextMap[nid];
         if (n.options && Array.isArray(n.options)) {
@@ -341,20 +342,20 @@ export function ScenarioTab({ onUpdateBadge }) {
     if (selectedNodeId === nodeId) setSelectedNodeId(null);
   };
 
-  // 노드 저장 제출 (캔버스 드래프트 완전 동기화)
+  // 상담 항목 저장 제출 (캔버스 드래프트 완전 동기화)
   const handleSubmitNode = (e) => {
     e.preventDefault();
     const cleanId = nodeForm.node_id.trim();
     const cleanText = nodeForm.text.trim();
     if (!cleanId || !cleanText) {
-      alert('노드 ID와 안내 텍스트는 필수입니다.');
+      alert('항목 ID와 안내 텍스트는 필수입니다.');
       return;
     }
 
-    // 신규 노드 등록(create) 시 중복 ID 사전 검사
+    // 신규 상담 항목 등록(create) 시 중복 ID 사전 검사
     if (modalMode === 'create') {
       if (draftNodes[cleanId] || (data?.nodes && data.nodes[cleanId])) {
-        alert(`이미 동일한 노드 ID '${cleanId}'가 시나리오 트리에 존재합니다.\n다른 고유한 ID를 입력해주세요.`);
+        alert(`이미 동일한 항목 ID '${cleanId}'가 상담 흐름에 존재합니다.\n다른 고유한 ID를 입력해주세요.`);
         return;
       }
     }
@@ -581,22 +582,22 @@ export function ScenarioTab({ onUpdateBadge }) {
     return true;
   }, [rootId, validateDraft]);
 
-  // ★ 5. 무결성 정상 판정 후 전체 트리 일괄 최종 저장 핸들러
+  // ★ 5. 무결성 정상 판정 후 상담 흐름 일괄 최종 저장 핸들러
   const handleSaveTree = useCallback(async () => {
     const val = validateDraft(draftNodes, rootId);
     if (!val.is_valid) {
-      alert(`[저장 불가] 트리에 해결되지 않은 무결성 결함이 있습니다.\n\n오류 목록:\n• ${val.errors.join('\n• ')}\n\n모든 노드와 분기를 올바르게 연결한 후 다시 저장해주세요.`);
+      alert(`[저장 불가] 상담 흐름에 해결되지 않은 연결 오류가 있습니다.\n\n오류 목록:\n• ${val.errors.join('\n• ')}\n\n모든 상담 항목과 버튼을 올바르게 연결한 후 다시 저장해주세요.`);
       return;
     }
 
     if (val.unreachable_count > 0) {
-      const proceed = window.confirm(`주의: 시작(루트)에서 도달할 수 없는 고립 노드가 ${val.unreachable_count}개 있습니다.\n이대로 저장을 진행하시겠습니까?`);
+      const proceed = window.confirm(`주의: 상담 시작에서 도달할 수 없는 고립 항목이 ${val.unreachable_count}개 있습니다.\n이대로 저장을 진행하시겠습니까?`);
       if (!proceed) return;
     }
 
     setSavingTree(true);
     try {
-      // 전송 전 모든 노드 정규화 (터미널 노드의 answer.source = 'scenario_ppt' 보장)
+      // 전송 전 모든 항목 정규화 (터미널 노드의 answer.source = 'scenario_ppt' 보장)
       const cleanNodes = {};
       Object.keys(draftNodes).forEach((nid) => {
         const n = { ...draftNodes[nid] };
@@ -627,7 +628,7 @@ export function ScenarioTab({ onUpdateBadge }) {
 
       if (res.ok) {
         const json = await res.json();
-        alert(`🎉 시나리오 트리가 성공적으로 저장 및 즉시 반영되었습니다!\n(총 ${json.total_nodes || Object.keys(draftNodes).length}개 노드 가동 중)`);
+        alert(`🎉 상담 흐름이 성공적으로 저장 및 즉시 반영되었습니다!\n(총 ${json.total_nodes || Object.keys(draftNodes).length}개 항목 가동 중)`);
         setIsDirty(false);
         fetchTree();
       } else {
@@ -643,7 +644,7 @@ export function ScenarioTab({ onUpdateBadge }) {
 
   // ★ 6. 변경사항 취소 및 서버 원본 리셋
   const handleResetDraft = useCallback(() => {
-    if (window.confirm('작업 중인 변경사항을 모두 취소하고 서버의 원래 시나리오 트리 상태로 되돌리시겠습니까?')) {
+    if (window.confirm('작업 중인 변경사항을 모두 취소하고 서버의 원래 상담 흐름 상태로 되돌리시겠습니까?')) {
       const originalNodes = data?.nodes || {};
       setDraftNodes(originalNodes);
       setIsDirty(false);
@@ -798,7 +799,7 @@ export function ScenarioTab({ onUpdateBadge }) {
                     <button
                       className="btn btn-emerald btn-sm"
                       onClick={() => handleOpenCreateChild(selectedNode, 'terminal')}
-                      title="이 노드의 하위 최종 해결 답변 노드('처음으로' 리셋 포함) 생성"
+                      title="이 항목의 하위 최종 해결 답변('처음으로' 리셋 포함) 생성"
                       style={{
                         background: 'rgba(5, 150, 105, 0.15)',
                         color: 'var(--emerald)',
@@ -812,7 +813,7 @@ export function ScenarioTab({ onUpdateBadge }) {
                     <button
                       className="btn btn-secondary btn-sm"
                       onClick={() => handleOpenCreateChild(selectedNode, 'question')}
-                      title="이 노드의 하위 질문/분기 노드 생성"
+                      title="이 항목의 하위 질문/선택 항목 생성"
                       style={{ fontWeight: 600 }}
                     >
                       <Plus size={13} />
@@ -822,7 +823,7 @@ export function ScenarioTab({ onUpdateBadge }) {
                 ) : (
                   <span style={{ fontSize: '0.78rem', color: 'var(--emerald)', fontWeight: 700, padding: '0.2rem 0.55rem', background: 'rgba(5, 150, 105, 0.1)', borderRadius: '6px', border: '1px solid rgba(5, 150, 105, 0.3)', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
                     <Lock size={12} />
-                    <span>최종 상담 종결 노드 (하위 분기 불가)</span>
+                    <span>최종 상담 종결 항목 (하위 추가 불가)</span>
                   </span>
                 )}
               </div>
@@ -852,7 +853,7 @@ export function ScenarioTab({ onUpdateBadge }) {
       ) : (
         /* 기존 2분할 목록 뷰 */
         <div style={{ display: 'grid', gridTemplateColumns: 'minmax(340px, 420px) minmax(0, 1fr)', gap: '1.25rem', width: '100%', minWidth: 0, alignItems: 'start' }}>
-          {/* 좌측: 그룹별 노드 탐색기 */}
+          {/* 좌측: 그룹별 항목 탐색기 */}
           <div style={{ background: 'var(--bg-card)', padding: '1.25rem', borderRadius: '12px', border: '1px solid var(--border-color)', height: '680px', display: 'flex', flexDirection: 'column', minWidth: 0, boxSizing: 'border-box' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
               <div style={{ position: 'relative', flex: 1 }}>
@@ -861,7 +862,7 @@ export function ScenarioTab({ onUpdateBadge }) {
                   type="text"
                   className="faq-search-input"
                   style={{ width: '100%', paddingLeft: '32px' }}
-                  placeholder="노드 ID 또는 질문 검색…"
+                  placeholder="상담 항목 또는 질문 검색…"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                 />
@@ -870,9 +871,9 @@ export function ScenarioTab({ onUpdateBadge }) {
 
             <div style={{ flex: 1, overflowY: 'auto', paddingRight: '0.35rem' }}>
               {loading ? (
-                <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>시나리오 데이터를 불러오는 중…</div>
+                <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>상담 흐름 데이터를 불러오는 중…</div>
               ) : Object.keys(groups).length === 0 ? (
-                <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>등록된 시나리오 노드가 없습니다.</div>
+                <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>등록된 상담 항목이 없습니다.</div>
               ) : (
                 Object.entries(groups).map(([grpName, nodeIds]) => {
                   const filtered = nodeIds.filter((nid) => {
@@ -985,7 +986,7 @@ export function ScenarioTab({ onUpdateBadge }) {
                         color: selectedNode.type === 'terminal' ? 'var(--emerald)' : 'var(--primary)',
                         border: selectedNode.type === 'terminal' ? '1px solid var(--emerald)' : '1px solid var(--primary)'
                       }}>
-                        {selectedNode.type === 'terminal' ? '최종 답변 노드' : '질문/분기 노드'}
+                        {selectedNode.type === 'terminal' ? '최종 답변 항목' : '질문/선택 항목'}
                       </span>
                     </div>
                     <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '0.25rem', display: 'flex', gap: '0.8rem', flexWrap: 'wrap' }}>
@@ -1000,7 +1001,7 @@ export function ScenarioTab({ onUpdateBadge }) {
                       <span>수정</span>
                     </button>
                     {selectedNode.node_id !== rootId && (
-                      <button className="btn btn-danger btn-sm" onClick={() => handleDeleteNode(selectedNode.node_id || selectedNode.id)}>
+                      <button className="btn btn-danger btn-sm" onClick={() => handleDeleteNode(selectedNode.node_id || selectedNode.id)} title="이 상담 항목 삭제">
                         <Trash2 size={13} />
                       </button>
                     )}
@@ -1022,15 +1023,15 @@ export function ScenarioTab({ onUpdateBadge }) {
                     }}>
                       <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--primary)', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                         <CornerUpLeft size={14} />
-                        <span>상위 경로 (이전 노드 및 유입 버튼)</span>
+                        <span>상위 경로 (이전 항목 및 유입 버튼)</span>
                       </div>
                       {isRoot ? (
                         <div style={{ fontSize: '0.84rem', color: 'var(--text-sub)', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                          <span>🏁 최상위 상담 시작 노드입니다. (상위 노드 없음)</span>
+                          <span>🏁 최상위 상담 시작 항목입니다. (상위 항목 없음)</span>
                         </div>
                       ) : parents.length === 0 ? (
                         <div style={{ fontSize: '0.82rem', color: 'var(--rose)', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                          <span>⚠️ 현재 이 노드로 연결된 상위 노드가 없습니다 (고립 노드).</span>
+                          <span>⚠️ 현재 이 항목으로 연결된 상위 항목이 없습니다 (고립 항목).</span>
                         </div>
                       ) : (
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
@@ -1060,7 +1061,7 @@ export function ScenarioTab({ onUpdateBadge }) {
                                 className="btn btn-secondary btn-sm"
                                 onClick={() => setSelectedNodeId(p.parentId)}
                                 style={{ fontSize: '0.74rem', padding: '0.15rem 0.5rem', display: 'flex', alignItems: 'center', gap: '0.2rem' }}
-                                title="상위 노드로 이동"
+                                title="상위 항목으로 이동"
                               >
                                 <ArrowUp size={11} />
                                 <span>상위로 이동</span>
@@ -1128,28 +1129,28 @@ export function ScenarioTab({ onUpdateBadge }) {
               </div>
             ) : (
               <div style={{ textAlign: 'center', padding: '6rem 1rem', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-                좌측 목록에서 노드를 클릭하면 상세 안내 문구와 하위 분기 내역을 확인할 수 있습니다.
+                좌측 목록에서 항목을 클릭하면 상세 안내 문구와 하위 선택 버튼 내역을 확인할 수 있습니다.
               </div>
             )}
           </div>
         </div>
       )}
 
-      {/* 노드 생성/수정 모달 - ★ [요청 ⑦] X 버튼 또는 취소 버튼을 누를 때만 닫히도록 backdrop onClick 제거 */}
+      {/* 상담 항목 생성/수정 모달 - ★ [요청 ⑦] X 버튼 또는 취소 버튼을 누를 때만 닫히도록 backdrop onClick 제거 */}
       {modalOpen && (
         <div className="modal-backdrop active">
           <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '620px' }}>
             <div className="modal-header">
-              <h3>{modalMode === 'create' ? (nodeForm.parentNodeId ? '새 하위 노드 추가' : '새 시나리오 노드 등록') : `상담 흐름 수정: ${nodeForm.name || nodeForm.node_id}`}</h3>
+              <h3>{modalMode === 'create' ? (nodeForm.parentNodeId ? '새 하위 상담 항목 추가' : '새 상담 항목 등록') : `상담 흐름 수정: ${nodeForm.name || nodeForm.node_id}`}</h3>
               <button className="btn-close" onClick={() => setModalOpen(false)}>×</button>
             </div>
             <form onSubmit={handleSubmitNode}>
               <div className="modal-body" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                {/* ★ [사용자 피드백 반영] 의미 없는 ID 대신 사용자가 직접 노드 이름을 지정할 수 있는 전용 필드 */}
+                {/* ★ [사용자 피드백 반영] 의미 없는 ID 대신 사용자가 직접 이름을 지정할 수 있는 전용 필드 */}
                 <div className="form-group" style={{ margin: 0 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.3rem' }}>
                     <label className="form-label" style={{ margin: 0, fontWeight: 700, fontSize: '0.88rem', color: 'var(--text-main)' }}>
-                      🏷️ 노드 이름 (사용자 지정 명칭)
+                      🏷️ 상담 항목 이름 (사용자 지정 명칭)
                     </label>
                     <span style={{ fontSize: '0.72rem', color: 'var(--primary)', fontWeight: 600 }}>
                       * 캔버스와 관리 화면에 노출될 명칭
@@ -1164,7 +1165,7 @@ export function ScenarioTab({ onUpdateBadge }) {
                       setNodeForm((prev) => ({
                         ...prev,
                         name: newName,
-                        // 신규 생성 시 노드 이름에 맞춰 부모 버튼명 및 내부 식별 ID 자동 동기화
+                        // 신규 생성 시 항목 이름에 맞춰 부모 버튼명 및 내부 식별 ID 자동 동기화
                         parentOptionLabel: modalMode === 'create' && (!prev.parentOptionLabel || prev.parentOptionLabel === prev.name) ? newName : prev.parentOptionLabel,
                         node_id: modalMode === 'create'
                           ? generateNodeIdFromLabel(newName, prev.parentNodeId || prev.scenario_id, prev.type)
@@ -1189,11 +1190,11 @@ export function ScenarioTab({ onUpdateBadge }) {
                   }}>
                     <div style={{ fontSize: '0.8rem', color: 'var(--primary)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                       <GitFork size={14} />
-                      <span>부모 노드 <code>{nodeForm.parentNodeId}</code>의 하위 단계로 자동 연결됩니다.</span>
+                      <span>상위 항목 <code>{nodeForm.parentNodeId}</code>의 하위 단계로 자동 연결됩니다.</span>
                     </div>
                     <div className="form-group" style={{ margin: 0 }}>
                       <label className="form-label" style={{ fontSize: '0.74rem', marginBottom: '0.2rem' }}>
-                        부모 노드에 노출될 선택지 버튼 명칭
+                        상위 항목에 노출될 선택지 버튼 명칭
                       </label>
                       <input
                         type="text"
@@ -1231,7 +1232,7 @@ export function ScenarioTab({ onUpdateBadge }) {
                 </div>
 
                 <div className="form-group">
-                  <label className="form-label">노드 유형</label>
+                  <label className="form-label">항목 유형 (종류)</label>
                   <select
                     className="faq-select"
                     style={{ width: '100%', fontWeight: 600 }}
@@ -1265,8 +1266,8 @@ export function ScenarioTab({ onUpdateBadge }) {
                       });
                     }}
                   >
-                    <option value="terminal">✅ 최종 답변 및 조치 노드 (Terminal - '처음으로' 리셋 포함)</option>
-                    <option value="question">❓ 중간 단계 노드 (Question - 하위 분기 및 질문)</option>
+                    <option value="terminal">✅ 최종 답변 및 조치 항목 (해결 안내 및 종결)</option>
+                    <option value="question">❓ 중간 안내 항목 (하위 선택 버튼 및 추가 질문)</option>
                   </select>
                 </div>
 
@@ -1356,16 +1357,16 @@ export function ScenarioTab({ onUpdateBadge }) {
                               </button>
                             </div>
 
-                            {/* 2행: 이동할 다음 노드 (직접 입력창 + 빠른 드롭다운 선택) */}
+                            {/* 2행: 이동할 다음 항목 (직접 입력창 + 빠른 드롭다운 선택) */}
                             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                               <span style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--text-secondary)', minWidth: '58px' }}>
-                                연결 노드:
+                                연결 항목:
                               </span>
-                              {/* ✏️ 직접 텍스트 입력창 (노드 이름 또는 ID 모두 인식) */}
+                              {/* ✏️ 직접 텍스트 입력창 (항목 이름 또는 ID 모두 인식) */}
                               <input
                                 type="text"
                                 className="form-input"
-                                placeholder="노드 이름 또는 ID 직접 타이핑"
+                                placeholder="항목 이름 또는 ID 직접 타이핑"
                                 value={opt.custom_target_text !== undefined ? opt.custom_target_text : (matchedNode ? matchedNode.name : currentNext)}
                                 onChange={(e) => {
                                   const val = e.target.value;
@@ -1414,11 +1415,11 @@ export function ScenarioTab({ onUpdateBadge }) {
                                 </span>
                               ) : currentNext ? (
                                 <span style={{ color: '#d97706', background: 'rgba(217, 119, 6, 0.08)', padding: '0.15rem 0.5rem', borderRadius: '4px', fontWeight: 600 }}>
-                                  ✎ 직접 지정 ID: <strong>{currentNext}</strong> (목록 외 노드)
+                                  ✎ 직접 지정 ID: <strong>{currentNext}</strong> (목록 외 항목)
                                 </span>
                               ) : (
                                 <span style={{ color: 'var(--text-muted)', background: 'rgba(100, 116, 139, 0.08)', padding: '0.15rem 0.5rem', borderRadius: '4px' }}>
-                                  ⚪ 미연결 상태 (저장 후 캔버스에서 노드를 마우스로 드래그하여 연결할 수 있습니다)
+                                  ⚪ 미연결 상태 (저장 후 캔버스에서 마우스로 선을 끌어 연결할 수 있습니다)
                                 </span>
                               )}
                             </div>
@@ -1474,8 +1475,8 @@ export function ScenarioTab({ onUpdateBadge }) {
             >
               <div className="modal-body" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', lineHeight: 1.5, margin: 0 }}>
-                  새로운 상담 주제(플로우)를 생성하면 <strong>시작 루트 노드에 바로가기 분기 버튼</strong>과
-                  <strong>첫 번째 시작 질문 노드</strong>가 자동으로 생성되어 캔버스에 배치됩니다.
+                  새로운 상담 주제(플로우)를 생성하면 <strong>상담 시작에 바로가기 선택 버튼</strong>과
+                  <strong>첫 번째 시작 질문 항목</strong>이 자동으로 생성되어 캔버스에 배치됩니다.
                 </p>
 
                 <div className="form-group">
@@ -1492,7 +1493,7 @@ export function ScenarioTab({ onUpdateBadge }) {
                     style={{ fontFamily: 'var(--font-mono)' }}
                   />
                   <small style={{ fontSize: '0.74rem', color: 'var(--text-muted)' }}>
-                    노드 ID의 접두사로 사용됩니다. (영문 소문자, 숫자, 언더스코어 권장)
+                    항목 ID의 접두사로 사용됩니다. (영문 소문자, 숫자, 언더스코어 권장)
                   </small>
                 </div>
 
@@ -1509,7 +1510,7 @@ export function ScenarioTab({ onUpdateBadge }) {
                     required
                   />
                   <small style={{ fontSize: '0.74rem', color: 'var(--text-muted)' }}>
-                    루트 질문 노드 및 플로우 탭에 표시될 직관적인 이름입니다.
+                    상담 시작 버튼 및 플로우 탭에 표시될 직관적인 이름입니다.
                   </small>
                 </div>
 

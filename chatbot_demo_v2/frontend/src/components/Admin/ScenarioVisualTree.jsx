@@ -606,11 +606,11 @@ export function ScenarioVisualTree({
     if (connectingPort) {
       e.stopPropagation();
       if (connectingPort.sourceId === targetId) {
-        alert('자기 자신 노드로는 바로 연결할 수 없습니다. 다른 분기 노드를 선택해주세요.');
+        alert('자기 자신 항목으로는 바로 연결할 수 없습니다. 다른 상담 항목을 선택해주세요.');
         return;
       }
       if (targetId === rootId) {
-        alert('시작 루트 노드로 역연결할 수 없습니다.');
+        alert('상담 시작 항목으로는 역연결할 수 없습니다.');
         return;
       }
       if (onConnectNodes) {
@@ -846,7 +846,7 @@ export function ScenarioVisualTree({
               whiteSpace: 'nowrap',
               boxShadow: '0 2px 6px rgba(99, 102, 241, 0.35)'
             }}
-            title="새로운 대화 주제 플로우 생성 (루트 노드 연동 및 시작 노드 생성)"
+            title="새로운 대화 주제 플로우 생성 (상담 시작 연동 및 시작 항목 생성)"
           >
             <Plus size={13} />
             <span>+ 새 플로우 추가</span>
@@ -854,7 +854,7 @@ export function ScenarioVisualTree({
         )}
       </div>
 
-      {/* 2. 상단 우측: 캔버스 작업 툴바 (노드 추가, 무결성 배지, 최종 저장) */}
+      {/* 2. 상단 우측: 캔버스 작업 툴바 (항목 추가, 무결성 배지, 최종 저장) */}
       <div
         className="canvas-filter-bar"
         style={{
@@ -873,7 +873,7 @@ export function ScenarioVisualTree({
           boxShadow: '0 4px 16px rgba(0, 0, 0, 0.06)'
         }}
       >
-        {/* 🚀 2. 신규 노드 추가 버튼 (질문 / 답변) */}
+        {/* 🚀 2. 신규 항목 추가 버튼 (질문 / 답변) */}
         {onCreateVisualNode && (
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}>
             <button
@@ -889,7 +889,7 @@ export function ScenarioVisualTree({
                 border: '1px solid rgba(37, 99, 235, 0.25)',
                 borderRadius: '6px'
               }}
-              title="현재 플로우에 새 질문 노드 추가"
+              title="현재 플로우에 새 질문 추가"
             >
               <Plus size={12} style={{ marginRight: '0.15rem' }} />
               <span>질문 추가</span>
@@ -908,7 +908,7 @@ export function ScenarioVisualTree({
                 border: '1px solid rgba(5, 150, 105, 0.25)',
                 borderRadius: '6px'
               }}
-              title="현재 플로우에 새 최종 답변 노드 추가"
+              title="현재 플로우에 새 최종 답변 추가"
             >
               <Plus size={12} style={{ marginRight: '0.15rem' }} />
               <span>답변 추가</span>
@@ -936,7 +936,7 @@ export function ScenarioVisualTree({
               border: validationResult.is_valid ? '1px solid rgba(16, 185, 129, 0.3)' : '1px solid rgba(244, 63, 94, 0.3)',
               cursor: 'pointer'
             }}
-            title="실시간 트리 무결성 검증 상태 (클릭 시 세부 항목 확인)"
+            title="실시간 상담 흐름 연결 상태 (클릭 시 세부 항목 확인)"
           >
             {validationResult.is_valid ? <CheckCircle2 size={13} /> : <AlertTriangle size={13} />}
             <span>
@@ -965,7 +965,7 @@ export function ScenarioVisualTree({
               }}
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem', fontWeight: 700 }}>
-                <span>트리 무결성 진단 리포트</span>
+                <span>상담 흐름 연결 진단 리포트</span>
                 <button
                   type="button"
                   onClick={() => setShowValidationPopover(false)}
@@ -978,7 +978,7 @@ export function ScenarioVisualTree({
               {validationResult.is_valid ? (
                 <div style={{ color: 'var(--emerald)', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                   <CheckCircle2 size={16} />
-                  <span>모든 노드와 선택지가 완벽하게 연결되어 있습니다!</span>
+                  <span>모든 상담 항목과 선택 버튼이 완벽하게 연결되어 있습니다!</span>
                 </div>
               ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
@@ -1171,7 +1171,7 @@ export function ScenarioVisualTree({
           <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
             <span>🔗</span>
             <span>
-              선택지 <strong>"{connectingPort.label}"</strong>를 연결할 <strong>대상 노드</strong>를 클릭하세요.
+              선택 버튼 <strong>"{connectingPort.label}"</strong>를 연결할 <strong>대상 항목</strong>을 클릭하세요.
             </span>
           </span>
           <button
@@ -1229,10 +1229,10 @@ export function ScenarioVisualTree({
         <button
           className="canvas-control-btn btn btn-secondary btn-sm"
           onClick={() => focusOnNode(rootId || 'root')}
-          title="루트 노드로 화면 이동"
+          title="상담 시작 항목으로 화면 이동"
         >
           <Compass size={14} style={{ marginRight: '0.2rem' }} />
-          <span>루트 맞춤</span>
+          <span>시작 맞춤</span>
         </button>
       </div>
 
@@ -1525,7 +1525,7 @@ export function ScenarioVisualTree({
                     cursor: isConnectTargetCandidate ? 'pointer' : 'default',
                     transition: 'all 0.15s ease'
                   }}
-                  title={isConnectTargetCandidate ? '클릭하여 이 노드로 선 연결' : '자식 노드 진입점'}
+                  title={isConnectTargetCandidate ? '클릭하여 이 항목으로 선 연결' : '하위 항목 진입점'}
                 />
               )}
 
@@ -1609,7 +1609,7 @@ export function ScenarioVisualTree({
                     <button
                       type="button"
                       onClick={(e) => handleToggleCollapse(e, nid)}
-                      title={isCollapsed ? '하위 노드 펼치기' : '하위 노드 접기'}
+                      title={isCollapsed ? '하위 항목 펼치기' : '하위 항목 접기'}
                       style={{
                         background: 'rgba(255, 255, 255, 0.4)',
                         border: 'none',
@@ -1630,7 +1630,7 @@ export function ScenarioVisualTree({
                       e.stopPropagation();
                       onEditNode(node);
                     }}
-                    title="노드 편집"
+                    title="상담 흐름 수정"
                     style={{
                       background: 'none',
                       border: 'none',
@@ -1648,7 +1648,7 @@ export function ScenarioVisualTree({
                         e.stopPropagation();
                         onDeleteNode(nid);
                       }}
-                      title="노드 삭제"
+                      title="상담 항목 삭제"
                       style={{
                         background: 'none',
                         border: 'none',
@@ -1738,7 +1738,7 @@ export function ScenarioVisualTree({
                               alignItems: 'center',
                               gap: '0.15rem'
                             }}
-                            title="이 분기에 연결될 최종 해결 답변 노드('처음으로' 리셋 포함) 생성"
+                            title="이 버튼에 연결될 최종 해결 답변('처음으로' 리셋 포함) 생성"
                           >
                             <Plus size={10} />
                             답변 추가
@@ -1762,7 +1762,7 @@ export function ScenarioVisualTree({
                               alignItems: 'center',
                               gap: '0.15rem'
                             }}
-                            title="이 분기에 연결될 추가 하위 질문 노드 생성"
+                            title="이 버튼에 연결될 추가 하위 질문 항목 생성"
                           >
                             <Plus size={10} />
                             질문 추가
@@ -1904,7 +1904,7 @@ export function ScenarioVisualTree({
                                 alignItems: 'center',
                                 justifyContent: 'center'
                               }}
-                              title={hasNext ? '다른 대상 노드로 선 다시 잇기 (클릭)' : '다음 대상 노드와 선 연결 (클릭)'}
+                              title={hasNext ? '다른 대상 항목으로 선 다시 잇기 (클릭)' : '다음 대상 항목과 선 연결 (클릭)'}
                             >
                               <div style={{ width: '4px', height: '4px', borderRadius: '50%', background: '#ffffff' }} />
                             </button>
@@ -1930,7 +1930,7 @@ export function ScenarioVisualTree({
                       fontWeight: 600
                     }}
                   >
-                    + 하위 {node.options?.length || 0}개 분기 접힘 (클릭하여 펼치기)
+                    + 하위 {node.options?.length || 0}개 버튼 접힘 (클릭하여 펼치기)
                   </div>
                 )}
               </div>
