@@ -461,6 +461,7 @@ class PiiMasker:
         timeout_s: Optional[float] = None,
         sllm_provider: str = "ollama",
         gemini_api_key: Optional[str] = None,
+        strategy_mode: Optional[str] = None,
     ):
         self.backend = backend
         self.sllm_model = sllm_model or os.environ.get("PII_SLLM_MODEL", "qwen2.5:3b")
@@ -468,6 +469,7 @@ class PiiMasker:
         self.timeout_s = float(timeout_s if timeout_s is not None else os.environ.get("PII_SLLM_TIMEOUT_S", 15.0))
         self.sllm_provider = sllm_provider
         self.gemini_api_key = gemini_api_key or os.environ.get("GEMINI_API_KEY", "")
+        self.strategy_mode = (strategy_mode or os.environ.get("PII_STRATEGY_MODE", "enhanced")).strip().lower()
         self._kiwi = None
         self._kiwi_checked = False
 
@@ -551,10 +553,11 @@ class PiiMasker:
                 clean = clean[:-len(p)].strip()
 
         if 1 <= len(clean) <= 4:
-            # 1글자 외자 성명의 경우 원문에 성함/이름/학생/존칭 문맥이 있을 때만 허용
+            # 1글자 외자 성명의 경우 enhanced(Phase 6) 모드에서만 원문 문맥(성함/이름/학생/존칭) 확인 후 허용
             if len(clean) == 1:
-                if original_text and re.search(rf"(?:성함|본명|이름|학생|선생).*?['\"]?{re.escape(clean)}['\"]?", original_text):
-                    return clean
+                if self.strategy_mode in ("enhanced", "phase6"):
+                    if original_text and re.search(rf"(?:성함|본명|이름|학생|선생).*?['\"]?{re.escape(clean)}['\"]?", original_text):
+                        return clean
                 return None
 
             # 명백한 비(非)인명 명사 및 지명/기관 블랙리스트
@@ -578,9 +581,10 @@ class PiiMasker:
                 return clean
         return None
 
-    @staticmethod
-    def _check_ambiguous_pii_context(text: str, masked: str) -> bool:
+    def _check_ambiguous_pii_context(self, text: str, masked: str) -> bool:
         """규칙 엔진이 처리하지 못한 10대 목표 PII 카테고리 문맥을 정밀 감지하여 sLLM 호출 트리거 (1ms 미만)."""
+        is_enhanced = getattr(self, "strategy_mode", "enhanced") in ("enhanced", "phase6")
+
         # 1. 비정형 신용카드 / 결제 번호 문맥
         if re.search(r"(?:신용카드|체크카드|카드\s*번호|카드|삼성페이|결제)", text):
             if re.search(r"(?:끝|뒤|마지막|앞|번호|자리가?)\s*[:#=\s]?[^\d\n]{0,10}?\d{4}", masked):
@@ -641,8 +645,10 @@ class PiiMasker:
             r"['\"]([가-힣]{1,4})['\"]\s*(?:의\s*의미|이라는\s*(?:이름의\s*)?(?:브랜드|가치|소재|옷|키워드|동네)|쪽\s*코스|동네|지역|관련|색깔|색상|색|벽지|씨가\s*아니라|이\s*맞을까요|서류|이\s*많이|라인|명칭)"
         )
 
-        # 8-1. 따옴표('...', "...")로 강조된 1~4글자 한글 단어가 마스킹되지 않은 채 존재하는 경우
-        quoted_matches = re.finditer(r"['\"]([가-힣]{1,4})['\"]", masked)
+        char_min = 1 if is_enhanced else 2
+
+        # 8-1. 따옴표('...', "...")로 강조된 한글 단어가 마스킹되지 않은 채 존재하는 경우
+        quoted_matches = re.finditer(rf"['\"]([가-힣]{{{char_min},4}})['\"]", masked)
         for qm in quoted_matches:
             w = qm.group(1)
             full_match_start = qm.start()
@@ -656,8 +662,8 @@ class PiiMasker:
             if w not in _SAFE_NOUNS:
                 return True
 
-        # 8-2. 인명 유도 핵심 키워드가 포함되어 있고 뒤에 실제 1~4글자 이름 후보가 나오는 경우 (1글자 외자 성명 포함)
-        name_cue_matches = re.findall(r"(?:성함|본명|이름)이?\s*(?:은|는|이|가|:)?\s*['\"]?([가-힣]{1,4})['\"]?", text)
+        # 8-2. 인명 유도 핵심 키워드가 포함되어 있고 뒤에 실제 이름 후보가 나오는 경우
+        name_cue_matches = re.findall(rf"(?:성함|본명|이름)이?\s*(?:은|는|이|가|:)?\s*['\"]?([가-힣]{{{char_min},4}})['\"]?", text)
         for w in name_cue_matches:
             if w in ("어떻게", "무엇", "혹시", "다시", "맞는지"):
                 continue
@@ -666,13 +672,17 @@ class PiiMasker:
             if w not in _SAFE_NOUNS and w in masked:
                 return True
 
-        # 8-3. 학교·공공·문화 직책 및 호칭 결합(선생님, 교사, 주무관, 학생, 화가 등) 앞 단어가 마스킹되지 않은 경우
-        school_titles_cue = (
-            "선생님", "선생", "교사", "주무관", "장학사", "교장", "교감", "행정실장",
-            "조교", "교수", "강사", "연구원", "학생", "학우", "학부모", "사서", "영양사", "보건교사",
-            "화가", "작가", "배우", "감독", "팀장", "과장", "기사", "원장", "씨", "님", "에게", "한테", "이라고", "라고\\s*하"
-        )
-        suffix_matches = re.findall(r"([가-힣]{1,4})\s*(?:" + "|".join(school_titles_cue) + r")", text)
+        # 8-3. 호칭/직책 결합 앞 단어가 마스킹되지 않은 경우
+        if is_enhanced:
+            titles_cue = (
+                "선생님", "선생", "교사", "주무관", "장학사", "교장", "교감", "행정실장",
+                "조교", "교수", "강사", "연구원", "학생", "학우", "학부모", "사서", "영양사", "보건교사",
+                "화가", "작가", "배우", "감독", "팀장", "과장", "기사", "원장", "씨", "님", "에게", "한테", "이라고", "라고\\s*하"
+            )
+        else:
+            titles_cue = ("선생님", "선생", "교사", "팀장", "과장", "기사", "원장", "씨", "님", "에게", "한테", "이라고")
+
+        suffix_matches = re.findall(r"([가-힣]{1,4})\s*(?:" + "|".join(titles_cue) + r")", text)
         non_name_stems = ("고객", "회원", "담당자", "강사", "사장", "교수", "선생", "대리", "과장", "팀장", "원장", "꽃", "보리")
         for w in suffix_matches:
             if w in _TITLES or w in non_name_stems:
@@ -682,9 +692,10 @@ class PiiMasker:
             if w not in _SAFE_NOUNS and w in masked:
                 return True
 
-        # 8-4. 구어체 주격/서술 인명 패턴 (단비가, 슬기가, 해솔 화가, 다솜이, 수원이랑, 달님이, 단비, 등)
-        if re.search(r"(?:단비|다솜|노을|가을|겨울|라임|나라|해솔|달님|슬기|보람|사랑|지혜|하늘|별|여름|우주|바다|산|봄|초롱|아름|새롬|보리|소리|하나|두리|세찬|찬솔|마루|누리|나래|가람|예솔|한결|다온|로운|시우|도윤|하준|은우|서아|이서|지아)\s*(?:이|가|이랑|입니다|은|는|에게|한테|,|\s|선생|교사|주무관|학생|님|씨)", text):
-            return True
+        # 8-4. 구어체 주격/서술 인명 패턴 (enhanced 모드 전용)
+        if is_enhanced:
+            if re.search(r"(?:단비|다솜|노을|가을|겨울|라임|나라|해솔|달님|슬기|보람|사랑|지혜|하늘|별|여름|우주|바다|산|봄|초롱|아름|새롬|보리|소리|하나|두리|세찬|찬솔|마루|누리|나래|가람|예솔|한결|다온|로운|시우|도윤|하준|은우|서아|이서|지아)\s*(?:이|가|이랑|입니다|은|는|에게|한테|,|\s|선생|교사|주무관|학생|님|씨)", text):
+                return True
 
         # 8-5. 영문 병기 인명 패턴 (예: 김민준(Kim Minjun))
         if re.search(r"[가-힣]{2,4}\s*\([A-Za-z\s]+\)", text):
@@ -692,9 +703,39 @@ class PiiMasker:
 
         return False
 
-    def _extract_pii_with_sllm(self, text: str) -> dict[str, list[str]]:
-        """sLLM(Gemini 또는 Ollama)에 요청하여 10대 목표 PII 카테고리를 JSON 형태로 정밀 다중 추출."""
-        prompt = (
+    def _get_sllm_prompt(self, text: str) -> str:
+        """운영 전략 모드(standard/Phase 5 vs enhanced/Phase 6)에 따라 최적화된 프롬프트 반환."""
+        if getattr(self, "strategy_mode", "enhanced") in ("standard", "phase5"):
+            # Phase 5: 표준 균형 모드 프롬프트 (정밀도 90.93%, F1 93.33% 최고치)
+            return (
+                "아래 텍스트에서 비식별화(마스킹)가 필요한 실제 개인정보를 JSON 형식으로 정확히 추출하세요.\n\n"
+                "{\n"
+                '  "names": [],\n'
+                '  "credentials": [],\n'
+                '  "cards": [],\n'
+                '  "phones": [],\n'
+                '  "addresses": [],\n'
+                '  "emails": [],\n'
+                '  "birth_or_rrn": []\n'
+                "}\n\n"
+                "■ 추출 대상 카테고리 정의:\n"
+                "- names: 사람의 실제 성명, 이름 (호칭 '님', '씨' 및 조사 제외하고 순수 이름만 추출)\n"
+                "- credentials: 시스템 ID, 계정명, 학번, 사번, 수험번호, 접수번호\n"
+                "- cards: 신용카드/체크카드 번호, 카드 끝자리 표현\n"
+                "- phones: 전화번호 또는 구어체 전화번호 표현 구절\n"
+                "- addresses: 빌라명, 아파트명, 건물명 등 상세 거주지 주소\n"
+                "- emails: 이메일 주소\n"
+                "- birth_or_rrn: 한글 음차 생년월일, 주민등록번호\n\n"
+                "■ 엄격한 제외 규칙:\n"
+                "1. 텍스트 원문에 실제로 존재하는 단어/표현만 추출하세요.\n"
+                "2. 일반 안내/시스템 어휘('성함', '이름', '아이디', '계정', '카드', '번호', '주소', '메일', '정보', '확인', '몰라요', '기억')는 단독 추출 금지.\n"
+                "3. 해당 범주가 텍스트에 없으면 반드시 빈 배열 [] 로 비워두세요.\n"
+                "4. 오직 유효한 JSON 형식만 응답하세요.\n\n"
+                f"텍스트: {text}"
+            )
+
+        # Phase 6: 도메인 고도화 모드 프롬프트 (인명 98.18%, 여권 92.56%, 문맥 판단 지침 탑재)
+        return (
             "아래 텍스트에서 비식별화(마스킹)가 필요한 실제 개인정보를 JSON 형식으로 정확히 추출하세요.\n\n"
             "{\n"
             '  "names": [],\n'
@@ -736,6 +777,10 @@ class PiiMasker:
             "4. 오직 유효한 JSON 형식만 응답하세요.\n\n"
             f"텍스트: {text}"
         )
+
+    def _extract_pii_with_sllm(self, text: str) -> dict[str, list[str]]:
+        """sLLM(Gemini 또는 Ollama)에 요청하여 10대 목표 PII 카테고리를 JSON 형태로 정밀 다중 추출."""
+        prompt = self._get_sllm_prompt(text)
 
         use_gemini = (self.sllm_provider == "gemini")
 

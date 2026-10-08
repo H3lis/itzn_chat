@@ -1224,6 +1224,7 @@ def admin_get_settings(request: Request) -> AdminSettingsResponse:
         pii_sllm_model=s.pii_sllm_model,
         pii_sllm_host=s.pii_sllm_host,
         pii_sllm_timeout_s=s.pii_sllm_timeout_s,
+        pii_strategy_mode=getattr(s, "pii_strategy_mode", "enhanced"),
         ollama_host=os.environ.get("OLLAMA_HOST", "http://34.64.143.198:11434"),
         reranker_endpoint=os.environ.get("RERANKER_ENDPOINT", "http://34.64.143.198:8008/rerank"),
         scenario_match_backend=s.scenario_match_backend,
@@ -1301,6 +1302,13 @@ def admin_update_settings(request: Request, body: AdminSettingsUpdateRequest) ->
         updates_for_settings["pii_sllm_timeout_s"] = body.pii_sllm_timeout_s
         os.environ["PII_SLLM_TIMEOUT_S"] = str(body.pii_sllm_timeout_s)
         _update_env_file("PII_SLLM_TIMEOUT_S", str(body.pii_sllm_timeout_s))
+
+    if body.pii_strategy_mode is not None:
+        updates_for_settings["pii_strategy_mode"] = body.pii_strategy_mode
+        os.environ["PII_STRATEGY_MODE"] = body.pii_strategy_mode
+        _update_env_file("PII_STRATEGY_MODE", body.pii_strategy_mode)
+        if hasattr(ctx, "pii_masker") and ctx.pii_masker:
+            ctx.pii_masker.strategy_mode = body.pii_strategy_mode
 
     if body.ollama_host is not None:
         os.environ["OLLAMA_HOST"] = body.ollama_host

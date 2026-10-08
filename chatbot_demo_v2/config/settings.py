@@ -112,9 +112,10 @@ class Settings:
 
     # PII 비식별화
     pii_backend: str              # "sllm" | "rule"
-    pii_sllm_model: str           # e.g. "qwen2.5:1.5b"
+    pii_sllm_model: str           # e.g. "qwen2.5:3b"
     pii_sllm_host: str            # e.g. "http://127.0.0.1:11434"
-    pii_sllm_timeout_s: float     # e.g. 3.0
+    pii_sllm_timeout_s: float     # e.g. 15.0
+    pii_strategy_mode: str        # "standard" (Phase 5) | "enhanced" (Phase 6)
 
     # LangSmith
     langsmith_tracing: bool
@@ -239,7 +240,8 @@ def load_settings(env: Mapping[str, str] | None = None) -> Settings:
         pii_backend=_get(env, "PII_BACKEND", "rule"),
         pii_sllm_model=_get(env, "PII_SLLM_MODEL", "qwen2.5:3b"),
         pii_sllm_host=_get(env, "PII_SLLM_HOST", "http://127.0.0.1:11434"),
-        pii_sllm_timeout_s=_get_float(env, "PII_SLLM_TIMEOUT_S", 3.0),
+        pii_sllm_timeout_s=_get_float(env, "PII_SLLM_TIMEOUT_S", 15.0),
+        pii_strategy_mode=_get(env, "PII_STRATEGY_MODE", "enhanced"),
         langsmith_tracing=_get_bool(env, "LANGSMITH_TRACING", False),
         langsmith_project=_get(env, "LANGSMITH_PROJECT", "school-network-chatbot-demo-v2"),
         langsmith_endpoint=_get(env, "LANGSMITH_ENDPOINT", ""),

@@ -37,6 +37,7 @@ export function SettingsTab({ onUpdateBadge }) {
     web_search_daily_budget: 100,
 
     pii_backend: 'sllm',
+    pii_strategy_mode: 'enhanced',
     pii_sllm_model: 'qwen2.5:3b',
     pii_sllm_host: 'http://34.64.143.198:11434',
     pii_sllm_timeout_s: 8.0,
@@ -140,6 +141,7 @@ export function SettingsTab({ onUpdateBadge }) {
         web_search_model: form.web_search_model,
         web_search_daily_budget: Number(form.web_search_daily_budget),
         pii_backend: form.pii_backend,
+        pii_strategy_mode: form.pii_strategy_mode,
         pii_sllm_model: form.pii_sllm_model,
         pii_sllm_host: form.pii_sllm_host,
         pii_sllm_timeout_s: Number(form.pii_sllm_timeout_s),
@@ -441,6 +443,119 @@ export function SettingsTab({ onUpdateBadge }) {
                 <div>
                   <div style={{ fontWeight: 600, color: 'var(--text-main)' }}>정규식 및 Kiwi 형태소 분석 전용</div>
                   <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>0ms 초고속 정규식 마스킹 (GPU 미가용 시 안전 모드)</div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          {/* 비식별화 전략 모드 (Phase 5 표준 vs Phase 6 도메인 특화 고도화) */}
+          <div className="form-group" style={{ gridColumn: '1 / -1' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+              <label className="form-label" style={{ fontWeight: 600, margin: 0, display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                <span>비식별화 전략 모드 (알고리즘 및 프롬프트 선택)</span>
+                <span style={{ fontSize: '0.72rem', padding: '0.15rem 0.5rem', borderRadius: '4px', background: 'rgba(59, 130, 246, 0.15)', color: '#60a5fa', fontWeight: 600 }}>
+                  실시간 즉시 전환
+                </span>
+              </label>
+              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                회의 및 운영 정책에 맞춰 원클릭 스위칭 가능
+              </span>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              {/* Option 1: Phase 5 (표준 고정밀 모드) */}
+              <label style={{
+                padding: '1rem',
+                borderRadius: '10px',
+                border: (form.pii_strategy_mode || 'enhanced') === 'standard' ? '2px solid #3b82f6' : '1px solid rgba(255, 255, 255, 0.1)',
+                background: (form.pii_strategy_mode || 'enhanced') === 'standard' ? 'rgba(59, 130, 246, 0.08)' : 'rgba(255, 255, 255, 0.02)',
+                cursor: 'pointer',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '0.6rem',
+                transition: 'all 0.2s ease',
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                    <input
+                      type="radio"
+                      name="pii_strategy_mode"
+                      value="standard"
+                      checked={(form.pii_strategy_mode || 'enhanced') === 'standard'}
+                      onChange={(e) => setForm({ ...form, pii_strategy_mode: e.target.value })}
+                      style={{ accentColor: '#3b82f6' }}
+                    />
+                    <span style={{ fontWeight: 700, fontSize: '0.92rem', color: 'var(--text-main)' }}>
+                      5번째: 표준 고정밀 모드 (Phase 5)
+                    </span>
+                  </div>
+                  <span style={{ fontSize: '0.7rem', padding: '0.15rem 0.45rem', borderRadius: '4px', background: 'rgba(59, 130, 246, 0.2)', color: '#93c5fd', fontWeight: 600 }}>
+                    가독성 균형형
+                  </span>
+                </div>
+
+                <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
+                  <span style={{ fontSize: '0.72rem', padding: '0.15rem 0.4rem', borderRadius: '4px', background: 'rgba(255,255,255,0.06)', color: 'var(--text-main)' }}>
+                    F1 <b>93.33%</b>
+                  </span>
+                  <span style={{ fontSize: '0.72rem', padding: '0.15rem 0.4rem', borderRadius: '4px', background: 'rgba(255,255,255,0.06)', color: 'var(--text-main)' }}>
+                    정밀도 <b>90.93%</b>
+                  </span>
+                  <span style={{ fontSize: '0.72rem', padding: '0.15rem 0.4rem', borderRadius: '4px', background: 'rgba(255,255,255,0.06)', color: 'var(--text-main)' }}>
+                    미탐 <b>171건</b>
+                  </span>
+                </div>
+
+                <div style={{ fontSize: '0.76rem', color: 'var(--text-muted)', lineHeight: '1.4' }}>
+                  기본 10대 트리거 + 표준 균형 프롬프트. 일반 상담 문장의 과잉 마스킹 방어가 철저하여 <b>대화 가독성 유지에 최적</b>
+                </div>
+              </label>
+
+              {/* Option 2: Phase 6 (도메인 특화 고도화 모드) */}
+              <label style={{
+                padding: '1rem',
+                borderRadius: '10px',
+                border: (form.pii_strategy_mode || 'enhanced') === 'enhanced' ? '2px solid var(--emerald)' : '1px solid rgba(255, 255, 255, 0.1)',
+                background: (form.pii_strategy_mode || 'enhanced') === 'enhanced' ? 'rgba(16, 185, 129, 0.08)' : 'rgba(255, 255, 255, 0.02)',
+                cursor: 'pointer',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '0.6rem',
+                transition: 'all 0.2s ease',
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                    <input
+                      type="radio"
+                      name="pii_strategy_mode"
+                      value="enhanced"
+                      checked={(form.pii_strategy_mode || 'enhanced') === 'enhanced'}
+                      onChange={(e) => setForm({ ...form, pii_strategy_mode: e.target.value })}
+                      style={{ accentColor: 'var(--emerald)' }}
+                    />
+                    <span style={{ fontWeight: 700, fontSize: '0.92rem', color: 'var(--text-main)' }}>
+                      6번째: 도메인 특화 고도화 모드 (Phase 6)
+                    </span>
+                  </div>
+                  <span style={{ fontSize: '0.7rem', padding: '0.15rem 0.45rem', borderRadius: '4px', background: 'rgba(16, 185, 129, 0.2)', color: '#6ee7b7', fontWeight: 600 }}>
+                    보안·학교 특화
+                  </span>
+                </div>
+
+                <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
+                  <span style={{ fontSize: '0.72rem', padding: '0.15rem 0.4rem', borderRadius: '4px', background: 'rgba(255,255,255,0.06)', color: 'var(--text-main)' }}>
+                    인명 탐지 <b>98.18%</b>
+                  </span>
+                  <span style={{ fontSize: '0.72rem', padding: '0.15rem 0.4rem', borderRadius: '4px', background: 'rgba(255,255,255,0.06)', color: 'var(--text-main)' }}>
+                    여권 탐지 <b>92.56%</b>
+                  </span>
+                  <span style={{ fontSize: '0.72rem', padding: '0.15rem 0.4rem', borderRadius: '4px', background: 'rgba(255,255,255,0.06)', color: 'var(--text-main)' }}>
+                    미탐 <b>185건</b>
+                  </span>
+                </div>
+
+                <div style={{ fontSize: '0.76rem', color: 'var(--text-muted)', lineHeight: '1.4' }}>
+                  학교 직책 60종 + 구어체 주격 인명('단비가', '슬기가', 외자 '별', 화가 등) 문맥 인지 프롬프트. <b>개인정보 유출 원천 방어에 최적</b>
                 </div>
               </label>
             </div>

@@ -118,6 +118,7 @@ def evaluate_split(
     split_name: str = "validation",
     output_result_path: Path | None = None,
     backend: str = "hybrid",
+    strategy_mode: str | None = None,
     use_cleaned_labels: bool = True,
     workers: int = 8,
 ) -> dict[str, Any]:
@@ -132,7 +133,9 @@ def evaluate_split(
     if not target_rel_paths:
         raise ValueError(f"매니페스트에 '{split_name}' 목록이 비어있습니다.")
 
-    print(f"\n🚀 [{split_name.upper()} 비식별화 검증 시작 (엔진: {backend.upper()})] 총 {len(target_rel_paths):,}건 평가 중...")
+    selected_strategy = (strategy_mode or os.environ.get("PII_STRATEGY_MODE", "enhanced")).strip().lower()
+
+    print(f"\n🚀 [{split_name.upper()} 비식별화 검증 시작 (엔진: {backend.upper()} | 전략: {selected_strategy.upper()})] 총 {len(target_rel_paths):,}건 평가 중...")
 
     relabel_dict = {}
     if use_cleaned_labels:
@@ -152,6 +155,7 @@ def evaluate_split(
         sllm_host=os.environ.get("OLLAMA_HOST", "http://127.0.0.1:11434"),
         timeout_s=float(os.environ.get("PII_SLLM_TIMEOUT_S", "15.0")),
         gemini_api_key=os.environ.get("GEMINI_API_KEY", ""),
+        strategy_mode=selected_strategy,
     )
     masker.warmup()
 
@@ -298,6 +302,8 @@ def evaluate_split(
 
     report = {
         "split": split_name,
+        "backend": backend,
+        "strategy_mode": selected_strategy,
         "evaluated_at": time.strftime("%Y-%m-%d %H:%M:%S"),
         "total_samples": total_eval,
         "elapsed_seconds": round(total_time, 2),
@@ -343,8 +349,9 @@ def evaluate_split(
 
     # 터미널 출력용 성적표
     print("\n" + "=" * 65)
-    print(f"🎯 [{split_name.upper()} 비식별화 검증 성적표]")
+    print(f"🎯 [{split_name.upper()} 비식별화 검증 성적표 - {selected_strategy.upper()} 모드]")
     print("=" * 65)
+    print(f" • 비식별화 전략 모드: {selected_strategy.upper()} (Phase {'6 - 도메인 고도화' if selected_strategy == 'enhanced' else '5 - 표준 고정밀'})")
     print(f" • 총 평가 건수: {total_eval:,}건 (소요 시간: {total_time:.2f}초, 초당 {report['throughput_samples_per_sec']}건)")
     print(f" • 정확도 (Accuracy)  : {report['metrics']['accuracy']:>6.2f}%  ((TP+TN)/Total)")
     print(f" • 정밀도 (Precision) : {report['metrics']['precision']:>6.2f}%  (TP/(TP+FP) - 오탐 방어율)")
@@ -375,6 +382,7 @@ def main():
     parser.add_argument("--eval-test", action="store_true", help="test_set(80%) 평가 수행")
     parser.add_argument("--split-and-eval-val", action="store_true", help="분할 후 validation 평가 수행")
     parser.add_argument("--backend", type=str, default="hybrid", choices=["rule", "hybrid", "sllm"], help="비식별화 엔진 백엔드 (기본: hybrid)")
+    parser.add_argument("--strategy-mode", type=str, default=None, choices=["standard", "enhanced"], help="PII 전략 모드: standard (Phase 5 표준 고정밀) 또는 enhanced (Phase 6 도메인 고도화)")
     parser.add_argument("--original-labels", action="store_true", help="정제 라벨 대신 원본 라벨 사용")
     parser.add_argument("--workers", type=int, default=8, help="평가 병렬 스레드 수 (기본: 8)")
     args = parser.parse_args()
@@ -394,6 +402,7 @@ def main():
             split_name="validation",
             output_result_path=out_p,
             backend=args.backend,
+            strategy_mode=args.strategy_mode,
             use_cleaned_labels=use_cleaned,
             workers=args.workers,
         )
@@ -405,6 +414,7 @@ def main():
             split_name="test_set",
             output_result_path=out_p,
             backend=args.backend,
+            strategy_mode=args.strategy_mode,
             use_cleaned_labels=use_cleaned,
             workers=args.workers,
         )
