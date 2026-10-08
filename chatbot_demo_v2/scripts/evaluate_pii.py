@@ -19,6 +19,7 @@ import random
 import sys
 import time
 from collections import Counter, defaultdict
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from typing import Any
 
@@ -118,6 +119,7 @@ def evaluate_split(
     output_result_path: Path | None = None,
     backend: str = "hybrid",
     use_cleaned_labels: bool = True,
+    workers: int = 8,
 ) -> dict[str, Any]:
     """지정된 분할(validation 또는 test_set)에 대해 PiiMasker 검증 실행."""
     if not manifest_path.exists():
@@ -148,6 +150,7 @@ def evaluate_split(
         backend=backend,
         sllm_model=os.environ.get("PII_SLLM_MODEL", "qwen2.5:3b"),
         sllm_host=os.environ.get("OLLAMA_HOST", "http://127.0.0.1:11434"),
+        timeout_s=float(os.environ.get("PII_SLLM_TIMEOUT_S", "15.0")),
         gemini_api_key=os.environ.get("GEMINI_API_KEY", ""),
     )
     masker.warmup()
@@ -166,7 +169,7 @@ def evaluate_split(
 
     t0 = time.time()
 
-    for idx, rel_path in enumerate(target_rel_paths):
+    def _eval_one(rel_path):
         file_path = dataset_dir / rel_path
         with open(file_path, "r", encoding="utf-8") as f:
             sample = json.load(f)
@@ -175,77 +178,112 @@ def evaluate_split(
         text = sample.get("text", "")
         gt_pi = sample.get("pi", [])
 
-        # LLM 정제 라벨 적용
         if use_cleaned_labels and item_id in relabel_dict:
             r_item = relabel_dict[item_id]
             st = r_item.get("status", "VALID")
             if st == "LABEL_ERROR":
-                gt_pi = []  # 가짜 PII 제거 (정상 문장으로 교정)
+                gt_pi = []
             elif st == "MODIFIED":
                 gt_pi = r_item.get("correct_pi", gt_pi)
 
         meta = sample.get("meta", {})
         domain = meta.get("domain", "기타")
-
         is_pos = len(gt_pi) > 0
 
-        # PiiMasker 실행
         res = masker.mask_text(text)
         has_masked = res.has_pii or (res.masked_text != text)
+        return (rel_path, item_id, text, gt_pi, meta, domain, is_pos, res, has_masked)
 
-        # 도메인 통계
-        domain_stats[domain]["total"] += 1
-
-        if is_pos:
-            # POS 평가
-            all_detected = True
-            for pi_item in gt_pi:
-                pi_type = pi_item.get("type", "UNKNOWN")
-                pi_val = pi_item.get("text", "")
-                type_stats[pi_type]["total"] += 1
-
-                # 마스킹된 텍스트 안에 원문 값이 제거/변형되었는지 검사
-                if pi_val and (pi_val not in res.masked_text):
-                    type_stats[pi_type]["detected"] += 1
-                elif has_masked:
-                    # 완벽한 텍스트 소멸은 아니지만 PII 감지 태그가 붙은 경우
-                    type_stats[pi_type]["detected"] += 1
+    if workers > 1:
+        with ThreadPoolExecutor(max_workers=workers) as executor:
+            results_iter = executor.map(_eval_one, target_rel_paths)
+            for idx, r in enumerate(results_iter):
+                rel_path, item_id, text, gt_pi, meta, domain, is_pos, res, has_masked = r
+                domain_stats[domain]["total"] += 1
+                if is_pos:
+                    for pi_item in gt_pi:
+                        pi_type = pi_item.get("type", "UNKNOWN")
+                        pi_val = pi_item.get("text", "")
+                        type_stats[pi_type]["total"] += 1
+                        if pi_val and (pi_val not in res.masked_text):
+                            type_stats[pi_type]["detected"] += 1
+                        elif has_masked:
+                            type_stats[pi_type]["detected"] += 1
+                    if has_masked:
+                        tp += 1
+                        domain_stats[domain]["correct"] += 1
+                    else:
+                        fn += 1
+                        fn_cases.append({
+                            "id": item_id,
+                            "file": rel_path,
+                            "text": text,
+                            "expected_pi": gt_pi,
+                            "masked_text": res.masked_text,
+                            "meta": meta,
+                        })
                 else:
-                    all_detected = False
-
-            if has_masked:
-                tp += 1
-                domain_stats[domain]["correct"] += 1
+                    if not has_masked:
+                        tn += 1
+                        domain_stats[domain]["correct"] += 1
+                    else:
+                        fp += 1
+                        fp_cases.append({
+                            "id": item_id,
+                            "file": rel_path,
+                            "text": text,
+                            "masked_text": res.masked_text,
+                            "detected_types": res.detected_types,
+                            "meta": meta,
+                        })
+                if (idx + 1) % 500 == 0 or (idx + 1) == len(target_rel_paths):
+                    elapsed = time.time() - t0
+                    speed = (idx + 1) / max(elapsed, 0.001)
+                    print(f"  [{idx + 1:>5}/{len(target_rel_paths):>5}] 진행 중... (초당 {speed:.1f}건, 소요시간: {elapsed:.1f}초)")
+    else:
+        for idx, rel_path in enumerate(target_rel_paths):
+            rel_path, item_id, text, gt_pi, meta, domain, is_pos, res, has_masked = _eval_one(rel_path)
+            domain_stats[domain]["total"] += 1
+            if is_pos:
+                for pi_item in gt_pi:
+                    pi_type = pi_item.get("type", "UNKNOWN")
+                    pi_val = pi_item.get("text", "")
+                    type_stats[pi_type]["total"] += 1
+                    if pi_val and (pi_val not in res.masked_text):
+                        type_stats[pi_type]["detected"] += 1
+                    elif has_masked:
+                        type_stats[pi_type]["detected"] += 1
+                if has_masked:
+                    tp += 1
+                    domain_stats[domain]["correct"] += 1
+                else:
+                    fn += 1
+                    fn_cases.append({
+                        "id": item_id,
+                        "file": rel_path,
+                        "text": text,
+                        "expected_pi": gt_pi,
+                        "masked_text": res.masked_text,
+                        "meta": meta,
+                    })
             else:
-                fn += 1
-                fn_cases.append({
-                    "id": item_id,
-                    "file": rel_path,
-                    "text": text,
-                    "expected_pi": gt_pi,
-                    "masked_text": res.masked_text,
-                    "meta": meta,
-                })
-        else:
-            # NEG 평가 (오탐 방지)
-            if not has_masked:
-                tn += 1
-                domain_stats[domain]["correct"] += 1
-            else:
-                fp += 1
-                fp_cases.append({
-                    "id": item_id,
-                    "file": rel_path,
-                    "text": text,
-                    "masked_text": res.masked_text,
-                    "detected_types": res.detected_types,
-                    "meta": meta,
-                })
-
-        if (idx + 1) % 500 == 0 or (idx + 1) == len(target_rel_paths):
-            elapsed = time.time() - t0
-            speed = (idx + 1) / max(elapsed, 0.001)
-            print(f"  [{idx + 1:>5}/{len(target_rel_paths):>5}] 진행 중... (초당 {speed:.1f}건, 소요시간: {elapsed:.1f}초)")
+                if not has_masked:
+                    tn += 1
+                    domain_stats[domain]["correct"] += 1
+                else:
+                    fp += 1
+                    fp_cases.append({
+                        "id": item_id,
+                        "file": rel_path,
+                        "text": text,
+                        "masked_text": res.masked_text,
+                        "detected_types": res.detected_types,
+                        "meta": meta,
+                    })
+            if (idx + 1) % 500 == 0 or (idx + 1) == len(target_rel_paths):
+                elapsed = time.time() - t0
+                speed = (idx + 1) / max(elapsed, 0.001)
+                print(f"  [{idx + 1:>5}/{len(target_rel_paths):>5}] 진행 중... (초당 {speed:.1f}건, 소요시간: {elapsed:.1f}초)")
 
     total_time = time.time() - t0
     total_eval = tp + tn + fp + fn
@@ -254,6 +292,9 @@ def evaluate_split(
     precision = tp / max(tp + fp, 1)
     recall = tp / max(tp + fn, 1)
     f1 = 2 * (precision * recall) / max(precision + recall, 1e-9)
+    beta = 5.0
+    beta_sq = beta ** 2
+    f5 = (1 + beta_sq) * (precision * recall) / max(beta_sq * precision + recall, 1e-9)
 
     report = {
         "split": split_name,
@@ -266,6 +307,7 @@ def evaluate_split(
             "precision": round(precision * 100, 2),
             "recall": round(recall * 100, 2),
             "f1_score": round(f1 * 100, 2),
+            "f5_score": round(f5 * 100, 2),
         },
         "confusion_matrix": {
             "true_positive": tp,
@@ -301,13 +343,14 @@ def evaluate_split(
 
     # 터미널 출력용 성적표
     print("\n" + "=" * 65)
-    print(f"🎯 [{split_name.upper()} 비식별화 1차 검증 성적표]")
+    print(f"🎯 [{split_name.upper()} 비식별화 검증 성적표]")
     print("=" * 65)
     print(f" • 총 평가 건수: {total_eval:,}건 (소요 시간: {total_time:.2f}초, 초당 {report['throughput_samples_per_sec']}건)")
     print(f" • 정확도 (Accuracy)  : {report['metrics']['accuracy']:>6.2f}%  ((TP+TN)/Total)")
     print(f" • 정밀도 (Precision) : {report['metrics']['precision']:>6.2f}%  (TP/(TP+FP) - 오탐 방어율)")
     print(f" • 재현율 (Recall)    : {report['metrics']['recall']:>6.2f}%  (TP/(TP+FN) - 개인정보 탐지율)")
     print(f" • F1-Score (종합)    : {report['metrics']['f1_score']:>6.2f}%")
+    print(f" • F5-Score (보안특화): {report['metrics']['f5_score']:>6.2f}%  (Recall 가중치 25배 반영)")
     print("-" * 65)
     print("📊 [혼동 행렬 (Confusion Matrix)]")
     print(f" • TP (개인정보 정상 마스킹) : {tp:>4}건")
@@ -333,6 +376,7 @@ def main():
     parser.add_argument("--split-and-eval-val", action="store_true", help="분할 후 validation 평가 수행")
     parser.add_argument("--backend", type=str, default="hybrid", choices=["rule", "hybrid", "sllm"], help="비식별화 엔진 백엔드 (기본: hybrid)")
     parser.add_argument("--original-labels", action="store_true", help="정제 라벨 대신 원본 라벨 사용")
+    parser.add_argument("--workers", type=int, default=8, help="평가 병렬 스레드 수 (기본: 8)")
     args = parser.parse_args()
 
     ds_dir = Path(args.dataset_dir)
@@ -351,6 +395,7 @@ def main():
             output_result_path=out_p,
             backend=args.backend,
             use_cleaned_labels=use_cleaned,
+            workers=args.workers,
         )
     elif args.eval_test:
         out_p = ds_dir / "test_report.json"
@@ -361,6 +406,7 @@ def main():
             output_result_path=out_p,
             backend=args.backend,
             use_cleaned_labels=use_cleaned,
+            workers=args.workers,
         )
 
 

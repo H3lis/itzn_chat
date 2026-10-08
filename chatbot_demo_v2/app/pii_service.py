@@ -458,14 +458,14 @@ class PiiMasker:
         backend: str = "rule",
         sllm_model: str = "qwen2.5:3b",
         sllm_host: str = "http://127.0.0.1:11434",
-        timeout_s: float = 3.0,
+        timeout_s: Optional[float] = None,
         sllm_provider: str = "ollama",
         gemini_api_key: Optional[str] = None,
     ):
         self.backend = backend
         self.sllm_model = sllm_model or os.environ.get("PII_SLLM_MODEL", "qwen2.5:3b")
         self.sllm_host = (sllm_host or os.environ.get("PII_SLLM_HOST") or os.environ.get("OLLAMA_HOST") or "http://127.0.0.1:11434").rstrip("/")
-        self.timeout_s = float(timeout_s)
+        self.timeout_s = float(timeout_s if timeout_s is not None else os.environ.get("PII_SLLM_TIMEOUT_S", 15.0))
         self.sllm_provider = sllm_provider
         self.gemini_api_key = gemini_api_key or os.environ.get("GEMINI_API_KEY", "")
         self._kiwi = None
