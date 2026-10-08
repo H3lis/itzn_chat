@@ -37,7 +37,7 @@ export function SettingsTab({ onUpdateBadge }) {
     web_search_daily_budget: 100,
 
     pii_backend: 'sllm',
-    pii_sllm_model: 'qwen2.5:1.5b',
+    pii_sllm_model: 'qwen2.5:3b',
     pii_sllm_host: 'http://34.64.143.198:11434',
     pii_sllm_timeout_s: 8.0,
 
@@ -453,7 +453,7 @@ export function SettingsTab({ onUpdateBadge }) {
               className="form-input"
               value={form.pii_sllm_model}
               onChange={(e) => setForm({ ...form, pii_sllm_model: e.target.value })}
-              placeholder="qwen2.5:1.5b"
+              placeholder="qwen2.5:3b"
             />
           </div>
 

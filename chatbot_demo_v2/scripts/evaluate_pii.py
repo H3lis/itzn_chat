@@ -146,6 +146,7 @@ def evaluate_split(
     # PiiMasker 초기화 및 워밍업
     masker = PiiMasker(
         backend=backend,
+        sllm_model=os.environ.get("PII_SLLM_MODEL", "qwen2.5:3b"),
         sllm_host=os.environ.get("OLLAMA_HOST", "http://127.0.0.1:11434"),
         gemini_api_key=os.environ.get("GEMINI_API_KEY", ""),
     )

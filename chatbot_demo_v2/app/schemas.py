@@ -283,7 +283,7 @@ class AdminSettingsResponse(BaseModel):
     
     # PII 비식별화
     pii_backend: str = "sllm"
-    pii_sllm_model: str = "qwen2.5:1.5b"
+    pii_sllm_model: str = "qwen2.5:3b"
     pii_sllm_host: str = "http://34.64.143.198:11434"
     pii_sllm_timeout_s: float = 8.0
     

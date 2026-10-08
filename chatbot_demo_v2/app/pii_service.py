@@ -224,12 +224,14 @@ _NON_CREDENTIAL_WORDS = {
     "어떻게", "어떡해", "무엇", "뭔지", "뭔가요", "부탁", "부탁드려요", "부탁드립니다",
     "해주세요", "하나요", "있나요", "없나요", "맞나요", "되나요",
     # 강조 및 일반 부사/수식어 (오탐 방어)
-    "진짜", "진짜로", "정말", "정말로", "도무지", "전혀", "아예", "절대", "그냥", "다시", "따로", "확실히", "직접",
+    "진짜", "진짜로", "정말", "정말로", "도무지", "전혀", "아예", "절대", "그냥", "다시", "따로", "확실히", "직접", "임의", "추가", "추가가", "불가", "필요",
+    # 라벨 단어 자체 (후속 값으로 오인 방지)
+    "비밀번호", "비밀번호가", "비밀번호는", "비밀번호를", "비밀번호의", "비번", "비번은", "패스워드", "아이디", "계정", "계정이", "계정은", "계정을",
 }
 
 # 시스템 계정 및 비밀번호 / 크리덴셜 (회원 ID, 사용자 아이디, 닉네임, 사번 등 한국어 조사, 요, 만, 인가요 및 한글 닉네임 지원)
 _CREDENTIAL_PATTERN = re.compile(
-    r"(?i)(?P<label>회원\s*ID|회원\s*아이디|사용자\s*아이디|아이디|ID|닉네임|별명|계정\s*번호|계정|회원\s*번호|회원번호|신청\s*번호|신청번호|사번|고유\s*식별번호|식별번호|학생증\s*번호|학생증|등록번호|수험\s*번호|수험번호|접수\s*번호|접수번호|인증\s*코드|보안\s*코드|비밀\s*코드|신분\s*확인\s*코드|신분확인코드|PW|비밀번호|패스워드|비번|passwd|password|암호)"
+    r"(?i)(?P<label>계정\s*비밀번호|로그인\s*비밀번호|계정\s*비번|회원\s*ID|회원\s*아이디|사용자\s*아이디|아이디|ID|닉네임|별명|계정\s*번호|계정\s*이름|계정|회원\s*번호|회원번호|신청\s*번호|신청번호|사번|고유\s*식별번호|식별번호|학생증\s*번호|학생증|등록번호|수험\s*번호|수험번호|접수\s*번호|접수번호|인증\s*코드|보안\s*코드|비밀\s*코드|신분\s*확인\s*코드|신분확인코드|PW|비밀번호|패스워드|비번|passwd|password|암호)"
     r"(?P<sep>[은는이가의를을인]?\s*[:#=\-]?\s*|\s+)"
     r"['\"]?(?P<val>[A-Za-z0-9!@#$%^&*()_\-+=\[\]{}|<>ㄱ-ㅎ]+|[가-힣]{2,10})['\"]?"
     r"(?P<tail>(?:입니다|이에요|예요|이다|이고|이며|인데|인데요|거든|거든요|야|다|라고|라|으로|로|요|만|인가요|인지|인지요)?(?=[^\w가-힣]|$|\s|[.,?!]))"
@@ -448,15 +450,15 @@ class PiiMasker:
     def __init__(
         self,
         backend: str = "rule",
-        sllm_model: str = "qwen2.5:1.5b",
+        sllm_model: str = "qwen2.5:3b",
         sllm_host: str = "http://127.0.0.1:11434",
         timeout_s: float = 3.0,
-        sllm_provider: str = "auto",
+        sllm_provider: str = "ollama",
         gemini_api_key: Optional[str] = None,
     ):
         self.backend = backend
-        self.sllm_model = sllm_model
-        self.sllm_host = (sllm_host or "http://127.0.0.1:11434").rstrip("/")
+        self.sllm_model = sllm_model or os.environ.get("PII_SLLM_MODEL", "qwen2.5:3b")
+        self.sllm_host = (sllm_host or os.environ.get("PII_SLLM_HOST") or os.environ.get("OLLAMA_HOST") or "http://127.0.0.1:11434").rstrip("/")
         self.timeout_s = float(timeout_s)
         self.sllm_provider = sllm_provider
         self.gemini_api_key = gemini_api_key or os.environ.get("GEMINI_API_KEY", "")
@@ -686,7 +688,7 @@ class PiiMasker:
             "  \"birth_or_rrn\": []\n"
             "}\n\n"
             "■ 추출 대상 카테고리 정의:\n"
-            "- names: 사람의 실제 성명, 이름, 닉네임 (호칭 '님', '씨' 및 조사 제외하고 순수 이름만 추출. 예: '가을 님' -> '가을', '노을이라고' -> '노을', '다솜이' -> '다솜')\n"
+            "- names: 사람의 실제 성명, 이름, 닉네임 (호칭 '님', '씨', '주무관' 및 조사 제외하고 순수 이름만 추출. 띄어쓰기된 성명 포함. 예: '정 산 주무관' -> '정 산', '가을 님' -> '가을', '노을이라고' -> '노을', '다솜이' -> '다솜')\n"
             "- credentials: 시스템 ID, 계정명, 학번, 사번, 수험번호, 접수번호 (예: '20201015', 'cute_bunny123', 'user123')\n"
             "- cards: 신용카드/체크카드 번호, 카드 끝자리 표현\n"
             "- phones: 전화번호 또는 구어체 전화번호 표현 구절 (원문에 '010 다음에 7이 다섯 번...' 처럼 적혀 있다면 그 구절 전체를 그대로 추출)\n"
@@ -702,7 +704,7 @@ class PiiMasker:
             f"텍스트: {text}"
         )
 
-        use_gemini = (self.sllm_provider == "gemini") or (self.sllm_provider == "auto" and bool(self.gemini_api_key))
+        use_gemini = (self.sllm_provider == "gemini")
 
         if use_gemini and self.gemini_api_key:
             try:
@@ -757,13 +759,13 @@ class PiiMasker:
                 valid_names.append(v)
             else:
                 clean_n = str(n).strip("'\"`()[] ")
-                for title in (" 님", " 씨", "님", "씨", " 학생", "선생"):
+                for title in (" 님", " 씨", "님", "씨", " 학생", "선생", " 주무관", "주무관"):
                     if clean_n.endswith(title):
                         clean_n = clean_n[:-len(title)].strip()
                 for p in ("이", "가", "은", "는", "이라고", "라고"):
                     if clean_n.endswith(p) and len(clean_n) > len(p) + 1:
                         clean_n = clean_n[:-len(p)].strip()
-                if 2 <= len(clean_n) <= 4 and clean_n in (original_text or text):
+                if 2 <= len(clean_n.replace(" ", "")) <= 4 and clean_n in (original_text or text):
                     # 일반 금지어가 아니면 허용
                     if clean_n not in ("아이디", "계정", "정보", "확인", "성함", "이름", "중요한", "비밀번호"):
                         valid_names.append(clean_n)

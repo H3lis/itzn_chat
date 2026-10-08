@@ -102,6 +102,7 @@ systemctl restart ollama
 sleep 3
 ollama pull embeddinggemma || true
 ollama pull qwen2.5:1.5b || true
+ollama pull qwen2.5:3b || true
 
 # 리랭커 서비스 환경 구성
 mkdir -p /opt/chatbot
