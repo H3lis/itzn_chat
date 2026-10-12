@@ -375,10 +375,10 @@ export function SettingsTab({ onUpdateBadge }) {
               value={form.gemini_model}
               onChange={(e) => setForm({ ...form, gemini_model: e.target.value })}
             >
-              <option value="gemini-2.5-flash">gemini-2.5-flash (권장: 초고속 응답 & 최신 지식)</option>
-              <option value="gemini-1.5-flash">gemini-1.5-flash (안정적인 고속 경량 모델)</option>
-              <option value="gemini-1.5-pro">gemini-1.5-pro (대규모 컨텍스트 및 심층 추론)</option>
-              <option value="gemini-flash-latest">gemini-flash-latest (최신 플래시 빌드)</option>
+              <option value="gemini-2.5-flash">gemini-2.5-flash (기본 권장: 초고속 응답 & 최신 지식)</option>
+              <option value="gemini-2.5-pro">gemini-2.5-pro (대규모 컨텍스트 및 심층 추론)</option>
+              <option value="gemini-3.1-flash-lite">gemini-3.1-flash-lite (초경량 초고속 실시간 처리)</option>
+              <option value="gemini-flash-latest">gemini-flash-latest (항상 최신 Flash 빌드로 자동 라우팅)</option>
             </select>
           </div>
         </div>
