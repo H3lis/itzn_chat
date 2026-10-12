@@ -14,6 +14,7 @@ import {
   Eye,
   EyeOff,
   Zap,
+  Lock,
 } from 'lucide-react';
 
 export function SettingsTab({ onUpdateBadge }) {
@@ -562,19 +563,30 @@ export function SettingsTab({ onUpdateBadge }) {
           </div>
 
           <div className="form-group">
-            <label className="form-label" style={{ fontWeight: 600 }}>sLLM 모델명</label>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
+              <label className="form-label" style={{ fontWeight: 600, margin: 0 }}>sLLM 모델명</label>
+              <span className="badge-pill" style={{ background: 'rgba(148, 163, 184, 0.15)', color: 'var(--text-muted)', fontSize: '0.7rem', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
+                <Lock size={10} /> 시스템 고정 모델
+              </span>
+            </div>
             <input
               type="text"
               className="form-input"
               value={form.pii_sllm_model}
-              onChange={(e) => setForm({ ...form, pii_sllm_model: e.target.value })}
-              placeholder="qwen2.5:3b"
+              readOnly
+              style={{ background: 'rgba(255, 255, 255, 0.03)', color: 'var(--text-muted)', cursor: 'not-allowed', borderColor: 'rgba(255, 255, 255, 0.08)' }}
+              title="사전 검증된 고정 경량 LLM 모델로 임의 변경이 제한됩니다."
             />
           </div>
 
           <div className="form-group">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
-              <label className="form-label" style={{ fontWeight: 600, margin: 0 }}>Ollama sLLM 호스트</label>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                <label className="form-label" style={{ fontWeight: 600, margin: 0 }}>Ollama sLLM 호스트</label>
+                <span className="badge-pill" style={{ background: 'rgba(148, 163, 184, 0.15)', color: 'var(--text-muted)', fontSize: '0.7rem', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
+                  <Lock size={10} /> 인프라 고정 URL
+                </span>
+              </div>
               <button
                 type="button"
                 className="btn btn-secondary btn-sm"
@@ -590,8 +602,9 @@ export function SettingsTab({ onUpdateBadge }) {
               type="text"
               className="form-input"
               value={form.pii_sllm_host}
-              onChange={(e) => setForm({ ...form, pii_sllm_host: e.target.value })}
-              placeholder="http://34.64.143.198:11434"
+              readOnly
+              style={{ background: 'rgba(255, 255, 255, 0.03)', color: 'var(--text-muted)', cursor: 'not-allowed', borderColor: 'rgba(255, 255, 255, 0.08)' }}
+              title="원격 L4 GPU 고정 호스트 엔드포인트입니다."
             />
             {testResults.ollama && (
               <div style={{ marginTop: '0.4rem', fontSize: '0.75rem', color: testResults.ollama.success ? 'var(--emerald)' : 'var(--rose)' }}>
@@ -611,19 +624,30 @@ export function SettingsTab({ onUpdateBadge }) {
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
           <div className="form-group">
-            <label className="form-label" style={{ fontWeight: 600 }}>Ollama 호스트 URL (임베딩 및 sLLM 서빙)</label>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
+              <label className="form-label" style={{ fontWeight: 600, margin: 0 }}>Ollama 호스트 URL (임베딩 및 서빙)</label>
+              <span className="badge-pill" style={{ background: 'rgba(148, 163, 184, 0.15)', color: 'var(--text-muted)', fontSize: '0.7rem', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
+                <Lock size={10} /> 인프라 고정 URL
+              </span>
+            </div>
             <input
               type="text"
               className="form-input"
               value={form.ollama_host}
-              onChange={(e) => setForm({ ...form, ollama_host: e.target.value })}
-              placeholder="http://34.64.143.198:11434"
+              readOnly
+              style={{ background: 'rgba(255, 255, 255, 0.03)', color: 'var(--text-muted)', cursor: 'not-allowed', borderColor: 'rgba(255, 255, 255, 0.08)' }}
+              title="원격 L4 GPU 고정 호스트 엔드포인트입니다."
             />
           </div>
 
           <div className="form-group">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
-              <label className="form-label" style={{ fontWeight: 600, margin: 0 }}>Reranker 엔드포인트 (bge-reranker-v2-m3)</label>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                <label className="form-label" style={{ fontWeight: 600, margin: 0 }}>Reranker 엔드포인트 (bge-reranker-v2-m3)</label>
+                <span className="badge-pill" style={{ background: 'rgba(148, 163, 184, 0.15)', color: 'var(--text-muted)', fontSize: '0.7rem', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
+                  <Lock size={10} /> 인프라 고정 URL
+                </span>
+              </div>
               <button
                 type="button"
                 className="btn btn-secondary btn-sm"
@@ -639,8 +663,9 @@ export function SettingsTab({ onUpdateBadge }) {
               type="text"
               className="form-input"
               value={form.reranker_endpoint}
-              onChange={(e) => setForm({ ...form, reranker_endpoint: e.target.value })}
-              placeholder="http://34.64.143.198:8008/rerank"
+              readOnly
+              style={{ background: 'rgba(255, 255, 255, 0.03)', color: 'var(--text-muted)', cursor: 'not-allowed', borderColor: 'rgba(255, 255, 255, 0.08)' }}
+              title="원격 L4 GPU BGE 리랭커 전용 마이크로서비스 엔드포인트입니다."
             />
             {testResults.reranker && (
               <div style={{ marginTop: '0.4rem', fontSize: '0.75rem', color: testResults.reranker.success ? 'var(--emerald)' : 'var(--rose)' }}>
