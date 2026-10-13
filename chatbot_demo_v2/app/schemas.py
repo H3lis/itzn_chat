@@ -300,6 +300,10 @@ class AdminSettingsResponse(BaseModel):
     langsmith_api_key_set: bool = False
     langsmith_project: str = "school-network-chatbot-demo-v2"
 
+    # 프롬프트 보안 가드레일 (Phase 3)
+    prompt_guard_enabled: bool = True
+    prompt_guard_mode: str = "standard"  # "off" | "standard" | "strict"
+
 
 class AdminSettingsUpdateRequest(BaseModel):
     # 메인 LLM & RAG
@@ -330,6 +334,10 @@ class AdminSettingsUpdateRequest(BaseModel):
     langsmith_tracing: Optional[bool] = None
     langsmith_api_key: Optional[str] = None
     langsmith_project: Optional[str] = None
+
+    # 프롬프트 보안 가드레일 (Phase 3)
+    prompt_guard_enabled: Optional[bool] = None
+    prompt_guard_mode: Optional[str] = None
 
 
 class ConnectionTestRequest(BaseModel):

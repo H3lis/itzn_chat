@@ -102,6 +102,7 @@ class AppContext:
     history_service: Any = None  # HistoryService (대화 이력 적재 및 피드백 통계)
     history_worker: Any = None  # AsyncHistoryWorker (비동기 큐 기반 PII 비식별화 및 DB 적재)
     audit_service: Any = None  # AuditService (전용 보안 감사 로깅 및 엑셀 다운로드)
+    prompt_guard: Any = None   # PromptGuard (악의적 프롬프트 차단 및 가드레일)
     _inference_active_count: int = field(default=0, init=False)
     _inference_lock: threading.Lock = field(default_factory=threading.Lock, init=False)
     inference_idle_event: threading.Event = field(default_factory=threading.Event, init=False)
@@ -194,6 +195,7 @@ def build_context(
     from .history_service import HistoryService
     from .history_worker import AsyncHistoryWorker
     from .audit_service import AuditService
+    from .prompt_guard import PromptGuard
 
     metadata_manager = DocumentMetadataManager(settings)
     doc_manager = DocumentManager(settings, rag_adapter=rag_adapter, metadata_manager=metadata_manager)
@@ -211,6 +213,7 @@ def build_context(
     history_service = HistoryService(settings, pii_masker=pii_masker)
     audit_service = AuditService(settings)
     audit_service.start()
+    prompt_guard = PromptGuard(settings, audit_service=audit_service)
 
     ctx = AppContext(
         settings=settings,
@@ -233,6 +236,7 @@ def build_context(
         pii_masker=pii_masker,
         history_service=history_service,
         audit_service=audit_service,
+        prompt_guard=prompt_guard,
     )
     history_worker = AsyncHistoryWorker(
         history_service=history_service,

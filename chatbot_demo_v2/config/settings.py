@@ -117,6 +117,10 @@ class Settings:
     pii_sllm_timeout_s: float     # e.g. 15.0
     pii_strategy_mode: str        # "standard" (Phase 5) | "enhanced" (Phase 6)
 
+    # 프롬프트 보안 가드레일 (Phase 3)
+    prompt_guard_enabled: bool    # True | False
+    prompt_guard_mode: str        # "off" | "standard" | "strict"
+
     # LangSmith
     langsmith_tracing: bool
     langsmith_project: str
@@ -242,6 +246,8 @@ def load_settings(env: Mapping[str, str] | None = None) -> Settings:
         pii_sllm_host=_get(env, "PII_SLLM_HOST", "http://127.0.0.1:11434"),
         pii_sllm_timeout_s=_get_float(env, "PII_SLLM_TIMEOUT_S", 15.0),
         pii_strategy_mode=_get(env, "PII_STRATEGY_MODE", "enhanced"),
+        prompt_guard_enabled=_get_bool(env, "PROMPT_GUARD_ENABLED", True),
+        prompt_guard_mode=_get(env, "PROMPT_GUARD_MODE", "standard"),
         langsmith_tracing=_get_bool(env, "LANGSMITH_TRACING", False),
         langsmith_project=_get(env, "LANGSMITH_PROJECT", "school-network-chatbot-demo-v2"),
         langsmith_endpoint=_get(env, "LANGSMITH_ENDPOINT", ""),

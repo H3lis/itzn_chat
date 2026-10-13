@@ -1014,6 +1014,15 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
         ans_text = out.get("final_answer")
         if ans_text is None:
             ans_text = state.get("final_answer")
+
+        # Phase 3: 3차 사후 출력 누출 검증기 (Output Leak Guard & Fallback)
+        if ans_text and getattr(ctx, "prompt_guard", None) is not None:
+            sanitized = ctx.prompt_guard.sanitize_output(str(ans_text))
+            if sanitized != str(ans_text):
+                ans_text = sanitized
+                out["final_answer"] = sanitized
+                out["warnings"] = list(out.get("warnings") or []) + ["시스템 내부 정책에 따라 답변이 안전하게 조정되었습니다."]
+
         if ans_text:
             out["messages"] = [AIMessage(content=str(ans_text))]
 

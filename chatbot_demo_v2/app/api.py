@@ -56,11 +56,23 @@ from .schemas import (
 from ..observability.langsmith import build_invoke_config
 from ..rag.adapter_util import RagBusyError, RagUnavailableError
 
+from .prompt_guard import SAFE_REFUSAL_MESSAGE
+
 logger = logging.getLogger("chatbot_demo_v2.api")
 router = APIRouter()
 
 _RUNID_RE = re.compile(r"^[A-Za-z0-9_\-]{1,64}$")
 _FNAME_RE = re.compile(r"^[A-Za-z0-9._\-]{1,128}$")
+
+
+def _get_client_ip(request: Request) -> str:
+    """X-Forwarded-For 헤더 또는 클라이언트 연결 호스트에서 실제 접속 IP 추출."""
+    forwarded = request.headers.get("x-forwarded-for")
+    if forwarded:
+        return forwarded.split(",")[0].strip()
+    if request.client and request.client.host:
+        return request.client.host
+    return "127.0.0.1"
 
 
 def _ctx(request: Request) -> AppContext:
@@ -196,6 +208,31 @@ def chat(request: Request, body: ChatRequest) -> ChatResponse:
     run_id = str(uuid.uuid4())
     config = build_invoke_config(ctx.settings, session_id, thread_id, run_id=run_id)
 
+    # Phase 3: 1차 사전 가드레일 (0ms Prompt Injection / Jailbreak Filter)
+    if body.message and getattr(ctx, "prompt_guard", None) is not None:
+        is_blocked, reason, category = ctx.prompt_guard.check_input(body.message)
+        if is_blocked:
+            client_ip = _get_client_ip(request)
+            ctx.prompt_guard.record_block_audit(
+                input_text=body.message,
+                category=category or "UNKNOWN",
+                reason=reason or "보안 정책 차단",
+                client_ip=client_ip,
+                endpoint="/api/chat",
+            )
+            block_result = {
+                "route": "security_block",
+                "final_answer": SAFE_REFUSAL_MESSAGE,
+                "confidence": "abstain",
+                "answer_path": "security",
+                "answer_source": "prompt_guard",
+                "warnings": ["보안 정책에 따라 악의적 질의(탈옥/지침탈취/우회)가 차단되었습니다."],
+                "trace": [{"node": "prompt_guard", "detail": f"차단({category}): {reason}"}],
+                "timings": {"total_s": 0.0},
+            }
+            _safe_record_history(ctx, session_id, run_id, body, block_result)
+            return _shape_response(session_id, run_id, block_result)
+
     with ctx.track_llm_inference():
         if body.clarify_response is not None:
             # clarify 되묻기 재개(HITL) — 같은 thread 로 resume.
@@ -290,6 +327,36 @@ def chat_stream(request: Request, body: ChatRequest):
     thread_id = ctx.session_registry.thread_id(session_id)
     run_id = str(uuid.uuid4())
     config = build_invoke_config(ctx.settings, session_id, thread_id, run_id=run_id)
+
+    # Phase 3: 1차 사전 가드레일 (0ms Prompt Injection / Jailbreak Filter)
+    if body.message and getattr(ctx, "prompt_guard", None) is not None:
+        is_blocked, reason, category = ctx.prompt_guard.check_input(body.message)
+        if is_blocked:
+            client_ip = _get_client_ip(request)
+            ctx.prompt_guard.record_block_audit(
+                input_text=body.message,
+                category=category or "UNKNOWN",
+                reason=reason or "보안 정책 차단",
+                client_ip=client_ip,
+                endpoint="/api/chat/stream",
+            )
+            block_result = {
+                "route": "security_block",
+                "final_answer": SAFE_REFUSAL_MESSAGE,
+                "confidence": "abstain",
+                "answer_path": "security",
+                "answer_source": "prompt_guard",
+                "warnings": ["보안 정책에 따라 악의적 질의(탈옥/지침탈취/우회)가 차단되었습니다."],
+                "trace": [{"node": "prompt_guard", "detail": f"차단({category}): {reason}"}],
+                "timings": {"total_s": 0.0},
+            }
+            _safe_record_history(ctx, session_id, run_id, body, block_result)
+            block_resp = _shape_response(session_id, run_id, block_result).model_dump()
+            return StreamingResponse(
+                iter([_sse("final", block_resp)]),
+                media_type="text/event-stream",
+                headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+            )
 
     if body.clarify_response is not None:
         from langgraph.types import Command
@@ -1233,6 +1300,8 @@ def admin_get_settings(request: Request) -> AdminSettingsResponse:
         langsmith_api_key_masked=_mask_key(langsmith_key),
         langsmith_api_key_set=bool(langsmith_key),
         langsmith_project=s.langsmith_project,
+        prompt_guard_enabled=getattr(s, "prompt_guard_enabled", True),
+        prompt_guard_mode=getattr(s, "prompt_guard_mode", "standard"),
     )
 
 
@@ -1343,6 +1412,21 @@ def admin_update_settings(request: Request, body: AdminSettingsUpdateRequest) ->
         updates_for_settings["langsmith_project"] = body.langsmith_project
         os.environ["LANGSMITH_PROJECT"] = body.langsmith_project
         _update_env_file("LANGSMITH_PROJECT", body.langsmith_project)
+
+    if body.prompt_guard_enabled is not None:
+        updates_for_settings["prompt_guard_enabled"] = body.prompt_guard_enabled
+        os.environ["PROMPT_GUARD_ENABLED"] = "true" if body.prompt_guard_enabled else "false"
+        _update_env_file("PROMPT_GUARD_ENABLED", "true" if body.prompt_guard_enabled else "false")
+        if hasattr(ctx, "prompt_guard") and ctx.prompt_guard:
+            ctx.prompt_guard.enabled = body.prompt_guard_enabled
+
+    if body.prompt_guard_mode is not None:
+        mode_val = body.prompt_guard_mode.lower()
+        updates_for_settings["prompt_guard_mode"] = mode_val
+        os.environ["PROMPT_GUARD_MODE"] = mode_val
+        _update_env_file("PROMPT_GUARD_MODE", mode_val)
+        if hasattr(ctx, "prompt_guard") and ctx.prompt_guard:
+            ctx.prompt_guard.mode = mode_val
 
     # 런타임 settings 객체 갱신
     if updates_for_settings:

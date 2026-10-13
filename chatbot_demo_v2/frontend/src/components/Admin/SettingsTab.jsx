@@ -16,6 +16,7 @@ import {
   Zap,
   Lock,
   ShieldCheck,
+  ShieldAlert,
   Download,
 } from 'lucide-react';
 
@@ -61,6 +62,9 @@ export function SettingsTab({ onUpdateBadge }) {
     langsmith_api_key_masked: '',
     langsmith_api_key_set: false,
     langsmith_project: 'school-network-chatbot-demo-v2',
+
+    prompt_guard_enabled: true,
+    prompt_guard_mode: 'standard',
   });
 
   // 키 입력창 비밀번호 마스킹 토글
@@ -202,6 +206,8 @@ export function SettingsTab({ onUpdateBadge }) {
         scenario_match_threshold: Number(form.scenario_match_threshold),
         langsmith_tracing: form.langsmith_tracing,
         langsmith_project: form.langsmith_project,
+        prompt_guard_enabled: form.prompt_guard_enabled,
+        prompt_guard_mode: form.prompt_guard_mode,
       };
 
       // 새로 입력된 키가 있을 때만 포함
@@ -794,7 +800,142 @@ export function SettingsTab({ onUpdateBadge }) {
         </div>
       </div>
 
-      {/* 5. 보안 감사 추적 (Audit Trail) 및 엑셀 다운로드 */}
+      {/* 5. 5대 보안 계층: 프롬프트 보안 가드레일 (Prompt Injection & Jailbreak Defense) */}
+      <div className="card-box" style={{ background: 'var(--bg-card)', padding: '1.5rem', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.08)', marginTop: '1.5rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem', borderBottom: '1px solid rgba(255, 255, 255, 0.06)', paddingBottom: '0.75rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+            <ShieldAlert size={20} color="#f59e0b" />
+            <div>
+              <h3 style={{ margin: 0, fontSize: '1.05rem', fontWeight: 700 }}>5대 보안 계층: 프롬프트 가드레일 (Prompt Injection & Jailbreak Defense)</h3>
+              <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                탈옥(Jailbreak), 시스템 지침 탈취, 우회 롤플레잉 공격을 차단하는 3중 심층 방어선입니다.
+              </p>
+            </div>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+            <span className="badge-pill" style={{
+              background: form.prompt_guard_enabled ? 'rgba(16, 185, 129, 0.15)' : 'rgba(239, 68, 68, 0.15)',
+              color: form.prompt_guard_enabled ? 'var(--emerald)' : 'var(--rose)',
+              fontSize: '0.75rem',
+              fontWeight: 600,
+            }}>
+              {form.prompt_guard_enabled ? '가드레일 가동 중' : '가드레일 비활성'}
+            </span>
+            <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', gap: '0.4rem', fontSize: '0.85rem' }}>
+              <input
+                type="checkbox"
+                checked={form.prompt_guard_enabled}
+                onChange={(e) => setForm({ ...form, prompt_guard_enabled: e.target.checked })}
+                style={{ width: '16px', height: '16px', accentColor: '#10b981' }}
+              />
+              <span>보안 가드레일 활성화</span>
+            </label>
+          </div>
+        </div>
+
+        {form.prompt_guard_enabled && (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', marginBottom: '1rem' }}>
+            {/* Mode 1: STANDARD (기본 권장, 0ms) */}
+            <label style={{
+              padding: '1rem',
+              borderRadius: '10px',
+              border: (form.prompt_guard_mode || 'standard') === 'standard' ? '2px solid #10b981' : '1px solid rgba(255, 255, 255, 0.1)',
+              background: (form.prompt_guard_mode || 'standard') === 'standard' ? 'rgba(16, 185, 129, 0.08)' : 'rgba(255, 255, 255, 0.02)',
+              cursor: 'pointer',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '0.5rem',
+              transition: 'all 0.2s ease',
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <input
+                    type="radio"
+                    name="prompt_guard_mode"
+                    value="standard"
+                    checked={(form.prompt_guard_mode || 'standard') === 'standard'}
+                    onChange={(e) => setForm({ ...form, prompt_guard_mode: e.target.value })}
+                    style={{ accentColor: '#10b981' }}
+                  />
+                  <span style={{ fontWeight: 700, fontSize: '0.92rem', color: 'var(--text-main)' }}>기본 모드 (STANDARD)</span>
+                </div>
+                <span style={{ fontSize: '0.7rem', padding: '0.15rem 0.4rem', borderRadius: '4px', background: 'rgba(16, 185, 129, 0.2)', color: '#6ee7b7', fontWeight: 600 }}>권장</span>
+              </div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', lineHeight: '1.4' }}>
+                1차 초고속 정규식 사전 차단 (0ms 지연) + 3차 사후 출력 누출 검사. 40여 종의 명백한 탈옥 공격 즉각 차단.
+              </div>
+            </label>
+
+            {/* Mode 2: STRICT (강화 보안) */}
+            <label style={{
+              padding: '1rem',
+              borderRadius: '10px',
+              border: (form.prompt_guard_mode || 'standard') === 'strict' ? '2px solid #3b82f6' : '1px solid rgba(255, 255, 255, 0.1)',
+              background: (form.prompt_guard_mode || 'standard') === 'strict' ? 'rgba(59, 130, 246, 0.08)' : 'rgba(255, 255, 255, 0.02)',
+              cursor: 'pointer',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '0.5rem',
+              transition: 'all 0.2s ease',
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <input
+                    type="radio"
+                    name="prompt_guard_mode"
+                    value="strict"
+                    checked={(form.prompt_guard_mode || 'standard') === 'strict'}
+                    onChange={(e) => setForm({ ...form, prompt_guard_mode: e.target.value })}
+                    style={{ accentColor: '#3b82f6' }}
+                  />
+                  <span style={{ fontWeight: 700, fontSize: '0.92rem', color: 'var(--text-main)' }}>강화 모드 (STRICT)</span>
+                </div>
+                <span style={{ fontSize: '0.7rem', padding: '0.15rem 0.4rem', borderRadius: '4px', background: 'rgba(59, 130, 246, 0.2)', color: '#93c5fd', fontWeight: 600 }}>sLLM 추론</span>
+              </div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', lineHeight: '1.4' }}>
+                1차 정규식 + 2차 L4 GPU Qwen2.5 sLLM 맥락 안전 분류기 + 3차 출력 누출 검사. 교묘한 우화/역할극 우회까지 방어.
+              </div>
+            </label>
+
+            {/* Mode 3: OFF (비활성) */}
+            <label style={{
+              padding: '1rem',
+              borderRadius: '10px',
+              border: (form.prompt_guard_mode || 'standard') === 'off' ? '2px solid #ef4444' : '1px solid rgba(255, 255, 255, 0.1)',
+              background: (form.prompt_guard_mode || 'standard') === 'off' ? 'rgba(239, 68, 68, 0.08)' : 'rgba(255, 255, 255, 0.02)',
+              cursor: 'pointer',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '0.5rem',
+              transition: 'all 0.2s ease',
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <input
+                    type="radio"
+                    name="prompt_guard_mode"
+                    value="off"
+                    checked={(form.prompt_guard_mode || 'standard') === 'off'}
+                    onChange={(e) => setForm({ ...form, prompt_guard_mode: e.target.value })}
+                    style={{ accentColor: '#ef4444' }}
+                  />
+                  <span style={{ fontWeight: 700, fontSize: '0.92rem', color: 'var(--text-main)' }}>비활성 모드 (OFF)</span>
+                </div>
+                <span style={{ fontSize: '0.7rem', padding: '0.15rem 0.4rem', borderRadius: '4px', background: 'rgba(239, 68, 68, 0.2)', color: '#fca5a5', fontWeight: 600 }}>단독 페르소나</span>
+              </div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', lineHeight: '1.4' }}>
+                외부 가드레일을 끄고 프롬프트 페르소나 지침에만 의존합니다. (테스트 목적)
+              </div>
+            </label>
+          </div>
+        )}
+
+        <div style={{ padding: '0.75rem 1rem', background: 'rgba(0, 0, 0, 0.02)', borderRadius: '8px', border: '1px solid var(--border-color)', fontSize: '0.78rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <span>🔒 차단된 모든 공격 질의는 아래 <strong>보안 감사 로그(Audit Trail)</strong>에 <code>PROMPT_ATTACK_BLOCKED</code> 액션으로 접속 IP와 함께 영구 적재됩니다.</span>
+        </div>
+      </div>
+
+      {/* 6. 보안 감사 추적 (Audit Trail) 및 엑셀 다운로드 */}
       <div className="admin-card" style={{ marginTop: '1.5rem', border: '1px solid var(--border-color)', borderRadius: '12px', background: 'var(--card-bg, #ffffff)' }}>
         <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.25rem 1.5rem', borderBottom: '1px solid var(--border-color)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
