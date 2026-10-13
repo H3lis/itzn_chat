@@ -882,7 +882,21 @@ export function SettingsTab({ onUpdateBadge }) {
             </button>
           </div>
 
-          <div style={{ marginTop: '1rem', paddingTop: '0.75rem', borderTop: '1px dashed var(--border-color)', display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+          {/* 상태코드 범례 안내 박스 */}
+          <div style={{ marginTop: '0.85rem', padding: '0.65rem 0.85rem', background: 'rgba(0, 0, 0, 0.02)', borderRadius: '8px', border: '1px solid var(--border-color)', fontSize: '0.75rem' }}>
+            <div style={{ fontWeight: 600, marginBottom: '0.35rem', color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+              <AlertCircle size={14} style={{ color: '#3b82f6' }} />
+              <span>상태코드(Status Code) 처리결과 판정 기준 안내</span>
+            </div>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.85rem', color: 'var(--text-muted)' }}>
+              <span><strong style={{ color: '#10b981' }}>200 (성공)</strong>: 작업이 정상 실행되어 반영됨</span>
+              <span><strong style={{ color: '#f59e0b' }}>401/403 (권한차단)</strong>: 비인가자 접근/조작 차단</span>
+              <span><strong style={{ color: '#6b7280' }}>404 (대상없음)</strong>: 삭제/조작 대상 미존재</span>
+              <span><strong style={{ color: '#ef4444' }}>500 (서버오류)</strong>: 시스템 예외로 작업 실패</span>
+            </div>
+          </div>
+
+          <div style={{ marginTop: '0.85rem', paddingTop: '0.75rem', borderTop: '1px dashed var(--border-color)', display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
             <span>🔒 접속자 IP, 일시(KST), 수행 작업, 전후 Diff 내역, 소요시간이 UTF-8 BOM 인코딩으로 안전하게 포함됩니다.</span>
             {auditStats?.last_event_at && (
               <span>최근 감사 기록: {auditStats.last_event_at}</span>

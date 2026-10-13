@@ -91,6 +91,9 @@ def test_audit_service_lifecycle_and_export(tmp_path: Path):
         csv_data = audit.export_csv()
         assert csv_data.startswith("\ufeff")  # UTF-8 with BOM 확인
         assert "발생일시(KST)" in csv_data
+        assert "상태코드(처리결과)" in csv_data
+        assert "200 (성공)" in csv_data
+        assert "[참고: 상태코드 범례]" in csv_data
         assert "테스트_문서.pdf" in csv_data
         assert "DOC_DELETE" in csv_data
         assert "SETTINGS_UPDATE" in csv_data

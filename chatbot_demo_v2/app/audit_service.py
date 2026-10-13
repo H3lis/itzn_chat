@@ -57,6 +57,25 @@ def _mask_sensitive_payload(val: Any) -> Any:
     return val
 
 
+def _format_status_code(code: int) -> str:
+    """HTTP 상태코드를 감사관/관리자 친화적 한글 설명과 함께 반환."""
+    try:
+        c = int(code)
+    except Exception:
+        return str(code)
+    if c in (200, 201, 204):
+        return f"{c} (성공)"
+    elif c in (401, 403):
+        return f"{c} (권한차단)"
+    elif c == 400:
+        return f"{c} (요청오류)"
+    elif c == 404:
+        return f"{c} (대상없음)"
+    elif c >= 500:
+        return f"{c} (서버장애)"
+    return f"{c} (완료)" if c < 400 else f"{c} (오류)"
+
+
 class AuditService:
     """전용 보안 감사 로그 DB 관리 및 비동기 적재 서비스."""
 
@@ -323,7 +342,7 @@ class AuditService:
                 "대상자원",
                 "HTTP메서드",
                 "엔드포인트",
-                "상태코드",
+                "상태코드(처리결과)",
                 "소요시간(ms)",
                 "작업내용요약",
                 "세부변경내역",
@@ -345,11 +364,24 @@ class AuditService:
                             row["target_resource"],
                             row["request_method"],
                             row["endpoint"],
-                            row["status_code"],
+                            _format_status_code(row["status_code"]),
                             f"{row['elapsed_ms']}ms",
                             row["payload_summary"] or "",
                             row["diff_detail"] or "",
                         ]
                     )
+
+        # 엑셀 열람자/감사관을 위한 최하단 상태코드 범례 안내 행 추가
+        writer.writerow([])
+        writer.writerow(
+            [
+                "[참고: 상태코드 범례]",
+                "200: 성공(정상 실행 완료)",
+                "401/403: 권한차단(비인가 접근 방어)",
+                "400: 요청오류(입력값 결함)",
+                "404: 대상없음(조작대상 미존재)",
+                "500: 서버장애(시스템 처리 실패)",
+            ]
+        )
 
         return output.getvalue()
