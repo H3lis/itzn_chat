@@ -101,6 +101,7 @@ class AppContext:
     pii_masker: Any = None  # PiiMasker (개인정보 실시간 비식별화)
     history_service: Any = None  # HistoryService (대화 이력 적재 및 피드백 통계)
     history_worker: Any = None  # AsyncHistoryWorker (비동기 큐 기반 PII 비식별화 및 DB 적재)
+    audit_service: Any = None  # AuditService (전용 보안 감사 로깅 및 엑셀 다운로드)
     _inference_active_count: int = field(default=0, init=False)
     _inference_lock: threading.Lock = field(default_factory=threading.Lock, init=False)
     inference_idle_event: threading.Event = field(default_factory=threading.Event, init=False)
@@ -192,6 +193,7 @@ def build_context(
     from .pii_service import PiiMasker
     from .history_service import HistoryService
     from .history_worker import AsyncHistoryWorker
+    from .audit_service import AuditService
 
     metadata_manager = DocumentMetadataManager(settings)
     doc_manager = DocumentManager(settings, rag_adapter=rag_adapter, metadata_manager=metadata_manager)
@@ -207,6 +209,8 @@ def build_context(
     )
     pii_masker.warmup()
     history_service = HistoryService(settings, pii_masker=pii_masker)
+    audit_service = AuditService(settings)
+    audit_service.start()
 
     ctx = AppContext(
         settings=settings,
@@ -228,6 +232,7 @@ def build_context(
         metadata_manager=metadata_manager,
         pii_masker=pii_masker,
         history_service=history_service,
+        audit_service=audit_service,
     )
     history_worker = AsyncHistoryWorker(
         history_service=history_service,

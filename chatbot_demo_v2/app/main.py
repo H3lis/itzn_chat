@@ -50,16 +50,26 @@ def create_app(ctx: Optional[AppContext] = None) -> FastAPI:
         )
         if getattr(ctx, "history_worker", None) is not None:
             ctx.history_worker.start()
+        if getattr(ctx, "audit_service", None) is not None:
+            ctx.audit_service.start()
         try:
             yield
         finally:
             if getattr(ctx, "history_worker", None) is not None:
                 ctx.history_worker.drain_and_stop()
+            if getattr(ctx, "audit_service", None) is not None:
+                ctx.audit_service.stop()
 
     app = FastAPI(title="school-network-chatbot-demo-v2", lifespan=lifespan)
     app.state.ctx = ctx
     app.state.langsmith = {"tracing_enabled": False, "project": ctx.settings.langsmith_project}
     app.state.graph_mermaid = None
+
+    # --- 보안 감사 미들웨어 등록 (/api/admin/* 요청 무누락 캡처) ---
+    from .audit_middleware import AuditMiddleware
+
+    if getattr(ctx, "audit_service", None) is not None:
+        app.add_middleware(AuditMiddleware, audit_service=ctx.audit_service)
 
     # --- 예외 → HTTP 매핑 (키/절대경로 미포함) ---
     @app.exception_handler(EmptyInputError)

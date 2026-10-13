@@ -1481,4 +1481,48 @@ def admin_test_connection(request: Request, body: ConnectionTestRequest) -> Conn
     )
 
 
+# ==================== 보안 감사 로그 API ====================
+@router.get("/api/admin/audit/stats")
+def admin_audit_stats(request: Request) -> dict:
+    """보안 감사 로그 누적 통계 조회."""
+    ctx = _ctx(request)
+    if not getattr(ctx, "audit_service", None):
+        return {"total_count": 0, "recent_7d_count": 0, "last_event_at": None, "top_actions": []}
+    return ctx.audit_service.get_stats()
+
+
+@router.get("/api/admin/audit/export")
+def admin_audit_export(
+    request: Request,
+    start_date: Optional[str] = Query(None, description="시작일 (YYYY-MM-DD)"),
+    end_date: Optional[str] = Query(None, description="종료일 (YYYY-MM-DD)"),
+    action_type: Optional[str] = Query(None, description="액션 유형 (DOC_DELETE 등)"),
+):
+    """보안 감사 로그 엑셀(CSV) 스트리밍 다운로드 (UTF-8 with BOM)."""
+    from datetime import datetime
+    from fastapi.responses import Response
+    from .time_util import KST
+
+    ctx = _ctx(request)
+    if not getattr(ctx, "audit_service", None):
+        raise HTTPException(status_code=503, detail="보안 감사 로깅 서비스를 사용할 수 없습니다.")
+
+    csv_content = ctx.audit_service.export_csv(
+        start_date=start_date,
+        end_date=end_date,
+        action_type=action_type,
+    )
+    timestamp_str = datetime.now(KST).strftime("%Y%m%d_%H%M%S")
+    filename = f"audit_logs_{timestamp_str}.csv"
+
+    return Response(
+        content=csv_content.encode("utf-8"),
+        media_type="text/csv; charset=utf-8",
+        headers={
+            "Content-Disposition": f'attachment; filename="{filename}"',
+            "Cache-Control": "no-cache, no-store, must-revalidate",
+        },
+    )
+
+
 

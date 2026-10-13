@@ -15,12 +15,20 @@ import {
   EyeOff,
   Zap,
   Lock,
+  ShieldCheck,
+  Download,
 } from 'lucide-react';
 
 export function SettingsTab({ onUpdateBadge }) {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
+
+  // 보안 감사 로그 상태
+  const [auditStats, setAuditStats] = useState(null);
+  const [auditPeriod, setAuditPeriod] = useState('all'); // 'all' | '30d' | '7d' | 'today'
+  const [auditAction, setAuditAction] = useState('');
+  const [exportingAudit, setExportingAudit] = useState(false);
 
   // 폼 상태
   const [form, setForm] = useState({
@@ -89,9 +97,51 @@ export function SettingsTab({ onUpdateBadge }) {
     }
   };
 
+  // 감사 로그 통계 조회
+  const fetchAuditStats = async () => {
+    try {
+      const res = await fetch('/api/admin/audit/stats');
+      if (res.ok) {
+        const data = await res.json();
+        setAuditStats(data);
+      }
+    } catch (e) {
+      console.debug('감사 통계 로드 실패:', e);
+    }
+  };
+
   useEffect(() => {
     fetchSettings();
+    fetchAuditStats();
   }, []);
+
+  // 보안 감사 로그 엑셀(CSV) 다운로드 실행
+  const handleExportAuditLogs = () => {
+    setExportingAudit(true);
+    let startDate = '';
+    const now = new Date();
+    if (auditPeriod === 'today') {
+      startDate = now.toISOString().split('T')[0];
+    } else if (auditPeriod === '7d') {
+      const d = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+      startDate = d.toISOString().split('T')[0];
+    } else if (auditPeriod === '30d') {
+      const d = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+      startDate = d.toISOString().split('T')[0];
+    }
+
+    const params = new URLSearchParams();
+    if (startDate) params.append('start_date', startDate);
+    if (auditAction) params.append('action_type', auditAction);
+
+    const downloadUrl = `/api/admin/audit/export?${params.toString()}`;
+    window.location.href = downloadUrl;
+
+    setTimeout(() => {
+      setExportingAudit(false);
+      fetchAuditStats();
+    }, 1500);
+  };
 
   // 연결 테스트 실행
   const handleTestConnection = async (target, customPayload = {}) => {
@@ -740,6 +790,103 @@ export function SettingsTab({ onUpdateBadge }) {
                 {showLangsmithKey ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 5. 보안 감사 추적 (Audit Trail) 및 엑셀 다운로드 */}
+      <div className="admin-card" style={{ marginTop: '1.5rem', border: '1px solid var(--border-color)', borderRadius: '12px', background: 'var(--card-bg, #ffffff)' }}>
+        <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.25rem 1.5rem', borderBottom: '1px solid var(--border-color)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+            <ShieldCheck size={20} style={{ color: 'var(--emerald, #10b981)' }} />
+            <div>
+              <h3 style={{ margin: 0, fontSize: '1.05rem', fontWeight: 600 }}>보안 감사 로그 (Audit Trail)</h3>
+              <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                개인정보보호법 및 공공 안전조치 규격에 따라 관리자 C/U/D 및 민감 설정 변경 이력을 영구 보관합니다.
+              </p>
+            </div>
+          </div>
+          {auditStats && (
+            <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+              <span className="badge-pill" style={{ background: 'rgba(59, 130, 246, 0.1)', color: '#3b82f6', fontSize: '0.75rem', padding: '0.25rem 0.6rem', borderRadius: '999px' }}>
+                누적 {auditStats.total_count || 0}건
+              </span>
+              <span className="badge-pill" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', fontSize: '0.75rem', padding: '0.25rem 0.6rem', borderRadius: '999px' }}>
+                최근 7일 {auditStats.recent_7d_count || 0}건
+              </span>
+            </div>
+          )}
+        </div>
+
+        <div className="card-body" style={{ padding: '1.25rem 1.5rem' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'flex-end', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+              <div>
+                <label className="form-label" style={{ fontSize: '0.85rem', fontWeight: 600, display: 'block', marginBottom: '0.35rem' }}>추출 기간</label>
+                <select
+                  className="form-select"
+                  value={auditPeriod}
+                  onChange={(e) => setAuditPeriod(e.target.value)}
+                  style={{ minWidth: '130px', padding: '0.45rem 0.75rem', borderRadius: '6px' }}
+                >
+                  <option value="all">전체 기간</option>
+                  <option value="30d">최근 30일</option>
+                  <option value="7d">최근 7일</option>
+                  <option value="today">오늘 (당일)</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="form-label" style={{ fontSize: '0.85rem', fontWeight: 600, display: 'block', marginBottom: '0.35rem' }}>작업 유형 필터</label>
+                <select
+                  className="form-select"
+                  value={auditAction}
+                  onChange={(e) => setAuditAction(e.target.value)}
+                  style={{ minWidth: '170px', padding: '0.45rem 0.75rem', borderRadius: '6px' }}
+                >
+                  <option value="">모든 작업 (전체)</option>
+                  <option value="DOC_DELETE">문서 삭제 (DOC_DELETE)</option>
+                  <option value="DOC_UPLOAD">문서 업로드 (DOC_UPLOAD)</option>
+                  <option value="DOC_RENAME">문서 이름변경 (DOC_RENAME)</option>
+                  <option value="REINDEX_RUN">RAG 재색인 (REINDEX_RUN)</option>
+                  <option value="SETTINGS_UPDATE">설정 변경 (SETTINGS_UPDATE)</option>
+                  <option value="FAQ_CREATE">FAQ 신규 등록</option>
+                  <option value="FAQ_UPDATE">FAQ 항목 수정</option>
+                  <option value="FAQ_DELETE">FAQ 항목 삭제</option>
+                </select>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              className="btn-primary"
+              onClick={handleExportAuditLogs}
+              disabled={exportingAudit}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                padding: '0.65rem 1.35rem',
+                background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                color: '#ffffff',
+                border: 'none',
+                borderRadius: '8px',
+                fontWeight: 600,
+                fontSize: '0.9rem',
+                cursor: 'pointer',
+                boxShadow: '0 2px 4px rgba(16, 185, 129, 0.25)',
+              }}
+            >
+              <Download size={16} />
+              {exportingAudit ? '엑셀 생성 중...' : '보안 감사 로그 엑셀 다운로드 (CSV)'}
+            </button>
+          </div>
+
+          <div style={{ marginTop: '1rem', paddingTop: '0.75rem', borderTop: '1px dashed var(--border-color)', display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+            <span>🔒 접속자 IP, 일시(KST), 수행 작업, 전후 Diff 내역, 소요시간이 UTF-8 BOM 인코딩으로 안전하게 포함됩니다.</span>
+            {auditStats?.last_event_at && (
+              <span>최근 감사 기록: {auditStats.last_event_at}</span>
+            )}
           </div>
         </div>
       </div>
