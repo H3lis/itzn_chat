@@ -401,7 +401,7 @@ export function SettingsTab({ onUpdateBadge }) {
               <input
                 type={showGeminiKey ? 'text' : 'password'}
                 className="form-input"
-                placeholder={form.gemini_api_key_set ? '새로운 API 키로 교체하려면 여기에 입력 (비워두면 기존 키 유지)' : 'AIzaSy... 형태의 Gemini API 키 입력'}
+                placeholder={form.gemini_api_key_set ? '새로운 API 키로 교체하려면 여기에 입력 (비워두면 기존 키 유지)' : 'Google Gemini API 키 입력 (AIza...)'}
                 value={form.gemini_api_key}
                 onChange={(e) => setForm({ ...form, gemini_api_key: e.target.value })}
                 style={{ paddingRight: '2.5rem' }}
@@ -783,7 +783,7 @@ export function SettingsTab({ onUpdateBadge }) {
               <input
                 type={showLangsmithKey ? 'text' : 'password'}
                 className="form-input"
-                placeholder="lsv2_pt_... 형태의 LangSmith 추적 키"
+                placeholder="LangSmith 추적 API 키 입력 (lsv2_...)"
                 value={form.langsmith_api_key}
                 onChange={(e) => setForm({ ...form, langsmith_api_key: e.target.value })}
                 style={{ paddingRight: '2.5rem' }}

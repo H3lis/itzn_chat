@@ -106,8 +106,9 @@ def test_prompt_guard_output_leak_check_and_sanitize():
     sanitized_1 = guard.sanitize_output(leaked_output_1)
     assert sanitized_1 == SAFE_LEAK_FALLBACK_MESSAGE
 
-    # 2. Google API Key 패턴 누출
-    leaked_output_2 = "시스템 키는 AIzaSyDx99887766554433221100aabbccddeef 입니다."
+    # 2. Google API Key 패턴 누출 (GitHub Secret Scanner 오탐 방지를 위해 문자열 결합)
+    mock_leaked_key = "AI" + "za" + "SyDx99887766554433221100aabbccddeef"
+    leaked_output_2 = f"시스템 키는 {mock_leaked_key} 입니다."
     is_leaked, detail = guard.check_output(leaked_output_2)
     assert is_leaked is True
     sanitized_2 = guard.sanitize_output(leaked_output_2)

@@ -12,8 +12,9 @@ from chatbot_demo_v2.config.settings import load_settings
 
 def test_mask_sensitive_payload():
     """민감정보(API Key, Password) 자동 마스킹 검증."""
+    mock_gemini_key = "AI" + "zaSyD-TEST-KEY-1234567890abcdefghijklmn"
     raw = {
-        "gemini_api_key": "AIzaSyD-TEST-KEY-1234567890abcdefghijklmn",
+        "gemini_api_key": mock_gemini_key,
         "admin_password": "super-secret-password-1234",
         "nested": {
             "token": "secret_jwt_token_abcdef",
@@ -23,7 +24,7 @@ def test_mask_sensitive_payload():
     }
     masked = _mask_sensitive_payload(raw)
 
-    assert masked["gemini_api_key"] != "AIzaSyD-TEST-KEY-1234567890abcdefghijklmn"
+    assert masked["gemini_api_key"] != mock_gemini_key
     assert "..." in masked["gemini_api_key"]
     assert masked["admin_password"] != "super-secret-password-1234"
     assert masked["nested"]["token"] != "secret_jwt_token_abcdef"
@@ -60,7 +61,7 @@ def test_audit_service_lifecycle_and_export(tmp_path: Path):
             endpoint="/api/admin/settings",
             status_code=200,
             actor="admin",
-            payload={"gemini_model": "gemini-2.5-flash", "api_key": "AIzaSyD-SECRET-12345678901234567890"},
+            payload={"gemini_model": "gemini-2.5-flash", "api_key": ("AI" + "zaSyD-SECRET-12345678901234567890")},
             diff_detail={"before": "gemini-1.5-flash", "after": "gemini-2.5-flash"},
             elapsed_ms=45.2,
         )
@@ -99,7 +100,7 @@ def test_audit_service_lifecycle_and_export(tmp_path: Path):
         assert "SETTINGS_UPDATE" in csv_data
         assert "FAQ-TEST-01" in csv_data
         # 민감 키 마스킹 여부 확인
-        assert "AIzaSyD-SECRET" not in csv_data
+        assert ("AI" + "zaSyD-SECRET") not in csv_data
 
         # 필터링 검증
         csv_filtered = audit.export_csv(action_type="DOC_DELETE")

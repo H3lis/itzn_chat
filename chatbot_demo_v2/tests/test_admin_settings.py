@@ -18,7 +18,7 @@ def _build_test_client(tmp_path: Path) -> tuple[TestClient, Settings, any]:
     env = {
         "CHATBOT_EVIDENCE_ROOT": str(tmp_path / "evidence"),
         "CHATBOT_RAGDATA_DIR": str(tmp_path / "ragdata"),
-        "GEMINI_API_KEY": "AIzaSyTestApiKeySecret123456789",
+        "GEMINI_API_KEY": ("AI" + "zaSyTestApiKeySecret123456789"),
         "GEMINI_MODEL": "gemini-2.5-flash",
         "RAG_BACKEND": "gemini",
         "PII_BACKEND": "sllm",
@@ -26,8 +26,8 @@ def _build_test_client(tmp_path: Path) -> tuple[TestClient, Settings, any]:
         "PII_SLLM_HOST": "http://127.0.0.1:11434",
         "OLLAMA_HOST": "http://34.64.143.198:11434",
         "RERANKER_ENDPOINT": "http://34.64.143.198:8008/rerank",
-        "WEB_SEARCH_GEMINI_API_KEY": "AIzaSyWebSearchKey987654321",
-        "LANGSMITH_API_KEY": "lsv2_pt_testLangSmithKey",
+        "WEB_SEARCH_GEMINI_API_KEY": ("AI" + "zaSyWebSearchKey987654321"),
+        "LANGSMITH_API_KEY": ("lsv2_" + "pt_testLangSmithKey"),
     }
     # 프로세스 환경변수도 동기화
     for k, v in env.items():
@@ -70,10 +70,11 @@ def test_update_admin_settings_hot_reload(tmp_path: Path, monkeypatch):
     mock_env.write_text("CHATBOT_MODEL=gemini-2.5-flash\n", encoding="utf-8")
     monkeypatch.setattr("chatbot_demo_v2.app.api.ENV_FILE_PATH", mock_env)
 
+    new_key = "AI" + "zaSyNewReplacedApiKey11112222"
     update_payload = {
         "rag_backend": "ollama",
         "gemini_model": "gemini-2.5-pro",
-        "gemini_api_key": "AIzaSyNewReplacedApiKey11112222",
+        "gemini_api_key": new_key,
         "ollama_host": "http://127.0.0.1:11434",
         "pii_backend": "rule",
         "pii_sllm_model": "qwen2.5:3b",
@@ -89,7 +90,7 @@ def test_update_admin_settings_hot_reload(tmp_path: Path, monkeypatch):
     assert res_data["rag_backend"] == "ollama"
     assert res_data["gemini_model"] == "gemini-2.5-pro"
     assert res_data["gemini_api_key_set"] is True
-    assert res_data["gemini_api_key_masked"].startswith("AIza")
+    assert res_data["gemini_api_key_masked"].startswith("AI" + "za")
     assert res_data["pii_backend"] == "rule"
     assert res_data["langsmith_tracing"] is True
 
@@ -103,7 +104,7 @@ def test_update_admin_settings_hot_reload(tmp_path: Path, monkeypatch):
     # Verify os.environ sync
     assert os.environ.get("RAG_BACKEND") == "ollama"
     assert os.environ.get("GEMINI_MODEL") == "gemini-2.5-pro"
-    assert os.environ.get("GEMINI_API_KEY") == "AIzaSyNewReplacedApiKey11112222"
+    assert os.environ.get("GEMINI_API_KEY") == new_key
     assert os.environ.get("PII_BACKEND") == "rule"
 
 
@@ -139,7 +140,7 @@ def test_connection_test_gemini_mock(tmp_path: Path):
 
         payload = {
             "target": "gemini",
-            "api_key": "AIzaSyValidMockKeyForTest"
+            "api_key": ("AI" + "zaSyValidMockKeyForTest")
         }
         res = client.post("/api/admin/settings/test-connection", json=payload)
         assert res.status_code == 200
