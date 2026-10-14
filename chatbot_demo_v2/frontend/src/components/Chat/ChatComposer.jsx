@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { Send } from 'lucide-react';
 
-export function ChatComposer({ inFlight, onSend }) {
+export function ChatComposer({ inFlight, onSend, isOffline = false }) {
   const [text, setText] = useState('');
   const [isComposing, setIsComposing] = useState(false);
   const hasText = Boolean(text.trim());
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (inFlight || isComposing) return;
+    if (inFlight || isComposing || isOffline) return;
     const trimmed = text.trim();
     if (!trimmed) return;
     onSend(trimmed);
@@ -17,7 +17,7 @@ export function ChatComposer({ inFlight, onSend }) {
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
-      if (isComposing) return;
+      if (isComposing || isOffline) return;
       e.preventDefault();
       handleSubmit(e);
     }
@@ -28,9 +28,9 @@ export function ChatComposer({ inFlight, onSend }) {
       <input
         type="text"
         className="composer-input"
-        placeholder="궁금한 내용을 입력하세요..."
+        placeholder={isOffline ? "오프라인 상태입니다. 상단 시나리오 버튼을 선택해 주세요." : "궁금한 내용을 입력하세요..."}
         value={text}
-        disabled={inFlight}
+        disabled={inFlight || isOffline}
         onChange={(e) => setText(e.target.value)}
         onKeyDown={handleKeyDown}
         onCompositionStart={() => setIsComposing(true)}
@@ -39,9 +39,9 @@ export function ChatComposer({ inFlight, onSend }) {
       />
       <button
         type="submit"
-        className={`composer-send-btn ${hasText ? 'active' : ''}`}
-        disabled={inFlight || !hasText}
-        title="전송"
+        className={`composer-send-btn ${hasText && !isOffline ? 'active' : ''}`}
+        disabled={inFlight || !hasText || isOffline}
+        title={isOffline ? "오프라인 상태에서는 시나리오 버튼만 이용 가능합니다" : "전송"}
         aria-label="전송"
       >
         <Send size={18} />

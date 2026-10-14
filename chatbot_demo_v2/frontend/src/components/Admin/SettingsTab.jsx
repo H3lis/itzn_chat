@@ -1045,6 +1045,54 @@ export function SettingsTab({ onUpdateBadge }) {
           </div>
         </div>
       </div>
+
+      {/* 9. 오프라인 비상 대응 배포 패키지 관리 섹션 */}
+      <div className="settings-section-card" style={{ marginTop: '1.5rem', background: 'var(--surface)', border: '1px solid var(--border-color)', borderRadius: '12px', padding: '1.25rem' }}>
+        <div className="section-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
+          <div>
+            <h3 style={{ fontSize: '1.05rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-main)', margin: 0 }}>
+              <Globe size={18} style={{ color: '#0ea5e9' }} />
+              <span>오프라인 비상 대응 배포 패키지 관리 (Hybrid Offline)</span>
+            </h3>
+            <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginTop: '0.35rem', marginBottom: 0 }}>
+              완전 망분리 PC나 인터넷 단절 상황에서도 0초 만에 기동되는 단일 실행 HTML 배포본을 다운로드합니다.
+            </p>
+          </div>
+          <a
+            href="/api/download/offline-client"
+            download="학교챗봇_장애대응가이드_오프라인.html"
+            className="btn-primary"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              padding: '0.65rem 1.25rem',
+              background: 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)',
+              color: '#ffffff',
+              borderRadius: '8px',
+              textDecoration: 'none',
+              fontWeight: 600,
+              fontSize: '0.88rem',
+              boxShadow: '0 2px 4px rgba(2, 132, 199, 0.25)',
+            }}
+          >
+            <Download size={16} />
+            <span>최신 오프라인 배포 파일 다운로드 (.html)</span>
+          </a>
+        </div>
+
+        <div style={{ marginTop: '0.85rem', padding: '0.75rem 1rem', background: 'rgba(14, 165, 233, 0.05)', borderRadius: '8px', border: '1px solid rgba(14, 165, 233, 0.2)', fontSize: '0.8rem', color: 'var(--text-muted)', lineHeight: '1.5' }}>
+          <div style={{ fontWeight: 600, color: '#0284c7', marginBottom: '0.35rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+            <Zap size={14} />
+            <span>하이브리드 자동 최신화 동작 메커니즘 안내</span>
+          </div>
+          <ul style={{ margin: 0, paddingLeft: '1.2rem', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+            <li><strong>최초 신규/망분리 PC</strong>: 다운로드받은 단일 HTML 파일을 더블클릭하면 내장된 기본 시나리오로 즉시 기동됩니다.</li>
+            <li><strong>온라인 자동 동기화</strong>: 사용자가 인터넷이 연결된 상태에서 실행하면 백그라운드에서 최신 시나리오가 로컬 브라우저에 자동 갱신됩니다.</li>
+            <li><strong>재단절 시 최신성 보장</strong>: 이후 인터넷이 다시 끊기더라도 파일 자체를 재배포할 필요 없이 가장 최근에 갱신되었던 최신 시나리오와 대화 이력을 그대로 열람할 수 있습니다.</li>
+          </ul>
+        </div>
+      </div>
     </form>
   );
 }

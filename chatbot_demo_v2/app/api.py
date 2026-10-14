@@ -18,7 +18,7 @@ import uuid
 from pathlib import Path
 from typing import Optional
 
-from fastapi import APIRouter, File, Form, HTTPException, Query, Request, UploadFile
+from fastapi import APIRouter, File, Form, HTTPException, Query, Request, Response, UploadFile
 from fastapi.responses import FileResponse, StreamingResponse
 
 from .dependencies import AppContext
@@ -879,6 +879,39 @@ async def admin_reindex_stream(request: Request):
         event_generator(),
         media_type="text/event-stream",
         headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+    )
+
+
+# =========================================================================
+# 고객용 공개 시나리오 동기화 API (오프라인 하이브리드 지원)
+# =========================================================================
+
+@router.get("/api/scenarios/latest")
+@router.head("/api/scenarios/latest")
+def get_latest_scenarios(request: Request, response: Response) -> dict:
+    """고객용 챗봇 및 오프라인 배포본용 최신 시나리오 트리 및 버전 조회."""
+    ctx = _ctx(request)
+    payload = ctx.scenario_manager.get_client_payload()
+    version = payload.get("version", "v1.0.0")
+    response.headers["ETag"] = f'"{version}"'
+    response.headers["X-Scenario-Version"] = version
+    response.headers["Cache-Control"] = "no-cache"
+    return payload
+
+
+@router.get("/api/download/offline-client")
+def download_offline_client():
+    """오프라인 단독 실행형 고객용 챗봇 HTML 파일 다운로드."""
+    standalone_path = Path(__file__).resolve().parent.parent / "frontend" / "dist-standalone" / "index.html"
+    if not standalone_path.is_file():
+        standalone_path = Path(__file__).resolve().parent.parent / "frontend" / "dist" / "index.html"
+    if not standalone_path.is_file():
+        raise HTTPException(status_code=404, detail="오프라인 배포본이 아직 빌드되지 않았습니다.")
+
+    return FileResponse(
+        path=str(standalone_path),
+        filename="학교챗봇_장애대응가이드_오프라인.html",
+        media_type="text/html",
     )
 
 

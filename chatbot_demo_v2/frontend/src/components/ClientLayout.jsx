@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   School,
   Settings,
@@ -11,10 +11,16 @@ import {
   Clock,
   ChevronRight,
   ShieldCheck,
+  WifiOff,
+  CheckCircle,
 } from 'lucide-react';
 import { ChatColumn } from './Chat/ChatColumn';
 import { LightboxModal } from './LightboxModal';
 import { useClientHistory } from '../hooks/useClientHistory';
+import { useNetworkStatus } from '../hooks/useNetworkStatus';
+import { useAutoSync } from '../hooks/useAutoSync';
+import { loadScenarioData } from '../utils/TieredDataLoader';
+import { LocalScenarioNavigator } from '../utils/LocalScenarioNavigator';
 
 export function ClientLayout({
   status,
@@ -39,8 +45,30 @@ export function ClientLayout({
 }) {
   const [lightboxData, setLightboxData] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const isReady = status === 'ready';
-  const isError = status === 'error';
+
+  // 실시간 네트워크 및 오프라인 감지
+  const { isOnline, isServerReachable, isOfflineMode } = useNetworkStatus();
+
+  // TieredDataLoader 기반 시나리오 로드 (캐시 우선 ➔ 내장본 폴백)
+  const [scenarioPayload, setScenarioPayload] = useState(() => loadScenarioData());
+  const navigatorRef = useRef(new LocalScenarioNavigator(scenarioPayload.data));
+  const [offlineOptions, setOfflineOptions] = useState(() => navigatorRef.current.getRootOptions());
+  const [showSyncToast, setShowSyncToast] = useState(false);
+
+  // 온라인 시 백그라운드 자동 동기화
+  useAutoSync({
+    currentVersion: scenarioPayload.version,
+    isOnline: !isOfflineMode,
+    onSyncSuccess: (newPayload) => {
+      setScenarioPayload(newPayload);
+      navigatorRef.current.updateTree(newPayload.data);
+      setShowSyncToast(true);
+      setTimeout(() => setShowSyncToast(false), 4000);
+    },
+  });
+
+  const isReady = !isOfflineMode && status === 'ready';
+  const isError = isOfflineMode || status === 'error';
 
   const handleOpenEvidence = (target, highlights = [], pageNumber = null, docName = '') => {
     if (typeof target === 'object' && target !== null) {
@@ -76,14 +104,35 @@ export function ClientLayout({
     resetSession,
   });
 
-  // 시나리오 칩 중 '처음으로' 선택 시 고객 히스토리 분리 및 새 상담 시작
+  // 새 상담 시작 시 오프라인 옵션 칩도 초기 루트로 리셋
+  const handleStartNewChat = () => {
+    setOfflineOptions(navigatorRef.current.getRootOptions());
+    startNewChat();
+  };
+
+  // 시나리오 칩 선택 시 온/오프라인 자동 분기 처리
   const handleSelectOption = (opt) => {
     if (opt?.option_id === '__restart__' || opt?.label?.trim() === '처음으로') {
-      startNewChat();
+      handleStartNewChat();
       return;
     }
+
+    if (isOfflineMode) {
+      // 오프라인 상태: 서버 경유 없이 클라이언트 룰 엔진이 0ms 즉각 처리
+      const result = navigatorRef.current.step(opt);
+      setMessages((prev) => [...prev, result.userMsg, result.botMsg]);
+      setOfflineOptions(result.nextOptions);
+      return;
+    }
+
+    // 온라인 상태: 기존 서버 LangGraph SSE 스트림 호출
     sendAction(opt);
   };
+
+  // 화면에 표출할 유효 시나리오 칩 결정 (온라인 데이터가 없으면 로컬 데이터로 즉시 폴백)
+  const effectiveScenarioOptions = isOfflineMode
+    ? (offlineOptions && offlineOptions.length > 0 ? offlineOptions : navigatorRef.current.getRootOptions())
+    : (scenarioOptions && scenarioOptions.length > 0 ? scenarioOptions : navigatorRef.current.getRootOptions());
 
   return (
     <div className="app-container client-app-container">
@@ -125,11 +174,11 @@ export function ClientLayout({
             <span className="btn-text">새 상담 시작</span>
           </button>
 
-          {/* 서버 연결 상태 표시 */}
-          <div className="status-pill" title="상담 지원 서버 연결 상태">
-            <span className={`status-dot ${isReady ? 'ready' : isError ? 'error' : ''}`} />
+          {/* 서버/오프라인 연결 상태 표시 */}
+          <div className="status-pill" title={isOfflineMode ? "네트워크 단절: 오프라인 시나리오 모드 동작" : "상담 지원 서버 연결 상태"}>
+            <span className={`status-dot ${isOfflineMode ? 'offline' : (isReady ? 'ready' : isError ? 'error' : '')}`} />
             <span className="status-text">
-              {isReady ? '상담 가능' : isError ? '연결 확인 필요' : '연결 중…'}
+              {isOfflineMode ? '오프라인 모드' : (isReady ? '상담 가능' : isError ? '연결 확인 필요' : '연결 중…')}
             </span>
           </div>
 
@@ -157,6 +206,22 @@ export function ClientLayout({
         </div>
       </header>
 
+      {/* 오프라인 상태 알림 배너 */}
+      {isOfflineMode && (
+        <div className="client-offline-banner" role="alert">
+          <WifiOff size={15} style={{ flexShrink: 0 }} />
+          <span>네트워크 연결이 끊겨 오프라인 모드로 전환되었습니다. 시나리오 버튼 및 이전 상담 조회가 가능합니다.</span>
+        </div>
+      )}
+
+      {/* 시나리오 자동 동기화 토스트 */}
+      {showSyncToast && (
+        <div className="client-sync-toast" role="status">
+          <CheckCircle size={15} style={{ flexShrink: 0 }} />
+          <span>최신 장애 대응 시나리오({scenarioPayload.version})가 자동 동기화되었습니다.</span>
+        </div>
+      )}
+
       {/* 2. 본문: 좌측 히스토리 사이드바 + 중앙 와이드 대화 화면 */}
       <div className="client-layout-body">
         {/* 좌측: 지난 대화 히스토리 사이드바 */}
@@ -169,7 +234,7 @@ export function ClientLayout({
             <button
               type="button"
               className="btn-new-chat-sidebar"
-              onClick={startNewChat}
+              onClick={handleStartNewChat}
               title="새로운 질문으로 대화 시작"
             >
               <PlusCircle size={14} />
@@ -253,15 +318,16 @@ export function ClientLayout({
               busyText={busyText}
               busySteps={busySteps}
               elapsedSeconds={elapsedSeconds}
-              scenarioOptions={scenarioOptions}
+              scenarioOptions={effectiveScenarioOptions}
               scenarioInfo={scenarioInfo}
               onSend={sendMessage}
               onSelectOption={handleSelectOption}
               onSelectClarify={sendClarify}
-              onReset={startNewChat}
+              onReset={handleStartNewChat}
               onOpenEvidence={handleOpenEvidence}
               onFeedback={sendFeedback}
               isClient={true}
+              isOffline={isOfflineMode}
             />
           </div>
         </main>

@@ -78,6 +78,29 @@ class ScenarioManager:
             "validation": validation,
         }
 
+    def get_client_payload(self) -> dict[str, Any]:
+        """고객용 오프라인 자동 동기화에 필요한 최신 시나리오 트리 및 버전 정보 반환."""
+        data = self._read_data()
+        nodes = data.get("nodes", {})
+        root_id = data.get("root_node_id", "root")
+
+        # 파일 수정 시간 및 데이터 기반 버전 산출
+        try:
+            mtime = self.scenarios_path.stat().st_mtime
+            version = f"v{datetime.fromtimestamp(mtime).strftime('%Y%m%d_%H%M%S')}"
+            updated_at = datetime.fromtimestamp(mtime).isoformat()
+        except Exception:
+            version = "v1.0.0"
+            updated_at = datetime.now().isoformat()
+
+        return {
+            "version": version,
+            "updated_at": updated_at,
+            "root_node_id": root_id,
+            "total_nodes": len(nodes),
+            "nodes": nodes,
+        }
+
     def get_node(self, node_id: str) -> Optional[dict[str, Any]]:
         """특정 노드 상세 조회."""
         data = self._read_data()

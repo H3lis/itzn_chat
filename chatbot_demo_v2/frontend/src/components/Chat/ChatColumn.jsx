@@ -23,6 +23,7 @@ export function ChatColumn({
   onOpenEvidence,
   onFeedback,
   isClient = false,
+  isOffline = false,
 }) {
   const messagesEndRef = useRef(null);
 
@@ -159,7 +160,7 @@ export function ChatColumn({
       />
 
       {/* Chat Composer */}
-      <ChatComposer inFlight={inFlight} onSend={onSend} />
+      <ChatComposer inFlight={inFlight} onSend={onSend} isOffline={isOffline} />
     </section>
   );
 }
