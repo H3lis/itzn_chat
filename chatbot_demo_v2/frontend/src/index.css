@@ -2421,19 +2421,46 @@ body {
 .client-offline-banner {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.6rem;
   background: linear-gradient(90deg, rgba(245, 158, 11, 0.18) 0%, rgba(217, 119, 6, 0.22) 100%);
   border-bottom: 1px solid rgba(245, 158, 11, 0.35);
   color: #fbbf24;
   font-size: 0.82rem;
   font-weight: 500;
-  padding: 0.45rem 1rem;
-  text-align: center;
+  padding: 0.45rem 1.25rem;
   animation: slideDown 0.25s ease-out;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   z-index: 20;
+}
+
+.offline-banner-text {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-go-online {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.22rem 0.65rem;
+  background: rgba(245, 158, 11, 0.25);
+  border: 1px solid rgba(245, 158, 11, 0.5);
+  color: #fef3c7;
+  border-radius: 6px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.btn-go-online:hover {
+  background: #f59e0b;
+  color: #0f172a;
 }
 
 .client-sync-toast {

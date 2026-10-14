@@ -21,6 +21,7 @@ import { useNetworkStatus } from '../hooks/useNetworkStatus';
 import { useAutoSync } from '../hooks/useAutoSync';
 import { loadScenarioData } from '../utils/TieredDataLoader';
 import { LocalScenarioNavigator } from '../utils/LocalScenarioNavigator';
+import { checkAndRedirectIfOnline, REMOTE_SERVER_URL } from '../utils/onlineRedirect';
 
 export function ClientLayout({
   status,
@@ -46,6 +47,11 @@ export function ClientLayout({
   const [lightboxData, setLightboxData] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
+  // 로컬 단일 HTML(file:) 실행 시 인터넷이 되면 온라인 서버로 자동 이동
+  useEffect(() => {
+    checkAndRedirectIfOnline();
+  }, []);
+
   // 실시간 네트워크 및 오프라인 감지
   const { isOnline, isServerReachable, isOfflineMode } = useNetworkStatus();
 
@@ -54,6 +60,13 @@ export function ClientLayout({
   const navigatorRef = useRef(new LocalScenarioNavigator(scenarioPayload.data));
   const [offlineOptions, setOfflineOptions] = useState(() => navigatorRef.current.getRootOptions());
   const [showSyncToast, setShowSyncToast] = useState(false);
+
+  // 오프라인 시나리오 진행 상태 관리 (웹과 100% 동일한 헤더 안내 텍스트 보장)
+  const [localScenarioInfo, setLocalScenarioInfo] = useState({
+    scenario_id: 'root',
+    node_id: 'root',
+    completed: false,
+  });
 
   // 온라인 시 백그라운드 자동 동기화
   useAutoSync({
@@ -107,6 +120,7 @@ export function ClientLayout({
   // 새 상담 시작 시 오프라인 옵션 칩도 초기 루트로 리셋
   const handleStartNewChat = () => {
     setOfflineOptions(navigatorRef.current.getRootOptions());
+    setLocalScenarioInfo({ scenario_id: 'root', node_id: 'root', completed: false });
     startNewChat();
   };
 
@@ -122,6 +136,11 @@ export function ClientLayout({
       const result = navigatorRef.current.step(opt);
       setMessages((prev) => [...prev, result.userMsg, result.botMsg]);
       setOfflineOptions(result.nextOptions);
+      setLocalScenarioInfo({
+        scenario_id: result.botMsg.scenarioId || 'offline',
+        node_id: result.nextNodeId,
+        completed: result.completed,
+      });
       return;
     }
 
@@ -129,10 +148,12 @@ export function ClientLayout({
     sendAction(opt);
   };
 
-  // 화면에 표출할 유효 시나리오 칩 결정 (온라인 데이터가 없으면 로컬 데이터로 즉시 폴백)
+  // 화면에 표출할 유효 시나리오 칩 및 진행 상태 결정 (웹과 100% 동일한 헤더 안내)
   const effectiveScenarioOptions = isOfflineMode
     ? (offlineOptions && offlineOptions.length > 0 ? offlineOptions : navigatorRef.current.getRootOptions())
     : (scenarioOptions && scenarioOptions.length > 0 ? scenarioOptions : navigatorRef.current.getRootOptions());
+
+  const effectiveScenarioInfo = isOfflineMode ? localScenarioInfo : (scenarioInfo || localScenarioInfo);
 
   return (
     <div className="app-container client-app-container">
@@ -209,8 +230,17 @@ export function ClientLayout({
       {/* 오프라인 상태 알림 배너 */}
       {isOfflineMode && (
         <div className="client-offline-banner" role="alert">
-          <WifiOff size={15} style={{ flexShrink: 0 }} />
-          <span>네트워크 연결이 끊겨 오프라인 모드로 전환되었습니다. 시나리오 버튼 및 이전 상담 조회가 가능합니다.</span>
+          <div className="offline-banner-text">
+            <WifiOff size={15} style={{ flexShrink: 0 }} />
+            <span>네트워크 연결이 끊겨 오프라인 모드로 전환되었습니다. 시나리오 버튼 및 이전 상담 조회가 가능합니다.</span>
+          </div>
+          <a
+            href={REMOTE_SERVER_URL}
+            className="btn-go-online"
+            title="인터넷이 복구되었을 때 온라인 웹 챗봇으로 접속합니다"
+          >
+            온라인 접속 ↗
+          </a>
         </div>
       )}
 
@@ -319,7 +349,7 @@ export function ClientLayout({
               busySteps={busySteps}
               elapsedSeconds={elapsedSeconds}
               scenarioOptions={effectiveScenarioOptions}
-              scenarioInfo={scenarioInfo}
+              scenarioInfo={effectiveScenarioInfo}
               onSend={sendMessage}
               onSelectOption={handleSelectOption}
               onSelectClarify={sendClarify}

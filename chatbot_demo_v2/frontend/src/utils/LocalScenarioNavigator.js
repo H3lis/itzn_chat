@@ -6,6 +6,42 @@
  * 안내 메시지와 다음 선택지 칩을 0ms 만에 생성합니다.
  */
 
+function extractNodeText(node) {
+  if (!node) return '안내에 따라 확인해 주시기 바랍니다.';
+
+  // 1. text 필드 (일반 질문/메뉴 노드)
+  if (typeof node.text === 'string' && node.text.trim()) {
+    return node.text.trim();
+  }
+
+  // 2. answer 필드 (객체 또는 문자열 - terminal 노드)
+  if (node.answer) {
+    if (typeof node.answer === 'string' && node.answer.trim()) {
+      return node.answer.trim();
+    }
+    if (typeof node.answer === 'object') {
+      if (typeof node.answer.text === 'string' && node.answer.text.trim()) {
+        return node.answer.text.trim();
+      }
+      if (typeof node.answer.answer_text === 'string' && node.answer.answer_text.trim()) {
+        return node.answer.answer_text.trim();
+      }
+    }
+  }
+
+  // 3. solution 필드
+  if (node.solution) {
+    if (typeof node.solution === 'string' && node.solution.trim()) {
+      return node.solution.trim();
+    }
+    if (typeof node.solution === 'object' && typeof node.solution.text === 'string') {
+      return node.solution.text.trim();
+    }
+  }
+
+  return '안내에 따라 확인해 주시기 바랍니다.';
+}
+
 export class LocalScenarioNavigator {
   constructor(scenarioTree) {
     this.tree = scenarioTree || { root_node_id: 'root', nodes: {} };
@@ -45,7 +81,7 @@ export class LocalScenarioNavigator {
    */
   getRootGreeting() {
     const rootNode = this.nodes[this.rootNodeId];
-    return rootNode?.text || '안녕하세요. 학교 유무선 장애상담 스쿨넷봇입니다.\n(오프라인 모드로 시나리오 안내를 제공합니다)';
+    return extractNodeText(rootNode);
   }
 
   /**
@@ -72,6 +108,13 @@ export class LocalScenarioNavigator {
         id: 'msg_bot_' + Date.now(),
         type: 'bot',
         text: '해당 시나리오의 세부 안내 정보를 찾을 수 없습니다. 처음으로 돌아가시겠습니까?',
+        resp: {
+          answer: '해당 시나리오의 세부 안내 정보를 찾을 수 없습니다. 처음으로 돌아가시겠습니까?',
+          run_id: null,
+          evidence: [],
+          faq_evidence: [],
+          isOffline: true,
+        },
         isOffline: true,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       };
@@ -84,8 +127,10 @@ export class LocalScenarioNavigator {
       };
     }
 
-    // 봇 안내 문구 생성
-    const botText = targetNode.text || targetNode.solution || '안내에 따라 확인해 주시기 바랍니다.';
+    // 봇 안내 문구 생성 (복합 객체 answer.text 지원)
+    const botText = extractNodeText(targetNode);
+    const isTerminal = targetNode.type === 'terminal';
+
     const botMsg = {
       id: 'msg_bot_' + Date.now(),
       type: 'bot',
@@ -112,11 +157,17 @@ export class LocalScenarioNavigator {
         next_node_id: opt.next_node_id,
         action: opt.action,
       }));
-      // 언제든 초기 화면으로 돌아갈 수 있도록 '처음으로' 칩 추가
-      nextOptions.push({
-        option_id: '__restart__',
-        label: '처음으로',
-      });
+
+      // '처음으로' 칩이 없을 때만 추가
+      const hasRestart = nextOptions.some(
+        (o) => o.option_id === '__restart__' || o.label?.trim() === '처음으로' || o.next_node_id === 'root'
+      );
+      if (!hasRestart) {
+        nextOptions.push({
+          option_id: '__restart__',
+          label: '처음으로',
+        });
+      }
     } else {
       // 리프 노드(최종 해결책 안내 노드)인 경우
       nextOptions = [
@@ -132,7 +183,7 @@ export class LocalScenarioNavigator {
       botMsg,
       nextOptions,
       nextNodeId,
-      completed: !targetNode.options || targetNode.options.length === 0,
+      completed: isTerminal || !targetNode.options || targetNode.options.length === 0,
     };
   }
 }
