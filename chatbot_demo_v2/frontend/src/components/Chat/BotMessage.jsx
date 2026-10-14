@@ -8,12 +8,13 @@ function confLabel(c) {
 }
 
 export function BotMessage({ resp, isActive, onSelect, onOpenEvidence, onFeedback, isClient = false }) {
+  const safeResp = resp || {};
   const [feedbackState, setFeedbackState] = useState(null); // 'pos' | 'neg' | null
   const [feedbackSent, setFeedbackSent] = useState(false);
 
   // 유효한 근거 문서(이미지 URL 보유) 중복 제거 목록
   const validEvidence = useMemo(() => {
-    const list = [...(resp?.evidence || []), ...(resp?.faq_evidence || [])];
+    const list = [...(safeResp.evidence || []), ...(safeResp.faq_evidence || [])];
     const seen = new Set();
     const res = [];
     for (const item of list) {
@@ -26,13 +27,13 @@ export function BotMessage({ resp, isActive, onSelect, onOpenEvidence, onFeedbac
       }
     }
     return res;
-  }, [resp?.evidence, resp?.faq_evidence]);
+  }, [safeResp.evidence, safeResp.faq_evidence]);
 
   const handleFeedback = async (score) => {
-    if (feedbackSent || !resp.run_id) return;
+    if (feedbackSent || !safeResp.run_id) return;
     const type = score === 1 ? 'pos' : 'neg';
     setFeedbackState(type);
-    const success = await onFeedback?.(resp.run_id, score);
+    const success = await onFeedback?.(safeResp.run_id, score);
     if (success) {
       setFeedbackSent(true);
     }
@@ -45,9 +46,9 @@ export function BotMessage({ resp, isActive, onSelect, onOpenEvidence, onFeedbac
       title={isClient ? undefined : "클릭하여 오른쪽에서 처리 파이프라인 및 상세 메타를 확인합니다"}
     >
       <AnswerRenderer
-        text={resp.answer}
-        evidence={resp.evidence}
-        faqEvidence={resp.faq_evidence}
+        text={safeResp.answer || safeResp.text || ''}
+        evidence={safeResp.evidence}
+        faqEvidence={safeResp.faq_evidence}
         onOpenEvidence={onOpenEvidence}
       />
 

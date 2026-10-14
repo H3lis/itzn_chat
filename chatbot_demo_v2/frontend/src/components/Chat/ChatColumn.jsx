@@ -84,9 +84,11 @@ export function ChatColumn({
             <div className="chat-empty-icon">
               <Sparkles size={24} />
             </div>
-            <div className="chat-empty-title">무엇을 도와드릴까요?</div>
+            <div className="chat-empty-title">학교 장애상담 스쿨넷봇</div>
             <div className="chat-empty-desc">
-              학교 유·무선 네트워크 및 기기 관련 문의를 입력하거나, 아래 시나리오 버튼을 선택해 보세요.
+              {isOffline
+                ? '현재 오프라인 모드로 동작 중입니다. 아래 시나리오 버튼을 선택하여 네트워크 및 장비 장애 조치를 진행해 주세요.'
+                : '궁금한 내용을 직접 질문하시거나, 아래 주요 장애 시나리오 버튼을 선택해 주세요.'}
             </div>
           </div>
         )}
@@ -101,10 +103,11 @@ export function ChatColumn({
           }
 
           if (m.type === 'bot') {
+            const respObj = m.resp || { answer: m.text, isOffline: m.isOffline };
             return (
               <div key={m.id} className="msg-row bot">
                 <BotMessage
-                  resp={m.resp}
+                  resp={respObj}
                   isActive={m.id === activeMsgId}
                   onSelect={() => onSelectMsg(m.id)}
                   onOpenEvidence={onOpenEvidence}

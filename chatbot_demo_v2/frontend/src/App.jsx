@@ -104,7 +104,7 @@ export function App() {
     sendAction(opt);
   };
 
-  // /admin 경로인 경우 관리자 콘솔 전면 렌더링
+  // 1. /admin 경로인 경우 관리자 콘솔 전면 렌더링
   if (path.startsWith('/admin')) {
     return (
       <ErrorBoundary>
@@ -113,94 +113,96 @@ export function App() {
     );
   }
 
-  // /client 경로인 경우 실제 런칭용 고객 상담 화면(답변근거/인스펙터 제외) 렌더링
-  if (path.startsWith('/client')) {
+  // 2. /dev 또는 /demo 경로인 경우에만 개발자(데모) 모드 화면 렌더링
+  if (path.startsWith('/dev') || path.startsWith('/demo')) {
     return (
-      <ErrorBoundary>
-        <ClientLayout
+      <div className="app-container">
+        {/* 상단 글로벌 네비게이션 헤더 */}
+        <TopBar
           status={status}
           onNavigate={navigate}
-          sessionId={sessionId}
-          updateSession={updateSession}
-          messages={messages}
-          setMessages={setMessages}
-          activeMsgId={activeMsgId}
-          setActiveMsgId={setActiveMsgId}
-          inFlight={inFlight}
-          busyText={busyText}
-          busySteps={busySteps}
-          elapsedSeconds={elapsedSeconds}
-          scenarioOptions={scenarioOptions}
-          scenarioInfo={scenarioInfo}
-          sendMessage={sendMessage}
-          sendAction={sendAction}
-          sendClarify={sendClarify}
-          resetSession={resetSession}
-          sendFeedback={sendFeedback}
+          onToggleInspector={() => setIsMobileInspectorOpen((prev) => !prev)}
+          isMobileInspectorOpen={isMobileInspectorOpen}
         />
-      </ErrorBoundary>
+
+        {/* 메인 2분할 (Split) 레이아웃 */}
+        <main className="main-split">
+          {/* 좌측: 챗봇 상담 인터랙션 컬럼 */}
+          <ChatColumn
+            messages={messages}
+            activeMsgId={activeMsgId}
+            onSelectMsg={handleSelectMsg}
+            inFlight={inFlight}
+            busyText={busyText}
+            busySteps={busySteps}
+            elapsedSeconds={elapsedSeconds}
+            scenarioOptions={scenarioOptions}
+            scenarioInfo={scenarioInfo}
+            onSend={sendMessage}
+            onSelectOption={handleSelectOption}
+            onSelectClarify={sendClarify}
+            onReset={resetSession}
+            onOpenEvidence={handleOpenEvidence}
+            onFeedback={sendFeedback}
+          />
+
+          {/* 우측: 근거 · 파이프라인 인스펙터 컬럼 */}
+          <InspectorColumn
+            response={activeResponse}
+            health={health}
+            warmupLoading={warmupLoading}
+            warmupMsg={warmupMsg}
+            onWarmup={triggerWarmup}
+            onOpenEvidence={handleOpenEvidence}
+            isOpenMobile={isMobileInspectorOpen}
+            onCloseMobile={() => setIsMobileInspectorOpen(false)}
+          />
+        </main>
+
+        {/* 모바일 인스펙터 열림 시 뒷배경 딤 오버레이 */}
+        {isMobileInspectorOpen && (
+          <div
+            className="mobile-inspector-backdrop"
+            onClick={() => setIsMobileInspectorOpen(false)}
+            aria-hidden="true"
+          />
+        )}
+
+        {/* 근거 원본 이미지 모달 라이트박스 */}
+        <LightboxModal
+          data={lightboxData}
+          onClose={() => setLightboxData(null)}
+        />
+      </div>
     );
   }
 
+  // 3. 기본 진입 화면: 배포 파일(file:) 및 기본 웹 접속('/', '/client') 모두
+  //    고객용 장애상담 화면(ClientLayout)을 1순위 기본 화면으로 제공
   return (
-    <div className="app-container">
-      {/* 1. 상단 글로벌 네비게이션 헤더 */}
-      <TopBar
+    <ErrorBoundary>
+      <ClientLayout
         status={status}
         onNavigate={navigate}
-        onToggleInspector={() => setIsMobileInspectorOpen((prev) => !prev)}
-        isMobileInspectorOpen={isMobileInspectorOpen}
+        sessionId={sessionId}
+        updateSession={updateSession}
+        messages={messages}
+        setMessages={setMessages}
+        activeMsgId={activeMsgId}
+        setActiveMsgId={setActiveMsgId}
+        inFlight={inFlight}
+        busyText={busyText}
+        busySteps={busySteps}
+        elapsedSeconds={elapsedSeconds}
+        scenarioOptions={scenarioOptions}
+        scenarioInfo={scenarioInfo}
+        sendMessage={sendMessage}
+        sendAction={sendAction}
+        sendClarify={sendClarify}
+        resetSession={resetSession}
+        sendFeedback={sendFeedback}
       />
-
-      {/* 2. 메인 2분할 (Split) 레이아웃 */}
-      <main className="main-split">
-        {/* 좌측: 챗봇 상담 인터랙션 컬럼 */}
-        <ChatColumn
-          messages={messages}
-          activeMsgId={activeMsgId}
-          onSelectMsg={handleSelectMsg}
-          inFlight={inFlight}
-          busyText={busyText}
-          busySteps={busySteps}
-          elapsedSeconds={elapsedSeconds}
-          scenarioOptions={scenarioOptions}
-          scenarioInfo={scenarioInfo}
-          onSend={sendMessage}
-          onSelectOption={handleSelectOption}
-          onSelectClarify={sendClarify}
-          onReset={resetSession}
-          onOpenEvidence={handleOpenEvidence}
-          onFeedback={sendFeedback}
-        />
-
-        {/* 우측: 근거 · 파이프라인 인스펙터 컬럼 (모바일에서는 슬라이드 드로어로 변환) */}
-        <InspectorColumn
-          response={activeResponse}
-          health={health}
-          warmupLoading={warmupLoading}
-          warmupMsg={warmupMsg}
-          onWarmup={triggerWarmup}
-          onOpenEvidence={handleOpenEvidence}
-          isOpenMobile={isMobileInspectorOpen}
-          onCloseMobile={() => setIsMobileInspectorOpen(false)}
-        />
-      </main>
-
-      {/* 모바일 인스펙터 열림 시 뒷배경 딤(Backdrop) 오버레이 */}
-      {isMobileInspectorOpen && (
-        <div
-          className="mobile-inspector-backdrop"
-          onClick={() => setIsMobileInspectorOpen(false)}
-          aria-hidden="true"
-        />
-      )}
-
-      {/* 3. 근거 원본 이미지 모달 라이트박스 (정답 영역 형광펜 오버레이 지원) */}
-      <LightboxModal
-        data={lightboxData}
-        onClose={() => setLightboxData(null)}
-      />
-    </div>
+    </ErrorBoundary>
   );
 }
 

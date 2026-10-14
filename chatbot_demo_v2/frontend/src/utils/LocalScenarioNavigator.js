@@ -90,6 +90,13 @@ export class LocalScenarioNavigator {
       id: 'msg_bot_' + Date.now(),
       type: 'bot',
       text: botText,
+      resp: {
+        answer: botText,
+        run_id: null,
+        evidence: [],
+        faq_evidence: [],
+        isOffline: true,
+      },
       isOffline: true,
       nodeId: nextNodeId,
       scenarioId: targetNode.scenario_id,
