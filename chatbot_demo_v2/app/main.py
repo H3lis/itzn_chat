@@ -65,6 +65,17 @@ def create_app(ctx: Optional[AppContext] = None) -> FastAPI:
     app.state.langsmith = {"tracing_enabled": False, "project": ctx.settings.langsmith_project}
     app.state.graph_mermaid = None
 
+    # --- CORS 미들웨어 등록 (오프라인 단일 HTML 및 로컬 파일의 원격 API 호출 허용) ---
+    from fastapi.middleware.cors import CORSMiddleware
+
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+
     # --- 보안 감사 미들웨어 등록 (/api/admin/* 요청 무누락 캡처) ---
     from .audit_middleware import AuditMiddleware
 

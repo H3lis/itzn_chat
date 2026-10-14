@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { buildApiUrl } from '../utils/apiBase';
 
 const SESSION_KEY = 'chatbot_demo_v2_sid';
 const USER_KEY = 'chatbot_demo_v2_uid';
@@ -107,7 +108,7 @@ export function useChatStream() {
   // Load root scenarios
   const loadRootScenarios = useCallback(async () => {
     try {
-      const res = await fetch('/api/scenarios/root');
+      const res = await fetch(buildApiUrl('/api/scenarios/root'));
       if (!res.ok) throw new Error('HTTP ' + res.status);
       const data = await res.json();
       setScenarioOptions(data.options || []);
@@ -123,7 +124,7 @@ export function useChatStream() {
 
   // SSE Stream fetcher
   const executeChatStream = useCallback(async (reqBody) => {
-    const res = await fetch('/api/chat/stream', {
+    const res = await fetch(buildApiUrl('/api/chat/stream'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(reqBody),
@@ -249,7 +250,7 @@ export function useChatStream() {
 
     if (oldSid) {
       try {
-        await fetch('/api/reset', {
+        await fetch(buildApiUrl('/api/reset'), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ session_id: oldSid }),
@@ -321,7 +322,7 @@ export function useChatStream() {
   // Submit feedback
   const sendFeedback = useCallback(async (runId, score) => {
     try {
-      await fetch('/api/chat/feedback', {
+      await fetch(buildApiUrl('/api/chat/feedback'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

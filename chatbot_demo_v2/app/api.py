@@ -915,6 +915,16 @@ def download_offline_client():
     )
 
 
+@router.get("/api/client/history")
+def get_client_history(request: Request, user_id: Optional[str] = None, limit: int = 30) -> dict:
+    """고객용 상담 화면 및 오프라인 배포본 대화 세션 및 메시지 복원 API."""
+    ctx = _ctx(request)
+    if not ctx.history_service:
+        return {"sessions": [], "total": 0}
+    return ctx.history_service.get_client_sessions(user_id=user_id, limit=limit)
+
+
+
 # =========================================================================
 # 관리자 시나리오 관리 API (Phase 2)
 # =========================================================================

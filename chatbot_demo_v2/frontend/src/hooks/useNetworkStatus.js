@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { buildApiUrl } from '../utils/apiBase';
 
 /**
  * 실시간 네트워크 및 서버 연결 상태 감지 훅 (useNetworkStatus)
@@ -23,7 +24,7 @@ export function useNetworkStatus({ probeIntervalMs = 15000 } = {}) {
     }
 
     try {
-      const res = await fetch('/api/scenarios/latest', {
+      const res = await fetch(buildApiUrl('/api/scenarios/latest'), {
         method: 'HEAD',
         cache: 'no-store',
       });

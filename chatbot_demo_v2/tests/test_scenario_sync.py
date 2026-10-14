@@ -46,3 +46,20 @@ def test_download_offline_client(client):
     assert "text/html" in res.headers.get("content-type", "")
     assert len(res.content) > 10000
 
+
+def test_get_client_history(client):
+    """고객용 대화 이력 복원 API (/api/client/history) 테스트."""
+    res = client.get("/api/client/history?limit=10")
+    assert res.status_code == 200
+    data = res.json()
+    assert "sessions" in data
+    assert "total" in data
+    assert isinstance(data["sessions"], list)
+    if data["sessions"]:
+        s = data["sessions"][0]
+        assert "id" in s
+        assert "title" in s
+        assert "turnCount" in s
+        assert "messages" in s
+
+

@@ -47,10 +47,7 @@ export function ClientLayout({
   const [lightboxData, setLightboxData] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
-  // 로컬 단일 HTML(file:) 실행 시 인터넷이 되면 온라인 서버로 자동 이동
-  useEffect(() => {
-    checkAndRedirectIfOnline();
-  }, []);
+  const isFileOrigin = typeof window !== 'undefined' && window.location.protocol === 'file:';
 
   // 실시간 네트워크 및 오프라인 감지
   const { isOnline, isServerReachable, isOfflineMode } = useNetworkStatus();
@@ -228,7 +225,7 @@ export function ClientLayout({
       </header>
 
       {/* 오프라인 상태 알림 배너 */}
-      {isOfflineMode && (
+      {isOfflineMode ? (
         <div className="client-offline-banner" role="alert">
           <div className="offline-banner-text">
             <WifiOff size={15} style={{ flexShrink: 0 }} />
@@ -237,9 +234,25 @@ export function ClientLayout({
           <a
             href={REMOTE_SERVER_URL}
             className="btn-go-online"
-            title="인터넷이 복구되었을 때 온라인 웹 챗봇으로 접속합니다"
+            title="인터넷이 복구되었을 때 공식 웹 챗봇으로 접속합니다"
           >
             온라인 접속 ↗
+          </a>
+        </div>
+      ) : isFileOrigin && (
+        <div className="client-online-banner" role="status">
+          <div className="online-banner-text">
+            <CheckCircle size={15} style={{ flexShrink: 0, color: '#34d399' }} />
+            <span>온라인 서버 연결됨 (실시간 AI 상담 가동 중 · 상담 내역이 로컬 파일에 영구 자동 보관됩니다)</span>
+          </div>
+          <a
+            href={REMOTE_SERVER_URL}
+            className="btn-go-online"
+            target="_blank"
+            rel="noreferrer"
+            title="브라우저에서 공식 웹 챗봇 주소로 열기"
+          >
+            공식 웹 주소 열기 ↗
           </a>
         </div>
       )}

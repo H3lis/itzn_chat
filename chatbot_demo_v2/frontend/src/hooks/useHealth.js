@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { buildApiUrl } from '../utils/apiBase';
 
 export function useHealth() {
   const [health, setHealth] = useState(null);
@@ -8,7 +9,7 @@ export function useHealth() {
 
   const checkHealth = useCallback(async () => {
     try {
-      const res = await fetch('/api/health');
+      const res = await fetch(buildApiUrl('/api/health'));
       if (!res.ok) throw new Error('HTTP ' + res.status);
       const data = await res.json();
       setHealth(data);
@@ -23,7 +24,7 @@ export function useHealth() {
     setWarmupLoading(true);
     setWarmupMsg('예열 요청 중…');
     try {
-      const res = await fetch('/api/warmup', {
+      const res = await fetch(buildApiUrl('/api/warmup'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ deep: true }),

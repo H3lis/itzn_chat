@@ -553,6 +553,103 @@ class HistoryService:
                 turns.append(d)
             return turns
 
+    def get_client_sessions(self, user_id: Optional[str] = None, limit: int = 30) -> dict[str, Any]:
+        """고객용 상담 화면 및 오프라인 배포본용 세션 및 대화 메시지 복원 목록 조회."""
+        with self._lock, self._get_conn() as conn:
+            where_clause = ""
+            params: list[Any] = []
+            if user_id and user_id.strip() and user_id != "usr_guest":
+                where_clause = "WHERE user_id = ?"
+                params.append(user_id.strip())
+
+            # 세션 목록 집계 (최신순)
+            query_sql = f"""
+                SELECT session_id, user_id,
+                       MIN(created_at) as created_at,
+                       MAX(created_at) as updated_at,
+                       COUNT(*) as turn_count,
+                       MAX(id) as max_id
+                FROM chat_history
+                {where_clause}
+                GROUP BY session_id
+                ORDER BY max_id DESC
+                LIMIT ?
+            """
+            cur = conn.execute(query_sql, params + [limit])
+            session_rows = cur.fetchall()
+
+            # 만약 특정 user_id로 조회했는데 결과가 없고 user_id가 주어졌던 경우,
+            # 최근 세션(공용/데모 세션 포함)을 최대 10개 폴백 조회하여 빈 화면 방지
+            if not session_rows and user_id:
+                fallback_cur = conn.execute("""
+                    SELECT session_id, user_id,
+                           MIN(created_at) as created_at,
+                           MAX(created_at) as updated_at,
+                           COUNT(*) as turn_count,
+                           MAX(id) as max_id
+                    FROM chat_history
+                    GROUP BY session_id
+                    ORDER BY max_id DESC
+                    LIMIT 10
+                """)
+                session_rows = fallback_cur.fetchall()
+
+            sessions = []
+            for s_row in session_rows:
+                sid = s_row["session_id"]
+                turns_cur = conn.execute("""
+                    SELECT run_id, created_at, masked_question, final_answer, route, evidence
+                    FROM chat_history
+                    WHERE session_id = ?
+                    ORDER BY id ASC
+                """, (sid,))
+                turn_rows = turns_cur.fetchall()
+                if not turn_rows:
+                    continue
+
+                first_q = turn_rows[0]["masked_question"] or "상담 대화"
+                title = first_q[:30] + ("…" if len(first_q) > 30 else "")
+
+                messages = []
+                for idx, t in enumerate(turn_rows):
+                    run_id = t["run_id"] or f"turn_{idx}"
+                    q_text = t["masked_question"] or ""
+                    a_text = t["final_answer"] or ""
+                    evidence_list = []
+                    try:
+                        if t["evidence"]:
+                            evidence_list = json.loads(t["evidence"])
+                    except Exception:
+                        evidence_list = []
+
+                    messages.append({
+                        "id": f"usr_{run_id}",
+                        "type": "user",
+                        "text": q_text,
+                    })
+                    messages.append({
+                        "id": f"bot_{run_id}",
+                        "type": "bot",
+                        "resp": {
+                            "answer": a_text,
+                            "run_id": run_id,
+                            "route": t["route"] or "rag",
+                            "evidence": evidence_list,
+                            "faq_evidence": [],
+                        },
+                    })
+
+                sessions.append({
+                    "id": sid,
+                    "title": title,
+                    "createdAt": s_row["created_at"],
+                    "updatedAt": s_row["updated_at"],
+                    "turnCount": len(turn_rows),
+                    "messages": messages,
+                })
+
+            return {"sessions": sessions, "total": len(sessions)}
+
     def get_analytics_summary(self, days: int = 30) -> dict[str, Any]:
         """만족도 통계, 처리 경로별 통계 및 부정 피드백 목록 집계."""
         cutoff = (datetime.now(KST) - timedelta(days=days)).strftime("%Y-%m-%d 00:00:00")

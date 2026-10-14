@@ -1,9 +1,11 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { buildApiUrl } from '../utils/apiBase';
 
 const CLIENT_HISTORY_STORAGE_KEY = 'chatbot_client_sessions_v1';
+const USER_KEY = 'chatbot_demo_v2_uid';
 
 /**
- * 사용자용 대화 히스토리 관리 훅 (localStorage 기반 영구 저장)
+ * 사용자용 대화 히스토리 관리 훅 (localStorage 영구 저장 + 서버 DB 양방향 동기화)
  */
 export function useClientHistory({
   messages,
@@ -25,6 +27,13 @@ export function useClientHistory({
     return sessionId || 'session_' + Date.now();
   });
 
+  // 서버로부터 전달받은 sessionId와 currentSessionId 동기화
+  useEffect(() => {
+    if (sessionId && sessionId !== currentSessionId) {
+      setCurrentSessionId(sessionId);
+    }
+  }, [sessionId]);
+
   // 새 세션 시작 및 세션 전환 시 이전 대화 내용이 복제되지 않도록 차단하는 가드 플래그
   const isResettingRef = useRef(false);
 
@@ -37,6 +46,43 @@ export function useClientHistory({
       console.error('세션 저장 실패:', e);
     }
   }, []);
+
+  // 1. 서버(chat_history.db)와 세션 히스토리 자동 동기화 (온라인 상태일 때 자동 복원)
+  const syncWithServer = useCallback(async () => {
+    try {
+      const uid = localStorage.getItem(USER_KEY) || '';
+      const url = buildApiUrl(`/api/client/history?user_id=${encodeURIComponent(uid)}&limit=30`);
+      const res = await fetch(url, { cache: 'no-store' });
+      if (!res.ok) return;
+      const data = await res.json();
+      if (data && Array.isArray(data.sessions) && data.sessions.length > 0) {
+        setSessions((prev) => {
+          const sessionMap = new Map();
+          // 서버에서 복원한 세션 먼저 등록
+          data.sessions.forEach((s) => sessionMap.set(s.id, s));
+          // 로컬에 이미 존재하는 세션이 더 최신 메시지를 포함하면 로컬 우선 병합
+          prev.forEach((s) => {
+            const serverSess = sessionMap.get(s.id);
+            if (!serverSess || (s.messages && s.messages.length >= (serverSess.messages?.length || 0))) {
+              sessionMap.set(s.id, s);
+            }
+          });
+          const merged = Array.from(sessionMap.values()).slice(0, 50);
+          try {
+            localStorage.setItem(CLIENT_HISTORY_STORAGE_KEY, JSON.stringify(merged));
+          } catch (_) {}
+          return merged;
+        });
+      }
+    } catch (e) {
+      console.debug('서버 대화 이력 동기화 스킵 (오프라인/대기):', e);
+    }
+  }, []);
+
+  // 마운트 시 서버와 즉시 동기화 실행
+  useEffect(() => {
+    syncWithServer();
+  }, [syncWithServer]);
 
   // 메시지가 갱신될 때마다 현재 세션의 히스토리 자동 저장
   useEffect(() => {

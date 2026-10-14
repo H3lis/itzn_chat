@@ -1,5 +1,6 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { saveScenarioCache } from '../utils/TieredDataLoader';
+import { buildApiUrl } from '../utils/apiBase';
 
 /**
  * 백그라운드 시나리오 자동 동기화 훅 (useAutoSync)
@@ -19,7 +20,7 @@ export function useAutoSync({ currentVersion, onSyncSuccess, isOnline = true }) 
 
     try {
       // 1. 헤더 경량 프로빙 또는 전체 최신 시나리오 요청
-      const res = await fetch('/api/scenarios/latest', {
+      const res = await fetch(buildApiUrl('/api/scenarios/latest'), {
         method: 'GET',
         headers: {
           'Cache-Control': 'no-cache',

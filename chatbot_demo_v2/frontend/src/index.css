@@ -2463,6 +2463,41 @@ body {
   color: #0f172a;
 }
 
+.client-online-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  background: linear-gradient(90deg, rgba(16, 185, 129, 0.16) 0%, rgba(5, 150, 105, 0.2) 100%);
+  border-bottom: 1px solid rgba(16, 185, 129, 0.35);
+  color: #a7f3d0;
+  font-size: 0.82rem;
+  font-weight: 500;
+  padding: 0.45rem 1.25rem;
+  animation: slideDown 0.25s ease-out;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 20;
+}
+
+.client-online-banner .btn-go-online {
+  background: rgba(16, 185, 129, 0.25);
+  border: 1px solid rgba(16, 185, 129, 0.5);
+  color: #ecfdf5;
+}
+
+.client-online-banner .btn-go-online:hover {
+  background: #10b981;
+  color: #064e3b;
+}
+
+.online-banner-text {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .client-sync-toast {
   position: fixed;
   top: 64px;
