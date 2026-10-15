@@ -15,7 +15,7 @@ export function TopBar({ status, onNavigate, onToggleInspector, isMobileInspecto
   const handleClientClick = (e) => {
     if (onNavigate) {
       e.preventDefault();
-      onNavigate('/client');
+      onNavigate('/');
     }
   };
 
@@ -55,16 +55,16 @@ export function TopBar({ status, onNavigate, onToggleInspector, isMobileInspecto
           </button>
         )}
 
-        {/* 신규: 고객용(런칭용) 페이지 이동 버튼 */}
+        {/* 고객 장애상담 화면 이동 버튼 */}
         <a
-          href="/client"
+          href="/"
           onClick={handleClientClick}
           className="client-link-btn"
-          title="인스펙터 없이 깔끔한 실제 런칭용 고객 상담 화면(/client)으로 이동합니다"
+          title="고객 장애상담 화면으로 이동합니다"
         >
           <MessageCircle size={15} />
-          <span className="client-btn-text-full">고객용 페이지</span>
-          <span className="client-btn-text-short">고객용</span>
+          <span className="client-btn-text-full">상담 화면</span>
+          <span className="client-btn-text-short">챗봇</span>
         </a>
 
         {/* 관리자 페이지 이동 버튼 */}

@@ -6,8 +6,8 @@
  * 인터넷이 끊겨있으면 이동하지 않고 오프라인 자립 모드를 유지합니다.
  */
 
-export const REMOTE_SERVER_URL = 'http://34.64.143.198:8002/client';
-export const LOCAL_DEV_URL = 'http://localhost:8002/client';
+export const REMOTE_SERVER_URL = 'http://34.64.143.198:8002/';
+export const LOCAL_DEV_URL = 'http://localhost:8002/';
 
 let isRedirecting = false;
 

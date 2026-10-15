@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import {
   School,
   Settings,
-  Terminal,
   PlusCircle,
   MessageSquare,
   Trash2,
@@ -200,16 +199,6 @@ export function ClientLayout({
             </span>
           </div>
 
-          {/* 개발자(데모) 모드 전환 버튼 */}
-          <button
-            type="button"
-            className="btn-client-nav dev-mode-btn"
-            onClick={() => onNavigate?.('/')}
-            title="답변 근거 및 내부 처리과정을 확인할 수 있는 개발자(데모) 화면으로 전환합니다"
-          >
-            <Terminal size={14} />
-            <span className="btn-text">개발자(데모) 모드</span>
-          </button>
 
           {/* 관리자 콘솔 전환 버튼 */}
           <button

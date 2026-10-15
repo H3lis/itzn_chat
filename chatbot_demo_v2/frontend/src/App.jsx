@@ -177,8 +177,8 @@ export function App() {
     );
   }
 
-  // 3. 기본 진입 화면: 배포 파일(file:) 및 기본 웹 접속('/', '/client') 모두
-  //    고객용 장애상담 화면(ClientLayout)을 1순위 기본 화면으로 제공
+  // 3. 기본 진입 화면: 배포 파일(file:) 및 기본 웹 접속('/')
+  //    고객 장애상담 화면(ClientLayout)을 1순위 기본 화면으로 제공
   return (
     <ErrorBoundary>
       <ClientLayout

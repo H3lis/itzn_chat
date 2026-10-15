@@ -40,11 +40,12 @@ def test_client_page_serving(tmp_path: Path):
 def test_all_routes_coexist(tmp_path: Path):
     client = _build_test_client(tmp_path)
 
-    # / (개발·데모 화면)
+    # / (메인 장애상담 챗봇 화면)
     res_root = client.get("/")
     assert res_root.status_code == 200
+    assert '<div id="root"></div>' in res_root.text or "학교 유무선 장애상담" in res_root.text
 
-    # /client (고객용 화면)
+    # /client (하위 호환성 유지)
     res_client = client.get("/client")
     assert res_client.status_code == 200
 
