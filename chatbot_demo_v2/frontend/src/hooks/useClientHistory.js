@@ -5,6 +5,69 @@ const CLIENT_HISTORY_STORAGE_KEY = 'chatbot_client_sessions_v1';
 const USER_KEY = 'chatbot_demo_v2_uid';
 
 /**
+ * 세션 객체의 생성/수정 시점을 밀리초(Epoch ms)로 정밀하게 역산출하는 헬퍼
+ */
+export function parseSessionTime(sess) {
+  if (!sess) return 0;
+  if (sess.timestamp && typeof sess.timestamp === 'number') return sess.timestamp;
+
+  const rawStr = sess.updatedAt || sess.createdAt || '';
+
+  // 1. YYYY-MM-DD HH:mm:ss 또는 YYYY-MM-DD
+  const ymd = String(rawStr).match(/^(\d{4})[-/.](\d{1,2})[-/.](\d{1,2})(?:\s+(\d{1,2}):(\d{1,2})(?::(\d{1,2}))?)?/);
+  if (ymd) {
+    const [, y, m, d, h = '0', min = '0', s = '0'] = ymd;
+    return new Date(Number(y), Number(m) - 1, Number(d), Number(h), Number(min), Number(s)).getTime();
+  }
+
+  // 2. MM/DD HH:mm 또는 MM/DD
+  const md = String(rawStr).match(/^(\d{1,2})[-/.](\d{1,2})(?:\s+(\d{1,2}):(\d{1,2}))?/);
+  if (md) {
+    const [, m, d, h = '0', min = '0'] = md;
+    const year = new Date().getFullYear();
+    return new Date(year, Number(m) - 1, Number(d), Number(h), Number(min)).getTime();
+  }
+
+  // 3. session.id 에서 10~13자리 숫자(Date.now 타임스탬프) 추출
+  const idMatch = String(sess.id || '').match(/\d{10,13}/);
+  if (idMatch) return Number(idMatch[0]);
+
+  return 0;
+}
+
+/**
+ * 모든 날짜/시간 문자열을 통일된 'MM/DD' 형식(예: 10/07, 10/14)으로 변환
+ */
+export function formatSessionDate(dateStr) {
+  if (!dateStr) return '';
+  const str = String(dateStr).trim();
+
+  // 1. YYYY-MM-DD 또는 YYYY/MM/DD (시간 포함 여부 무관)
+  const ymd = str.match(/^(\d{4})[-/.](\d{1,2})[-/.](\d{1,2})/);
+  if (ymd) {
+    const month = String(ymd[2]).padStart(2, '0');
+    const day = String(ymd[3]).padStart(2, '0');
+    return `${month}/${day}`;
+  }
+
+  // 2. MM/DD 또는 M/D (시간 포함 여부 무관)
+  const md = str.match(/^(\d{1,2})[-/.](\d{1,2})/);
+  if (md) {
+    const month = String(md[1]).padStart(2, '0');
+    const day = String(md[2]).padStart(2, '0');
+    return `${month}/${day}`;
+  }
+
+  const d = new Date(str);
+  if (!isNaN(d.getTime())) {
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${month}/${day}`;
+  }
+  return str;
+}
+
+/**
  * 사용자용 대화 히스토리 관리 훅 (localStorage 영구 저장 + 서버 DB 양방향 동기화)
  */
 export function useClientHistory({
@@ -17,7 +80,8 @@ export function useClientHistory({
   const [sessions, setSessions] = useState(() => {
     try {
       const raw = localStorage.getItem(CLIENT_HISTORY_STORAGE_KEY);
-      return raw ? JSON.parse(raw) : [];
+      const list = raw ? JSON.parse(raw) : [];
+      return list.sort((a, b) => parseSessionTime(b) - parseSessionTime(a));
     } catch {
       return [];
     }
@@ -39,9 +103,10 @@ export function useClientHistory({
 
   // 세션 목록을 localStorage에 동기화
   const saveSessionsToStorage = useCallback((list) => {
-    setSessions(list);
+    const sorted = [...list].sort((a, b) => parseSessionTime(b) - parseSessionTime(a));
+    setSessions(sorted);
     try {
-      localStorage.setItem(CLIENT_HISTORY_STORAGE_KEY, JSON.stringify(list));
+      localStorage.setItem(CLIENT_HISTORY_STORAGE_KEY, JSON.stringify(sorted));
     } catch (e) {
       console.error('세션 저장 실패:', e);
     }
@@ -58,16 +123,31 @@ export function useClientHistory({
       if (data && Array.isArray(data.sessions) && data.sessions.length > 0) {
         setSessions((prev) => {
           const sessionMap = new Map();
-          // 서버에서 복원한 세션 먼저 등록
-          data.sessions.forEach((s) => sessionMap.set(s.id, s));
+          // 서버에서 복원한 세션 등록 (날짜 통일 포맷 적용)
+          data.sessions.forEach((s) => {
+            sessionMap.set(s.id, {
+              ...s,
+              createdAt: formatSessionDate(s.createdAt),
+              updatedAt: formatSessionDate(s.updatedAt || s.createdAt),
+              timestamp: parseSessionTime(s),
+            });
+          });
           // 로컬에 이미 존재하는 세션이 더 최신 메시지를 포함하면 로컬 우선 병합
           prev.forEach((s) => {
             const serverSess = sessionMap.get(s.id);
             if (!serverSess || (s.messages && s.messages.length >= (serverSess.messages?.length || 0))) {
-              sessionMap.set(s.id, s);
+              sessionMap.set(s.id, {
+                ...s,
+                createdAt: formatSessionDate(s.createdAt),
+                updatedAt: formatSessionDate(s.updatedAt || s.createdAt),
+                timestamp: parseSessionTime(s),
+              });
             }
           });
-          const merged = Array.from(sessionMap.values()).slice(0, 50);
+          // 최신순(내림차순) 정렬 보장
+          const merged = Array.from(sessionMap.values())
+            .sort((a, b) => parseSessionTime(b) - parseSessionTime(a))
+            .slice(0, 50);
           try {
             localStorage.setItem(CLIENT_HISTORY_STORAGE_KEY, JSON.stringify(merged));
           } catch (_) {}
@@ -105,8 +185,11 @@ export function useClientHistory({
 
     setSessions((prevSessions) => {
       const now = new Date();
-      const timeStr = `${now.getMonth() + 1}/${now.getDate()} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-      
+      const monthStr = String(now.getMonth() + 1).padStart(2, '0');
+      const dayStr = String(now.getDate()).padStart(2, '0');
+      const timeStr = `${monthStr}/${dayStr}`;
+      const ts = now.getTime();
+
       const existingIdx = prevSessions.findIndex((s) => s.id === currentSessionId);
       let updated;
 
@@ -116,29 +199,32 @@ export function useClientHistory({
           ...updated[existingIdx],
           title,
           updatedAt: timeStr,
+          timestamp: ts,
           messages,
           turnCount: messages.filter((m) => m.type === 'bot').length,
         };
-        // 최근 대화가 맨 위로 오도록 정렬
-        const [target] = updated.splice(existingIdx, 1);
-        updated.unshift(target);
       } else {
         const newSession = {
           id: currentSessionId,
           title,
           createdAt: timeStr,
           updatedAt: timeStr,
+          timestamp: ts,
           messages,
           turnCount: messages.filter((m) => m.type === 'bot').length,
         };
         updated = [newSession, ...prevSessions];
       }
 
+      // 항상 최신 대화(타임스탬프 기준)가 제일 위로 올라오도록 내림차순 정렬
+      updated.sort((a, b) => parseSessionTime(b) - parseSessionTime(a));
+      const limited = updated.slice(0, 50);
+
       try {
-        localStorage.setItem(CLIENT_HISTORY_STORAGE_KEY, JSON.stringify(updated.slice(0, 50))); // 최대 50개 유지
+        localStorage.setItem(CLIENT_HISTORY_STORAGE_KEY, JSON.stringify(limited));
       } catch (_) {}
 
-      return updated.slice(0, 50);
+      return limited;
     });
   }, [messages, currentSessionId]);
 

@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 import { ChatColumn } from './Chat/ChatColumn';
 import { LightboxModal } from './LightboxModal';
-import { useClientHistory } from '../hooks/useClientHistory';
+import { useClientHistory, formatSessionDate, parseSessionTime } from '../hooks/useClientHistory';
 import { useNetworkStatus } from '../hooks/useNetworkStatus';
 import { useAutoSync } from '../hooks/useAutoSync';
 import { loadScenarioData } from '../utils/TieredDataLoader';
@@ -293,37 +293,39 @@ export function ClientLayout({
                 <span>질문을 입력하시면 자동으로 보관됩니다.</span>
               </div>
             ) : (
-              sessions.map((sess) => {
-                const isActive = sess.id === currentSessionId;
-                return (
-                  <div
-                    key={sess.id}
-                    className={`history-session-item ${isActive ? 'active' : ''}`}
-                    onClick={() => selectSession(sess.id)}
-                    title={sess.title}
-                  >
-                    <div className="history-item-icon">
-                      <MessageSquare size={14} />
-                    </div>
-                    <div className="history-item-content">
-                      <div className="history-item-title">{sess.title}</div>
-                      <div className="history-item-meta">
-                        <span>{sess.updatedAt || sess.createdAt}</span>
-                        {sess.turnCount > 0 && <span>· 답변 {sess.turnCount}개</span>}
-                      </div>
-                    </div>
-                    <button
-                      type="button"
-                      className="btn-delete-session"
-                      onClick={(e) => deleteSession(sess.id, e)}
-                      title="이 상담 기록 삭제"
-                      aria-label="상담 삭제"
+              [...sessions]
+                .sort((a, b) => parseSessionTime(b) - parseSessionTime(a))
+                .map((sess) => {
+                  const isActive = sess.id === currentSessionId;
+                  return (
+                    <div
+                      key={sess.id}
+                      className={`history-session-item ${isActive ? 'active' : ''}`}
+                      onClick={() => selectSession(sess.id)}
+                      title={sess.title}
                     >
-                      <Trash2 size={13} />
-                    </button>
-                  </div>
-                );
-              })
+                      <div className="history-item-icon">
+                        <MessageSquare size={14} />
+                      </div>
+                      <div className="history-item-content">
+                        <div className="history-item-title">{sess.title}</div>
+                        <div className="history-item-meta">
+                          <span>{formatSessionDate(sess.updatedAt || sess.createdAt)}</span>
+                          {sess.turnCount > 0 && <span>· 답변 {sess.turnCount}개</span>}
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        className="btn-delete-session"
+                        onClick={(e) => deleteSession(sess.id, e)}
+                        title="이 상담 기록 삭제"
+                        aria-label="상담 삭제"
+                      >
+                        <Trash2 size={13} />
+                      </button>
+                    </div>
+                  );
+                })
             )}
           </div>
 

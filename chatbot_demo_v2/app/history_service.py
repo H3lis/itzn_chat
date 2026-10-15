@@ -639,11 +639,24 @@ class HistoryService:
                         },
                     })
 
+                raw_updated = s_row["updated_at"] or s_row["created_at"] or ""
+                formatted_date = ""
+                ts = 0
+                if raw_updated:
+                    try:
+                        dt = datetime.strptime(raw_updated[:19], "%Y-%m-%d %H:%M:%S")
+                        formatted_date = dt.strftime("%m/%d")
+                        ts = int(dt.replace(tzinfo=timezone.utc).timestamp() * 1000)
+                    except Exception:
+                        formatted_date = raw_updated
+                        ts = 0
+
                 sessions.append({
                     "id": sid,
                     "title": title,
-                    "createdAt": s_row["created_at"],
-                    "updatedAt": s_row["updated_at"],
+                    "createdAt": formatted_date,
+                    "updatedAt": formatted_date,
+                    "timestamp": ts,
                     "turnCount": len(turn_rows),
                     "messages": messages,
                 })
