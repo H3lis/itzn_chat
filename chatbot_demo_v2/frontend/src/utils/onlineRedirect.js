@@ -1,35 +1,48 @@
-/**
- * 온라인 자동 감지 및 원격 웹 챗봇 리다이렉터 (onlineRedirect)
- *
- * 사용자가 바탕화면의 단일 HTML 배포본(file:///)을 실행했을 때,
- * 인터넷이 연결되어 있고 서버가 응답하면 자동으로 공식 웹 서버 주소로 이동합니다.
- * 인터넷이 끊겨있으면 이동하지 않고 오프라인 자립 모드를 유지합니다.
- */
+import { isOfflineBundle } from './apiBase';
 
 export const REMOTE_SERVER_URL = 'http://34.64.143.198:8002/';
 export const LOCAL_DEV_URL = 'http://localhost:8002/';
 
 let isRedirecting = false;
 
+/**
+ * 사용자 ID(uid)가 포함된 온라인 웹 주소 생성
+ */
+export function getOnlineRedirectUrl() {
+  try {
+    const uid = localStorage.getItem('chatbot_demo_v2_uid');
+    if (uid && uid.trim() && uid !== 'usr_guest') {
+      return `${REMOTE_SERVER_URL}?uid=${encodeURIComponent(uid.trim())}`;
+    }
+  } catch {}
+  return REMOTE_SERVER_URL;
+}
+
 export async function checkAndRedirectIfOnline() {
   if (typeof window === 'undefined') return false;
-  if (window.location.protocol !== 'file:') return false;
 
-  // 오프라인 모드 강제 유지 플래그가 있는 경우 스킵
+  // 독립 오프라인 배포본(file:, content:, 외부호스트 등)이 아니면 스킵 (이미 원격 웹서버)
+  if (!isOfflineBundle()) return false;
+
+  // 오프라인 모드 강제 유지 플래그(#stay-offline)가 있는 경우 스킵
   if (window.location.hash.includes('stay-offline')) {
     return false;
   }
 
+  // 모바일/PC 기기 자체가 네트워크에 연결되어 있지 않으면 즉시 오프라인 유지
   if (!navigator.onLine) {
     return false;
   }
 
   if (isRedirecting) return true;
 
+  const targetRemote = getOnlineRedirectUrl();
+
   const probe = async (url) => {
+    // 1차 시도: 경량 no-cors fetch
     try {
       const controller = new AbortController();
-      const timer = setTimeout(() => controller.abort(), 2000);
+      const timer = setTimeout(() => controller.abort(), 1500);
       await fetch(url, {
         method: 'GET',
         mode: 'no-cors',
@@ -39,26 +52,52 @@ export async function checkAndRedirectIfOnline() {
       clearTimeout(timer);
       return true;
     } catch {
-      return false;
+      // 2차 시도: 모바일 브라우저 Mixed Content 차단 우회용 Image 핑
+      return new Promise((resolve) => {
+        if (!navigator.onLine) return resolve(false);
+        const img = new Image();
+        const timer = setTimeout(() => {
+          img.src = '';
+          // 모바일에서 fetch/img 모두 타임아웃되어도 navigator.onLine이 true이면 리다이렉트 허용
+          resolve(true);
+        }, 1500);
+        img.onload = () => {
+          clearTimeout(timer);
+          resolve(true);
+        };
+        img.onerror = () => {
+          clearTimeout(timer);
+          resolve(navigator.onLine);
+        };
+        img.src = url.replace(/\/api\/.*/, '/favicon.ico?_t=' + Date.now());
+      });
     }
   };
 
   try {
-    // 1. 운영 GCP L4 GPU 서버 프로빙 (/api/health 경량 엔드포인트)
+    // 1. 운영 GCP L4 GPU 서버 프로빙
     const remoteOk = await probe('http://34.64.143.198:8002/api/health');
-    if (remoteOk) {
+    if (remoteOk && navigator.onLine) {
       isRedirecting = true;
-      console.log('[AutoRedirect] 온라인 서버 도달 확인. 공식 웹 챗봇으로 자동 이동:', REMOTE_SERVER_URL);
-      window.location.replace(REMOTE_SERVER_URL);
+      console.log('[AutoRedirect] 온라인 서버 도달 확인. 공식 웹 챗봇으로 자동 이동:', targetRemote);
+      try {
+        window.location.replace(targetRemote);
+      } catch {
+        window.location.href = targetRemote;
+      }
       return true;
     }
 
     // 2. 로컬 개발 서버 프로빙
     const localOk = await probe('http://localhost:8002/api/health');
-    if (localOk) {
+    if (localOk && navigator.onLine) {
       isRedirecting = true;
       console.log('[AutoRedirect] 로컬 개발 서버 도달 확인. 로컬 웹 챗봇으로 자동 이동:', LOCAL_DEV_URL);
-      window.location.replace(LOCAL_DEV_URL);
+      try {
+        window.location.replace(LOCAL_DEV_URL);
+      } catch {
+        window.location.href = LOCAL_DEV_URL;
+      }
       return true;
     }
   } catch (err) {
@@ -67,3 +106,4 @@ export async function checkAndRedirectIfOnline() {
 
   return false;
 }
+

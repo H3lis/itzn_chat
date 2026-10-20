@@ -121,6 +121,16 @@ export function useClientHistory({
       if (!res.ok) return;
       const data = await res.json();
       if (data && Array.isArray(data.sessions) && data.sessions.length > 0) {
+        // 만약 현재 화면 메시지가 비어있다면 서버 최신 대화로 즉시 화면 복원
+        if (!messages || messages.length === 0) {
+          const firstSess = data.sessions[0];
+          if (firstSess && firstSess.messages && firstSess.messages.length > 0) {
+            setMessages(firstSess.messages);
+            setCurrentSessionId(firstSess.id);
+            if (updateSession) updateSession(firstSess.id);
+          }
+        }
+
         setSessions((prev) => {
           const sessionMap = new Map();
           // 서버에서 복원한 세션 등록 (날짜 통일 포맷 적용)
@@ -156,6 +166,18 @@ export function useClientHistory({
       }
     } catch (e) {
       console.debug('서버 대화 이력 동기화 스킵 (오프라인/대기):', e);
+    }
+  }, [messages, setMessages, updateSession]);
+
+  // 마운트 시 저장된 로컬 세션 중 가장 최근 세션 메시지 즉시 복원 (화면 빈 상태 방지)
+  useEffect(() => {
+    if ((!messages || messages.length === 0) && sessions && sessions.length > 0) {
+      const latest = sessions[0];
+      if (latest && latest.messages && latest.messages.length > 0) {
+        setMessages(latest.messages);
+        setCurrentSessionId(latest.id);
+        if (updateSession) updateSession(latest.id);
+      }
     }
   }, []);
 

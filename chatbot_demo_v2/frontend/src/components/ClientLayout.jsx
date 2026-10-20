@@ -21,7 +21,8 @@ import { useNetworkStatus } from '../hooks/useNetworkStatus';
 import { useAutoSync } from '../hooks/useAutoSync';
 import { loadScenarioData } from '../utils/TieredDataLoader';
 import { LocalScenarioNavigator } from '../utils/LocalScenarioNavigator';
-import { checkAndRedirectIfOnline, REMOTE_SERVER_URL } from '../utils/onlineRedirect';
+import { checkAndRedirectIfOnline, REMOTE_SERVER_URL, getOnlineRedirectUrl } from '../utils/onlineRedirect';
+import { isOfflineBundle } from '../utils/apiBase';
 
 export function ClientLayout({
   status,
@@ -47,7 +48,8 @@ export function ClientLayout({
   const [lightboxData, setLightboxData] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
-  const isFileOrigin = typeof window !== 'undefined' && window.location.protocol === 'file:';
+  // 로컬 독립 실행 파일(file:, content:, blob:) 여부 판별
+  const isOfflineApp = isOfflineBundle();
 
   // 실시간 네트워크 및 오프라인 감지
   const { isOnline, isServerReachable, isOfflineMode } = useNetworkStatus();
@@ -93,12 +95,12 @@ export function ClientLayout({
     completed: false,
   });
 
-  // file:/// 로 실행 시 온라인 서버 연결 가능하면 공식 웹 주소로 즉각 자동 전환
+  // 독립 실행 환경(file:, content: 등)에서 온라인 감지 시 공식 웹 주소로 즉각 자동 전환
   useEffect(() => {
-    if (isFileOrigin) {
+    if (isOfflineApp) {
       checkAndRedirectIfOnline();
     }
-  }, [isFileOrigin]);
+  }, [isOfflineApp]);
 
   // 온라인 시 백그라운드 자동 동기화
   useAutoSync({
@@ -259,7 +261,7 @@ export function ClientLayout({
             </div>
             <div className="offline-banner-actions">
               <a
-                href={REMOTE_SERVER_URL}
+                href={getOnlineRedirectUrl()}
                 className="btn-go-online"
                 title="인터넷이 복구되었을 때 공식 웹 챗봇으로 접속합니다"
               >
@@ -277,21 +279,19 @@ export function ClientLayout({
             </div>
           </div>
         )
-      ) : isFileOrigin && !isOnlineBannerDismissed && (
+      ) : isOfflineApp && !isOnlineBannerDismissed && (
         <div className="client-online-banner" role="status">
           <div className="online-banner-text">
             <CheckCircle size={15} style={{ flexShrink: 0, color: '#34d399' }} />
-            <span>온라인 서버 연결됨 (실시간 AI 상담 가동 중 · 상담 내역이 로컬 파일에 영구 자동 보관됩니다)</span>
+            <span>온라인 서버 연결됨 (실시간 AI 상담 가동 중 · 상담 내역이 영구 자동 보관됩니다)</span>
           </div>
           <div className="online-banner-actions">
             <a
-              href={REMOTE_SERVER_URL}
+              href={getOnlineRedirectUrl()}
               className="btn-go-online"
-              target="_blank"
-              rel="noreferrer"
-              title="브라우저에서 공식 웹 챗봇 주소로 열기"
+              title="브라우저에서 공식 웹 챗봇 주소로 이동합니다"
             >
-              공식 웹 주소 열기 ↗
+              온라인 즉시 이동 ↗
             </a>
             <button
               type="button"
@@ -378,8 +378,18 @@ export function ClientLayout({
             )}
           </div>
 
-          {sessions.length > 1 && (
-            <div className="history-sidebar-footer">
+          <div className="history-sidebar-footer">
+            {!isOfflineApp && (
+              <a
+                href="/api/download/offline-client"
+                download="학교챗봇_장애대응가이드_오프라인.html"
+                className="btn-download-offline-file"
+                title="인터넷 단절 시 사용할 수 있는 비상용 오프라인 HTML 파일 다운로드"
+              >
+                <span>📥 비상용 오프라인 가이드 받기</span>
+              </a>
+            )}
+            {sessions.length > 1 && (
               <button
                 type="button"
                 className="btn-clear-all-history"
@@ -388,8 +398,8 @@ export function ClientLayout({
                 <Trash2 size={12} />
                 <span>전체 기록 삭제</span>
               </button>
-            </div>
-          )}
+            )}
+          </div>
         </aside>
 
         {/* 모바일 사이드바 열림 시 딤 오버레이 */}

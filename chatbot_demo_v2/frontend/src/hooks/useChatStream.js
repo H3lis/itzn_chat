@@ -5,11 +5,50 @@ const SESSION_KEY = 'chatbot_demo_v2_sid';
 const USER_KEY = 'chatbot_demo_v2_uid';
 const MESSAGES_KEY = 'chatbot_demo_v2_messages';
 
+function getPersistedItem(key) {
+  try {
+    const v = localStorage.getItem(key);
+    if (v) return v;
+  } catch {}
+  try {
+    return sessionStorage.getItem(key);
+  } catch {}
+  return null;
+}
+
+function setPersistedItem(key, value) {
+  try {
+    localStorage.setItem(key, value);
+  } catch {}
+  try {
+    sessionStorage.setItem(key, value);
+  } catch {}
+}
+
+function removePersistedItem(key) {
+  try {
+    localStorage.removeItem(key);
+  } catch {}
+  try {
+    sessionStorage.removeItem(key);
+  } catch {}
+}
+
 /**
  * 브라우저 기기별 영구 고유 사용자 식별자 (세션이 리셋되어도 유지됨)
  */
 function getOrCreateUserId() {
   try {
+    // URL 쿼리 스트링(?uid=...)이 전달된 경우 우선 동기화 (오프라인 ➔ 온라인 전환 시 이력 연속성 보장)
+    if (typeof window !== 'undefined' && window.location.search) {
+      const params = new URLSearchParams(window.location.search);
+      const urlUid = params.get('uid');
+      if (urlUid && urlUid.trim()) {
+        const cleanUid = urlUid.trim();
+        localStorage.setItem(USER_KEY, cleanUid);
+        return cleanUid;
+      }
+    }
     let uid = localStorage.getItem(USER_KEY);
     if (!uid) {
       uid = 'usr_' + Math.random().toString(36).substring(2, 10);
@@ -22,10 +61,10 @@ function getOrCreateUserId() {
 }
 
 export function useChatStream() {
-  const [sessionId, setSessionId] = useState(() => sessionStorage.getItem(SESSION_KEY) || null);
+  const [sessionId, setSessionId] = useState(() => getPersistedItem(SESSION_KEY) || null);
   const [messages, setMessages] = useState(() => {
     try {
-      const raw = sessionStorage.getItem(MESSAGES_KEY);
+      const raw = getPersistedItem(MESSAGES_KEY);
       return raw ? JSON.parse(raw) : [];
     } catch {
       return [];
@@ -33,7 +72,7 @@ export function useChatStream() {
   });
   const [activeMsgId, setActiveMsgId] = useState(() => {
     try {
-      const raw = sessionStorage.getItem(MESSAGES_KEY);
+      const raw = getPersistedItem(MESSAGES_KEY);
       const list = raw ? JSON.parse(raw) : [];
       const botMsg = list.slice().reverse().find((m) => m.type === 'bot');
       return botMsg ? botMsg.id : null;
@@ -42,13 +81,13 @@ export function useChatStream() {
     }
   });
 
-  // Sync messages to sessionStorage
+  // Sync messages to persistent storage
   useEffect(() => {
     try {
       if (messages.length > 0) {
-        sessionStorage.setItem(MESSAGES_KEY, JSON.stringify(messages));
+        setPersistedItem(MESSAGES_KEY, JSON.stringify(messages));
       } else {
-        sessionStorage.removeItem(MESSAGES_KEY);
+        removePersistedItem(MESSAGES_KEY);
       }
     } catch (_) {}
   }, [messages]);
@@ -68,7 +107,7 @@ export function useChatStream() {
   const updateSession = useCallback((sid) => {
     if (sid) {
       setSessionId(sid);
-      sessionStorage.setItem(SESSION_KEY, sid);
+      setPersistedItem(SESSION_KEY, sid);
     }
   }, []);
 
@@ -237,15 +276,15 @@ export function useChatStream() {
     setMessages([]);
     setActiveMsgId(null);
     try {
-      sessionStorage.removeItem(MESSAGES_KEY);
-      sessionStorage.removeItem(SESSION_KEY);
+      removePersistedItem(MESSAGES_KEY);
+      removePersistedItem(SESSION_KEY);
     } catch (_) {}
 
     const oldSid = sessionId;
     const newSid = 'session_' + Date.now();
     setSessionId(newSid);
     try {
-      sessionStorage.setItem(SESSION_KEY, newSid);
+      setPersistedItem(SESSION_KEY, newSid);
     } catch (_) {}
 
     if (oldSid) {
