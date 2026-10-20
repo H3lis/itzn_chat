@@ -29,7 +29,7 @@ export async function checkAndRedirectIfOnline() {
   const probe = async (url) => {
     try {
       const controller = new AbortController();
-      const timer = setTimeout(() => controller.abort(), 1200);
+      const timer = setTimeout(() => controller.abort(), 2000);
       await fetch(url, {
         method: 'GET',
         mode: 'no-cors',
@@ -44,8 +44,8 @@ export async function checkAndRedirectIfOnline() {
   };
 
   try {
-    // 1. 운영 GCP L4 GPU 서버 프로빙
-    const remoteOk = await probe('http://34.64.143.198:8002/api/scenarios/latest');
+    // 1. 운영 GCP L4 GPU 서버 프로빙 (/api/health 경량 엔드포인트)
+    const remoteOk = await probe('http://34.64.143.198:8002/api/health');
     if (remoteOk) {
       isRedirecting = true;
       console.log('[AutoRedirect] 온라인 서버 도달 확인. 공식 웹 챗봇으로 자동 이동:', REMOTE_SERVER_URL);
@@ -54,7 +54,7 @@ export async function checkAndRedirectIfOnline() {
     }
 
     // 2. 로컬 개발 서버 프로빙
-    const localOk = await probe('http://localhost:8002/api/scenarios/latest');
+    const localOk = await probe('http://localhost:8002/api/health');
     if (localOk) {
       isRedirecting = true;
       console.log('[AutoRedirect] 로컬 개발 서버 도달 확인. 로컬 웹 챗봇으로 자동 이동:', LOCAL_DEV_URL);

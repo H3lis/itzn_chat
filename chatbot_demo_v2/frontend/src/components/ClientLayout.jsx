@@ -93,6 +93,13 @@ export function ClientLayout({
     completed: false,
   });
 
+  // file:/// 로 실행 시 온라인 서버 연결 가능하면 공식 웹 주소로 즉각 자동 전환
+  useEffect(() => {
+    if (isFileOrigin) {
+      checkAndRedirectIfOnline();
+    }
+  }, [isFileOrigin]);
+
   // 온라인 시 백그라운드 자동 동기화
   useAutoSync({
     currentVersion: scenarioPayload.version,
