@@ -123,15 +123,20 @@ def _is_doc_reference_context(text: str, start_idx: int, end_idx: int) -> bool:
 
 
 # 1) 전체 전화번호: 휴대전화(010, 011...), 유선전화(02, 031...), 인터넷전화(070), 안심번호(050x)
-# 대시 유무/공백/점 및 한국어 조사(로, 입니다 등)가 붙어 있어도 유연 탐지 (010 5555 - 4444, 010점1111점2222 등)
+# 대시 유무/공백/점 및 한국어 조사(로, 입니다 등)가 붙어 있어도 유연 탐지 (010 5555 - 4444, 010점1111점2222, 010 1234 다시 5678 등)
 _PHONE_PATTERN = re.compile(
-    r"(?<![A-Za-z0-9])(01[016789]|02|0[3-6][1-5]|070|050[2-9]?)(?:\s*[-.\s점]\s*|\s*)(\d{3,4})(?:\s*[-.\s점]\s*|\s*)(\d{4})(?!\d)"
+    r"(?<![A-Za-z0-9])(01[016789]|02|0[3-6][1-5]|070|050[2-9]?)(?:\s*[-.\s점]|다시|다이얼로|그리고|\s*)(\d{3,4})(?:\s*[-.\s점]|다시|다이얼로|그리고|\s*)(\d{4})(?!\d)"
 )
 
 # 2) 국번없이 적힌 7~8자리 전화번호 (예: 2345-6789, 23456789, 234-5678, 2345678 등)
 # 영문자(M12345678 등 여권번호) 뒤에 붙은 숫자는 전화번호로 오인하지 않도록 방어
 _PHONE_8DIGIT_PATTERN = re.compile(
     r"(?<![A-Za-z0-9])([1-9]\d{2,3})[-.\s]?(\d{4})(?!\d)"
+)
+
+# 3) 한글 발음형/음절 전화번호 (공일공 구구구-일일일-이이이이, 010 다시 하나 넷 오팔 등)
+_KOREAN_SPOKEN_PHONE_PATTERN = re.compile(
+    r"(?i)(?:010|공일공)\s*(?:다시|다이얼로|[-.\s])?\s*([공일이삼사오육칠팔구영하나둘셋넷다섯여섯일곱여덟아홉\d]{3,4})\s*(?:다시|그리고|[-.\s])?\s*([공일이삼사오육칠팔구영하나둘셋넷다섯여섯일곱여덟아홉\d]{4})(?=[^\w]|$)"
 )
 
 # IPv4 주소 (192.168.1.50 -> 192.168.*.*, 한글 조사가 붙은 211.33.55.88이니 등 유연 지원)
@@ -150,7 +155,7 @@ def _has_birth_context(text: str, start_idx: int, end_idx: int) -> bool:
     window_start = max(0, start_idx - 30)
     window_end = min(len(text), end_idx + 30)
     surrounding = text[window_start:window_end]
-    birth_keywords = ("생년월일", "생일", "태어난", "출생", "어머니", "아버지", "환자", "나이", "연령", "생년", "진료")
+    birth_keywords = ("생년월일", "생일", "태어난", "출생", "어머니", "아버지", "환자", "나이", "연령", "생년", "진료", "년생")
     return any(k in surrounding for k in birth_keywords)
 
 
@@ -165,14 +170,19 @@ _RRN_PATTERN = re.compile(
     re.IGNORECASE
 )
 
-# 이메일 주소 ((at), [at], dot, (dot), 온점/공백 변형 및 한글 아이디/조사 결합 유연 지원)
+# 이메일 주소 ((at), [at], dot, (dot), 온점/공백 변형 및 중복 @@, 한글 아이디/조사 결합 유연 지원)
 _EMAIL_PATTERN = re.compile(
-    r"(?i)\b([a-zA-Z0-9_.+가-힣-]+?)(?:\.|\s*|\b)[\(\[]?\s*(?:at|@)\s*[\)\]]?(?:\.|\s*|\b)([a-zA-Z0-9-]+(?:\s*[\(\[]?\s*(?:\.|\bdot\b)\s*[\)\]]?\s*|\.)(?:com|net|co\.kr|kr|org|io|dev|edu|ac\.kr|[a-zA-Z]{2,6}))(?=[^a-zA-Z]|$)"
+    r"(?i)\b([a-zA-Z0-9_.+가-힣-]+?)(?:\.|\s*|\b)[\(\[]?\s*(?:at|@+)[\)\]]?(?:\.|\s*|\b)([a-zA-Z0-9-]+(?:\s*[\(\[]?\s*(?:\.|\bdot\b)\s*[\)\]]?\s*|\.)(?:com|net|co\.kr|kr|org|io|dev|edu|ac\.kr|[a-zA-Z]{2,6}))(?=[^a-zA-Z]|$)"
+)
+
+# 공백 분리형 이메일 (u s a 1 2 3 @ d o t c o m 등)
+_SPACED_EMAIL_PATTERN = re.compile(
+    r"(?i)\b([a-zA-Z0-9](?:\s+[a-zA-Z0-9]){2,})\s*@\s*(?:([a-zA-Z0-9](?:\s+[a-zA-Z0-9])+)\s*(?:\.|\bdot\b)\s*([a-zA-Z]{2,6})|d\s*o\s*t\s*c\s*o\s*m)\b"
 )
 
 # 한글 발음형 이메일 (김철수 골뱅이 지메일 점 컴, 홍길동 골뱅이 메일점 컴 등)
 _KOREAN_SPOKEN_EMAIL_PATTERN = re.compile(
-    r"([a-zA-Z0-9가-힣_.+-]+)\s*(?:골뱅이|@)\s*([a-zA-Z0-9가-힣.-]+)\s*(?:점\s*컴|점컴|\.com|\.net|\.co\.kr|\.kr|점[가-힣]+)"
+    r"([a-zA-Z0-9가-힣_.+-]+)\s*(?:골뱅이|@+)\s*([a-zA-Z0-9가-힣.-]+)\s*(?:점\s*컴|점컴|\.com|\.net|\.co\.kr|\.kr|점[가-힣]+)"
 )
 
 # SNS 핸들 (@handle, 인스타그램 @별빛여행러 등 - 이메일 도메인 및 기마스킹 별표 제외)
@@ -229,11 +239,11 @@ _NON_CREDENTIAL_WORDS = {
     "비밀번호", "비밀번호가", "비밀번호는", "비밀번호를", "비밀번호의", "비번", "비번은", "패스워드", "아이디", "계정", "계정이", "계정은", "계정을",
 }
 
-# 시스템 계정 및 비밀번호 / 크리덴셜 (회원 ID, 사용자 아이디, 닉네임, 사번 등 한국어 조사, 요, 만, 인가요 및 한글 닉네임 지원)
+# 시스템 계정 및 비밀번호 / 크리덴셜 (원문자 ①~⑳, 특수기호 #, 한글-영숫자 혼합 ID, 한글 닉네임, 사번 등 지원)
 _CREDENTIAL_PATTERN = re.compile(
     r"(?i)(?P<label>계정\s*비밀번호|로그인\s*비밀번호|계정\s*비번|회원\s*ID|회원\s*아이디|사용자\s*아이디|아이디|ID|닉네임|별명|계정\s*번호|계정\s*이름|계정|회원\s*번호|회원번호|신청\s*번호|신청번호|사번|고유\s*식별번호|식별번호|학생증\s*번호|학생증|등록번호|수험\s*번호|수험번호|접수\s*번호|접수번호|인증\s*코드|보안\s*코드|비밀\s*코드|신분\s*확인\s*코드|신분확인코드|PW|비밀번호|패스워드|비번|passwd|password|암호)"
     r"(?P<sep>[은는이가의를을인]?\s*[:#=\-]?\s*|\s+)"
-    r"['\"]?(?P<val>[A-Za-z0-9!@#$%^&*()_\-+=\[\]{}|<>ㄱ-ㅎ]+|[가-힣]{2,10})['\"]?"
+    r"['\"]?(?P<val>[가-힣]{1,8}[A-Za-z0-9!@#$%^&*()_\-+=\[\]{}|<>ㄱ-ㅎ\u2460-\u2473\u24ea-\u24ff]+|[A-Za-z0-9!@#$%^&*()_\-+=\[\]{}|<>ㄱ-ㅎ\u2460-\u2473\u24ea-\u24ff]+|[가-힣]{2,10})['\"]?"
     r"(?P<tail>(?:입니다|이에요|예요|이다|이고|이며|인데|인데요|거든|거든요|야|다|라고|라|으로|로|요|만|인가요|인지|인지요)?(?=[^\w가-힣]|$|\s|[.,?!]))"
 )
 
@@ -244,15 +254,18 @@ _ACCOUNT_PATTERN = re.compile(
     r"(?P<num>(?<!\d)\d{3,6}[-.\s]\d{2,6}[-.\s]\d{3,6}(?:[-.\s]\d{1,4})?(?!\d))"
 )
 
-# 운전면허번호 (2자리-2자리-6자리-2자리 또는 지역-2자리-6자리-2자리)
+# 운전면허번호 (2자리-2자리-6자리-2자리, 한글 2자 + 숫자, 라벨 뒤 12~14자리 연속 번호 지원)
 _DRIVER_LICENSE_PATTERN = re.compile(
-    r"(?<![0-9가-힣])(\d{2}|[가-힣]{2})([-.\s]?)(\d{2})([-.\s]?)(\d{6})([-.\s]?)(\d{2})(?![0-9가-힣])"
+    r"(?<![0-9가-힣])(\d{2}|[가-힣]{2})([-.\s]?)(\d{2})([-.\s]?)(\d{6})([-.\s]?)(\d{2})(?![0-9가-힣])|"
+    r"(?:운전면허\s*(?:번호|증\s*번호|증)?)\s*(?:는|은|이|가)?\s*[:#=\s]?\s*([가-힣]{1,3}\s*\d{8,12}|\d{12,14})\b",
+    re.IGNORECASE
 )
 
-# 여권번호 (여권 라벨 및 M/S/G/R/D로 시작하는 8~9자리 여권번호, 하이픈 포함 변형 지원)
+# 여권번호 (라벨 뒤 비표준 영숫자/자모 여권번호 및 신형 M/S/G/R/D 및 영숫자 조합 여권 지원)
 _PASSPORT_PATTERN = re.compile(
-    r"(?i)(?:여권\s*번호|여권|패스포트\s*번호|패스포트)\s*(?:는|은|이|가)?\s*[:#=\s]?\s*([A-Za-z0-9\-]{7,18})|"
-    r"(?<![A-Za-z0-9])([MSGRD][0-9A-Z]{7,8})(?![A-Za-z0-9])"
+    r"(?:여권\s*번호|여권|패스포트\s*번호|패스포트)\s*(?:는|은|이|가)?\s*[:#=\s]?\s*['\"]?([A-Za-z0-9\-ㄱ-ㅎㅏ-ㅣ]{7,25})['\"]?|"
+    r"(?<![A-Za-z0-9])([MSGRD][0-9A-Z]{7,8}|[A-Z]\d{3}[A-Z]\d{4})(?![A-Za-z0-9])",
+    re.IGNORECASE
 )
 
 # 학번 (학번 라벨 뒤 4~10자리 숫자 및 하이픈 연결 학번)
@@ -266,15 +279,16 @@ _SCHOOL_RECORD_PATTERN = re.compile(
     r"(?<![가-힣\w])([1-6])(학년\s*)([0-9]{1,2})(반\s*)([0-9]{1,2})(번)(?![가-힣\w])"
 )
 
-# 도로명 / 지번 주소 패턴 (광역시/도 시작 및 시/군/구 시작 축약 주소 포함)
+# 도로명 / 지번 주소 패턴 (광역시/도 시작, 신도시/마린시티/센텀시티/혁신도시 등 주거복합타운 포함)
 _ADDRESS_PATTERN = re.compile(
     r"(?<![가-힣])(?:"
     r"(?:서울(?:특별시|시)?|부산(?:광역시|시)?|대구(?:광역시|시)?|인천(?:광역시|시)?|광주(?:광역시|시)?|대전(?:광역시|시)?|울산(?:광역시|시)?|세종(?:특별자치시)?|경기도?|강원(?:특별자치)?도?|충청북도|충북|충청남도|충남|전라북도|전북|전북특별자치도|전라남도|전남|경상북도|경북|경상남도|경남|제주(?:특별자치도)?)"
     r"(?:\s+[가-힣0-9]+(?:시|군|구))*"
+    r"(?:\s+[가-힣0-9]+)?"
     r"|"
     r"(?:[가-힣0-9]{2,6}(?:시|군|구))"
     r")"
-    r"(?:\s+[가-힣0-9]{1,6}(?:읍|면|동|리|로|길))"
+    r"(?:\s+(?:[가-힣0-9]{1,8}(?:읍|면|동|리|로|길)|(?:[가-힣0-9]+)?(?:신도시|마린시티|센텀시티|혁신도시)|마린시티|센텀시티))"
     r"(?:\s*,\s*|\s+)?(?:\d+(?:-\d+)?(?:번지)?)?"
     r"(?:\s+\d+층|\s+\d+호)?"
 )
@@ -289,9 +303,9 @@ _ZIPCODE_PATTERN = re.compile(
     r"(?i)(?:우편\s*번호|우편번호|우\s*[:.]?)\s*[:#=\s]?\s*(\d{5})\b"
 )
 
-# 생년월일 패턴 (1995년 5월 20일, 90년 5월 15일, 95년 5월 20일 등)
+# 생년월일 패턴 (1995년 5월 20일, 1990년생, 90년생, 95년 5월 20일 등)
 _BIRTH_DATE_PATTERN = re.compile(
-    r"(?<!\d)(?:19\d{2}|20\d{2}|\d{2})년\s*\d{1,2}월\s*\d{1,2}일(?!\d)|"
+    r"(?<!\d)(?:19\d{2}|20\d{2}|\d{2})년\s*(?:\d{1,2}월\s*\d{1,2}일|생)(?!\d)|"
     r"(?:생년월일|생일)\s*(?:는|은|이|가)?\s*[:#=\s]?\s*(\d{6,8}|\d{2,4}[-./]\d{1,2}[-./]\d{1,2})",
     re.IGNORECASE
 )
@@ -349,6 +363,7 @@ _SAFE_NOUNS = {
     "담당", "담임", "전산", "사서", "시설", "행정", "보안", "교과", "원어민",
     "보건", "영양", "상담", "특수", "돌봄", "기간제", "실습", "보조", "총괄",
     "관리자", "관리", "운영", "운영자", "운영팀", "유지보수", "유지보수팀", "네트워크", "시스템",
+    "배송", "배송지", "보험", "보험료", "결제", "청구", "접수", "신청", "환불",
     # 일반 호칭/직업/역할
     "고객", "고객님", "작가", "작가님", "교수", "교수님", "판매자", "판매자님", "공주", "공주님",
     "상담원", "안내원", "회원", "회원님", "이웃", "이웃님", "선배", "선배님", "후배", "후배님",
@@ -1130,6 +1145,12 @@ class PiiMasker:
             return f"{mask_p1}{sep}{p2}"
         masked = _PHONE_8DIGIT_PATTERN.sub(_mask_phone_8digit, masked)
 
+        def _mask_spoken_phone(m):
+            detected.add("phone")
+            p1, p2 = m.group(1), m.group(2)
+            return m.group(0).replace(p1, "*" * len(p1)).replace(p2, "*" * len(p2))
+        masked = _KOREAN_SPOKEN_PHONE_PATTERN.sub(_mask_spoken_phone, masked)
+
         # 1-6. IPv4 주소 (1~2옥텟 유지, 3~4옥텟 마스킹: 192.168.*.*)
         def _mask_ip(m):
             detected.add("ipv4")
@@ -1161,6 +1182,14 @@ class PiiMasker:
                 masked_user = user[0] + ("*" * (len(user) - 1))
             return f"{masked_user}@{domain}"
         masked = _EMAIL_PATTERN.sub(_mask_email, masked)
+
+        # 1-7-1. 공백 분리형 이메일 (u s a 1 2 3 @ d o t c o m)
+        def _mask_spaced_email(m):
+            detected.add("email")
+            user = m.group(1)
+            masked_user = user[0] + ("*" * (len(user) - 1))
+            return m.group(0).replace(user, masked_user, 1)
+        masked = _SPACED_EMAIL_PATTERN.sub(_mask_spaced_email, masked)
 
         # 1-7-2. 한글 발음형 이메일 (김철수 골뱅이 지메일 점 컴 등)
         def _mask_korean_spoken_email(m):
@@ -1210,12 +1239,15 @@ class PiiMasker:
 
             # 한글이 포함된 경우 블랙리스트 필터링 (정보가, 몰라요, 찾기 등 오탐 차단)
             if re.search(r"[가-힣]", clean_val):
-                if clean_val in _NON_CREDENTIAL_WORDS:
-                    return m.group(0)
-                if any(clean_val.startswith(bw) or clean_val.endswith(bw) for bw in _NON_CREDENTIAL_WORDS):
-                    return m.group(0)
-                if clean_val.endswith(("몰라요", "모릅니다", "모름", "알려주세요", "가르쳐주세요", "부탁드립니다", "해주세요", "있나요", "없나요", "맞나요", "되나요", "하세요")):
-                    return m.group(0)
+                # 영숫자나 특수기호가 결합된 혼합 ID(사용자123#, user홍길동 등)는 유효 크리덴셜로 허용
+                is_mixed_id = bool(re.search(r"[A-Za-z0-9!@#$%^&*()_\-+=\[\]{}|<>ㄱ-ㅎ\u2460-\u2473\u24ea-\u24ff]", clean_val))
+                if not is_mixed_id:
+                    if clean_val in _NON_CREDENTIAL_WORDS:
+                        return m.group(0)
+                    if any(clean_val.startswith(bw) or clean_val.endswith(bw) for bw in _NON_CREDENTIAL_WORDS):
+                        return m.group(0)
+                    if clean_val.endswith(("몰라요", "모릅니다", "모름", "알려주세요", "가르쳐주세요", "부탁드립니다", "해주세요", "있나요", "없나요", "맞나요", "되나요", "하세요")):
+                        return m.group(0)
 
             detected.add("credential")
             label = m.group("label")
@@ -1254,8 +1286,14 @@ class PiiMasker:
         # 1-11. 운전면허번호
         def _mask_license(m):
             detected.add("driver_license")
-            r, s1, y, s2, n, s3, c = m.group(1), m.group(2), m.group(3), m.group(4), m.group(5), m.group(6), m.group(7)
-            return f"{r}{s1}**{s2}******{s3}**"
+            if m.group(1):
+                r, s1, y, s2, n, s3, c = m.group(1), m.group(2), m.group(3), m.group(4), m.group(5), m.group(6), m.group(7)
+                return f"{r}{s1}**{s2}******{s3}**"
+            elif len(m.groups()) >= 8 and m.group(8):
+                val = m.group(8)
+                masked_val = val[:2] + ("*" * max(1, len(val) - 4)) + (val[-2:] if len(val) >= 4 else "")
+                return m.group(0).replace(val, masked_val)
+            return m.group(0)
         masked = _DRIVER_LICENSE_PATTERN.sub(_mask_license, masked)
 
         # 1-12. 여권번호 (하이픈 포함 비표준 여권번호 유연 허용)

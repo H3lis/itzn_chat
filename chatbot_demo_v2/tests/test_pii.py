@@ -392,3 +392,50 @@ def test_student_and_address_masking():
     assert "교무실 1호" in res_sch.masked_text
     assert "address" not in res_sch.detected_types
 
+
+def test_enhanced_pii_edge_cases():
+    """개선된 구어체 전화번호, 띄어쓰기 이메일, 신형 여권, 신도시 주소, 원숫자 ID 등 검증."""
+    masker = PiiMasker()
+
+    # 1. 구어체 접속어 포함 전화번호
+    res_ph1 = masker.mask_text("연락처는 010 3542 다시 5678 입니다.")
+    assert res_ph1.has_pii is True
+    assert "phone" in res_ph1.detected_types
+    assert "010 **** 5678" in res_ph1.masked_text or "010-****-5678" in res_ph1.masked_text or "****" in res_ph1.masked_text
+
+    # 2. 공백 분리형 이메일
+    res_em = masker.mask_text("이메일은 u s a 1 2 3 @ d o t c o m 입니다.")
+    assert res_em.has_pii is True
+    assert "email" in res_em.detected_types
+    assert "@" in res_em.masked_text
+    assert "u s a 1 2 3" not in res_em.masked_text
+
+    # 3. 신형/외국 여권번호 (알파벳-숫자-알파벳-숫자)
+    res_pass = masker.mask_text("여권 번호는 A123B4567 로 등록되었습니다.")
+    assert res_pass.has_pii is True
+    assert "passport" in res_pass.detected_types
+    assert "A********" in res_pass.masked_text or "A123B4567" not in res_pass.masked_text
+
+    # 4. 생년월일 (~년생)
+    res_birth = masker.mask_text("소속 팀원은 1990년생 입니다.")
+    assert res_birth.has_pii is True
+    assert "birth" in res_birth.detected_types
+    assert "1990년생" not in res_birth.masked_text
+
+    # 5. 신도시/주거단지 주소
+    res_addr = masker.mask_text("배송지는 경기도 광교 신도시 123번지 입니다.")
+    assert res_addr.has_pii is True
+    assert "address" in res_addr.detected_types
+    assert "경기도 광교" in res_addr.masked_text
+
+    # 6. 특수기호 결합 시스템 ID 및 원문자 회원번호
+    res_id1 = masker.mask_text("사용자 아이디: 사용자123# 입니다.")
+    assert res_id1.has_pii is True
+    assert "credential" in res_id1.detected_types
+    assert "사용자123#" not in res_id1.masked_text
+
+    res_id2 = masker.mask_text("접수하신 회원번호: ㄱ①⓪①9999 입니다.")
+    assert res_id2.has_pii is True
+    assert "credential" in res_id2.detected_types
+
+
