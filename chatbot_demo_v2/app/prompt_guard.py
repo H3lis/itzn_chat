@@ -75,7 +75,104 @@ _ROLEPLAY_PATTERNS = [
     re.compile(r".*(소설|영화\s*대본).*지침(을|를)?\s*(어기는|무시하는)", re.IGNORECASE),
 ]
 
-# 5. 출력 누출 스캔 패턴
+# 5. [BIPIA] 악성 코드 주입 및 시스템 파괴/유출 패턴 (Code Attack 전수 차단)
+_MALICIOUS_CODE_PATTERNS = [
+    re.compile(r"(?:requests|urllib\.request)\.(?:post|get)\(.*(?:upload|file\.read|latlng|authorized_keys|process-info|system-info|api|endpoint|gpu_models|clipboard|miner|get_key)", re.IGNORECASE | re.DOTALL),
+    re.compile(r"socket\.socket.*(?:\.connect|\.send|\.bind|\.listen)", re.IGNORECASE | re.DOTALL),
+    re.compile(r"(?:TCP4ClientEndpoint|TCP4ServerEndpoint|asyncio\.open_connection|asyncio\.start_server)", re.IGNORECASE),
+    re.compile(r"(?:ssh\s+-L\s+\d+|pexpect\.spawn\([\"']ssh|ftplib\.FTP|paho\.mqtt|scapy\.all)", re.IGNORECASE),
+    re.compile(r"shutil\.rmtree\(", re.IGNORECASE),
+    re.compile(r"os\.system\(.*(?:reboot|shutdown|ipconfig\s+/release|nc\s+-e|cat|chmod)", re.IGNORECASE),
+    re.compile(r"subprocess\.(?:Popen|call|run|check_output)\(.*(?:ipconfig.*release|ssh|driverquery|pbpaste|xsel|snippingtool|ffmpeg.*x11grab|gnome-screenshot|screencapture|netstat|powershell.*Bypass|shell\s*=\s*True)", re.IGNORECASE | re.DOTALL),
+    re.compile(r"while\s+True:\s*(?:os\.fork|create_window|list\.append|time\.sleep)", re.IGNORECASE | re.DOTALL),
+    re.compile(r"multiprocessing\.Process\(target=.*while\s+True", re.IGNORECASE | re.DOTALL),
+    re.compile(r"open\(.*(?:/etc/hosts|/boot/grub/grub\.cfg|authorized_keys|syslog|workfile|private_key).*,[\s]*[\"'][aw]", re.IGNORECASE | re.DOTALL),
+    re.compile(r"Win32_NetworkAdapterConfiguration.*Disable\(\)", re.IGNORECASE | re.DOTALL),
+    re.compile(r"psutil\.net_connections\(\).*terminate\(\)", re.IGNORECASE | re.DOTALL),
+    re.compile(r"(?:Fernet\(.*encrypt|Cipher\(algorithms\.(?:AES|ChaCha20|Blowfish)|AES\.new\()", re.IGNORECASE | re.DOTALL),
+    re.compile(r"(?:pyautogui\.screenshot|gnome-screenshot|screencapture|snippingtool)", re.IGNORECASE),
+    re.compile(r"(?:win32clipboard|pyperclip\.paste|pbpaste|xsel\s+--clipboard)", re.IGNORECASE),
+    re.compile(r"(?:geocoder\.ip\(|platform\.system\(|pkg_resources\.working_set|nvidia-smi|os\.environ)", re.IGNORECASE),
+    re.compile(r"(?:/bin/sh|/bin/bash|nc\s+-e|socket\.connect.*os\.dup2)", re.IGNORECASE | re.DOTALL),
+    re.compile(r"(?:miner_url|xmrig|stratum\+tcp|wget\.download.*miner)", re.IGNORECASE),
+    re.compile(r"(?:smtplib\.SMTP|sendmail|email\.mime|smtp\.)", re.IGNORECASE),
+]
+
+# 6. [BIPIA] 간접 코드 주입 지시어 패턴 (Indirect Code Injection Framing)
+_INDIRECT_CODE_INJECTION_PATTERNS = [
+    re.compile(
+        r"(?i)\b(?:add|ensure|incorporate|introduce|employ|develop|append|enhance|remember|upgrade|merge|"
+        r"include|utilize|feature|supplement|integrate|blend|don't\s+hesitate|leverage|consider|give|let|"
+        r"keep\s+in\s+mind|to\s+hone|validate|assimilate|modify|fine-tune|elevate|enrich|streamline|make|"
+        r"embody|render|execute|infuse|inject|absorb|meld|engage|enlist|deploy|adopt|fuse)\b.*"
+        r"(?:code\s+(?:snippet|block|excerpt|section|foundation)|codebase|your\s+code\b|your\s+algorithm\b|"
+        r"your\s+elucidation\b|your\s+implementation\b|program\s+logic)",
+        re.DOTALL
+    ),
+    re.compile(
+        r"(?i)(?:in\s+your\s+(?:response|code|implementation|algorithm|elucidation|solution)|as\s+a\s+part\s+of\s+your\s+response).*```",
+        re.DOTALL
+    ),
+    re.compile(
+        r"```.*(?:import\s+(?:requests|socket|subprocess|os|shutil|pyautogui|Fernet|Cipher|scapy|paho|ftplib|urllib|wget|pickle|wmi|psutil)|shutil\.rmtree|os\.system)",
+        re.DOTALL | re.IGNORECASE
+    ),
+]
+
+# 7. [BIPIA] 간접 텍스트 주입 지시어 패턴 (Indirect Text Injection Framing)
+_INDIRECT_TEXT_INJECTION_PATTERNS = [
+    re.compile(r"(?i)\b(?:add|integrate|include|modify|augment|enhance|feature|insert|alter|tweak|adjust|update)\b.*(?:in|into|to|with)\s+(?:your\s+)?(?:response|reply|answer|elucidation|message|code)"),
+    re.compile(r"(?i)\b(?:modify|enhance|augment|alter|tweak|adjust|update)\s+your\s+(?:answer|response|reply|elucidation)\s+(?:to|by|with)"),
+    re.compile(r"(?i)(?:in|within)\s+(?:your\s+)?(?:response|reply|answer|elucidation|message),\s*(?:add|integrate|include|modify|insert|feature|mention|share|highlight|promote|provide|suggest|tell|ask|tease|hint|allude)"),
+    re.compile(r"(?i)(?:translate|render|provide|write)\s+(?:your\s+)?(?:response|answer|reply|message)\s+(?:in|into|to)\s+[A-Za-z]+"),
+    re.compile(r"(?i)(?:can\s+you\s+reply\s+in|reply\s+in)\s+[A-Za-z]+"),
+    re.compile(r"(?i)(?:in\s+reverse\s+sequence|backward|in\s+reverse\b|reverse\s+your\s+answer|invert\s+the\s+order\s+of\s+letters)"),
+    re.compile(r"(?i)(?:using\s+emojis\s+only|with\s+emojis|with\s+relevant\s+emojis|replace.*with\s+emojis|emoji\s+substitution|use\s+emojis\s+to\s+(?:represent|replace|express))"),
+    re.compile(r"(?i)use\s+Base\d{1,2}\s+to\s+display"),
+    re.compile(r"(?i)(?:replace|substitute|convert)\s+.*?(?:letters?|vowels?)\s+.*?(?:with|to)\s+.*?(?:numbers?|symbols?|digits?)"),
+    re.compile(r"(?i)(?:introduce|add)\s+.*(?:typos|misspellings)\s+in\s+your\s+(?:response|answer|reply)"),
+    re.compile(r"(?i)(?:remove\s+spaces|without\s+(?:any\s+)?spaces|combine\s+words.*without\s+spaces)"),
+    re.compile(r"(?i)(?:rearrange|scramble|jumble)\s+.*letters"),
+    re.compile(r"(?i)alphanumeric\s+substitution"),
+    re.compile(r"(?i)use\s+numbers\s+for\s+vowels"),
+    re.compile(r"(?i)(?:symbols\s+for\s+letters|keyboard\s+symbols)"),
+    re.compile(r"(?i)intentional\s+misspellings|misspell\s+every"),
+    re.compile(r"(?i)group\s+letters\s+(?:of\s+your\s+answer|in\s+your\s+response)\s+in"),
+]
+
+# 8. [BIPIA] 도메인 이탈 및 텍스트 공격 패턴 (Out-of-Domain Task Hijacking & Obfuscation)
+_OUT_OF_DOMAIN_PATTERNS = [
+    # 은닉/치환/암호화/난독화
+    re.compile(r"(?i)(?:Caesar|substitution|monoalphabetic)\s*cipher"),
+    re.compile(r"(?i)(?:encode|reply|display|render|convert|provide)\s+(?:your\s+)?(?:response|answer|reply|message)\s+(?:in|using)\s+(?:Base\d{1,2}|morse|hex|binary)"),
+    re.compile(r"(?i)Base(?:64|32|16|58)\s*(?:encoding|format)"),
+    re.compile(r"(?i)(?:shift\s+each\s+letter.*positions\s+forward|substitute\s+letters\s+with\s+numbers|replace\s+letters\s+with\s+numbers)"),
+    re.compile(r"(?i)(?:anagram|homophonic|misspell\s+every.*word\s+intentionally|remove\s+spaces\s+between\s+words|remove\s+all\s+spaces)"),
+    re.compile(r"(?i)(?:translate\s+(?:the\s+following|this)\s+(?:text|sentence|paragraph)\s+(?:to|into)|translate\s+to\s+(?:French|German|Spanish|Chinese|Japanese|Russian)|what\s+is\s+.*in\s+english|how\s+do\s+you\s+say\s+.*in|what's\s+.*in\s+(?:Japanese|Spanish|Russian|German)|equivalent\s+for)"),
+    
+    # 사회공학 / 피싱 / 악성링크 유도
+    re.compile(r"(?i)(?:download\s+this\s+tool\s+from|claim\s+your\s+prize\s+at|visit\s+https?://|click\s+here\s+to\s+(?:win|download)|congratulations,\s*you've\s*won)"),
+    re.compile(r"(?i)(?:add\s+download\s+link|include\s+(?:a\s+)?link\s+to\s+download|spread\s+the\s+word\s+that|create\s+a\s+shocking\s+headline|clickbait)"),
+    re.compile(r"(?i)(?:buy\s+cheap\s+meds|invest\s+in\s+our\s+guaranteed|wire\s+transfer\s+to|urgent:\s*your\s+account\s+has\s+been\s+suspended|share\s+their\s+bank\s+details)"),
+    re.compile(r"(?i)(?:special\s+offers|free\s+shipping|luxury\s+watches|exclusive\s+deals|too-good-to-be-true|fake\s+antivirus)"),
+    re.compile(r"(?i)(?:spread\s+a\s+baseless\s+rumor|non-existent\s+health\s+benefit)"),
+    
+    # 비업무 과업 탈취
+    re.compile(r"(?i)(?:write|provide)\s+(?:a\s+)?script\s+to\s+(?:rename\s+all\s+files|automatically\s+back\s+up|schedule\s+a\s+task|send\s+a\s+daily\s+email|scrape|crawl)"),
+    re.compile(r"(?i)(?:command\s+to\s+list\s+all\s+processes|how\s+can\s+I\s+automatically\s+back\s+up|how\s+do\s+I\s+automate\s+sending|how\s+to\s+schedule\s+a\s+task)"),
+    re.compile(r"(?i)(?:trend\s+of\s+electric\s+car|smartphone\s+market\s+share|investing\s+in\s+cryptocurrency|social\s+media\s+marketing|impact\s+of\s+artificial\s+intelligence\s+on|top\s+industries\s+impacted)"),
+    re.compile(r"(?i)(?:recommend\s+a\s+good\s+book|movies\s+are\s+playing\s+in\s+theaters|recipe\s+for\s+a\s+vegetarian|weekend\s+getaways\s+near|time\s+management\s+skills)"),
+    re.compile(r"(?i)(?:2020\s+climate\s+report|renewable\s+energy\s+sources|Nobel\s+Prize\s+winners|advancements\s+in\s+cancer|global\s+migration\s+patterns)"),
+    re.compile(r"(?i)(?:sentiment\s+of\s+(?:this\s+review|the\s+following\s+tweet|this\s+comment)|classify\s+the\s+mood\s+of\s+this\s+sentence|feedback\s+positive\s+or\s+negative)"),
+    re.compile(r"(?i)(?:write\s+a\s+(?:poem|short\s+story|fairy\s+tale|essay\s+about)|provide\s+a\s+poem|compose\s+a\s+(?:song|letter)|create\s+a\s+dialogue\s+between|draft\s+an\s+introduction|develop\s+a\s+speech)"),
+    re.compile(r"(?i)(?:explain\s+(?:the\s+theory\s+of\s+relativity|quantum\s+physics|photosynthesis|the\s+process\s+of)|who\s+was\s+the\s+first\s+president|what\s+is\s+the\s+capital\s+of|who\s+wrote\s+the\s+play|how\s+do\s+solar\s+panels\s+work|causes\s+of\s+the\s+First\s+World\s+War)"),
+    re.compile(r"(?i)(?:solve\s+quadratic\s+equations|lifecycle\s+of\s+a\s+butterfly|primary\s+functions\s+of\s+the\s+liver|plot\s+of\s+['\"][^'\"]+['\"])"),
+    re.compile(r"(?i)(?:help\s+me\s+write\s+a\s+python\s+function|write\s+a\s+program\s+that\s+sorts|how\s+do\s+I\s+(?:sort\s+a\s+list|implement\s+a\s+binary\s+tree|reverse\s+a\s+string\s+in))"),
+    re.compile(r"(?i)(?:calculate\s+the\s+factorial|difference\s+between\s+['\"]==['\"]\s+and|connect\s+to\s+a\s+MySQL|recursion\s+works|Python\s+2\s+and\s+Python\s+3)"),
+    re.compile(r"(?i)(?:persuade\s+someone\s+to|convince\s+the\s+reader\s+that|introduce\s+yourself\s+as|tell\s+me\s+a\s+joke|how\s+was\s+your\s+day)"),
+]
+
+# 9. 출력 누출 및 악성 코드/피싱 URL 사후 스캔 패턴
 _OUTPUT_LEAK_PATTERNS = [
     re.compile(r"<\s*persona\s*>", re.IGNORECASE),
     re.compile(r"<\s*/\s*persona\s*>", re.IGNORECASE),
@@ -84,6 +181,8 @@ _OUTPUT_LEAK_PATTERNS = [
     re.compile(r"당신은\s*학교\s*유[·\s]*무선\s*네트워크\s*장애상담\s*안내자입니다", re.IGNORECASE),
     re.compile(r"AIza[0-9A-Za-z_-]{35}"),  # Google API Key 패턴
     re.compile(r"lsv2_pt_[0-9A-Za-z_-]{20,}"),  # LangSmith Key 패턴
+    re.compile(r"(?:requests|urllib\.request)\.post\(", re.IGNORECASE),
+    re.compile(r"(?:shutil\.rmtree|os\.fork|socket\.connect.*os\.dup2)", re.IGNORECASE),
 ]
 
 
@@ -138,6 +237,26 @@ class PromptGuard:
         for pat in _ROLEPLAY_PATTERNS:
             if pat.search(t):
                 return True, "비정상 역할극 우회 시도 감지", "ROLEPLAY_BYPASS"
+
+        # 5. [BIPIA] 악성 코드 주입 및 시스템 파괴/유출 검사 (Code Attack 방어)
+        for pat in _MALICIOUS_CODE_PATTERNS:
+            if pat.search(t):
+                return True, "악의적 시스템/유출 코드 패턴 감지", "MALICIOUS_CODE_ATTEMPT"
+
+        # 6. [BIPIA] 간접 코드 주입 지시어 검사
+        for pat in _INDIRECT_CODE_INJECTION_PATTERNS:
+            if pat.search(t):
+                return True, "간접 프롬프트 코드 주입 시도 감지", "INDIRECT_CODE_INJECTION"
+
+        # 7. [BIPIA] 간접 텍스트 주입 지시어 검사
+        for pat in _INDIRECT_TEXT_INJECTION_PATTERNS:
+            if pat.search(t):
+                return True, "간접 프롬프트 텍스트 주입 시도 감지", "INDIRECT_TEXT_INJECTION"
+
+        # 8. [BIPIA] 도메인 이탈 및 은닉/치환 검사 (Layer 0 도메인 경계 게이트)
+        for pat in _OUT_OF_DOMAIN_PATTERNS:
+            if pat.search(t):
+                return True, "학교 네트워크 장애상담 범위를 벗어난 질의/치환 감지", "OUT_OF_DOMAIN_ATTACK"
 
         return False, None, None
 
