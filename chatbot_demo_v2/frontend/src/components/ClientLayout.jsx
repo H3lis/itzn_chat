@@ -12,6 +12,7 @@ import {
   ShieldCheck,
   WifiOff,
   CheckCircle,
+  X,
 } from 'lucide-react';
 import { ChatColumn } from './Chat/ChatColumn';
 import { LightboxModal } from './LightboxModal';
@@ -56,6 +57,34 @@ export function ClientLayout({
   const navigatorRef = useRef(new LocalScenarioNavigator(scenarioPayload.data));
   const [offlineOptions, setOfflineOptions] = useState(() => navigatorRef.current.getRootOptions());
   const [showSyncToast, setShowSyncToast] = useState(false);
+  const [isOnlineBannerDismissed, setIsOnlineBannerDismissed] = useState(() => {
+    try {
+      return sessionStorage.getItem('chatbot_dismiss_online_banner') === '1';
+    } catch {
+      return false;
+    }
+  });
+  const [isOfflineBannerDismissed, setIsOfflineBannerDismissed] = useState(() => {
+    try {
+      return sessionStorage.getItem('chatbot_dismiss_offline_banner') === '1';
+    } catch {
+      return false;
+    }
+  });
+
+  const handleDismissOnlineBanner = () => {
+    setIsOnlineBannerDismissed(true);
+    try {
+      sessionStorage.setItem('chatbot_dismiss_online_banner', '1');
+    } catch {}
+  };
+
+  const handleDismissOfflineBanner = () => {
+    setIsOfflineBannerDismissed(true);
+    try {
+      sessionStorage.setItem('chatbot_dismiss_offline_banner', '1');
+    } catch {}
+  };
 
   // 오프라인 시나리오 진행 상태 관리 (웹과 100% 동일한 헤더 안내 텍스트 보장)
   const [localScenarioInfo, setLocalScenarioInfo] = useState({
@@ -215,34 +244,58 @@ export function ClientLayout({
 
       {/* 오프라인 상태 알림 배너 */}
       {isOfflineMode ? (
-        <div className="client-offline-banner" role="alert">
-          <div className="offline-banner-text">
-            <WifiOff size={15} style={{ flexShrink: 0 }} />
-            <span>네트워크 연결이 끊겨 오프라인 모드로 전환되었습니다. 시나리오 버튼 및 이전 상담 조회가 가능합니다.</span>
+        !isOfflineBannerDismissed && (
+          <div className="client-offline-banner" role="alert">
+            <div className="offline-banner-text">
+              <WifiOff size={15} style={{ flexShrink: 0 }} />
+              <span>네트워크 연결이 끊겨 오프라인 모드로 전환되었습니다. 시나리오 버튼 및 이전 상담 조회가 가능합니다.</span>
+            </div>
+            <div className="offline-banner-actions">
+              <a
+                href={REMOTE_SERVER_URL}
+                className="btn-go-online"
+                title="인터넷이 복구되었을 때 공식 웹 챗봇으로 접속합니다"
+              >
+                온라인 접속 ↗
+              </a>
+              <button
+                type="button"
+                className="btn-dismiss-banner btn-dismiss-offline"
+                onClick={handleDismissOfflineBanner}
+                title="배너 닫기"
+                aria-label="오프라인 배너 닫기"
+              >
+                <X size={14} />
+              </button>
+            </div>
           </div>
-          <a
-            href={REMOTE_SERVER_URL}
-            className="btn-go-online"
-            title="인터넷이 복구되었을 때 공식 웹 챗봇으로 접속합니다"
-          >
-            온라인 접속 ↗
-          </a>
-        </div>
-      ) : isFileOrigin && (
+        )
+      ) : isFileOrigin && !isOnlineBannerDismissed && (
         <div className="client-online-banner" role="status">
           <div className="online-banner-text">
             <CheckCircle size={15} style={{ flexShrink: 0, color: '#34d399' }} />
             <span>온라인 서버 연결됨 (실시간 AI 상담 가동 중 · 상담 내역이 로컬 파일에 영구 자동 보관됩니다)</span>
           </div>
-          <a
-            href={REMOTE_SERVER_URL}
-            className="btn-go-online"
-            target="_blank"
-            rel="noreferrer"
-            title="브라우저에서 공식 웹 챗봇 주소로 열기"
-          >
-            공식 웹 주소 열기 ↗
-          </a>
+          <div className="online-banner-actions">
+            <a
+              href={REMOTE_SERVER_URL}
+              className="btn-go-online"
+              target="_blank"
+              rel="noreferrer"
+              title="브라우저에서 공식 웹 챗봇 주소로 열기"
+            >
+              공식 웹 주소 열기 ↗
+            </a>
+            <button
+              type="button"
+              className="btn-dismiss-banner"
+              onClick={handleDismissOnlineBanner}
+              title="온라인 배너 닫기"
+              aria-label="온라인 배너 닫기"
+            >
+              <X size={14} />
+            </button>
+          </div>
         </div>
       )}
 

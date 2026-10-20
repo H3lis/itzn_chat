@@ -16,6 +16,13 @@ export function ScenarioStrip({ options, inFlight, onSelectOption }) {
   }, []);
 
   useEffect(() => {
+    // 새 옵션 로드 시 이전 포커스 요소 완전히 해제 (모바일 버튼 눌림 고착 방지)
+    if (document.activeElement && scrollRef.current?.contains(document.activeElement)) {
+      try {
+        document.activeElement.blur();
+      } catch (_) {}
+    }
+
     checkScroll();
     const el = scrollRef.current;
     if (!el) return;
@@ -40,18 +47,35 @@ export function ScenarioStrip({ options, inFlight, onSelectOption }) {
     }
   };
 
+  const handleChipClick = (e, opt) => {
+    // 클릭 직후 버튼 포커스 해제 (모바일/터치 브라우저의 :hover/:focus 고착 원천 차단)
+    if (e?.currentTarget && typeof e.currentTarget.blur === 'function') {
+      try {
+        e.currentTarget.blur();
+      } catch (_) {}
+    }
+    if (document.activeElement && typeof document.activeElement.blur === 'function') {
+      try {
+        document.activeElement.blur();
+      } catch (_) {}
+    }
+    onSelectOption(opt);
+  };
+
   return (
     <div className={`scenario-strip ${canScrollDown ? 'has-more-down' : ''}`}>
       <div className="scenario-chips-wrapper" ref={scrollRef}>
         {options.map((opt, idx) => {
           const isRestart = opt.option_id === '__restart__' || opt.label?.trim() === '처음으로';
+          // 고유 키를 부여하여 옵션 변경 시 React가 이전 DOM 버튼 노드를 재활용(포커스/터치 상태 잔존)하지 않고 새로 마운트하도록 보장
+          const chipKey = `chip_${opt.option_id || 'opt'}_${opt.next_node_id || ''}_${opt.label || idx}`;
           return (
             <button
-              key={idx}
+              key={chipKey}
               type="button"
               className={`scenario-chip ${isRestart ? 'restart' : ''}`}
               disabled={inFlight}
-              onClick={() => onSelectOption(opt)}
+              onClick={(e) => handleChipClick(e, opt)}
             >
               {isRestart && <RefreshCw size={11} style={{ display: 'inline', marginRight: 4 }} />}
               {opt.label}
