@@ -13,6 +13,9 @@ import {
   WifiOff,
   CheckCircle,
   X,
+  Copy,
+  Edit2,
+  User,
 } from 'lucide-react';
 import { ChatColumn } from './Chat/ChatColumn';
 import { LightboxModal } from './LightboxModal';
@@ -44,9 +47,12 @@ export function ClientLayout({
   sendClarify,
   resetSession,
   sendFeedback,
+  userId,
+  updateUserId,
 }) {
   const [lightboxData, setLightboxData] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [copiedToast, setCopiedToast] = useState('');
 
   // 로컬 독립 실행 파일(file:, content:, blob:) 여부 판별
   const isOfflineApp = isOfflineBundle();
@@ -143,6 +149,7 @@ export function ClientLayout({
     selectSession,
     deleteSession,
     clearAllSessions,
+    refreshHistory,
   } = useClientHistory({
     messages,
     setMessages,
@@ -150,6 +157,47 @@ export function ClientLayout({
     updateSession,
     resetSession,
   });
+
+  const handleCopyUserId = () => {
+    if (!userId) return;
+    try {
+      if (navigator?.clipboard?.writeText) {
+        navigator.clipboard.writeText(userId);
+      } else {
+        const textarea = document.createElement('textarea');
+        textarea.value = userId;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+      }
+      setCopiedToast('상담 ID가 클립보드에 복사되었습니다.');
+      setTimeout(() => setCopiedToast(''), 2500);
+    } catch (e) {
+      console.warn('ID 복사 실패:', e);
+    }
+  };
+
+  const handleEditUserId = () => {
+    const input = window.prompt(
+      '기존 온라인 ID나 다른 기기에서 사용하던 상담 ID를 입력하세요:\n(입력 시 해당 ID의 상담 기록이 즉시 동기화됩니다)',
+      userId || ''
+    );
+    if (input === null) return;
+    const clean = input.trim();
+    if (!clean) {
+      alert('상담 ID는 공백일 수 없습니다.');
+      return;
+    }
+    if (updateUserId) {
+      updateUserId(clean);
+    }
+    if (refreshHistory) {
+      refreshHistory(clean);
+    }
+    setCopiedToast(`상담 ID가 '${clean}'(으)로 연동되었습니다.`);
+    setTimeout(() => setCopiedToast(''), 3000);
+  };
 
   // 새 상담 시작 시 오프라인 옵션 칩도 초기 루트로 리셋
   const handleStartNewChat = () => {
@@ -314,6 +362,14 @@ export function ClientLayout({
         </div>
       )}
 
+      {/* 상담 ID 복사 및 연동 안내 토스트 */}
+      {copiedToast && (
+        <div className="client-copy-toast" role="status">
+          <CheckCircle size={15} style={{ flexShrink: 0, color: '#38bdf8' }} />
+          <span>{copiedToast}</span>
+        </div>
+      )}
+
       {/* 2. 본문: 좌측 히스토리 사이드바 + 중앙 와이드 대화 화면 */}
       <div className="client-layout-body">
         {/* 좌측: 지난 대화 히스토리 사이드바 */}
@@ -379,12 +435,46 @@ export function ClientLayout({
           </div>
 
           <div className="history-sidebar-footer">
+            {/* 상담 식별 ID 배지 및 복사/연동 버튼 */}
+            <div
+              className="sidebar-user-badge"
+              title="현재 기기의 고유 상담 식별 ID입니다. 다른 기기나 비상용 오프라인 파일과 상담 기록을 연동할 때 사용됩니다."
+            >
+              <div className="user-badge-left">
+                <User size={13} className="user-badge-icon" />
+                <div className="user-badge-info">
+                  <span className="user-badge-label">상담 식별 ID</span>
+                  <span className="user-id-text">{userId || '확인 중...'}</span>
+                </div>
+              </div>
+              <div className="user-badge-actions">
+                <button
+                  type="button"
+                  className="btn-user-badge-action"
+                  onClick={handleCopyUserId}
+                  title="상담 ID 복사"
+                  aria-label="상담 ID 복사"
+                >
+                  <Copy size={13} />
+                </button>
+                <button
+                  type="button"
+                  className="btn-user-badge-action"
+                  onClick={handleEditUserId}
+                  title="기존 상담 ID 직접 입력 / 연동"
+                  aria-label="기존 상담 ID 직접 입력"
+                >
+                  <Edit2 size={13} />
+                </button>
+              </div>
+            </div>
+
             {!isOfflineApp && (
               <a
-                href="/api/download/offline-client"
+                href={`/api/download/offline-client?user_id=${encodeURIComponent(userId || '')}`}
                 download="학교챗봇_장애대응가이드_오프라인.html"
                 className="btn-download-offline-file"
-                title="인터넷 단절 시 사용할 수 있는 비상용 오프라인 HTML 파일 다운로드"
+                title="내 상담 ID와 이전 상담 기록이 함께 포함된 비상용 오프라인 HTML 파일 다운로드"
               >
                 <span>📥 비상용 오프라인 가이드 받기</span>
               </a>

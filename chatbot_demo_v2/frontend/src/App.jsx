@@ -64,6 +64,8 @@ export function App() {
     sendClarify,
     resetSession,
     sendFeedback,
+    userId,
+    updateUserId,
   } = useChatStream();
 
   const [lightboxData, setLightboxData] = useState(null);
@@ -201,6 +203,8 @@ export function App() {
         sendClarify={sendClarify}
         resetSession={resetSession}
         sendFeedback={sendFeedback}
+        userId={userId}
+        updateUserId={updateUserId}
       />
     </ErrorBoundary>
   );

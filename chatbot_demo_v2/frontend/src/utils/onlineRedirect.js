@@ -1,4 +1,5 @@
 import { isOfflineBundle } from './apiBase';
+import { getOrCreateUserId } from '../hooks/useChatStream';
 
 export const REMOTE_SERVER_URL = 'http://34.64.143.198:8002/';
 export const LOCAL_DEV_URL = 'http://localhost:8002/';
@@ -6,16 +7,21 @@ export const LOCAL_DEV_URL = 'http://localhost:8002/';
 let isRedirecting = false;
 
 /**
- * 사용자 ID(uid)가 포함된 온라인 웹 주소 생성
+ * 사용자 ID(uid)가 100% 보장 포함된 온라인 웹 주소 생성
  */
-export function getOnlineRedirectUrl() {
+export function getOnlineRedirectUrl(customBaseUrl = null) {
+  const base = customBaseUrl || REMOTE_SERVER_URL;
   try {
-    const uid = localStorage.getItem('chatbot_demo_v2_uid');
+    let uid = localStorage.getItem('chatbot_demo_v2_uid');
+    if (!uid || !uid.trim() || uid === 'usr_guest') {
+      uid = getOrCreateUserId();
+    }
     if (uid && uid.trim() && uid !== 'usr_guest') {
-      return `${REMOTE_SERVER_URL}?uid=${encodeURIComponent(uid.trim())}`;
+      const sep = base.includes('?') ? '&' : '?';
+      return `${base}${sep}uid=${encodeURIComponent(uid.trim())}`;
     }
   } catch {}
-  return REMOTE_SERVER_URL;
+  return base;
 }
 
 export async function checkAndRedirectIfOnline() {
@@ -92,11 +98,12 @@ export async function checkAndRedirectIfOnline() {
     const localOk = await probe('http://localhost:8002/api/health');
     if (localOk && navigator.onLine) {
       isRedirecting = true;
-      console.log('[AutoRedirect] 로컬 개발 서버 도달 확인. 로컬 웹 챗봇으로 자동 이동:', LOCAL_DEV_URL);
+      const targetLocal = getOnlineRedirectUrl(LOCAL_DEV_URL);
+      console.log('[AutoRedirect] 로컬 개발 서버 도달 확인. 로컬 웹 챗봇으로 자동 이동:', targetLocal);
       try {
-        window.location.replace(LOCAL_DEV_URL);
+        window.location.replace(targetLocal);
       } catch {
-        window.location.href = LOCAL_DEV_URL;
+        window.location.href = targetLocal;
       }
       return true;
     }

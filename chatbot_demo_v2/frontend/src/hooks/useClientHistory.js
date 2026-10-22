@@ -79,9 +79,31 @@ export function useClientHistory({
 }) {
   const [sessions, setSessions] = useState(() => {
     try {
+      const preloaded = (typeof window !== 'undefined' && Array.isArray(window.__PRELOADED_SESSIONS__))
+        ? window.__PRELOADED_SESSIONS__
+        : [];
       const raw = localStorage.getItem(CLIENT_HISTORY_STORAGE_KEY);
       const list = raw ? JSON.parse(raw) : [];
-      return list.sort((a, b) => parseSessionTime(b) - parseSessionTime(a));
+
+      const sessionMap = new Map();
+      list.forEach((s) => sessionMap.set(s.id, s));
+      preloaded.forEach((s) => {
+        if (!sessionMap.has(s.id)) {
+          sessionMap.set(s.id, {
+            ...s,
+            createdAt: formatSessionDate(s.createdAt),
+            updatedAt: formatSessionDate(s.updatedAt || s.createdAt),
+            timestamp: parseSessionTime(s),
+          });
+        }
+      });
+      const merged = Array.from(sessionMap.values()).sort((a, b) => parseSessionTime(b) - parseSessionTime(a));
+      if (preloaded.length > 0) {
+        try {
+          localStorage.setItem(CLIENT_HISTORY_STORAGE_KEY, JSON.stringify(merged));
+        } catch (_) {}
+      }
+      return merged;
     } catch {
       return [];
     }
@@ -113,10 +135,11 @@ export function useClientHistory({
   }, []);
 
   // 1. 서버(chat_history.db)와 세션 히스토리 자동 동기화 (온라인 상태일 때 자동 복원)
-  const syncWithServer = useCallback(async () => {
+  const syncWithServer = useCallback(async (targetUid = null) => {
     try {
-      const uid = localStorage.getItem(USER_KEY) || '';
-      const url = buildApiUrl(`/api/client/history?user_id=${encodeURIComponent(uid)}&limit=30`);
+      const effectiveUid = targetUid || (typeof localStorage !== 'undefined' ? localStorage.getItem(USER_KEY) : '') || '';
+      if (!effectiveUid || effectiveUid === 'usr_guest') return;
+      const url = buildApiUrl(`/api/client/history?user_id=${encodeURIComponent(effectiveUid)}&limit=30`);
       const res = await fetch(url, { cache: 'no-store' });
       if (!res.ok) return;
       const data = await res.json();
@@ -306,5 +329,6 @@ export function useClientHistory({
     selectSession,
     deleteSession,
     clearAllSessions,
+    refreshHistory: syncWithServer,
   };
 }

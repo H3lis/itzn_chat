@@ -900,18 +900,49 @@ def get_latest_scenarios(request: Request, response: Response) -> dict:
 
 
 @router.get("/api/download/offline-client")
-def download_offline_client():
-    """오프라인 단독 실행형 고객용 챗봇 HTML 파일 다운로드."""
+def download_offline_client(request: Request, user_id: Optional[str] = None):
+    """오프라인 단독 실행형 고객용 챗봇 HTML 파일 다운로드 (사용자 ID 및 최근 대화내역 사전 주입)."""
     standalone_path = Path(__file__).resolve().parent.parent / "frontend" / "dist-standalone" / "index.html"
     if not standalone_path.is_file():
         standalone_path = Path(__file__).resolve().parent.parent / "frontend" / "dist" / "index.html"
     if not standalone_path.is_file():
         raise HTTPException(status_code=404, detail="오프라인 배포본이 아직 빌드되지 않았습니다.")
 
-    return FileResponse(
-        path=str(standalone_path),
-        filename="학교챗봇_장애대응가이드_오프라인.html",
-        media_type="text/html",
+    # user_id가 없거나 기본 게스트면 원본 파일 그대로 전송
+    if not user_id or not user_id.strip() or user_id.strip() == "usr_guest":
+        return FileResponse(
+            path=str(standalone_path),
+            filename="학교챗봇_장애대응가이드_오프라인.html",
+            media_type="text/html",
+        )
+
+    # user_id가 명시된 경우, 해당 사용자의 대화 세션을 조회하여 HTML에 사전 각인 주입
+    clean_uid = user_id.strip()
+    ctx = _ctx(request)
+    sessions_data = []
+    if ctx.history_service:
+        client_res = ctx.history_service.get_client_sessions(user_id=clean_uid, limit=30)
+        sessions_data = client_res.get("sessions", [])
+
+    html_content = standalone_path.read_text(encoding="utf-8")
+    injection_script = (
+        f'<script>'
+        f'window.__PRELOADED_USER_ID__ = {json.dumps(clean_uid)};'
+        f'window.__PRELOADED_SESSIONS__ = {json.dumps(sessions_data)};'
+        f'</script>'
+    )
+
+    if "</head>" in html_content:
+        custom_html = html_content.replace("</head>", f"{injection_script}</head>", 1)
+    else:
+        custom_html = injection_script + html_content
+
+    return Response(
+        content=custom_html,
+        media_type="text/html; charset=utf-8",
+        headers={
+            "Content-Disposition": "attachment; filename*=UTF-8''%ED%95%99%EA%B5%90%EC%B1%97%EB%B4%87_%EC%9E%A5%EC%95%A0%EB%8C%80%EC%9D%91%EA%B0%80%EC%9D%B4%EB%93%9C_%EC%98%A4%ED%94%84%EB%9D%BC%EC%9D%B8.html"
+        }
     )
 
 

@@ -37,9 +37,17 @@ function removePersistedItem(key) {
 /**
  * 브라우저 기기별 영구 고유 사용자 식별자 (세션이 리셋되어도 유지됨)
  */
-function getOrCreateUserId() {
+export function getOrCreateUserId() {
   try {
-    // URL 쿼리 스트링(?uid=...)이 전달된 경우 우선 동기화 (오프라인 ➔ 온라인 전환 시 이력 연속성 보장)
+    // 0. 다운로드된 오프라인 HTML에 사전 각인된 사용자 ID가 존재하면 최우선 적용
+    if (typeof window !== 'undefined' && window.__PRELOADED_USER_ID__) {
+      const pUid = String(window.__PRELOADED_USER_ID__).trim();
+      if (pUid && pUid !== 'usr_guest') {
+        localStorage.setItem(USER_KEY, pUid);
+        return pUid;
+      }
+    }
+    // 1. URL 쿼리 스트링(?uid=...)이 전달된 경우 우선 동기화 (오프라인 ➔ 온라인 전환 시 이력 연속성 보장)
     if (typeof window !== 'undefined' && window.location.search) {
       const params = new URLSearchParams(window.location.search);
       const urlUid = params.get('uid');
@@ -50,7 +58,7 @@ function getOrCreateUserId() {
       }
     }
     let uid = localStorage.getItem(USER_KEY);
-    if (!uid) {
+    if (!uid || !uid.trim()) {
       uid = 'usr_' + Math.random().toString(36).substring(2, 10);
       localStorage.setItem(USER_KEY, uid);
     }
@@ -60,7 +68,28 @@ function getOrCreateUserId() {
   }
 }
 
+// 모듈 로드 0초 시점에 즉시 실행하여 로컬스토리지에 사용자 ID 각인 보장
+if (typeof window !== 'undefined') {
+  try {
+    getOrCreateUserId();
+  } catch (_) {}
+}
+
 export function useChatStream() {
+  const [userId, setUserId] = useState(() => getOrCreateUserId());
+
+  const updateUserId = useCallback((newUid) => {
+    if (newUid && newUid.trim()) {
+      const clean = newUid.trim();
+      try {
+        localStorage.setItem(USER_KEY, clean);
+      } catch (_) {}
+      setUserId(clean);
+      return clean;
+    }
+    return userId;
+  }, [userId]);
+
   const [sessionId, setSessionId] = useState(() => getPersistedItem(SESSION_KEY) || null);
   const [messages, setMessages] = useState(() => {
     try {
@@ -411,5 +440,7 @@ export function useChatStream() {
     sendClarify,
     resetSession,
     sendFeedback,
+    userId,
+    updateUserId,
   };
 }
