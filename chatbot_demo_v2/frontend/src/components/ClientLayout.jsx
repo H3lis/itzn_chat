@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import {
   School,
-  Settings,
   PlusCircle,
   MessageSquare,
   Trash2,
@@ -51,7 +50,7 @@ export function ClientLayout({
   updateUserId,
 }) {
   const [lightboxData, setLightboxData] = useState(null);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [copiedToast, setCopiedToast] = useState('');
 
   // 로컬 독립 실행 파일(file:, content:, blob:) 여부 판별
@@ -206,6 +205,12 @@ export function ClientLayout({
     startNewChat();
   };
 
+  // 히스토리 항목 선택 시: 해당 세션 로드 + 사이드바 즉시 접기 (대화 내역 바로 확인)
+  const handleSelectSession = (id) => {
+    selectSession(id);
+    setIsSidebarOpen(false);
+  };
+
   // 시나리오 칩 선택 시 온/오프라인 자동 분기 처리
   const handleSelectOption = (opt) => {
     if (opt?.option_id === '__restart__' || opt?.label?.trim() === '처음으로') {
@@ -242,15 +247,15 @@ export function ClientLayout({
       {/* 1. 고객용 글로벌 상단 헤더 */}
       <header className="topbar client-topbar">
         <div className="brand-section">
-          {/* 히스토리 사이드바 접기/펼치기 토글 버튼 */}
+          {/* 히스토리 사이드바 접기/펼치기 토글 버튼 (가시성 대폭 강화) */}
           <button
             type="button"
-            className="btn-history-toggle"
+            className={`btn-history-toggle ${isSidebarOpen ? 'active' : ''}`}
             onClick={() => setIsSidebarOpen((prev) => !prev)}
             title={isSidebarOpen ? '대화 히스토리 사이드바 접기' : '대화 히스토리 사이드바 열기'}
             aria-label="히스토리 토글"
           >
-            {isSidebarOpen ? <PanelLeftClose size={19} /> : <PanelLeft size={19} />}
+            {isSidebarOpen ? <PanelLeftClose size={20} strokeWidth={2.2} /> : <PanelLeft size={20} strokeWidth={2.2} />}
           </button>
 
           <div className="brand-logo" aria-hidden="true">
@@ -261,7 +266,6 @@ export function ClientLayout({
             <span className="brand-title-text client-title-prominent">
               학교 유무선 장애상담 스쿨넷봇
             </span>
-            {/* 사용자 요청에 따라 '정식 서비스' 뱃지는 완전히 제거됨 */}
           </div>
         </div>
 
@@ -284,18 +288,6 @@ export function ClientLayout({
               {isOfflineMode ? '오프라인 모드' : (isReady ? '상담 가능' : isError ? '연결 확인 필요' : '연결 중…')}
             </span>
           </div>
-
-
-          {/* 관리자 콘솔 전환 버튼 */}
-          <button
-            type="button"
-            className="btn-client-nav admin-mode-btn"
-            onClick={() => onNavigate?.('/admin')}
-            title="RAG 문서 및 시스템 설정 관리자 화면으로 이동합니다"
-          >
-            <Settings size={14} />
-            <span className="btn-text">관리자</span>
-          </button>
         </div>
       </header>
 
@@ -379,15 +371,26 @@ export function ClientLayout({
               <Clock size={16} />
               <span>지난 상담 내역</span>
             </div>
-            <button
-              type="button"
-              className="btn-new-chat-sidebar"
-              onClick={handleStartNewChat}
-              title="새로운 질문으로 대화 시작"
-            >
-              <PlusCircle size={14} />
-              <span>새 상담</span>
-            </button>
+            <div className="history-header-actions" style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+              <button
+                type="button"
+                className="btn-new-chat-sidebar"
+                onClick={handleStartNewChat}
+                title="새로운 질문으로 대화 시작"
+              >
+                <PlusCircle size={14} />
+                <span>새 상담</span>
+              </button>
+              <button
+                type="button"
+                className="btn-close-sidebar-header"
+                onClick={() => setIsSidebarOpen(false)}
+                title="히스토리 사이드바 접기"
+                aria-label="사이드바 접기"
+              >
+                <PanelLeftClose size={16} />
+              </button>
+            </div>
           </div>
 
           <div className="history-session-list">
@@ -406,7 +409,7 @@ export function ClientLayout({
                     <div
                       key={sess.id}
                       className={`history-session-item ${isActive ? 'active' : ''}`}
-                      onClick={() => selectSession(sess.id)}
+                      onClick={() => handleSelectSession(sess.id)}
                       title={sess.title}
                     >
                       <div className="history-item-icon">
