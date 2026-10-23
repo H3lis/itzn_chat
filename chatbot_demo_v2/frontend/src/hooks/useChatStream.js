@@ -90,8 +90,25 @@ export function useChatStream() {
     return userId;
   }, [userId]);
 
-  const [sessionId, setSessionId] = useState(() => getPersistedItem(SESSION_KEY) || null);
+  const [sessionId, setSessionId] = useState(() => {
+    // 고객용 화면에서는 항상 신규 상담 세션으로 깨끗하게 시작
+    if (typeof window !== 'undefined') {
+      const p = window.location.pathname || '';
+      if (!p.startsWith('/dev') && !p.startsWith('/demo')) {
+        return 'session_' + Date.now();
+      }
+    }
+    return getPersistedItem(SESSION_KEY) || ('session_' + Date.now());
+  });
+
   const [messages, setMessages] = useState(() => {
+    // 고객용 화면에서는 항상 기본 처음 화면(빈 메시지/초기 시나리오)으로 시작
+    if (typeof window !== 'undefined') {
+      const p = window.location.pathname || '';
+      if (!p.startsWith('/dev') && !p.startsWith('/demo')) {
+        return [];
+      }
+    }
     try {
       const raw = getPersistedItem(MESSAGES_KEY);
       return raw ? JSON.parse(raw) : [];
@@ -99,7 +116,14 @@ export function useChatStream() {
       return [];
     }
   });
+
   const [activeMsgId, setActiveMsgId] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const p = window.location.pathname || '';
+      if (!p.startsWith('/dev') && !p.startsWith('/demo')) {
+        return null;
+      }
+    }
     try {
       const raw = getPersistedItem(MESSAGES_KEY);
       const list = raw ? JSON.parse(raw) : [];
