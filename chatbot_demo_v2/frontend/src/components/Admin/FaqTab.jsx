@@ -7,7 +7,8 @@ export function FaqTab({ onUpdateBadge }) {
     total: 0,
     per_sheet: {},
     sheets: [],
-    fault_types: []
+    fault_types: [],
+    per_fault_type: {}
   });
   const [faqs, setFaqs] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -29,8 +30,13 @@ export function FaqTab({ onUpdateBadge }) {
     answer: '',
     source: ''
   });
-  const [sheetMode, setSheetMode] = useState('select'); // 'select' | 'custom'
-  const [faultTypeMode, setFaultTypeMode] = useState('select'); // 'select' | 'custom'
+
+  // 사진 요구사항: 장애구분 / 장애유형 각각 [입력박스] [드롭다운: 신규 등록 v] [등록] [수정] [삭제]
+  const [sheetSelected, setSheetSelected] = useState('__new__');
+  const [sheetInput, setSheetInput] = useState('');
+  const [faultTypeSelected, setFaultTypeSelected] = useState('__new__');
+  const [faultTypeInput, setFaultTypeInput] = useState('');
+
   const [submitting, setSubmitting] = useState(false);
 
   const badgeRef = useRef(onUpdateBadge);
@@ -38,7 +44,7 @@ export function FaqTab({ onUpdateBadge }) {
     badgeRef.current = onUpdateBadge;
   }, [onUpdateBadge]);
 
-  // 1. 통계 조회
+  // 1. 통계 조회 (장애 유형별 질문 집계 per_fault_type 완벽 복원)
   const fetchStats = useCallback(async () => {
     try {
       const res = await fetch('/api/admin/faq/stats');
@@ -54,7 +60,8 @@ export function FaqTab({ onUpdateBadge }) {
           total: total,
           per_sheet: perSheet,
           sheets: sheetsList,
-          fault_types: Array.isArray(data.fault_types) ? data.fault_types : []
+          fault_types: Array.isArray(data.fault_types) ? data.fault_types : [],
+          per_fault_type: data.per_fault_type || {}
         });
         if (badgeRef.current) badgeRef.current(total);
       }
@@ -105,12 +112,14 @@ export function FaqTab({ onUpdateBadge }) {
     ? stats.fault_types
     : ['일반상담'];
 
-  // 신규 등록 모달 열기 (장애 구분과 장애 유형 신규등록 모드가 기본으로 먼저 열림)
+  // 신규 등록 모달 열기 (장애 구분과 장애 유형 드롭다운 첫 번째 "신규 등록" 기본 선택)
   const handleOpenCreate = () => {
     setModalMode('create');
     setEditingItem(null);
-    setSheetMode('custom'); // 신규등록이 기본
-    setFaultTypeMode('custom'); // 신규등록이 기본
+    setSheetSelected('__new__');
+    setSheetInput('');
+    setFaultTypeSelected('__new__');
+    setFaultTypeInput('');
     setFormData({
       sheet: '',
       fault_type: '',
@@ -125,16 +134,15 @@ export function FaqTab({ onUpdateBadge }) {
   const handleOpenEdit = (item) => {
     setModalMode('edit');
     setEditingItem(item);
-    const itemSheet = item.sheet || '';
-    const itemFaultType = item.fault_type || '';
-    const sheetExists = availableSheets.includes(itemSheet);
-    const faultExists = availableFaultTypes.includes(itemFaultType);
-
-    setSheetMode(sheetExists || !itemSheet ? 'select' : 'custom');
-    setFaultTypeMode(faultExists || !itemFaultType ? 'select' : 'custom');
+    const s = item.sheet || '';
+    const f = item.fault_type || '';
+    setSheetSelected(s || '__new__');
+    setSheetInput(s || '');
+    setFaultTypeSelected(f || '__new__');
+    setFaultTypeInput(f || '');
     setFormData({
-      sheet: itemSheet || availableSheets[0] || '스쿨넷',
-      fault_type: itemFaultType || availableFaultTypes[0] || '일반상담',
+      sheet: s,
+      fault_type: f,
       question: item.question || '',
       answer: item.answer || '',
       source: item.source || ''
@@ -142,18 +150,89 @@ export function FaqTab({ onUpdateBadge }) {
     setModalOpen(true);
   };
 
-  // 카테고리(장애 구분/장애 유형) 이름 수정
-  const handleRenameCategory = async (type, oldName) => {
-    const typeLabel = type === 'sheet' ? '장애 구분' : '장애 유형';
-    const newName = window.prompt(`[${typeLabel}] '${oldName}'의 변경할 새 이름을 입력하세요:`, oldName);
-    if (!newName) return;
-    const cleanNew = newName.trim();
-    if (!cleanNew || cleanNew === oldName) return;
+  // [등록] 버튼: 드롭다운이 '신규 등록'일 때 입력칸 항목 저장 (등록 여부 확인 -> 저장 -> 드롭박스 Reload & 입력박스 Clear)
+  const handleAddCategoryBtn = async (type) => {
+    const isSheet = type === 'sheet';
+    const label = isSheet ? '장애 구분' : '장애 유형';
+    const selected = isSheet ? sheetSelected : faultTypeSelected;
+    const inputVal = (isSheet ? sheetInput : faultTypeInput).trim();
+
+    if (selected !== '__new__') {
+      alert(`신규 항목을 등록하시려면 드롭다운에서 '신규 등록'을 선택해 주세요.`);
+      return;
+    }
+    if (!inputVal) {
+      alert(`등록할 ${label} 이름을 입력칸에 입력해 주세요.`);
+      return;
+    }
 
     // 기 등록 항목과 중복 검사
-    const targetList = type === 'sheet' ? availableSheets : availableFaultTypes;
-    if (targetList.some((item) => item.toLowerCase() === cleanNew.toLowerCase() && item !== oldName)) {
-      alert(`이미 등록되어 있는 ${typeLabel} 이름입니다: '${cleanNew}'`);
+    const targetList = isSheet ? availableSheets : availableFaultTypes;
+    if (targetList.some((item) => item.toLowerCase() === inputVal.toLowerCase())) {
+      alert(`이미 등록되어 있는 ${label}입니다: '${inputVal}'`);
+      return;
+    }
+
+    if (!window.confirm(`새로운 ${label} '${inputVal}'을(를) 등록하시겠습니까?`)) {
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/admin/faq/category', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type, name: inputVal })
+      });
+      if (res.ok) {
+        alert(`${label} '${inputVal}'이(가) 등록되었습니다.`);
+        await fetchStats();
+        // 등록 후 드롭박스에서 방금 등록된 항목 선택 상태로 동기화
+        if (isSheet) {
+          setSheetSelected(inputVal);
+          setSheetInput(inputVal);
+          setFormData((prev) => ({ ...prev, sheet: inputVal }));
+        } else {
+          setFaultTypeSelected(inputVal);
+          setFaultTypeInput(inputVal);
+          setFormData((prev) => ({ ...prev, fault_type: inputVal }));
+        }
+      } else {
+        const err = await res.json();
+        alert(`등록 실패: ${err.detail || '오류 발생'}`);
+      }
+    } catch (e) {
+      alert(`통신 오류: ${e.message}`);
+    }
+  };
+
+  // [수정] 버튼: 드롭다운 선택 내용과 입력박스 내용이 다를 경우 수정 여부 묻고 수정
+  const handleUpdateCategoryBtn = async (type) => {
+    const isSheet = type === 'sheet';
+    const label = isSheet ? '장애 구분' : '장애 유형';
+    const selected = isSheet ? sheetSelected : faultTypeSelected;
+    const inputVal = (isSheet ? sheetInput : faultTypeInput).trim();
+
+    if (selected === '__new__') {
+      alert(`수정할 기존 항목을 드롭다운에서 먼저 선택해 주세요.`);
+      return;
+    }
+    if (!inputVal) {
+      alert(`수정할 새 ${label} 이름을 입력해 주세요.`);
+      return;
+    }
+    if (selected === inputVal) {
+      alert(`입력칸의 내용이 기존 이름과 동일합니다. 변경할 새 이름을 입력해 주세요.`);
+      return;
+    }
+
+    // 중복 검사
+    const targetList = isSheet ? availableSheets : availableFaultTypes;
+    if (targetList.some((item) => item.toLowerCase() === inputVal.toLowerCase() && item !== selected)) {
+      alert(`이미 등록되어 있는 ${label} 이름입니다: '${inputVal}'`);
+      return;
+    }
+
+    if (!window.confirm(`'${selected}' 항목을 '${inputVal}'(으)로 수정하시겠습니까?\n(종속된 모든 FAQ 항목에도 자동 반영됩니다)`)) {
       return;
     }
 
@@ -161,19 +240,22 @@ export function FaqTab({ onUpdateBadge }) {
       const res = await fetch('/api/admin/faq/category/rename', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type, old_name: oldName, new_name: cleanNew })
+        body: JSON.stringify({ type, old_name: selected, new_name: inputVal })
       });
       if (res.ok) {
         const data = await res.json();
-        alert(`${typeLabel} 이름이 변경되었습니다. (종속된 FAQ ${data.updated_count || 0}건 자동 갱신)`);
-        // 현재 작성 폼의 값도 일치하면 갱신
-        if (type === 'sheet' && formData.sheet === oldName) {
-          setFormData((prev) => ({ ...prev, sheet: cleanNew }));
-        } else if (type === 'fault_type' && formData.fault_type === oldName) {
-          setFormData((prev) => ({ ...prev, fault_type: cleanNew }));
+        alert(`${label} 이름이 수정되었습니다. (종속 FAQ ${data.updated_count || 0}건 자동 갱신)`);
+        await fetchStats();
+        await fetchFaqs();
+        if (isSheet) {
+          setSheetSelected(inputVal);
+          setSheetInput(inputVal);
+          setFormData((prev) => ({ ...prev, sheet: inputVal }));
+        } else {
+          setFaultTypeSelected(inputVal);
+          setFaultTypeInput(inputVal);
+          setFormData((prev) => ({ ...prev, fault_type: inputVal }));
         }
-        fetchStats();
-        fetchFaqs();
       } else {
         const err = await res.json();
         alert(`수정 실패: ${err.detail || '오류 발생'}`);
@@ -183,35 +265,47 @@ export function FaqTab({ onUpdateBadge }) {
     }
   };
 
-  // 카테고리(장애 구분/장애 유형) 삭제 (종속 FAQ 1건이라도 존재 시 삭제 차단)
-  const handleDeleteCategory = async (type, name) => {
-    const typeLabel = type === 'sheet' ? '장애 구분' : '장애 유형';
-    const dependentCount = type === 'sheet'
-      ? (stats.per_sheet?.[name] || 0)
-      : (stats.per_fault_type?.[name] || 0);
+  // [삭제] 버튼: 기 등록된(종속된) FAQ가 있으면 삭제 불가 메시지 출력 후 삭제 방지
+  const handleDeleteCategoryBtn = async (type) => {
+    const isSheet = type === 'sheet';
+    const label = isSheet ? '장애 구분' : '장애 유형';
+    const selected = isSheet ? sheetSelected : faultTypeSelected;
 
-    if (dependentCount > 0) {
-      alert(`⚠️ 해당 ${typeLabel} [${name}]에 종속된 FAQ가 ${dependentCount}건 존재하여 삭제할 수 없습니다.\n\n관련 FAQ 항목들을 먼저 삭제하거나 다른 ${typeLabel}(으)로 변경해 주시기 바랍니다.`);
+    if (selected === '__new__') {
+      alert(`삭제할 항목을 드롭다운에서 선택해 주세요.`);
       return;
     }
 
-    if (!window.confirm(`[${typeLabel}] '${name}' 항목을 삭제하시겠습니까?`)) {
+    const dependentCount = isSheet
+      ? (stats.per_sheet?.[selected] || 0)
+      : (stats.per_fault_type?.[selected] || 0);
+
+    if (dependentCount > 0) {
+      alert(`⚠️ 기 등록된 FAQ가 존재하여 삭제할 수 없습니다.\n\n해당 ${label} [${selected}]에 종속된 FAQ가 ${dependentCount}건 존재합니다.\n관련 FAQ 항목들을 먼저 삭제하거나 다른 항목으로 변경해 주시기 바랍니다.`);
+      return;
+    }
+
+    if (!window.confirm(`[${label}] '${selected}' 항목을 삭제하시겠습니까?`)) {
       return;
     }
 
     try {
-      const res = await fetch(`/api/admin/faq/category?type=${type}&name=${encodeURIComponent(name)}`, {
+      const res = await fetch(`/api/admin/faq/category?type=${type}&name=${encodeURIComponent(selected)}`, {
         method: 'DELETE'
       });
       if (res.ok) {
-        alert(`${typeLabel} [${name}]이(가) 삭제되었습니다.`);
-        if (type === 'sheet' && formData.sheet === name) {
+        alert(`${label} [${selected}]이(가) 삭제되었습니다.`);
+        await fetchStats();
+        await fetchFaqs();
+        if (isSheet) {
+          setSheetSelected('__new__');
+          setSheetInput('');
           setFormData((prev) => ({ ...prev, sheet: '' }));
-        } else if (type === 'fault_type' && formData.fault_type === name) {
+        } else {
+          setFaultTypeSelected('__new__');
+          setFaultTypeInput('');
           setFormData((prev) => ({ ...prev, fault_type: '' }));
         }
-        fetchStats();
-        fetchFaqs();
       } else {
         const err = await res.json();
         alert(`삭제 실패: ${err.detail || '오류 발생'}`);
@@ -246,8 +340,8 @@ export function FaqTab({ onUpdateBadge }) {
   // 폼 제출
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const sheetVal = formData.sheet.trim();
-    const faultVal = formData.fault_type.trim();
+    const sheetVal = (sheetSelected === '__new__' ? sheetInput : sheetSelected).trim();
+    const faultVal = (faultTypeSelected === '__new__' ? faultTypeInput : faultTypeSelected).trim();
 
     if (!sheetVal) {
       alert('장애 구분을 선택하거나 입력해 주세요.');
@@ -256,23 +350,6 @@ export function FaqTab({ onUpdateBadge }) {
     if (!faultVal) {
       alert('장애 유형을 선택하거나 입력해 주세요.');
       return;
-    }
-
-    // 신규 등록 모드인 경우: 기 등록 항목에 대해 동일 항목 중복 등록 차단 검증
-    if (sheetMode === 'custom' && modalMode === 'create') {
-      const isExistingSheet = availableSheets.some((s) => s.toLowerCase() === sheetVal.toLowerCase());
-      if (isExistingSheet) {
-        alert(`⚠️ 장애 구분 '${sheetVal}'(은)는 이미 등록되어 있는 항목입니다.\n'기존 목록 선택'을 이용하시거나 다른 고유한 구분을 입력해 주세요.`);
-        return;
-      }
-    }
-
-    if (faultTypeMode === 'custom' && modalMode === 'create') {
-      const isExistingFault = availableFaultTypes.some((f) => f.toLowerCase() === faultVal.toLowerCase());
-      if (isExistingFault) {
-        alert(`⚠️ 장애 유형 '${faultVal}'(은)는 이미 등록되어 있는 항목입니다.\n'기존 목록 선택'을 이용하시거나 다른 고유한 유형을 입력해 주세요.`);
-        return;
-      }
     }
 
     if (!formData.question.trim() || !formData.answer.trim()) {
@@ -297,7 +374,7 @@ export function FaqTab({ onUpdateBadge }) {
       });
 
       if (res.ok) {
-        alert(modalMode === 'create' ? '신규 FAQ가 등록되었습니다.' : 'FAQ가 수정되었습니다.');
+        alert(modalMode === 'create' ? '신규 FAQ가 등록되었습니다.' : 'FAQ가 저장되었습니다.');
         setModalOpen(false);
         fetchStats();
         fetchFaqs();
@@ -532,7 +609,7 @@ export function FaqTab({ onUpdateBadge }) {
       {/* FAQ 등록/수정 모달 (x 버튼 또는 취소 클릭으로만 닫히도록 설정) */}
       {modalOpen && (
         <div className="modal-backdrop active">
-          <div className="modal-content" style={{ maxWidth: '640px' }}>
+          <div className="modal-content" style={{ maxWidth: '820px', width: '95%' }}>
             <div className="modal-header">
               <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <HelpCircle size={20} color="var(--primary)" />
@@ -541,239 +618,173 @@ export function FaqTab({ onUpdateBadge }) {
               <button className="btn-close" onClick={() => setModalOpen(false)} title="닫기">×</button>
             </div>
             <form onSubmit={handleSubmit}>
-              <div className="modal-body" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                  {/* 장애 구분 */}
-                  <div className="form-group">
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
-                      <label className="form-label" style={{ marginBottom: 0 }}>장애 구분</label>
-                      <button
-                        type="button"
-                        className="btn btn-secondary btn-xs"
-                        style={{ fontSize: '0.75rem', padding: '0.2rem 0.5rem' }}
-                        onClick={() => {
-                          if (sheetMode === 'custom') {
-                            setSheetMode('select');
-                            setFormData((prev) => ({ ...prev, sheet: availableSheets[0] || '' }));
-                          } else {
-                            setSheetMode('custom');
-                            setFormData((prev) => ({ ...prev, sheet: '' }));
-                          }
-                        }}
-                      >
-                        {sheetMode === 'custom' ? '📋 기존 목록 관리' : '➕ 신규 직접 등록'}
-                      </button>
-                    </div>
+              <div className="modal-body" style={{ display: 'flex', flexDirection: 'column', gap: '1.1rem' }}>
 
-                    {sheetMode === 'custom' ? (
-                      <div>
-                        <input
-                          type="text"
-                          className="form-input"
-                          value={formData.sheet}
-                          onChange={(e) => setFormData((prev) => ({ ...prev, sheet: e.target.value }))}
-                          placeholder="새 장애 구분 직접 입력"
-                          required
-                          autoFocus={modalMode === 'create'}
-                        />
-                        {formData.sheet.trim() && availableSheets.some((s) => s.toLowerCase() === formData.sheet.trim().toLowerCase()) && (
-                          <div style={{ fontSize: '0.78rem', color: '#f59e0b', marginTop: '0.3rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                            <span>⚠️ 이미 등록되어 있는 항목입니다. ('기존 목록 관리'에서 선택 가능)</span>
-                          </div>
-                        )}
-                      </div>
-                    ) : (
-                      <div>
-                        <select
-                          className="form-select"
-                          value={formData.sheet}
-                          onChange={(e) => setFormData((prev) => ({ ...prev, sheet: e.target.value }))}
-                          required
-                        >
-                          <option value="" disabled>장애 구분을 선택하세요</option>
-                          {availableSheets.map((s) => (
-                            <option key={s} value={s}>
-                              {s} (FAQ {stats.per_sheet?.[s] || 0}건)
-                            </option>
-                          ))}
-                        </select>
-
-                        {/* 기 등록된 장애 구분 관리 (수정/삭제) 목록 */}
-                        <div style={{ marginTop: '0.5rem', maxHeight: '110px', overflowY: 'auto', background: 'var(--bg-card, rgba(0,0,0,0.03))', padding: '0.4rem', borderRadius: '6px', border: '1px solid var(--border-color, #e2e8f0)' }}>
-                          <div style={{ fontSize: '0.72rem', color: 'var(--text-sub, #64748b)', marginBottom: '0.3rem', fontWeight: 600 }}>
-                            항목 관리 (종속 FAQ 0건일 때만 삭제 가능):
-                          </div>
-                          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.3rem' }}>
-                            {availableSheets.map((s) => {
-                              const cnt = stats.per_sheet?.[s] || 0;
-                              const canDelete = cnt === 0;
-                              return (
-                                <div
-                                  key={s}
-                                  style={{
-                                    display: 'inline-flex',
-                                    alignItems: 'center',
-                                    gap: '0.25rem',
-                                    background: formData.sheet === s ? 'rgba(56, 189, 248, 0.15)' : 'rgba(255, 255, 255, 0.6)',
-                                    border: `1px solid ${formData.sheet === s ? '#38bdf8' : 'rgba(0,0,0,0.1)'}`,
-                                    borderRadius: '4px',
-                                    padding: '0.15rem 0.35rem',
-                                    fontSize: '0.75rem',
-                                  }}
-                                >
-                                  <span
-                                    style={{ cursor: 'pointer', fontWeight: formData.sheet === s ? 600 : 400 }}
-                                    onClick={() => setFormData((prev) => ({ ...prev, sheet: s }))}
-                                    title="클릭 시 이 항목 선택"
-                                  >
-                                    {s} <span style={{ opacity: 0.65 }}>({cnt})</span>
-                                  </span>
-                                  <button
-                                    type="button"
-                                    onClick={(e) => { e.stopPropagation(); handleRenameCategory('sheet', s); }}
-                                    title="이름 수정"
-                                    style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '0 2px', fontSize: '0.7rem', opacity: 0.7 }}
-                                  >
-                                    ✏️
-                                  </button>
-                                  <button
-                                    type="button"
-                                    onClick={(e) => { e.stopPropagation(); handleDeleteCategory('sheet', s); }}
-                                    title={canDelete ? '삭제' : `종속된 FAQ가 ${cnt}건 존재하여 삭제 불가`}
-                                    style={{
-                                      background: 'none',
-                                      border: 'none',
-                                      cursor: canDelete ? 'pointer' : 'not-allowed',
-                                      padding: '0 2px',
-                                      fontSize: '0.7rem',
-                                      opacity: canDelete ? 0.8 : 0.35,
-                                    }}
-                                  >
-                                    🗑️
-                                  </button>
-                                </div>
-                              );
-                            })}
-                          </div>
-                        </div>
-                      </div>
-                    )}
+                {/* 1. 상단 장애 구분 & 장애 유형 관리 영역 (스케치 1:1 구현 가시성 최적화 패널) */}
+                <div
+                  className="faq-category-sketch-panel"
+                  style={{
+                    background: 'var(--bg-card, #f8fafc)',
+                    border: '1.5px solid #38bdf8',
+                    borderRadius: '8px',
+                    padding: '1rem 1.2rem',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '0.75rem',
+                    boxShadow: '0 2px 8px rgba(56, 189, 248, 0.08)'
+                  }}
+                >
+                  <div style={{ fontSize: '0.8rem', fontWeight: 600, color: '#0284c7', display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.2rem' }}>
+                    <span>📁 장애 구분 및 장애 유형 분류 관리</span>
+                    <span style={{ fontSize: '0.72rem', color: 'var(--text-sub, #64748b)', fontWeight: 400 }}>
+                      (드롭다운에서 '신규 등록' 선택 후 입력 시 신규 추가, 기존 항목 선택 시 수정/삭제 가능)
+                    </span>
                   </div>
 
-                  {/* 장애 유형 */}
-                  <div className="form-group">
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
-                      <label className="form-label" style={{ marginBottom: 0 }}>장애 유형</label>
+                  {/* 1행: 장애구분 */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+                    <span style={{ width: '68px', minWidth: '68px', fontWeight: 700, fontSize: '0.92rem', color: 'var(--text-main, #1e293b)' }}>
+                      장애구분
+                    </span>
+                    <input
+                      type="text"
+                      className="form-input"
+                      style={{ flex: '1 1 180px', minWidth: '140px', height: '36px' }}
+                      placeholder={sheetSelected === '__new__' ? '신규 장애구분 입력' : '장애구분명 (수정 시 변경)'}
+                      value={sheetInput}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        setSheetInput(val);
+                        if (sheetSelected === '__new__') {
+                          setFormData((prev) => ({ ...prev, sheet: val }));
+                        }
+                      }}
+                    />
+                    <select
+                      className="form-select"
+                      style={{ flex: '1 1 200px', minWidth: '160px', height: '36px' }}
+                      value={sheetSelected}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        setSheetSelected(val);
+                        if (val === '__new__') {
+                          setSheetInput('');
+                          setFormData((prev) => ({ ...prev, sheet: '' }));
+                        } else {
+                          setSheetInput(val);
+                          setFormData((prev) => ({ ...prev, sheet: val }));
+                        }
+                      }}
+                    >
+                      <option value="__new__">신규 등록</option>
+                      {availableSheets.map((s) => (
+                        <option key={s} value={s}>
+                          {s} ({stats.per_sheet?.[s] || 0}건)
+                        </option>
+                      ))}
+                    </select>
+                    <div style={{ display: 'flex', gap: '0.35rem' }}>
                       <button
                         type="button"
-                        className="btn btn-secondary btn-xs"
-                        style={{ fontSize: '0.75rem', padding: '0.2rem 0.5rem' }}
-                        onClick={() => {
-                          if (faultTypeMode === 'custom') {
-                            setFaultTypeMode('select');
-                            setFormData((prev) => ({ ...prev, fault_type: availableFaultTypes[0] || '' }));
-                          } else {
-                            setFaultTypeMode('custom');
-                            setFormData((prev) => ({ ...prev, fault_type: '' }));
-                          }
-                        }}
+                        className="btn"
+                        style={{ height: '36px', padding: '0 0.9rem', fontWeight: 600, fontSize: '0.85rem', backgroundColor: '#0284c7', color: '#ffffff', border: 'none', borderRadius: '5px', cursor: 'pointer' }}
+                        onClick={() => handleAddCategoryBtn('sheet')}
+                        title="입력한 내용으로 새 장애구분을 시스템에 등록합니다"
                       >
-                        {faultTypeMode === 'custom' ? '📋 기존 목록 관리' : '➕ 신규 직접 등록'}
+                        등록
+                      </button>
+                      <button
+                        type="button"
+                        className="btn"
+                        style={{ height: '36px', padding: '0 0.9rem', fontWeight: 600, fontSize: '0.85rem', backgroundColor: '#0369a1', color: '#ffffff', border: 'none', borderRadius: '5px', cursor: 'pointer' }}
+                        onClick={() => handleUpdateCategoryBtn('sheet')}
+                        title="드롭다운에서 선택한 항목의 이름을 입력창의 내용으로 수정합니다"
+                      >
+                        수정
+                      </button>
+                      <button
+                        type="button"
+                        className="btn"
+                        style={{ height: '36px', padding: '0 0.9rem', fontWeight: 600, fontSize: '0.85rem', backgroundColor: '#0f766e', color: '#ffffff', border: 'none', borderRadius: '5px', cursor: 'pointer' }}
+                        onClick={() => handleDeleteCategoryBtn('sheet')}
+                        title="기 등록된 FAQ가 0건일 때만 안전하게 삭제됩니다"
+                      >
+                        삭제
                       </button>
                     </div>
+                  </div>
 
-                    {faultTypeMode === 'custom' ? (
-                      <div>
-                        <input
-                          type="text"
-                          className="form-input"
-                          value={formData.fault_type}
-                          onChange={(e) => setFormData((prev) => ({ ...prev, fault_type: e.target.value }))}
-                          placeholder="새 장애 유형 직접 입력"
-                          required
-                        />
-                        {formData.fault_type.trim() && availableFaultTypes.some((f) => f.toLowerCase() === formData.fault_type.trim().toLowerCase()) && (
-                          <div style={{ fontSize: '0.78rem', color: '#f59e0b', marginTop: '0.3rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                            <span>⚠️ 이미 등록되어 있는 항목입니다. ('기존 목록 관리'에서 선택 가능)</span>
-                          </div>
-                        )}
-                      </div>
-                    ) : (
-                      <div>
-                        <select
-                          className="form-select"
-                          value={formData.fault_type}
-                          onChange={(e) => setFormData((prev) => ({ ...prev, fault_type: e.target.value }))}
-                          required
-                        >
-                          <option value="" disabled>장애 유형을 선택하세요</option>
-                          {availableFaultTypes.map((f) => (
-                            <option key={f} value={f}>
-                              {f} (FAQ {stats.per_fault_type?.[f] || 0}건)
-                            </option>
-                          ))}
-                        </select>
-
-                        {/* 기 등록된 장애 유형 관리 (수정/삭제) 목록 */}
-                        <div style={{ marginTop: '0.5rem', maxHeight: '110px', overflowY: 'auto', background: 'var(--bg-card, rgba(0,0,0,0.03))', padding: '0.4rem', borderRadius: '6px', border: '1px solid var(--border-color, #e2e8f0)' }}>
-                          <div style={{ fontSize: '0.72rem', color: 'var(--text-sub, #64748b)', marginBottom: '0.3rem', fontWeight: 600 }}>
-                            항목 관리 (종속 FAQ 0건일 때만 삭제 가능):
-                          </div>
-                          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.3rem' }}>
-                            {availableFaultTypes.map((f) => {
-                              const cnt = stats.per_fault_type?.[f] || 0;
-                              const canDelete = cnt === 0;
-                              return (
-                                <div
-                                  key={f}
-                                  style={{
-                                    display: 'inline-flex',
-                                    alignItems: 'center',
-                                    gap: '0.25rem',
-                                    background: formData.fault_type === f ? 'rgba(56, 189, 248, 0.15)' : 'rgba(255, 255, 255, 0.6)',
-                                    border: `1px solid ${formData.fault_type === f ? '#38bdf8' : 'rgba(0,0,0,0.1)'}`,
-                                    borderRadius: '4px',
-                                    padding: '0.15rem 0.35rem',
-                                    fontSize: '0.75rem',
-                                  }}
-                                >
-                                  <span
-                                    style={{ cursor: 'pointer', fontWeight: formData.fault_type === f ? 600 : 400 }}
-                                    onClick={() => setFormData((prev) => ({ ...prev, fault_type: f }))}
-                                    title="클릭 시 이 항목 선택"
-                                  >
-                                    {f} <span style={{ opacity: 0.65 }}>({cnt})</span>
-                                  </span>
-                                  <button
-                                    type="button"
-                                    onClick={(e) => { e.stopPropagation(); handleRenameCategory('fault_type', f); }}
-                                    title="이름 수정"
-                                    style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '0 2px', fontSize: '0.7rem', opacity: 0.7 }}
-                                  >
-                                    ✏️
-                                  </button>
-                                  <button
-                                    type="button"
-                                    onClick={(e) => { e.stopPropagation(); handleDeleteCategory('fault_type', f); }}
-                                    title={canDelete ? '삭제' : `종속된 FAQ가 ${cnt}건 존재하여 삭제 불가`}
-                                    style={{
-                                      background: 'none',
-                                      border: 'none',
-                                      cursor: canDelete ? 'pointer' : 'not-allowed',
-                                      padding: '0 2px',
-                                      fontSize: '0.7rem',
-                                      opacity: canDelete ? 0.8 : 0.35,
-                                    }}
-                                  >
-                                    🗑️
-                                  </button>
-                                </div>
-                              );
-                            })}
-                          </div>
-                        </div>
-                      </div>
-                    )}
+                  {/* 2행: 장애유형 */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+                    <span style={{ width: '68px', minWidth: '68px', fontWeight: 700, fontSize: '0.92rem', color: 'var(--text-main, #1e293b)' }}>
+                      장애유형
+                    </span>
+                    <input
+                      type="text"
+                      className="form-input"
+                      style={{ flex: '1 1 180px', minWidth: '140px', height: '36px' }}
+                      placeholder={faultTypeSelected === '__new__' ? '신규 장애유형 입력' : '장애유형명 (수정 시 변경)'}
+                      value={faultTypeInput}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        setFaultTypeInput(val);
+                        if (faultTypeSelected === '__new__') {
+                          setFormData((prev) => ({ ...prev, fault_type: val }));
+                        }
+                      }}
+                    />
+                    <select
+                      className="form-select"
+                      style={{ flex: '1 1 200px', minWidth: '160px', height: '36px' }}
+                      value={faultTypeSelected}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        setFaultTypeSelected(val);
+                        if (val === '__new__') {
+                          setFaultTypeInput('');
+                          setFormData((prev) => ({ ...prev, fault_type: '' }));
+                        } else {
+                          setFaultTypeInput(val);
+                          setFormData((prev) => ({ ...prev, fault_type: val }));
+                        }
+                      }}
+                    >
+                      <option value="__new__">신규 등록</option>
+                      {availableFaultTypes.map((f) => (
+                        <option key={f} value={f}>
+                          {f} ({stats.per_fault_type?.[f] || 0}건)
+                        </option>
+                      ))}
+                    </select>
+                    <div style={{ display: 'flex', gap: '0.35rem' }}>
+                      <button
+                        type="button"
+                        className="btn"
+                        style={{ height: '36px', padding: '0 0.9rem', fontWeight: 600, fontSize: '0.85rem', backgroundColor: '#0284c7', color: '#ffffff', border: 'none', borderRadius: '5px', cursor: 'pointer' }}
+                        onClick={() => handleAddCategoryBtn('fault_type')}
+                        title="입력한 내용으로 새 장애유형을 시스템에 등록합니다"
+                      >
+                        등록
+                      </button>
+                      <button
+                        type="button"
+                        className="btn"
+                        style={{ height: '36px', padding: '0 0.9rem', fontWeight: 600, fontSize: '0.85rem', backgroundColor: '#0369a1', color: '#ffffff', border: 'none', borderRadius: '5px', cursor: 'pointer' }}
+                        onClick={() => handleUpdateCategoryBtn('fault_type')}
+                        title="드롭다운에서 선택한 항목의 이름을 입력창의 내용으로 수정합니다"
+                      >
+                        수정
+                      </button>
+                      <button
+                        type="button"
+                        className="btn"
+                        style={{ height: '36px', padding: '0 0.9rem', fontWeight: 600, fontSize: '0.85rem', backgroundColor: '#0f766e', color: '#ffffff', border: 'none', borderRadius: '5px', cursor: 'pointer' }}
+                        onClick={() => handleDeleteCategoryBtn('fault_type')}
+                        title="기 등록된 FAQ가 0건일 때만 안전하게 삭제됩니다"
+                      >
+                        삭제
+                      </button>
+                    </div>
                   </div>
                 </div>
 
