@@ -161,7 +161,19 @@ class FaqStatsResponse(BaseModel):
     per_sheet: dict[str, int]
     sheets: list[str]
     fault_types: list[str]
+    per_fault_type: Optional[dict[str, int]] = None
     last_modified: Optional[str] = None
+
+
+class FaqCategoryRequest(BaseModel):
+    type: str  # "sheet" | "fault_type"
+    name: str
+
+
+class FaqCategoryRenameRequest(BaseModel):
+    type: str  # "sheet" | "fault_type"
+    old_name: str
+    new_name: str
 
 
 

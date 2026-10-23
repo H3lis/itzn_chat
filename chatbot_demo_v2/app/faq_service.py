@@ -70,17 +70,172 @@ class FaqManager:
         """FAQ 요약 통계 및 필터 옵션 목록 반환."""
         data = self._read_data()
         entries = data.get("entries", [])
-        sheets = list(data.get("per_sheet", {}).keys())
-        fault_types = sorted(list({e.get("fault_type") for e in entries if e.get("fault_type")}))
+        
+        # 시트 목록: entries 기준 + 수동 등록된 custom_sheets 병합
+        sheet_set = set(data.get("per_sheet", {}).keys())
+        for cs in data.get("custom_sheets", []):
+            if cs and cs.strip():
+                sheet_set.add(cs.strip())
+        sheets = sorted(list(sheet_set))
+
+        # 장애 유형 통계 및 목록
+        per_fault_type: dict[str, int] = {}
+        for e in entries:
+            ft = e.get("fault_type")
+            if ft and ft.strip():
+                clean_ft = ft.strip()
+                per_fault_type[clean_ft] = per_fault_type.get(clean_ft, 0) + 1
+
+        fault_set = set(per_fault_type.keys())
+        for cft in data.get("custom_fault_types", []):
+            if cft and cft.strip():
+                clean_cft = cft.strip()
+                fault_set.add(clean_cft)
+                if clean_cft not in per_fault_type:
+                    per_fault_type[clean_cft] = 0
+        fault_types = sorted(list(fault_set))
+
+        # per_sheet 에도 custom_sheets 중 0건인 항목 표기
+        per_sheet = dict(data.get("per_sheet", {}))
+        for s in sheets:
+            if s not in per_sheet:
+                per_sheet[s] = 0
 
         return {
             "total_count": len(entries),
             "total": len(entries),
-            "per_sheet": data.get("per_sheet", {}),
+            "per_sheet": per_sheet,
             "sheets": sheets,
             "fault_types": fault_types,
+            "per_fault_type": per_fault_type,
             "last_modified": data.get("generated_at"),
         }
+
+    def create_category(self, cat_type: str, name: str) -> dict[str, Any]:
+        """신규 장애 구분(sheet) 또는 장애 유형(fault_type) 등록 (중복 방지)."""
+        clean_name = (name or "").strip()
+        if not clean_name:
+            raise ValueError("항목 이름은 공백일 수 없습니다.")
+
+        data = self._read_data()
+        entries = data.get("entries", [])
+
+        if cat_type == "sheet":
+            existing = {e.get("sheet", "").strip().lower() for e in entries if e.get("sheet")}
+            for cs in data.get("custom_sheets", []):
+                existing.add(cs.strip().lower())
+            if clean_name.lower() in existing:
+                raise ValueError(f"이미 등록되어 있는 장애 구분입니다: '{clean_name}'")
+            
+            custom = data.get("custom_sheets", [])
+            custom.append(clean_name)
+            data["custom_sheets"] = list(dict.fromkeys(custom))
+        elif cat_type == "fault_type":
+            existing = {e.get("fault_type", "").strip().lower() for e in entries if e.get("fault_type")}
+            for cft in data.get("custom_fault_types", []):
+                existing.add(cft.strip().lower())
+            if clean_name.lower() in existing:
+                raise ValueError(f"이미 등록되어 있는 장애 유형입니다: '{clean_name}'")
+            
+            custom = data.get("custom_fault_types", [])
+            custom.append(clean_name)
+            data["custom_fault_types"] = list(dict.fromkeys(custom))
+        else:
+            raise ValueError(f"지원하지 않는 카테고리 종류입니다: {cat_type}")
+
+        self._write_data(data)
+        logger.info("신규 카테고리 등록 완료 [%s: %s]", cat_type, clean_name)
+        return {"type": cat_type, "name": clean_name}
+
+    def rename_category(self, cat_type: str, old_name: str, new_name: str) -> dict[str, Any]:
+        """기존 장애 구분(sheet) 또는 장애 유형(fault_type) 이름 변경 및 종속 FAQ 일괄 동기화."""
+        clean_old = (old_name or "").strip()
+        clean_new = (new_name or "").strip()
+        if not clean_old or not clean_new:
+            raise ValueError("변경 전/후 이름은 공백일 수 없습니다.")
+        if clean_old == clean_new:
+            return {"type": cat_type, "old_name": clean_old, "new_name": clean_new, "updated_count": 0}
+
+        data = self._read_data()
+        entries = data.get("entries", [])
+
+        # 중복 검사: new_name이 다른 항목으로 이미 존재하는지 확인
+        if cat_type == "sheet":
+            existing = {e.get("sheet", "").strip().lower() for e in entries if e.get("sheet") and e.get("sheet") != clean_old}
+            for cs in data.get("custom_sheets", []):
+                if cs != clean_old:
+                    existing.add(cs.strip().lower())
+            if clean_new.lower() in existing:
+                raise ValueError(f"이미 존재하는 장애 구분 이름입니다: '{clean_new}'")
+
+            updated_count = 0
+            for e in entries:
+                if e.get("sheet") == clean_old:
+                    e["sheet"] = clean_new
+                    updated_count += 1
+            
+            # custom_sheets 갱신
+            custom = [clean_new if s == clean_old else s for s in data.get("custom_sheets", [])]
+            data["custom_sheets"] = list(dict.fromkeys(custom))
+
+        elif cat_type == "fault_type":
+            existing = {e.get("fault_type", "").strip().lower() for e in entries if e.get("fault_type") and e.get("fault_type") != clean_old}
+            for cft in data.get("custom_fault_types", []):
+                if cft != clean_old:
+                    existing.add(cft.strip().lower())
+            if clean_new.lower() in existing:
+                raise ValueError(f"이미 존재하는 장애 유형 이름입니다: '{clean_new}'")
+
+            updated_count = 0
+            for e in entries:
+                if e.get("fault_type") == clean_old:
+                    e["fault_type"] = clean_new
+                    updated_count += 1
+
+            # custom_fault_types 갱신
+            custom = [clean_new if ft == clean_old else ft for ft in data.get("custom_fault_types", [])]
+            data["custom_fault_types"] = list(dict.fromkeys(custom))
+        else:
+            raise ValueError(f"지원하지 않는 카테고리 종류입니다: {cat_type}")
+
+        data["entries"] = entries
+        self._write_data(data)
+        logger.info("카테고리 이름 변경 완료 [%s: %s -> %s, FAQ %d건 갱신]", cat_type, clean_old, clean_new, updated_count)
+        return {"type": cat_type, "old_name": clean_old, "new_name": clean_new, "updated_count": updated_count}
+
+    def delete_category(self, cat_type: str, name: str) -> dict[str, Any]:
+        """장애 구분 또는 장애 유형 삭제 (종속 FAQ 존재 시 삭제 불가 차단)."""
+        clean_name = (name or "").strip()
+        if not clean_name:
+            raise ValueError("삭제할 항목 이름이 누락되었습니다.")
+
+        data = self._read_data()
+        entries = data.get("entries", [])
+
+        if cat_type == "sheet":
+            dependent_count = sum(1 for e in entries if e.get("sheet") == clean_name)
+            if dependent_count > 0:
+                raise ValueError(f"해당 장애 구분 [{clean_name}]에 종속된 FAQ가 {dependent_count}건 존재하여 삭제할 수 없습니다. 관련 FAQ를 먼저 삭제하거나 다른 구분으로 변경해 주세요.")
+            
+            # custom_sheets 에서 제거
+            data["custom_sheets"] = [s for s in data.get("custom_sheets", []) if s != clean_name]
+            # per_sheet 에서 제거
+            if clean_name in data.get("per_sheet", {}):
+                del data["per_sheet"][clean_name]
+
+        elif cat_type == "fault_type":
+            dependent_count = sum(1 for e in entries if e.get("fault_type") == clean_name)
+            if dependent_count > 0:
+                raise ValueError(f"해당 장애 유형 [{clean_name}]에 종속된 FAQ가 {dependent_count}건 존재하여 삭제할 수 없습니다. 관련 FAQ를 먼저 삭제하거나 다른 유형으로 변경해 주세요.")
+
+            # custom_fault_types 에서 제거
+            data["custom_fault_types"] = [ft for ft in data.get("custom_fault_types", []) if ft != clean_name]
+        else:
+            raise ValueError(f"지원하지 않는 카테고리 종류입니다: {cat_type}")
+
+        self._write_data(data)
+        logger.info("카테고리 삭제 완료 [%s: %s]", cat_type, clean_name)
+        return {"type": cat_type, "deleted_name": clean_name}
 
     def list_faqs(
         self,

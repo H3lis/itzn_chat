@@ -27,6 +27,8 @@ from .schemas import (
     ChatResponse,
     DocRenameRequest,
     FaqCreateRequest,
+    FaqCategoryRequest,
+    FaqCategoryRenameRequest,
     FaqItem,
     FaqListResponse,
     FaqStatsResponse,
@@ -620,6 +622,52 @@ def admin_list_faqs(
         page_size=page_size,
     )
     return FaqListResponse(**data)
+
+
+# ---------- FAQ 카테고리(장애 구분/장애 유형) 관리 엔드포인트 ----------
+@router.post("/api/admin/faq/category")
+def admin_create_faq_category(request: Request, body: FaqCategoryRequest) -> dict:
+    """신규 장애 구분(sheet) 또는 장애 유형(fault_type) 등록."""
+    ctx = _ctx(request)
+    try:
+        res = ctx.faq_manager.create_category(body.type, body.name)
+        ctx.faq_manager.reload_runtime(ctx)
+        return res
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve))
+    except Exception as e:
+        logger.error("카테고리 등록 실패: %s", e, exc_info=True)
+        raise HTTPException(status_code=500, detail=f"등록 실패: {e}")
+
+
+@router.put("/api/admin/faq/category/rename")
+def admin_rename_faq_category(request: Request, body: FaqCategoryRenameRequest) -> dict:
+    """장애 구분 또는 장애 유형 이름 변경 및 종속 FAQ 일괄 갱신."""
+    ctx = _ctx(request)
+    try:
+        res = ctx.faq_manager.rename_category(body.type, body.old_name, body.new_name)
+        ctx.faq_manager.reload_runtime(ctx)
+        return res
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve))
+    except Exception as e:
+        logger.error("카테고리 이름 변경 실패: %s", e, exc_info=True)
+        raise HTTPException(status_code=500, detail=f"이름 변경 실패: {e}")
+
+
+@router.delete("/api/admin/faq/category")
+def admin_delete_faq_category(request: Request, type: str, name: str) -> dict:
+    """장애 구분 또는 장애 유형 삭제 (종속 FAQ 존재 시 삭제 불가 차단)."""
+    ctx = _ctx(request)
+    try:
+        res = ctx.faq_manager.delete_category(type, name)
+        ctx.faq_manager.reload_runtime(ctx)
+        return res
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve))
+    except Exception as e:
+        logger.error("카테고리 삭제 실패: %s", e, exc_info=True)
+        raise HTTPException(status_code=500, detail=f"삭제 실패: {e}")
 
 
 @router.get("/api/admin/faq/{faq_id:path}", response_model=FaqItem)
