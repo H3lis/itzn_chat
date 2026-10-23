@@ -198,10 +198,11 @@ export function ClientLayout({
     setTimeout(() => setCopiedToast(''), 3000);
   };
 
-  // 새 상담 시작 시 오프라인 옵션 칩도 초기 루트로 리셋
+  // 새 상담 시작 시 오프라인 옵션 칩 초기 루트 리셋 및 사이드바 접기
   const handleStartNewChat = () => {
     setOfflineOptions(navigatorRef.current.getRootOptions());
     setLocalScenarioInfo({ scenario_id: 'root', node_id: 'root', completed: false });
+    setIsSidebarOpen(false);
     startNewChat();
   };
 
@@ -274,7 +275,7 @@ export function ClientLayout({
           <button
             type="button"
             className="btn-new-chat-topbar"
-            onClick={startNewChat}
+            onClick={handleStartNewChat}
             title="현재 대화를 저장하고 새로운 상담을 시작합니다"
           >
             <PlusCircle size={15} />
@@ -472,16 +473,6 @@ export function ClientLayout({
               </div>
             </div>
 
-            {!isOfflineApp && (
-              <a
-                href={`/api/download/offline-client?user_id=${encodeURIComponent(userId || '')}`}
-                download="학교챗봇_장애대응가이드_오프라인.html"
-                className="btn-download-offline-file"
-                title="내 상담 ID와 이전 상담 기록이 함께 포함된 비상용 오프라인 HTML 파일 다운로드"
-              >
-                <span>📥 비상용 오프라인 가이드 받기</span>
-              </a>
-            )}
             {sessions.length > 1 && (
               <button
                 type="button"
