@@ -276,6 +276,9 @@ export function ScenarioVisualTree({
   // 3. 카드 상세 모드 토글 (compact vs detailed)
   const [isCompact, setIsCompact] = useState(true);
 
+  // 3-1. 노드 연결선 표시 On/Off 상태 토글
+  const [showEdges, setShowEdges] = useState(true);
+
   // 4. 검색어 필터
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -453,9 +456,9 @@ export function ScenarioVisualTree({
     return { pathNodeIds: pNodes, pathEdgeIds: pEdges };
   }, [activeFocusId, nodes]);
 
-  // 엣지(연결선) 계산: 그래프 왼쪽에 의미없는 선(역방향 백링크 19개 등) 완전 차단
+  // 엣지(연결선) 계산: showEdges 활성화 시 노드 간 연결선 산출
   const visibleEdges = useMemo(() => {
-    if (!nodes) return [];
+    if (!nodes || !showEdges) return [];
     const list = [];
     const actualRootId = rootId || 'root';
     const activeNodeIdSet = new Set(Object.keys(nodePositions));
@@ -471,8 +474,8 @@ export function ScenarioVisualTree({
       options.forEach((opt, optIndex) => {
         const targetId = opt.next_node_id || opt.next_node;
 
-        // 1. 타겟이 없거나, 루트('root')로 향하는 모든 역방향 백링크는 SVG 선에서 100% 제외
-        // (단말 답변 노드에서 화면 왼쪽 root로 날아가는 19개의 의미없는 선 제거)
+        // 1. 타겟이 없거나, 루트('root')로 향하는 모든 역방향 복귀 링크는 제외
+        // (단말 답변 노드에서 화면 왼쪽 root로 날아가는 무의미한 루프선 방지)
         if (!targetId || targetId === 'root' || targetId === actualRootId) {
           return;
         }
@@ -485,12 +488,7 @@ export function ScenarioVisualTree({
         const tPos = nodePositions[targetId];
         if (!tPos) return;
 
-        // 3. 역방향 선(왼쪽으로 거꾸로 뻗는 선) 제외: 트리는 항상 좌->우 순방향이어야 함
-        if (tPos.x <= sPos.x) {
-          return;
-        }
-
-        // 4. 특정 플로우 선택 시, 다른 플로우로 나가는 선 제외
+        // 3. 특정 플로우 필터링 선택 시, 다른 플로우로 나가는 선 제외
         if (activeFlow !== 'ALL') {
           const targetFlow = detectNodeFlow(targetId);
           if (targetFlow !== activeFlow) {
@@ -509,7 +507,7 @@ export function ScenarioVisualTree({
       });
     }
     return list;
-  }, [nodes, nodePositions, collapsedNodes, rootId, activeFlow]);
+  }, [nodes, nodePositions, collapsedNodes, rootId, activeFlow, showEdges]);
 
   // 줌 버튼 핸들러
   const handleZoomIn = () => {
@@ -1134,6 +1132,30 @@ export function ScenarioVisualTree({
           <span style={{ marginLeft: '0.2rem' }}>{isCompact ? '컴팩트' : '상세'}</span>
         </button>
 
+        {/* 노드 연결선 ON-OFF 토글 버튼 */}
+        <button
+          className="canvas-control-btn btn btn-sm"
+          onClick={() => setShowEdges((v) => !v)}
+          title={showEdges ? '노드 간 연결선 숨기기 (클릭 시 OFF)' : '노드 간 연결선 보이기 (클릭 시 ON)'}
+          style={{
+            padding: '0.3rem 0.55rem',
+            fontSize: '0.76rem',
+            fontWeight: 700,
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.3rem',
+            background: showEdges ? 'rgba(37, 99, 235, 0.12)' : '#f1f5f9',
+            color: showEdges ? 'var(--primary, #2563eb)' : '#64748b',
+            border: `1.5px solid ${showEdges ? 'var(--primary, #2563eb)' : 'var(--border-color, #cbd5e1)'}`,
+            borderRadius: '6px',
+            cursor: 'pointer',
+            transition: 'all 0.15s ease'
+          }}
+        >
+          <span style={{ fontSize: '0.82rem' }}>{showEdges ? '🔗' : '⛓️‍💥'}</span>
+          <span>연결선 {showEdges ? 'ON' : 'OFF'}</span>
+        </button>
+
         <button
           className="canvas-control-btn btn btn-ghost btn-sm"
           onClick={handleManualAutoLayout}
@@ -1332,21 +1354,22 @@ export function ScenarioVisualTree({
           willChange: 'transform'
         }}
       >
-        {/* SVG 커넥터 레이어 */}
+        {/* SVG 커넥터 레이어 (캔버스 월드 좌표계와 1:1 일치) */}
         <svg
           style={{
             position: 'absolute',
-            top: -3000,
-            left: -3000,
-            width: 16000,
-            height: 16000,
+            top: 0,
+            left: 0,
+            width: 1,
+            height: 1,
             pointerEvents: 'none',
-            overflow: 'visible'
+            overflow: 'visible',
+            zIndex: 1
           }}
         >
           <defs>
-            <marker id="arrow-default" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-              <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#94a3b8" />
+            <marker id="arrow-default" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#64748b" />
             </marker>
             <marker id="arrow-active" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
               <path d="M 0 1 L 9 5 L 0 9 z" fill="#2563eb" />
@@ -1356,46 +1379,48 @@ export function ScenarioVisualTree({
             </filter>
           </defs>
 
-          {visibleEdges.map((edge) => {
+          {showEdges && visibleEdges.map((edge) => {
             const sourcePos = nodePositions[edge.sourceId];
             const targetPos = nodePositions[edge.targetId];
             if (!sourcePos || !targetPos) return null;
             if (typeof sourcePos.x !== 'number' || typeof targetPos.x !== 'number') return null;
             if (typeof sourcePos.y !== 'number' || typeof targetPos.y !== 'number') return null;
 
-            // 순방향 트리만 허용: 타겟의 X 좌표가 소스의 X 좌표보다 작거나 같으면 렌더링하지 않음
-            if (targetPos.x <= sourcePos.x) return null;
-
-            const optionVerticalOffset = isCompact ? 75 : 85;
+            // 옵션 버튼 우측 중앙 출발점 계산
             const startX = sourcePos.x + NODE_WIDTH;
-            const startY =
-              sourcePos.y +
-              optionVerticalOffset +
-              (edge.optIndex * 24) -
-              ((edge.totalOptions - 1) * 12);
+            const optionTopBase = isCompact ? 104 : 116;
+            const startY = sourcePos.y + optionTopBase + (edge.optIndex * 33) + 14;
 
+            // 타겟 노드 좌측 헤더 수직 중앙 도착점
             const endX = targetPos.x;
-            const endY = targetPos.y + (isCompact ? 45 : 55);
+            const endY = targetPos.y + 22;
 
-            const deltaX = Math.abs(endX - startX) * 0.55;
-            const cp1X = startX + Math.max(deltaX, 70);
-            const cp1Y = startY;
-            const cp2X = endX - Math.max(deltaX, 70);
-            const cp2Y = endY;
-
-            const pathD = `M ${startX} ${startY} C ${cp1X} ${cp1Y}, ${cp2X} ${cp2Y}, ${endX} ${endY}`;
+            let pathD = '';
+            if (endX >= startX + 20) {
+              // 일반 순방향 베지에 곡선
+              const deltaX = Math.abs(endX - startX) * 0.5;
+              const cp1X = startX + Math.max(deltaX, 50);
+              const cp1Y = startY;
+              const cp2X = endX - Math.max(deltaX, 50);
+              const cp2Y = endY;
+              pathD = `M ${startX} ${startY} C ${cp1X} ${cp1Y}, ${cp2X} ${cp2Y}, ${endX} ${endY}`;
+            } else {
+              // 역방향 또는 동일 열: 오른쪽으로 우회하여 타겟 좌측으로 진입
+              const rightOffset = Math.max(startX, endX) + 50;
+              pathD = `M ${startX} ${startY} C ${rightOffset} ${startY}, ${rightOffset} ${endY}, ${endX} ${endY}`;
+            }
 
             const isHighlighted = pathEdgeIds ? pathEdgeIds.has(edge.id) : false;
             const isDimmed = pathEdgeIds !== null && !isHighlighted;
 
             return (
-              <g key={edge.id} opacity={isDimmed ? 0.15 : 1} style={{ transition: 'opacity 0.15s ease' }}>
-                <path d={pathD} fill="none" stroke="transparent" strokeWidth="14" />
+              <g key={edge.id} opacity={isDimmed ? 0.2 : 1} style={{ transition: 'opacity 0.15s ease' }}>
+                <path d={pathD} fill="none" stroke="transparent" strokeWidth="16" />
                 <path
                   d={pathD}
                   fill="none"
-                  stroke={isHighlighted ? '#2563eb' : '#94a3b8'}
-                  strokeWidth={isHighlighted ? 2.8 : 1.8}
+                  stroke={isHighlighted ? '#2563eb' : '#64748b'}
+                  strokeWidth={isHighlighted ? 2.6 : 1.8}
                   strokeDasharray={edge.label ? 'none' : '4,3'}
                   markerEnd={isHighlighted ? 'url(#arrow-active)' : 'url(#arrow-default)'}
                   filter={isHighlighted ? 'url(#edge-glow)' : 'none'}
