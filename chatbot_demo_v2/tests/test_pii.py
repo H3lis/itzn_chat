@@ -277,17 +277,30 @@ def test_sllm_and_fallback_modes():
     res_rule = rule_masker.mask_text("교무실 홍길동 선생님 PC 고장")
     assert "홍**" in res_rule.masked_text
 
-    # 2. sllm 정상 모드 (띄어쓰기 인명 '정 산 주무관' 마스킹 및 '운영 담당자' 보존 검증)
+    # 2. sllm 정상 모드 (Phase 5 기본 표준 모드: '정 산 선생님' 띄어쓰기 인명 마스킹 및 '운영 담당자' 보존 검증)
     sllm_masker = PiiMasker(
         backend="sllm",
         sllm_model="qwen2.5:3b",
         sllm_host=os.environ.get("OLLAMA_HOST", "http://34.64.143.198:11434"),
         timeout_s=15.0,
     )
-    q = "안녕하세요, 현재 인수인계 받는중인 정 산 주무관입니다. 스쿨넷 관련 자료를 받았는데, 양이 너무 많아서 요약해서 정리해줄수 있나요?"
+    q = "안녕하세요, 현재 인수인계 받는중인 정 산 선생님입니다. 스쿨넷 관련 자료를 받았는데, 양이 너무 많아서 요약해서 정리해줄수 있나요?"
     res_q = sllm_masker.mask_text(q)
     assert ("정*" in res_q.masked_text) or ("정 산" not in res_q.masked_text)
     assert res_q.has_pii is True
+
+    # 3. Phase 6 (도메인 특화 고도화 모드) 확장 직책 '주무관' 인명 마스킹 검증
+    enhanced_masker = PiiMasker(
+        backend="sllm",
+        strategy_mode="enhanced",
+        sllm_model="qwen2.5:3b",
+        sllm_host=os.environ.get("OLLAMA_HOST", "http://34.64.143.198:11434"),
+        timeout_s=15.0,
+    )
+    q_enh = "안녕하세요, 현재 인수인계 받는중인 정 산 주무관입니다. 스쿨넷 관련 자료를 받았는데, 양이 너무 많아서 요약해서 정리해줄수 있나요?"
+    res_enh = enhanced_masker.mask_text(q_enh)
+    assert ("정*" in res_enh.masked_text) or ("정 산" not in res_enh.masked_text)
+    assert res_enh.has_pii is True
 
     # 설명/답변 내 운영 담당자 오마스킹 방지 (보조 룰 엔진 비활성화 검증)
     ans = "관리자 계정은 임의 추가가 불가하므로 필요 시 운영 담당자에게 문의하시기 바랍니다."

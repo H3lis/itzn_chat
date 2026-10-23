@@ -298,7 +298,7 @@ class AdminSettingsResponse(BaseModel):
     pii_sllm_model: str = "qwen2.5:3b"
     pii_sllm_host: str = "http://34.64.143.198:11434"
     pii_sllm_timeout_s: float = 8.0
-    pii_strategy_mode: str = "enhanced"  # "standard" (Phase 5) | "enhanced" (Phase 6)
+    pii_strategy_mode: str = "standard"  # "standard" (Phase 5: 표준 고정밀 고정)
     
     # 원격 GPU & 매칭
     ollama_host: str = "http://34.64.143.198:11434"

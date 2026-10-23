@@ -1413,7 +1413,7 @@ def admin_get_settings(request: Request) -> AdminSettingsResponse:
         pii_sllm_model=s.pii_sllm_model,
         pii_sllm_host=s.pii_sllm_host,
         pii_sllm_timeout_s=s.pii_sllm_timeout_s,
-        pii_strategy_mode=getattr(s, "pii_strategy_mode", "enhanced"),
+        pii_strategy_mode=getattr(s, "pii_strategy_mode", "standard"),
         ollama_host=os.environ.get("OLLAMA_HOST", "http://34.64.143.198:11434"),
         reranker_endpoint=os.environ.get("RERANKER_ENDPOINT", "http://34.64.143.198:8008/rerank"),
         scenario_match_backend=s.scenario_match_backend,

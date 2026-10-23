@@ -484,7 +484,7 @@ class PiiMasker:
         self.timeout_s = float(timeout_s if timeout_s is not None else os.environ.get("PII_SLLM_TIMEOUT_S", 15.0))
         self.sllm_provider = sllm_provider
         self.gemini_api_key = gemini_api_key or os.environ.get("GEMINI_API_KEY", "")
-        self.strategy_mode = (strategy_mode or os.environ.get("PII_STRATEGY_MODE", "enhanced")).strip().lower()
+        self.strategy_mode = (strategy_mode or os.environ.get("PII_STRATEGY_MODE", "standard")).strip().lower()
         self._kiwi = None
         self._kiwi_checked = False
 
@@ -598,7 +598,7 @@ class PiiMasker:
 
     def _check_ambiguous_pii_context(self, text: str, masked: str) -> bool:
         """규칙 엔진이 처리하지 못한 10대 목표 PII 카테고리 문맥을 정밀 감지하여 sLLM 호출 트리거 (1ms 미만)."""
-        is_enhanced = getattr(self, "strategy_mode", "enhanced") in ("enhanced", "phase6")
+        is_enhanced = getattr(self, "strategy_mode", "standard") in ("enhanced", "phase6")
 
         # 1. 비정형 신용카드 / 결제 번호 문맥
         if re.search(r"(?:신용카드|체크카드|카드\s*번호|카드|삼성페이|결제)", text):
@@ -720,7 +720,7 @@ class PiiMasker:
 
     def _get_sllm_prompt(self, text: str) -> str:
         """운영 전략 모드(standard/Phase 5 vs enhanced/Phase 6)에 따라 최적화된 프롬프트 반환."""
-        if getattr(self, "strategy_mode", "enhanced") in ("standard", "phase5"):
+        if getattr(self, "strategy_mode", "standard") in ("standard", "phase5"):
             # Phase 5: 표준 균형 모드 프롬프트 (정밀도 90.93%, F1 93.33% 최고치)
             return (
                 "아래 텍스트에서 비식별화(마스킹)가 필요한 실제 개인정보를 JSON 형식으로 정확히 추출하세요.\n\n"
