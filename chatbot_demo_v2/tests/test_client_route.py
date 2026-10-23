@@ -76,3 +76,27 @@ def test_pwa_and_offline_routes(tmp_path: Path):
     res_st = client.get("/standalone")
     assert res_st.status_code == 200
 
+
+def test_cache_headers_for_offline_resilience(tmp_path: Path):
+    """모바일 오프라인 새로고침 지원을 위한 Cache-Control 헤더 검증."""
+    client = _build_test_client(tmp_path)
+
+    # 1. 메인 HTML: no-store가 없어야 하고, stale-if-error가 포함되어야 함
+    res_root = client.get("/")
+    assert res_root.status_code == 200
+    cache_ctrl = res_root.headers.get("cache-control", "")
+    assert "no-store" not in cache_ctrl
+    assert "stale-if-error" in cache_ctrl
+    assert "stale-while-revalidate" in cache_ctrl
+
+    # 2. 클라이언트 및 관리자 HTML 동일 검증
+    res_client = client.get("/client")
+    assert "no-store" not in res_client.headers.get("cache-control", "")
+    assert "stale-if-error" in res_client.headers.get("cache-control", "")
+
+    # 3. 오프라인 단일 HTML 동일 검증
+    res_off = client.get("/offline")
+    assert "no-store" not in res_off.headers.get("cache-control", "")
+    assert "stale-if-error" in res_off.headers.get("cache-control", "")
+
+

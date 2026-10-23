@@ -13,7 +13,7 @@ from pathlib import Path
 from typing import Optional
 
 from fastapi import FastAPI, Request
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse, JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
 
 from .api import InvalidRequestError, router
@@ -112,11 +112,26 @@ def create_app(ctx: Optional[AppContext] = None) -> FastAPI:
     app.include_router(router)
 
     # --- static & frontend ---
+    class CachedStaticFiles(StaticFiles):
+        """Vite 해시 빌드 자산(/assets)을 위한 1년 장기 불변(immutable) 캐시 정적 파일 서빙."""
+
+        def file_response(self, *args, **kwargs) -> Response:
+            resp = super().file_response(*args, **kwargs)
+            resp.headers["Cache-Control"] = "public, max-age=31536000, immutable"
+            return resp
+
+    # 모바일 오프라인 회복 탄력성을 위한 HTML 캐시 정책:
+    # - 온라인 시: max-age=0, must-revalidate로 서버의 최신 버전(ETag) 항상 즉시 검증
+    # - 오프라인 시: stale-if-error로 네트워크 단절 시 브라우저가 디스크 캐시 사본을 즉각 화면에 렌더링!
+    HTML_CACHE_HEADERS = {
+        "Cache-Control": "public, max-age=0, must-revalidate, stale-if-error=2592000, stale-while-revalidate=86400"
+    }
+
     static_dir = Path(ctx.settings.static_dir)
     frontend_dist = Path(__file__).resolve().parent.parent / "frontend" / "dist"
 
     if (frontend_dist / "assets").is_dir():
-        app.mount("/assets", StaticFiles(directory=str(frontend_dist / "assets")), name="react_assets")
+        app.mount("/assets", CachedStaticFiles(directory=str(frontend_dist / "assets")), name="react_assets")
 
     if static_dir.is_dir():
         app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
@@ -127,13 +142,13 @@ def create_app(ctx: Optional[AppContext] = None) -> FastAPI:
         if react_index.is_file():
             return FileResponse(
                 str(react_index),
-                headers={"Cache-Control": "no-cache, no-store, must-revalidate"},
+                headers=HTML_CACHE_HEADERS,
             )
         idx = static_dir / "index.html"
         if idx.is_file():
             return FileResponse(
                 str(idx),
-                headers={"Cache-Control": "no-cache, no-store, must-revalidate"},
+                headers=HTML_CACHE_HEADERS,
             )
         return JSONResponse({"detail": "index.html 없음"}, status_code=404)
 
@@ -141,7 +156,7 @@ def create_app(ctx: Optional[AppContext] = None) -> FastAPI:
     def favicon():
         fav = frontend_dist / "favicon.svg"
         if fav.is_file():
-            return FileResponse(str(fav))
+            return FileResponse(str(fav), headers={"Cache-Control": "public, max-age=86400"})
         return JSONResponse({"detail": "favicon 없음"}, status_code=404)
 
     @app.get("/sw.js")
@@ -154,7 +169,7 @@ def create_app(ctx: Optional[AppContext] = None) -> FastAPI:
                 str(sw),
                 media_type="application/javascript",
                 headers={
-                    "Cache-Control": "no-cache, no-store, must-revalidate",
+                    "Cache-Control": "no-cache",
                     "Service-Worker-Allowed": "/",
                 },
             )
@@ -166,7 +181,11 @@ def create_app(ctx: Optional[AppContext] = None) -> FastAPI:
         if not mf.is_file():
             mf = static_dir / "manifest.json"
         if mf.is_file():
-            return FileResponse(str(mf), media_type="application/manifest+json")
+            return FileResponse(
+                str(mf),
+                media_type="application/manifest+json",
+                headers={"Cache-Control": "public, max-age=86400"},
+            )
         return JSONResponse({"detail": "manifest.json 없음"}, status_code=404)
 
     @app.get("/offline")
@@ -180,7 +199,7 @@ def create_app(ctx: Optional[AppContext] = None) -> FastAPI:
             return FileResponse(
                 str(standalone_file),
                 media_type="text/html",
-                headers={"Cache-Control": "no-cache, no-store, must-revalidate"},
+                headers=HTML_CACHE_HEADERS,
             )
         return JSONResponse({"detail": "독립 실행 HTML 파일 없음"}, status_code=404)
 
@@ -195,7 +214,7 @@ def create_app(ctx: Optional[AppContext] = None) -> FastAPI:
         if react_index.is_file():
             return FileResponse(
                 str(react_index),
-                headers={"Cache-Control": "no-cache, no-store, must-revalidate"},
+                headers=HTML_CACHE_HEADERS,
             )
         adm = static_dir / "admin.html"
         if adm.is_file():
@@ -209,13 +228,13 @@ def create_app(ctx: Optional[AppContext] = None) -> FastAPI:
         if react_index.is_file():
             return FileResponse(
                 str(react_index),
-                headers={"Cache-Control": "no-cache, no-store, must-revalidate"},
+                headers=HTML_CACHE_HEADERS,
             )
         idx = static_dir / "index.html"
         if idx.is_file():
             return FileResponse(
                 str(idx),
-                headers={"Cache-Control": "no-cache, no-store, must-revalidate"},
+                headers=HTML_CACHE_HEADERS,
             )
         return JSONResponse({"detail": "client 페이지 없음"}, status_code=404)
 
