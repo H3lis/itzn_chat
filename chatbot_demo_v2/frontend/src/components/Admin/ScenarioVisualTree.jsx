@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import {
   ZoomIn, ZoomOut, Maximize2, RotateCcw, Move, Plus, Edit2, Trash2,
   ArrowRight, CheckCircle2, AlertTriangle, HelpCircle, ChevronRight, ChevronDown,
-  Layers, Search, Compass, Eye, EyeOff, Sparkles, Filter, X
+  Layers, Search, Compass, Eye, EyeOff, Sparkles, Filter, X, CornerUpLeft
 } from 'lucide-react';
 
 const NODE_WIDTH = 290;
@@ -408,6 +408,74 @@ export function ScenarioVisualTree({
       setTimeout(() => setAnimateWorld(false), 250);
     },
     [nodePositions, onSelectNode, zoom]
+  );
+
+  // ★ [신규] 각 노드의 이전 단계(부모 노드 목록) 역방향 맵 구축
+  const parentNodesMap = useMemo(() => {
+    const map = {};
+    if (!nodes) return map;
+    const actualRootId = rootId || 'root';
+
+    Object.entries(nodes).forEach(([pId, pNode]) => {
+      const opts = pNode?.options || [];
+      opts.forEach((opt) => {
+        const targetId = opt.next_node_id || opt.next_node;
+        // 유효한 타겟이고, 자기 자신으로의 순환이 아니며, 대상 노드가 실제로 존재하는 경우
+        if (targetId && targetId !== pId && nodes[targetId]) {
+          if (!map[targetId]) map[targetId] = [];
+
+          // 같은 부모에서 온 옵션이 여러 개일 수 있으므로 중복 등록 방지
+          const already = map[targetId].find((p) => p.parentId === pId);
+          const pTitle = pNode.title || (pNode.text ? (pNode.text.length > 20 ? pNode.text.slice(0, 20) + '...' : pNode.text) : pId);
+          if (already) {
+            if (opt.label && !already.optionLabels.includes(opt.label)) {
+              already.optionLabels.push(opt.label);
+            }
+          } else {
+            map[targetId].push({
+              parentId: pId,
+              parentTitle: pTitle,
+              optionLabels: opt.label ? [opt.label] : [],
+              isRoot: pId === actualRootId || pId === 'root'
+            });
+          }
+        }
+      });
+    });
+    return map;
+  }, [nodes, rootId]);
+
+  // ★ [신규] 이전 단계(부모 노드)로 원클릭 뷰포트 이동 핸들러 (플로우 필터 및 접힘 상태 자동 해제 방어)
+  const handleJumpToParent = useCallback(
+    (targetParentId) => {
+      if (!targetParentId || !nodes[targetParentId]) return;
+
+      // 만약 타겟 부모 노드가 현재 activeFlow에 속하지 않는다면 전체(ALL) 플로우로 자동 전환
+      if (activeFlow !== 'ALL') {
+        const pFlow = detectNodeFlow(targetParentId, nodes[targetParentId]);
+        if (pFlow !== activeFlow) {
+          setActiveFlow('ALL');
+          applyLayout('ALL', collapsedNodes, false);
+        }
+      }
+
+      // 부모 노드가 접혀 있다면 자동 펼침
+      setCollapsedNodes((prev) => {
+        if (prev.has(targetParentId)) {
+          const next = new Set(prev);
+          next.delete(targetParentId);
+          applyLayout(activeFlow, next, false);
+          return next;
+        }
+        return prev;
+      });
+
+      // 스무스 포커스 이동 실행
+      setTimeout(() => {
+        focusOnNode(targetParentId);
+      }, 50);
+    },
+    [nodes, activeFlow, collapsedNodes, applyLayout, focusOnNode]
   );
 
   // 검색 결과 목록
@@ -1473,6 +1541,7 @@ export function ScenarioVisualTree({
           const isSelected = nid === selectedNodeId;
           const isDragging = nid === draggingNodeId;
           const isCollapsed = collapsedNodes.has(nid);
+          const parents = parentNodesMap[nid] || [];
           const hasChildren = (node.options || []).some((o) => {
             const target = o.next_node_id || o.next_node;
             return target && target !== actualRootId && target !== 'root';
@@ -1630,6 +1699,42 @@ export function ScenarioVisualTree({
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.2rem', flexShrink: 0 }}>
+                  {/* ★ [신규] 이전 단계 노드로 바로 돌아가기 빠른 버튼 */}
+                  {!isRoot && parents.length > 0 && (
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleJumpToParent(parents[0].parentId);
+                      }}
+                      title={`이전 단계 '${parents[0].parentTitle}'(으)로 돌아가기${parents.length > 1 ? ` (총 ${parents.length}개 상위 경로)` : ''}`}
+                      style={{
+                        background: isRoot || isTerminal ? 'rgba(255, 255, 255, 0.25)' : 'rgba(37, 99, 235, 0.1)',
+                        border: isRoot || isTerminal ? '1px solid rgba(255, 255, 255, 0.4)' : '1px solid rgba(37, 99, 235, 0.25)',
+                        borderRadius: '5px',
+                        padding: '0.15rem 0.4rem',
+                        cursor: 'pointer',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '0.2rem',
+                        color: isRoot || isTerminal ? '#ffffff' : '#2563eb',
+                        fontSize: '0.68rem',
+                        fontWeight: 700,
+                        transition: 'all 0.15s ease'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = isRoot || isTerminal ? 'rgba(255, 255, 255, 0.4)' : '#2563eb';
+                        e.currentTarget.style.color = '#ffffff';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = isRoot || isTerminal ? 'rgba(255, 255, 255, 0.25)' : 'rgba(37, 99, 235, 0.1)';
+                        e.currentTarget.style.color = isRoot || isTerminal ? '#ffffff' : '#2563eb';
+                      }}
+                    >
+                      <CornerUpLeft size={11} />
+                      이전
+                    </button>
+                  )}
                   {hasChildren && (
                     <button
                       type="button"
@@ -1687,6 +1792,135 @@ export function ScenarioVisualTree({
                   )}
                 </div>
               </div>
+
+              {/* ★ [신규] 이전 단계(부모 노드) 안내 및 원클릭 복귀 네비게이터 바 */}
+              {!isRoot && parents.length > 0 && (
+                <div
+                  style={{
+                    padding: '0.35rem 0.65rem',
+                    background: '#f8fafc',
+                    borderBottom: '1px solid #e2e8f0',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    gap: '0.4rem',
+                    fontSize: '0.72rem'
+                  }}
+                >
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.3rem',
+                      overflow: 'hidden',
+                      minWidth: 0,
+                      color: '#64748b'
+                    }}
+                  >
+                    <CornerUpLeft size={12} style={{ flexShrink: 0, color: '#2563eb' }} />
+                    <span style={{ fontWeight: 700, fontSize: '0.67rem', color: '#64748b', flexShrink: 0 }}>이전 단계:</span>
+                    <span
+                      style={{
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                        color: '#1e293b',
+                        fontWeight: 600,
+                        fontSize: '0.71rem'
+                      }}
+                      title={`이전 노드: ${parents[0].parentTitle}${parents[0].optionLabels.length ? ` (유입 버튼: ${parents[0].optionLabels.join(', ')})` : ''} (ID: ${parents[0].parentId})`}
+                    >
+                      {parents[0].parentTitle}
+                    </span>
+                  </div>
+
+                  {parents.length === 1 ? (
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleJumpToParent(parents[0].parentId);
+                      }}
+                      style={{
+                        background: '#ffffff',
+                        color: '#2563eb',
+                        border: '1px solid #bfdbfe',
+                        borderRadius: '4px',
+                        padding: '0.15rem 0.45rem',
+                        fontSize: '0.68rem',
+                        fontWeight: 700,
+                        cursor: 'pointer',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '0.2rem',
+                        flexShrink: 0,
+                        boxShadow: '0 1px 2px rgba(0,0,0,0.04)',
+                        transition: 'all 0.15s ease'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = '#2563eb';
+                        e.currentTarget.style.color = '#ffffff';
+                        e.currentTarget.style.borderColor = '#2563eb';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = '#ffffff';
+                        e.currentTarget.style.color = '#2563eb';
+                        e.currentTarget.style.borderColor = '#bfdbfe';
+                      }}
+                      title={`이전 단계 '${parents[0].parentTitle}'(으)로 돌아가기`}
+                    >
+                      <CornerUpLeft size={10} />
+                      돌아가기
+                    </button>
+                  ) : (
+                    <div style={{ display: 'flex', gap: '0.2rem', flexShrink: 0 }}>
+                      {parents.map((p, pIdx) => (
+                        <button
+                          key={p.parentId}
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleJumpToParent(p.parentId);
+                          }}
+                          style={{
+                            background: '#ffffff',
+                            color: '#2563eb',
+                            border: '1px solid #bfdbfe',
+                            borderRadius: '4px',
+                            padding: '0.12rem 0.35rem',
+                            fontSize: '0.65rem',
+                            fontWeight: 700,
+                            cursor: 'pointer',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '0.15rem',
+                            maxWidth: '85px',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                            boxShadow: '0 1px 2px rgba(0,0,0,0.04)',
+                            transition: 'all 0.15s ease'
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.background = '#2563eb';
+                            e.currentTarget.style.color = '#ffffff';
+                            e.currentTarget.style.borderColor = '#2563eb';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.background = '#ffffff';
+                            e.currentTarget.style.color = '#2563eb';
+                            e.currentTarget.style.borderColor = '#bfdbfe';
+                          }}
+                          title={`이전 단계: ${p.parentTitle} (유입 버튼: ${p.optionLabels.join(', ') || '없음'}, ID: ${p.parentId})`}
+                        >
+                          <CornerUpLeft size={9} />
+                          {p.parentTitle.slice(0, 6)}..
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
 
               {/* 카드 본문 */}
               <div style={{ padding: '0.75rem 0.85rem' }}>
