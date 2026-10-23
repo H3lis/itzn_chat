@@ -52,3 +52,27 @@ def test_all_routes_coexist(tmp_path: Path):
     # /admin (관리자 콘솔)
     res_admin = client.get("/admin")
     assert res_admin.status_code == 200
+
+
+def test_pwa_and_offline_routes(tmp_path: Path):
+    client = _build_test_client(tmp_path)
+
+    # 1. /sw.js (Service Worker 스크립트 서빙)
+    res_sw = client.get("/sw.js")
+    assert res_sw.status_code == 200
+    assert "CACHE_NAME" in res_sw.text or "addEventListener" in res_sw.text
+    assert res_sw.headers.get("Service-Worker-Allowed") == "/"
+
+    # 2. /manifest.json (웹앱 매니페스트 서빙)
+    res_mf = client.get("/manifest.json")
+    assert res_mf.status_code == 200
+    assert "스쿨넷봇" in res_mf.text or "start_url" in res_mf.text
+
+    # 3. /offline & /standalone (단일 오프라인 배포본 웹 서빙)
+    res_off = client.get("/offline")
+    assert res_off.status_code == 200
+    assert "학교 유무선" in res_off.text or "<!doctype html>" in res_off.text.lower()
+
+    res_st = client.get("/standalone")
+    assert res_st.status_code == 200
+

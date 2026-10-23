@@ -144,6 +144,46 @@ def create_app(ctx: Optional[AppContext] = None) -> FastAPI:
             return FileResponse(str(fav))
         return JSONResponse({"detail": "favicon 없음"}, status_code=404)
 
+    @app.get("/sw.js")
+    def service_worker():
+        sw = frontend_dist / "sw.js"
+        if not sw.is_file():
+            sw = static_dir / "sw.js"
+        if sw.is_file():
+            return FileResponse(
+                str(sw),
+                media_type="application/javascript",
+                headers={
+                    "Cache-Control": "no-cache, no-store, must-revalidate",
+                    "Service-Worker-Allowed": "/",
+                },
+            )
+        return JSONResponse({"detail": "sw.js 없음"}, status_code=404)
+
+    @app.get("/manifest.json")
+    def manifest():
+        mf = frontend_dist / "manifest.json"
+        if not mf.is_file():
+            mf = static_dir / "manifest.json"
+        if mf.is_file():
+            return FileResponse(str(mf), media_type="application/manifest+json")
+        return JSONResponse({"detail": "manifest.json 없음"}, status_code=404)
+
+    @app.get("/offline")
+    @app.get("/standalone")
+    def serve_standalone():
+        """오프라인 자립형 단일 파일 배포본을 웹 URL에서 직접 오픈."""
+        standalone_file = Path(__file__).resolve().parent.parent / "frontend" / "dist-standalone" / "index.html"
+        if not standalone_file.is_file():
+            standalone_file = Path(__file__).resolve().parent.parent.parent / "학교챗봇_장애대응가이드_오프라인.html"
+        if standalone_file.is_file():
+            return FileResponse(
+                str(standalone_file),
+                media_type="text/html",
+                headers={"Cache-Control": "no-cache, no-store, must-revalidate"},
+            )
+        return JSONResponse({"detail": "독립 실행 HTML 파일 없음"}, status_code=404)
+
     @app.get("/admin")
     @app.get("/admin/{rest_of_path:path}")
     def admin_page(rest_of_path: str = ""):

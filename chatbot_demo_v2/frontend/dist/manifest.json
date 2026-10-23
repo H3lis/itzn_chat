@@ -1,0 +1,17 @@
+{
+  "name": "학교 유무선 장애상담 스쿨넷봇",
+  "short_name": "스쿨넷봇",
+  "description": "인터넷 단절 시에도 0초 만에 작동하는 학교 네트워크 장애 대응 가이드 챗봇",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#090e17",
+  "theme_color": "#0f172a",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
