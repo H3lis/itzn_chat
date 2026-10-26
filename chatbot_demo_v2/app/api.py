@@ -1092,11 +1092,14 @@ def download_offline_client(request: Request, user_id: Optional[str] = None):
 
 @router.get("/api/client/history")
 def get_client_history(request: Request, user_id: Optional[str] = None, limit: int = 30) -> dict:
-    """고객용 상담 화면 및 오프라인 배포본 대화 세션 및 메시지 복원 API."""
+    """고객용 상담 화면 및 오프라인 배포본 대화 세션 및 메시지 복원 API (엄격한 사용자 격리)."""
+    clean_uid = (user_id or "").strip()
+    if not clean_uid or clean_uid == "usr_guest":
+        return {"sessions": [], "total": 0}
     ctx = _ctx(request)
     if not ctx.history_service:
         return {"sessions": [], "total": 0}
-    return ctx.history_service.get_client_sessions(user_id=user_id, limit=limit)
+    return ctx.history_service.get_client_sessions(user_id=clean_uid, limit=limit)
 
 
 

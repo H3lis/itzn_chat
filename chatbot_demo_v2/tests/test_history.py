@@ -191,27 +191,32 @@ def test_export_history_excel_api(tmp_path):
     app = create_app()
     client = TestClient(app)
 
+    # 관리자 로그인 후 토큰 획득
+    login_resp = client.post("/api/admin/login", json={"username": "admin", "password": "admin1234!"})
+    token = login_resp.json()["access_token"]
+    headers = {"Authorization": f"Bearer {token}"}
+
     # API 기본 호출
-    resp = client.get("/api/admin/history/export/excel?feedback=all")
+    resp = client.get("/api/admin/history/export/excel?feedback=all", headers=headers)
     assert resp.status_code == 200
     assert "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" in resp.headers["content-type"]
     assert "attachment; filename=" in resp.headers["content-disposition"]
     assert len(resp.content) > 0
 
     # API 날짜 필터링 호출 및 파일명 검증
-    resp_date = client.get("/api/admin/history/export/excel?start_date=2026-09-01&end_date=2026-09-22")
+    resp_date = client.get("/api/admin/history/export/excel?start_date=2026-09-01&end_date=2026-09-22", headers=headers)
     assert resp_date.status_code == 200
     assert "chat_history_20260901_20260922.xlsx" in resp_date.headers["content-disposition"]
 
     # 사용자 목록 API 호출 검증
-    resp_users = client.get("/api/admin/history/users")
+    resp_users = client.get("/api/admin/history/users", headers=headers)
     assert resp_users.status_code == 200
     data_users = resp_users.json()
     assert "users" in data_users
     assert isinstance(data_users["users"], list)
 
     # 사용자별 엑셀 다운로드 호출 검증
-    resp_user_excel = client.get("/api/admin/history/export/excel?session_id=sess_test_123")
+    resp_user_excel = client.get("/api/admin/history/export/excel?session_id=sess_test_123", headers=headers)
     assert resp_user_excel.status_code == 200
     assert "user_sess_tes_" in resp_user_excel.headers["content-disposition"]
 

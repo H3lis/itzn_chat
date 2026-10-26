@@ -67,6 +67,14 @@ export function formatSessionDate(dateStr) {
   return str;
 }
 
+function getCurrentUid() {
+  try {
+    return (typeof localStorage !== 'undefined' ? localStorage.getItem(USER_KEY) : '') || '';
+  } catch {
+    return '';
+  }
+}
+
 /**
  * 사용자용 대화 히스토리 관리 훅 (localStorage 영구 저장 + 서버 DB 양방향 동기화)
  */
@@ -79,30 +87,48 @@ export function useClientHistory({
 }) {
   const [sessions, setSessions] = useState(() => {
     try {
+      const currentUid = getCurrentUid();
       const preloaded = (typeof window !== 'undefined' && Array.isArray(window.__PRELOADED_SESSIONS__))
         ? window.__PRELOADED_SESSIONS__
         : [];
+      const preloadedUid = (typeof window !== 'undefined' && window.__PRELOADED_USER_ID__)
+        ? String(window.__PRELOADED_USER_ID__).trim()
+        : '';
+
       const raw = localStorage.getItem(CLIENT_HISTORY_STORAGE_KEY);
       const list = raw ? JSON.parse(raw) : [];
 
       const sessionMap = new Map();
-      list.forEach((s) => sessionMap.set(s.id, s));
-      preloaded.forEach((s) => {
-        if (!sessionMap.has(s.id)) {
-          sessionMap.set(s.id, {
-            ...s,
-            createdAt: formatSessionDate(s.createdAt),
-            updatedAt: formatSessionDate(s.updatedAt || s.createdAt),
-            timestamp: parseSessionTime(s),
-          });
+      // 1. 로컬스토리지 세션 중 타인 세션(userId가 존재하고 currentUid와 불일치)은 즉각 격리 폐기
+      list.forEach((s) => {
+        if (s && s.id) {
+          if (currentUid && s.userId && s.userId !== currentUid) {
+            // 타 사용자의 세션이므로 로컬 캐시에서 자동 정화
+            return;
+          }
+          sessionMap.set(s.id, { ...s, userId: s.userId || currentUid });
         }
       });
-      const merged = Array.from(sessionMap.values()).sort((a, b) => parseSessionTime(b) - parseSessionTime(a));
-      if (preloaded.length > 0) {
-        try {
-          localStorage.setItem(CLIENT_HISTORY_STORAGE_KEY, JSON.stringify(merged));
-        } catch (_) {}
+
+      // 2. 오프라인 프리로드 세션도 현재 사용자 ID와 일치할 때만 병합
+      if (!preloadedUid || !currentUid || preloadedUid === currentUid) {
+        preloaded.forEach((s) => {
+          if (!sessionMap.has(s.id)) {
+            sessionMap.set(s.id, {
+              ...s,
+              userId: currentUid,
+              createdAt: formatSessionDate(s.createdAt),
+              updatedAt: formatSessionDate(s.updatedAt || s.createdAt),
+              timestamp: parseSessionTime(s),
+            });
+          }
+        });
       }
+
+      const merged = Array.from(sessionMap.values()).sort((a, b) => parseSessionTime(b) - parseSessionTime(a));
+      try {
+        localStorage.setItem(CLIENT_HISTORY_STORAGE_KEY, JSON.stringify(merged));
+      } catch (_) {}
       return merged;
     } catch {
       return [];
@@ -125,7 +151,10 @@ export function useClientHistory({
 
   // 세션 목록을 localStorage에 동기화
   const saveSessionsToStorage = useCallback((list) => {
-    const sorted = [...list].sort((a, b) => parseSessionTime(b) - parseSessionTime(a));
+    const currentUid = getCurrentUid();
+    // 타 사용자 세션 필터링 보장
+    const filtered = list.filter((s) => !currentUid || !s.userId || s.userId === currentUid);
+    const sorted = [...filtered].sort((a, b) => parseSessionTime(b) - parseSessionTime(a));
     setSessions(sorted);
     try {
       localStorage.setItem(CLIENT_HISTORY_STORAGE_KEY, JSON.stringify(sorted));
@@ -134,33 +163,37 @@ export function useClientHistory({
     }
   }, []);
 
-  // 1. 서버(chat_history.db)와 세션 히스토리 자동 동기화 (세션 목록 갱신)
+  // 1. 서버(chat_history.db)와 세션 히스토리 자동 동기화 (오직 본인 user_id 세션만 엄격 동기화)
   const syncWithServer = useCallback(async (targetUid = null) => {
     try {
-      const effectiveUid = targetUid || (typeof localStorage !== 'undefined' ? localStorage.getItem(USER_KEY) : '') || '';
+      const effectiveUid = targetUid || getCurrentUid();
       if (!effectiveUid || effectiveUid === 'usr_guest') return;
       const url = buildApiUrl(`/api/client/history?user_id=${encodeURIComponent(effectiveUid)}&limit=30`);
       const res = await fetch(url, { cache: 'no-store' });
       if (!res.ok) return;
       const data = await res.json();
-      if (data && Array.isArray(data.sessions) && data.sessions.length > 0) {
+      if (data && Array.isArray(data.sessions)) {
         setSessions((prev) => {
           const sessionMap = new Map();
-          // 서버에서 복원한 세션 등록 (날짜 통일 포맷 적용)
+          // 서버에서 복원한 세션 등록 (본인 세션만 등록 보장)
           data.sessions.forEach((s) => {
+            if (s.userId && s.userId !== effectiveUid) return; // 타인 세션 침범 원천 차단
             sessionMap.set(s.id, {
               ...s,
+              userId: effectiveUid,
               createdAt: formatSessionDate(s.createdAt),
               updatedAt: formatSessionDate(s.updatedAt || s.createdAt),
               timestamp: parseSessionTime(s),
             });
           });
-          // 로컬에 이미 존재하는 세션이 더 최신 메시지를 포함하면 로컬 우선 병합
+          // 로컬에 이미 존재하는 본인 세션 병합 (타인 세션은 제외)
           prev.forEach((s) => {
+            if (s.userId && s.userId !== effectiveUid) return; // 기존 오염 세션 자동 폐기
             const serverSess = sessionMap.get(s.id);
             if (!serverSess || (s.messages && s.messages.length >= (serverSess.messages?.length || 0))) {
               sessionMap.set(s.id, {
                 ...s,
+                userId: effectiveUid,
                 createdAt: formatSessionDate(s.createdAt),
                 updatedAt: formatSessionDate(s.updatedAt || s.createdAt),
                 timestamp: parseSessionTime(s),
@@ -205,6 +238,7 @@ export function useClientHistory({
     if (!firstUserMsg) return;
 
     const title = firstUserMsg.text.slice(0, 32);
+    const currentUid = getCurrentUid();
 
     setSessions((prevSessions) => {
       const now = new Date();
@@ -213,13 +247,16 @@ export function useClientHistory({
       const timeStr = `${monthStr}/${dayStr}`;
       const ts = now.getTime();
 
-      const existingIdx = prevSessions.findIndex((s) => s.id === currentSessionId);
+      // 타인 세션이 섞여있다면 필터링
+      const mySessions = prevSessions.filter((s) => !currentUid || !s.userId || s.userId === currentUid);
+      const existingIdx = mySessions.findIndex((s) => s.id === currentSessionId);
       let updated;
 
       if (existingIdx >= 0) {
-        updated = [...prevSessions];
+        updated = [...mySessions];
         updated[existingIdx] = {
           ...updated[existingIdx],
+          userId: currentUid,
           title,
           updatedAt: timeStr,
           timestamp: ts,
@@ -229,6 +266,7 @@ export function useClientHistory({
       } else {
         const newSession = {
           id: currentSessionId,
+          userId: currentUid,
           title,
           createdAt: timeStr,
           updatedAt: timeStr,
@@ -236,7 +274,7 @@ export function useClientHistory({
           messages,
           turnCount: messages.filter((m) => m.type === 'bot').length,
         };
-        updated = [newSession, ...prevSessions];
+        updated = [newSession, ...mySessions];
       }
 
       // 항상 최신 대화(타임스탬프 기준)가 제일 위로 올라오도록 내림차순 정렬

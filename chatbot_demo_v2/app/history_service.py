@@ -554,45 +554,28 @@ class HistoryService:
             return turns
 
     def get_client_sessions(self, user_id: Optional[str] = None, limit: int = 30) -> dict[str, Any]:
-        """고객용 상담 화면 및 오프라인 배포본용 세션 및 대화 메시지 복원 목록 조회."""
-        with self._lock, self._get_conn() as conn:
-            where_clause = ""
-            params: list[Any] = []
-            if user_id and user_id.strip() and user_id != "usr_guest":
-                where_clause = "WHERE user_id = ?"
-                params.append(user_id.strip())
+        """고객용 상담 화면 및 오프라인 배포본용 세션 및 대화 메시지 복원 목록 조회 (엄격한 사용자 격리)."""
+        clean_uid = (user_id or "").strip()
+        # 타인 대화 유출 원천 방어: user_id가 없거나 게스트인 경우 타인 세션을 절대 반환하지 않음
+        if not clean_uid or clean_uid == "usr_guest":
+            return {"sessions": [], "total": 0}
 
-            # 세션 목록 집계 (최신순)
-            query_sql = f"""
+        with self._lock, self._get_conn() as conn:
+            # 오직 해당 user_id에 속한 세션만 최신순으로 조회
+            query_sql = """
                 SELECT session_id, user_id,
                        MIN(created_at) as created_at,
                        MAX(created_at) as updated_at,
                        COUNT(*) as turn_count,
                        MAX(id) as max_id
                 FROM chat_history
-                {where_clause}
+                WHERE user_id = ?
                 GROUP BY session_id
                 ORDER BY max_id DESC
                 LIMIT ?
             """
-            cur = conn.execute(query_sql, params + [limit])
+            cur = conn.execute(query_sql, [clean_uid, limit])
             session_rows = cur.fetchall()
-
-            # 만약 특정 user_id로 조회했는데 결과가 없고 user_id가 주어졌던 경우,
-            # 최근 세션(공용/데모 세션 포함)을 최대 10개 폴백 조회하여 빈 화면 방지
-            if not session_rows and user_id:
-                fallback_cur = conn.execute("""
-                    SELECT session_id, user_id,
-                           MIN(created_at) as created_at,
-                           MAX(created_at) as updated_at,
-                           COUNT(*) as turn_count,
-                           MAX(id) as max_id
-                    FROM chat_history
-                    GROUP BY session_id
-                    ORDER BY max_id DESC
-                    LIMIT 10
-                """)
-                session_rows = fallback_cur.fetchall()
 
             sessions = []
             for s_row in session_rows:
@@ -653,6 +636,7 @@ class HistoryService:
 
                 sessions.append({
                     "id": sid,
+                    "userId": s_row["user_id"] or clean_uid,
                     "title": title,
                     "createdAt": formatted_date,
                     "updatedAt": formatted_date,
