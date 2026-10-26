@@ -18,7 +18,7 @@ import uuid
 from pathlib import Path
 from typing import Optional
 
-from fastapi import APIRouter, File, Form, HTTPException, Query, Request, Response, UploadFile
+from fastapi import APIRouter, Depends, File, Form, HTTPException, Query, Request, Response, UploadFile
 from fastapi.responses import FileResponse, StreamingResponse
 
 from .dependencies import AppContext
@@ -54,6 +54,11 @@ from .schemas import (
     WarmupRequest,
     WebSearchStatusResponse,
     WebSearchToggleRequest,
+    AdminLoginRequest,
+    AdminLoginResponse,
+    AdminUserResponse,
+    AdminChangePasswordRequest,
+    AdminChangePasswordResponse,
 )
 from ..observability.langsmith import build_invoke_config
 from ..rag.adapter_util import RagBusyError, RagUnavailableError
@@ -486,6 +491,97 @@ def evidence(request: Request, run_id: str, filename: str):
     if not target.is_file():
         raise HTTPException(status_code=404, detail="not found")
     return FileResponse(str(target))
+
+
+# =====================================================================
+# 관리자 인증 (Admin Auth) API — DB 기반 계정 & JWT 보안 토큰 관리
+# =====================================================================
+
+def get_current_admin(request: Request) -> dict:
+    """FastAPI 종속성: 현재 요청에서 인증된 관리자 계정 반환."""
+    user = getattr(request.state, "admin_user", None)
+    if not user:
+        ctx = _ctx(request)
+        auth_header = request.headers.get("Authorization")
+        token = None
+        if auth_header and auth_header.startswith("Bearer "):
+            token = auth_header[7:].strip()
+        elif request.cookies.get("admin_token"):
+            token = request.cookies.get("admin_token")
+        if not token:
+            raise HTTPException(status_code=401, detail="관리자 로그인이 필요합니다.")
+        try:
+            payload = ctx.auth_service.verify_token(token)
+            username = payload.get("sub")
+            user = ctx.auth_service.get_user_by_username(username)
+            if not user:
+                raise HTTPException(status_code=401, detail="존재하지 않는 관리자 계정입니다.")
+        except Exception as e:
+            raise HTTPException(status_code=401, detail=str(e))
+    return user
+
+
+@router.post("/api/admin/login", response_model=AdminLoginResponse)
+def admin_login(request: Request, body: AdminLoginRequest, response: Response) -> AdminLoginResponse:
+    """관리자 로그인 (무차별 대입 공격 방어 + JWT 발급)."""
+    ctx = _ctx(request)
+    client_ip = request.client.host if request.client else "127.0.0.1"
+    if "x-forwarded-for" in request.headers:
+        client_ip = request.headers["x-forwarded-for"].split(",")[0].strip()
+
+    try:
+        result = ctx.auth_service.login(body.username, body.password, client_ip=client_ip)
+        response.set_cookie(
+            key="admin_token",
+            value=result["access_token"],
+            max_age=result["expires_in"],
+            httponly=True,
+            samesite="lax",
+        )
+        return AdminLoginResponse(**result)
+    except ValueError as ve:
+        err_msg = str(ve)
+        if "차단되었습니다" in err_msg:
+            raise HTTPException(status_code=429, detail=err_msg)
+        raise HTTPException(status_code=401, detail=err_msg)
+    except Exception as e:
+        logger.error("[Auth] 로그인 처리 오류: %s", e, exc_info=True)
+        raise HTTPException(status_code=500, detail=f"로그인 처리 중 오류 발생: {e}")
+
+
+@router.get("/api/admin/me", response_model=AdminUserResponse)
+def admin_get_me(request: Request, user: dict = Depends(get_current_admin)) -> AdminUserResponse:
+    """현재 로그인된 관리자 정보 조회 (토큰 유효성 검증용)."""
+    return AdminUserResponse(
+        username=user["username"],
+        role=user["role"],
+        last_login_at=user.get("last_login_at")
+    )
+
+
+@router.post("/api/admin/change-password", response_model=AdminChangePasswordResponse)
+def admin_change_password(
+    request: Request,
+    body: AdminChangePasswordRequest,
+    user: dict = Depends(get_current_admin)
+) -> AdminChangePasswordResponse:
+    """관리자 본인 비밀번호 자체 변경."""
+    ctx = _ctx(request)
+    try:
+        res = ctx.auth_service.change_password(user["username"], body.current_password, body.new_password)
+        return AdminChangePasswordResponse(**res)
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve))
+    except Exception as e:
+        logger.error("[Auth] 비밀번호 변경 오류: %s", e, exc_info=True)
+        raise HTTPException(status_code=500, detail=f"비밀번호 변경 실패: {e}")
+
+
+@router.post("/api/admin/logout")
+def admin_logout(response: Response) -> dict:
+    """관리자 로그아웃 (인증 쿠키 삭제)."""
+    response.delete_cookie(key="admin_token")
+    return {"success": True, "message": "로그아웃되었습니다."}
 
 
 # =====================================================================

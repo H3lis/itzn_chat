@@ -143,6 +143,12 @@ class Settings:
     #: 동작하므로 RAG 용 무료 키와 분리할 수 있게 했다. 없으면 GEMINI_API_KEY 로 폴백한다.
     web_search_api_key_present: bool = field(default=False)
 
+    # 관리자 인증 (JWT & DB Auth)
+    jwt_secret_key: str = field(default="school-chatbot-super-secret-jwt-key-2026-v2")
+    jwt_algorithm: str = field(default="HS256")
+    jwt_expire_minutes: int = field(default=240)
+    initial_admin_password: str = field(default="admin1234!")
+
     @property
     def faq_path(self) -> Path:
         return self.data_dir / "faq.json"
@@ -263,4 +269,8 @@ def load_settings(env: Mapping[str, str] | None = None) -> Settings:
         ragdata_dir=ragdata_dir,
         gemini_api_key_present=bool(env.get("GEMINI_API_KEY")),
         web_search_api_key_present=bool(env.get("WEB_SEARCH_GEMINI_API_KEY")),
+        jwt_secret_key=_get(env, "JWT_SECRET_KEY", "school-chatbot-super-secret-jwt-key-2026-v2"),
+        jwt_algorithm=_get(env, "JWT_ALGORITHM", "HS256"),
+        jwt_expire_minutes=_get_int(env, "JWT_EXPIRE_MINUTES", 240),
+        initial_admin_password=_get(env, "INITIAL_ADMIN_PASSWORD", "admin1234!"),
     )

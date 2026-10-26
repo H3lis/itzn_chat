@@ -82,6 +82,11 @@ def create_app(ctx: Optional[AppContext] = None) -> FastAPI:
     if getattr(ctx, "audit_service", None) is not None:
         app.add_middleware(AuditMiddleware, audit_service=ctx.audit_service)
 
+    # --- 관리자 전용 보안 인증 미들웨어 등록 (/api/admin/* JWT 강제 검증) ---
+    from .auth_middleware import AdminAuthMiddleware
+
+    app.add_middleware(AdminAuthMiddleware, ctx=ctx)
+
     # --- 예외 → HTTP 매핑 (키/절대경로 미포함) ---
     @app.exception_handler(EmptyInputError)
     async def _empty(request: Request, exc: EmptyInputError):

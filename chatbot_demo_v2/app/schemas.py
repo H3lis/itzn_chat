@@ -366,8 +366,37 @@ class ConnectionTestResponse(BaseModel):
     latency_ms: Optional[float] = None
 
 
+class AdminLoginRequest(BaseModel):
+    username: str = Field(..., description="관리자 아이디")
+    password: str = Field(..., description="관리자 비밀번호")
+
+
+class AdminUserResponse(BaseModel):
+    username: str
+    role: str
+    last_login_at: Optional[str] = None
+
+
+class AdminLoginResponse(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    expires_in: int
+    user: AdminUserResponse
+
+
+class AdminChangePasswordRequest(BaseModel):
+    current_password: str = Field(..., description="현재 비밀번호")
+    new_password: str = Field(..., min_length=6, description="새 비밀번호 (최소 6자 이상)")
+
+
+class AdminChangePasswordResponse(BaseModel):
+    success: bool
+    message: str
+
+
 ScenarioTreeResponse.model_rebuild()
 ScenarioValidationResponse.model_rebuild()
 DocMetadataItem.model_rebuild()
 AdminSettingsResponse.model_rebuild()
+AdminLoginResponse.model_rebuild()
 
