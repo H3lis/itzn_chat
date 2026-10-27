@@ -20,7 +20,7 @@ import {
   Download,
 } from 'lucide-react';
 
-export function SettingsTab({ onUpdateBadge }) {
+export function SettingsTab({ onUpdateBadge, onUpdateWebSearchStatus }) {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
@@ -95,11 +95,44 @@ export function SettingsTab({ onUpdateBadge }) {
         if (onUpdateBadge) {
           onUpdateBadge(data.rag_backend === 'gemini' ? 'Gemini' : 'Ollama');
         }
+        if (onUpdateWebSearchStatus) {
+          onUpdateWebSearchStatus(Boolean(data.web_search_enabled));
+        }
       }
     } catch (e) {
       console.error('설정 로드 실패:', e);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const [togglingWebSearch, setTogglingWebSearch] = useState(false);
+
+  // 실시간 웹 검색 On/Off 즉시 토글
+  const handleToggleWebSearch = async () => {
+    if (togglingWebSearch) return;
+    const nextState = !form.web_search_enabled;
+    setTogglingWebSearch(true);
+    try {
+      const res = await fetch('/api/admin/web-search', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ enabled: nextState })
+      });
+      if (res.ok) {
+        const updated = await res.json();
+        setForm((prev) => ({ ...prev, web_search_enabled: updated.enabled }));
+        if (onUpdateWebSearchStatus) {
+          onUpdateWebSearchStatus(updated.enabled);
+        }
+      } else {
+        const err = await res.json();
+        alert(`웹 검색 설정 변경 실패: ${err.detail || '오류 발생'}`);
+      }
+    } catch (err) {
+      alert(`웹 검색 토글 통신 오류: ${err.message}`);
+    } finally {
+      setTogglingWebSearch(false);
     }
   };
 
@@ -489,42 +522,115 @@ export function SettingsTab({ onUpdateBadge }) {
         </div>
       </div>
 
-      {/* 4. 섹션 2: 웹 검색(Grounding) 설정 */}
+      {/* 4. 섹션 2: 외부 웹 검색 (Google Search Grounding) 설정 */}
       <div className="card-box" style={{ background: 'var(--bg-card)', padding: '1.5rem', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.25rem', borderBottom: '1px solid rgba(255, 255, 255, 0.06)', paddingBottom: '0.75rem' }}>
-          <Globe size={18} color="#f59e0b" />
-          <h3 style={{ fontSize: '1.05rem', fontWeight: 700 }}>2. 실시간 웹 검색(Grounding) 키 설정 (선택사항)</h3>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem', borderBottom: '1px solid rgba(255, 255, 255, 0.06)', paddingBottom: '0.75rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <Globe size={18} color="#f59e0b" />
+            <div>
+              <h3 style={{ fontSize: '1.05rem', fontWeight: 700, margin: 0 }}>2. 외부 웹 검색 (Google Search Grounding)</h3>
+              <p style={{ margin: 0, fontSize: '0.78rem', color: 'var(--text-muted)' }}>
+                내부 RAG 문서 및 FAQ에서 정답을 찾을 수 없는 경우 최후의 수단으로 Google 실시간 검색을 수행합니다.
+              </p>
+            </div>
+          </div>
+
+          {/* 실시간 On/Off 토글 스위치 */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <span style={{
+              fontSize: '0.75rem',
+              fontWeight: 700,
+              padding: '0.2rem 0.6rem',
+              borderRadius: '999px',
+              background: form.web_search_enabled ? 'rgba(16, 185, 129, 0.15)' : 'rgba(239, 68, 68, 0.15)',
+              color: form.web_search_enabled ? 'var(--emerald)' : 'var(--rose)',
+            }}>
+              {form.web_search_enabled ? '● 웹 검색 ON' : '○ 웹 검색 OFF'}
+            </span>
+            <div
+              onClick={handleToggleWebSearch}
+              title={form.web_search_enabled ? '웹 검색 비활성화' : '웹 검색 활성화'}
+              style={{
+                width: '50px',
+                height: '26px',
+                background: form.web_search_enabled ? 'var(--emerald)' : 'rgba(255, 255, 255, 0.2)',
+                borderRadius: '9999px',
+                position: 'relative',
+                cursor: togglingWebSearch ? 'not-allowed' : 'pointer',
+                transition: 'background 0.2s',
+                opacity: togglingWebSearch ? 0.6 : 1,
+              }}
+            >
+              <div
+                style={{
+                  width: '20px',
+                  height: '20px',
+                  background: '#ffffff',
+                  borderRadius: '50%',
+                  position: 'absolute',
+                  top: '3px',
+                  left: form.web_search_enabled ? '26px' : '4px',
+                  transition: 'left 0.2s',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.3)',
+                }}
+              />
+            </div>
+          </div>
         </div>
 
-        <div className="form-group">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
-            <label className="form-label" style={{ fontWeight: 600, margin: 0 }}>웹 검색 전용 API 키</label>
-            {form.web_search_gemini_api_key_set && (
-              <span className="badge-pill" style={{ background: 'rgba(16, 185, 129, 0.2)', color: 'var(--emerald)', fontSize: '0.72rem' }}>
-                ✓ 등록됨: {form.web_search_gemini_api_key_masked}
-              </span>
-            )}
+        {/* 안내 및 키 설정 영역 */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <div style={{
+            padding: '0.75rem 1rem',
+            borderRadius: '8px',
+            fontSize: '0.82rem',
+            background: form.web_search_enabled ? 'rgba(16, 185, 129, 0.08)' : 'rgba(255, 255, 255, 0.02)',
+            border: form.web_search_enabled ? '1px solid rgba(16, 185, 129, 0.2)' : '1px solid rgba(255, 255, 255, 0.06)',
+            color: form.web_search_enabled ? 'var(--text-main)' : 'var(--text-muted)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+          }}>
+            {form.web_search_enabled ? <CheckCircle2 size={16} color="var(--emerald)" /> : <AlertCircle size={16} color="var(--text-muted)" />}
+            <span>
+              {form.web_search_enabled
+                ? '현재 웹 검색이 활성화되어 있습니다. 최신 장애 정보나 외부 매뉴얼을 실시간 검색하여 신뢰할 수 있는 출처 링크와 함께 답변합니다.'
+                : '현재 웹 검색이 비활성화되어 있습니다. 등록된 내부 매뉴얼 및 시나리오/FAQ에만 기반하여 안전하게 답변합니다.'}
+            </span>
           </div>
-          <div style={{ position: 'relative' }}>
-            <input
-              type={showWebSearchKey ? 'text' : 'password'}
-              className="form-input"
-              placeholder="비워두면 메인 Gemini API 키로 자동 폴백됩니다."
-              value={form.web_search_gemini_api_key}
-              onChange={(e) => setForm({ ...form, web_search_gemini_api_key: e.target.value })}
-              style={{ paddingRight: '2.5rem' }}
-            />
-            <button
-              type="button"
-              onClick={() => setShowWebSearchKey(!showWebSearchKey)}
-              style={{ position: 'absolute', right: '0.75rem', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}
-              title={showWebSearchKey ? '숨기기' : '보기'}
-            >
-              {showWebSearchKey ? <EyeOff size={16} /> : <Eye size={16} />}
-            </button>
-          </div>
-          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.35rem' }}>
-            웹 검색 전용 유료 키를 별도로 운영하고자 할 때만 입력하세요. 미입력 시 위 1번 메인 키를 함께 공유합니다.
+
+          <div className="form-group" style={{ margin: 0 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+              <label className="form-label" style={{ fontWeight: 600, margin: 0, fontSize: '0.85rem' }}>
+                웹 검색 전용 API 키 (선택사항)
+              </label>
+              {form.web_search_gemini_api_key_set && (
+                <span className="badge-pill" style={{ background: 'rgba(16, 185, 129, 0.2)', color: 'var(--emerald)', fontSize: '0.72rem' }}>
+                  ✓ 등록됨: {form.web_search_gemini_api_key_masked}
+                </span>
+              )}
+            </div>
+            <div style={{ position: 'relative' }}>
+              <input
+                type={showWebSearchKey ? 'text' : 'password'}
+                className="form-input"
+                placeholder="비워두면 상단 메인 Gemini API 키로 자동 공유 및 적용됩니다."
+                value={form.web_search_gemini_api_key}
+                onChange={(e) => setForm({ ...form, web_search_gemini_api_key: e.target.value })}
+                style={{ paddingRight: '2.5rem' }}
+              />
+              <button
+                type="button"
+                onClick={() => setShowWebSearchKey(!showWebSearchKey)}
+                style={{ position: 'absolute', right: '0.75rem', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}
+                title={showWebSearchKey ? '숨기기' : '보기'}
+              >
+                {showWebSearchKey ? <EyeOff size={16} /> : <Eye size={16} />}
+              </button>
+            </div>
+            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.35rem' }}>
+              Google Search Grounding 전용 유료 과금 키를 별도 분리하여 운영하고자 할 때만 입력하세요.
+            </div>
           </div>
         </div>
       </div>

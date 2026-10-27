@@ -3,7 +3,6 @@ import { MessageSquare, Globe, CheckCircle2, AlertCircle, Database, GitFork, His
 import { FaqTab } from './FaqTab';
 import { RagTab } from './RagTab';
 import { ScenarioTab } from './ScenarioTab';
-import { WebSearchTab } from './WebSearchTab';
 import { HistoryTab } from './HistoryTab';
 import { SettingsTab } from './SettingsTab';
 import { AdminLoginModal } from './AdminLoginModal';
@@ -11,12 +10,11 @@ import { ChangePasswordModal } from './ChangePasswordModal';
 import './Admin.css';
 
 export function AdminLayout({ onNavigate }) {
-  const [activeTab, setActiveTab] = useState('faq'); // 'faq' | 'rag' | 'scenario' | 'websearch' | 'history' | 'settings'
+  const [activeTab, setActiveTab] = useState('faq'); // 'faq' | 'rag' | 'scenario' | 'history' | 'settings'
   const [badges, setBadges] = useState({
     faq: '-',
     docs: '-',
     scenario: '-',
-    websearch: 'OFF',
     history: '-',
     settings: 'Gemini'
   });
@@ -370,14 +368,6 @@ export function AdminLayout({ onNavigate }) {
           </button>
 
           <button
-            className={`nav-tab-btn ${activeTab === 'websearch' ? 'active' : ''}`}
-            onClick={() => setActiveTab('websearch')}
-          >
-            <span>🌐 웹 검색 설정</span>
-            <span className="tab-badge">{badges.websearch}</span>
-          </button>
-
-          <button
             className={`nav-tab-btn ${activeTab === 'history' ? 'active' : ''}`}
             onClick={() => setActiveTab('history')}
           >
@@ -398,16 +388,13 @@ export function AdminLayout({ onNavigate }) {
         {activeTab === 'faq' && <FaqTab onUpdateBadge={handleFaqBadge} />}
         {activeTab === 'rag' && <RagTab onUpdateBadge={handleDocsBadge} />}
         {activeTab === 'scenario' && <ScenarioTab onUpdateBadge={handleScenarioBadge} />}
-        {activeTab === 'websearch' && (
-          <WebSearchTab
-            onUpdateStatus={(en) => {
-              setWebSearchEnabled(en);
-              updateBadge('websearch', en ? 'ON' : 'OFF');
-            }}
+        {activeTab === 'history' && <HistoryTab onUpdateBadge={handleHistoryBadge} />}
+        {activeTab === 'settings' && (
+          <SettingsTab
+            onUpdateBadge={handleSettingsBadge}
+            onUpdateWebSearchStatus={(en) => setWebSearchEnabled(en)}
           />
         )}
-        {activeTab === 'history' && <HistoryTab onUpdateBadge={handleHistoryBadge} />}
-        {activeTab === 'settings' && <SettingsTab onUpdateBadge={handleSettingsBadge} />}
       </main>
 
       {/* 비밀번호 변경 모달 */}
