@@ -17,14 +17,22 @@ from chatbot_demo_v2.rag.adapter_util import FakeRagAdapter
 def _build_test_ctx(tmp_path: Path) -> tuple[TestClient, Settings]:
     docs_dir = tmp_path / "raw_data" / "documents"
     docs_dir.mkdir(parents=True, exist_ok=True)
-    (docs_dir / "test_doc_1.pdf").write_bytes(b"%PDF-1.4 test document content")
+    valid_pdf = (
+        b"%PDF-1.4\n1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n"
+        b"2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n"
+        b"3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R >>\nendobj\n"
+        b"4 0 obj\n<< /Length 25 >>\nstream\nBT /F1 12 Tf (Hello) Tj ET\nendstream\nendobj\n"
+        b"xref\n0 5\n0000000000 65535 f \n0000000009 00000 n \n0000000058 00000 n \n"
+        b"0000000115 00000 n \n0000000215 00000 n \ntrailer\n<< /Size 5 /Root 1 0 R >>\nstartxref\n289\n%%EOF\n"
+    )
+    (docs_dir / "test_doc_1.pdf").write_bytes(valid_pdf)
 
     ragdata_dir = tmp_path / "ragdata"
     ragdata_dir.mkdir(parents=True, exist_ok=True)
 
     env = {
-        "CHATBOT_EVIDENCE_ROOT": str(tmp_path / "evidence"),
-        "CHATBOT_RAGDATA_DIR": str(ragdata_dir),
+        "DEMO_EVIDENCE_DIR": str(tmp_path / "evidence"),
+        "RAGDATA_DIR": str(ragdata_dir),
         "WEB_SEARCH_ENABLED": "false",
     }
     s = load_settings(env=env)
@@ -37,6 +45,9 @@ def _build_test_ctx(tmp_path: Path) -> tuple[TestClient, Settings]:
 
     app = create_app(ctx)
     client = TestClient(app)
+    if hasattr(ctx, "auth_service") and ctx.auth_service:
+        token = ctx.auth_service.create_access_token("admin", "admin")
+        client.headers["Authorization"] = f"Bearer {token}"
     return client, s
 
 
@@ -208,5 +219,38 @@ def test_update_env_file(tmp_path: Path, monkeypatch):
     _update_env_file("WEB_SEARCH_ENABLED", "false")
     content = fake_env.read_text(encoding="utf-8")
     assert "WEB_SEARCH_ENABLED=false" in content
+
+
+def test_admin_unindexed_reindex_and_nfc(tmp_path: Path):
+    import unicodedata
+    client, _ = _build_test_ctx(tmp_path)
+
+    # NFD 한글 파일명 업로드 시뮬레이션
+    nfd_name = unicodedata.normalize("NFD", "테스트문서_한글.txt")
+    files = [("files", (nfd_name, io.BytesIO(b"Hello world document content"), "text/plain"))]
+    res = client.post("/api/admin/documents/upload", files=files, data={"auto_index": False})
+    assert res.status_code == 200
+
+    # 문서 목록 조회 - 미색인 상태로 등록 확인
+    res = client.get("/api/admin/documents")
+    assert res.status_code == 200
+    docs = res.json()["documents"]
+    assert any("테스트문서_한글" in d["name"] for d in docs)
+
+    # 미색인 일괄 색인 엔드포인트 호출
+    res = client.post("/api/admin/reindex/unindexed")
+    assert res.status_code == 200
+    data = res.json()
+    assert data["healed_count"] >= 1
+    assert any("테스트문서_한글" in d["name"] for d in data["healed_docs"])
+
+    # 다시 문서 목록 조회 - 색인 완료 상태로 전이 확인
+    res = client.get("/api/admin/documents")
+    assert res.status_code == 200
+    docs = res.json()["documents"]
+    matched = [d for d in docs if "테스트문서_한글" in d["name"]]
+    assert len(matched) == 1
+    assert matched[0]["is_indexed"] is True
+
 
 

@@ -921,6 +921,13 @@ def admin_start_reindex(request: Request, body: Optional[ReindexRequest] = None)
     return {"started": started, **state}
 
 
+@router.post("/api/admin/reindex/unindexed")
+def admin_reindex_unindexed(request: Request) -> dict:
+    """미색인 상태의 문서들만 탐색하여 고속으로 증분 색인 및 복구."""
+    ctx = _ctx(request)
+    return ctx.doc_manager.self_heal_unindexed_documents()
+
+
 @router.get("/api/admin/reindex/status")
 def admin_reindex_status(request: Request) -> dict:
     ctx = _ctx(request)

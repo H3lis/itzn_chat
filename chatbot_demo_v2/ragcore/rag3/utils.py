@@ -10,15 +10,17 @@ from pathlib import Path
 def doc_slug(rel_path: str) -> str:
     """Korean/특수문자 경로를 ascii-safe한 캐시 디렉터리 이름으로 변환.
 
-    같은 basename을 가진 문서가 다른 폴더에 있을 수 있으므로 경로 해시를 덧붙인다.
+    NFC 유니코드 정규화를 강제 적용하여 모바일/macOS(NFD)와 Windows/Linux(NFC) 환경 간의
+    해시 불일치 및 미색인 오판독을 원천 방지한다.
     """
-    name = Path(rel_path).stem
+    clean_path = unicodedata.normalize("NFC", str(rel_path or "").replace("\\", "/").strip())
+    name = Path(clean_path).stem
     ascii_part = unicodedata.normalize("NFKD", name).encode("ascii", "ignore").decode()
     ascii_part = re.sub(r"[^A-Za-z0-9]+", "-", ascii_part).strip("-").lower()
     if not ascii_part:
         ascii_part = "doc"
     ascii_part = ascii_part[:40]
-    h = hashlib.sha1(rel_path.encode("utf-8")).hexdigest()[:8]
+    h = hashlib.sha1(clean_path.encode("utf-8")).hexdigest()[:8]
     return f"{ascii_part}-{h}"
 
 

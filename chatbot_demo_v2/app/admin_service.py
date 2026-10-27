@@ -16,6 +16,7 @@ import shutil
 import sys
 import threading
 import time
+import unicodedata
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Callable, Generator, Optional
@@ -28,6 +29,11 @@ from ..ragcore.rag3.utils import doc_slug
 from .time_util import now_kst, now_kst_str, now_kst_time_str
 
 logger = logging.getLogger("chatbot_demo_v2.admin")
+
+
+def _nfc(s: Any) -> str:
+    """NFC 유니코드 정규화 (NFD 분리 자모 및 공백/슬래시 통일)."""
+    return unicodedata.normalize("NFC", str(s or "").strip())
 
 
 def _format_size(size_bytes: int) -> str:
@@ -56,6 +62,21 @@ class DocumentManager:
         self.docs_dir.mkdir(parents=True, exist_ok=True)
         self.parsed_dir = Path(settings.ragdata_dir) / "source_parsed"
 
+    def _get_rag_config(self):
+        """설정의 ragdata_dir 및 docs_dir 경로가 강제 반영된 ragcore Config 인스턴스 반환."""
+        prepare_ragcore_imports(self.settings)
+        from ..ragcore.rag3.config import load_config
+        cfg = load_config(
+            str(self.settings.ragcore_config),
+            overrides={
+                "documents_dir": str(self.docs_dir.resolve()),
+                "index_dir": str((Path(self.settings.ragdata_dir) / "index").resolve()),
+                "source_parsed_dir": str((Path(self.settings.ragdata_dir) / "source_parsed").resolve()),
+            },
+        )
+        cfg.ensure_dirs()
+        return cfg
+
     def _get_indexed_signatures(self) -> tuple[set[str], set[str], set[str]]:
         """활성 인덱스(page_store.json 및 flat_chunk docs.json)에서 색인된 문서의 식별자(name, rel_path, slug) 집합 반환."""
         indexed_names: set[str] = set()
@@ -66,6 +87,25 @@ class DocumentManager:
         if not index_dir.is_dir():
             return indexed_names, indexed_paths, indexed_slugs
 
+        def _add_sigs(name_val: str | None, path_val: str | None, slug_val: str | None):
+            if name_val:
+                clean_n = _nfc(name_val)
+                indexed_names.add(name_val)
+                indexed_names.add(clean_n)
+                indexed_slugs.add(doc_slug(clean_n))
+            if path_val:
+                norm_p = path_val.replace("\\\\", "/").replace("\\", "/").lstrip("/")
+                clean_p = _nfc(norm_p)
+                indexed_paths.add(norm_p)
+                indexed_paths.add(clean_p)
+                indexed_names.add(Path(norm_p).name)
+                indexed_names.add(_nfc(Path(clean_p).name))
+                indexed_slugs.add(doc_slug(clean_p))
+            if slug_val:
+                clean_s = _nfc(slug_val)
+                indexed_slugs.add(slug_val)
+                indexed_slugs.add(clean_s)
+
         # 1. page_store.json 분석
         page_store = index_dir / "page_store.json"
         if page_store.is_file():
@@ -73,20 +113,12 @@ class DocumentManager:
                 pdata = json.loads(page_store.read_text(encoding="utf-8"))
                 for k, v in pdata.items():
                     if "_p" in k:
-                        indexed_slugs.add(k.rsplit("_p", 1)[0])
+                        s_part = k.rsplit("_p", 1)[0]
+                        indexed_slugs.add(s_part)
+                        indexed_slugs.add(_nfc(s_part))
                     if isinstance(v, dict):
                         m = v.get("meta") or {}
-                        doc_name = m.get("document_name")
-                        if doc_name:
-                            indexed_names.add(doc_name)
-                        fp = m.get("file_path")
-                        if fp:
-                            clean_fp = fp.replace("\\\\", "/").replace("\\", "/").lstrip("/")
-                            indexed_paths.add(clean_fp)
-                            indexed_names.add(Path(clean_fp).name)
-                        slug_in_meta = m.get("doc_slug")
-                        if slug_in_meta:
-                            indexed_slugs.add(slug_in_meta)
+                        _add_sigs(m.get("document_name"), m.get("file_path"), m.get("doc_slug"))
             except Exception as e:
                 logger.debug("page_store.json 색인 정보 로드 실패: %s", e)
 
@@ -97,18 +129,13 @@ class DocumentManager:
                 if isinstance(ddata, dict):
                     for k in ddata.keys():
                         if "_p" in k:
-                            indexed_slugs.add(k.rsplit("_p", 1)[0])
+                            s_part = k.rsplit("_p", 1)[0]
+                            indexed_slugs.add(s_part)
+                            indexed_slugs.add(_nfc(s_part))
                 elif isinstance(ddata, list):
                     for item in ddata:
                         if isinstance(item, dict):
-                            if item.get("doc_slug"):
-                                indexed_slugs.add(item["doc_slug"])
-                            if item.get("doc_name"):
-                                indexed_names.add(item["doc_name"])
-                            if item.get("source_path"):
-                                sp = item["source_path"].replace("\\", "/").lstrip("/")
-                                indexed_paths.add(sp)
-                                indexed_names.add(Path(sp).name)
+                            _add_sigs(item.get("doc_name"), item.get("source_path"), item.get("doc_slug"))
             except Exception as e:
                 logger.debug("flat_chunk docs.json 색인 정보 로드 실패: %s", e)
 
@@ -138,8 +165,10 @@ class DocumentManager:
             mod_time = datetime.fromtimestamp(mod_ts).strftime("%Y-%m-%d %H:%M:%S")
             created_time = datetime.fromtimestamp(create_ts).strftime("%Y-%m-%d %H:%M:%S") if create_ts else mod_time
 
-            slug = doc_slug(rel_path)
-            name_slug = doc_slug(p.name)
+            clean_name = _nfc(p.name)
+            clean_rel = _nfc(rel_path)
+            slug = doc_slug(clean_rel)
+            name_slug = doc_slug(clean_name)
             manifest_path = self.parsed_dir / slug / "manifest.json"
             page_count = None
             is_parsed = False
@@ -158,9 +187,13 @@ class DocumentManager:
             is_supported = ext in supported_exts
             is_indexed = (
                 (p.name in indexed_names)
+                or (clean_name in indexed_names)
                 or (rel_path in indexed_paths)
+                or (clean_rel in indexed_paths)
                 or (slug in indexed_slugs)
+                or (_nfc(slug) in indexed_slugs)
                 or (name_slug in indexed_slugs)
+                or (_nfc(name_slug) in indexed_slugs)
             )
 
             items.append({
@@ -243,10 +276,11 @@ class DocumentManager:
         }
 
     async def save_uploaded_file(self, upload_file: UploadFile, subfolder: str = "") -> dict[str, Any]:
-        """업로드된 파일을 문서 폴더에 저장."""
-        filename = os.path.basename(upload_file.filename or "uploaded.pdf")
+        """업로드된 파일을 문서 폴더에 저장 (NFC 유니코드 표준화 강제)."""
+        raw_filename = os.path.basename(upload_file.filename or "uploaded.pdf")
+        filename = _nfc(raw_filename)
         # 보안: 파일명 정제 (안전한 문자열 및 확장자 확인)
-        safe_name = re.sub(r'[\\/:*?"<>|]', '_', filename)
+        safe_name = _nfc(re.sub(r'[\\/:*?"<>|]', '_', filename))
         if not safe_name.strip():
             safe_name = f"doc_{int(time.time())}.pdf"
 
@@ -275,6 +309,33 @@ class DocumentManager:
             "status": "saved",
         }
 
+    def self_heal_unindexed_documents(self) -> dict[str, Any]:
+        """미색인 상태의 문서를 자동 감지하여 인덱스에 원자적으로 복원/보강 (Git pull/재시작 후 미색인 방지 자가 치유)."""
+        docs = self.list_documents()
+        unindexed = [d for d in docs if not d.get("is_indexed") and d.get("is_supported")]
+        if not unindexed:
+            return {"healed_count": 0, "healed_docs": [], "message": "모든 지원 문서가 이미 정상 색인되어 있습니다."}
+
+        healed = []
+        errors = []
+        for d in unindexed:
+            rel = d["rel_path"]
+            try:
+                logger.info("[Auto-Self-Heal] 미색인 문서 자동 복구 색인 시작: %s", rel)
+                res = self.index_single_document(rel, run_vlm=False)
+                healed.append({"rel_path": rel, "name": d["name"], "chunks": res.get("chunks_added", 0)})
+            except Exception as e:
+                logger.warning("[Auto-Self-Heal] 미색인 문서 복구 실패 [%s]: %s", rel, e)
+                errors.append({"rel_path": rel, "error": str(e)})
+
+        logger.info("[Auto-Self-Heal] 자가 치유 완료: %d건 색인 복구 성공, %d건 실패", len(healed), len(errors))
+        return {
+            "healed_count": len(healed),
+            "healed_docs": healed,
+            "errors": errors,
+            "total_unindexed_found": len(unindexed),
+        }
+
     def index_single_document(self, rel_path: str, run_vlm: bool = False, force_parse: bool = False) -> dict[str, Any]:
         """단일 문서만 빠르게 파싱/임베딩하여 기존 인덱스에 원자적으로 Append/교체하고 핫리로드."""
         clean_rel = os.path.normpath(rel_path).lstrip(r"\/").replace("..", "")
@@ -284,12 +345,10 @@ class DocumentManager:
 
         t0 = time.monotonic()
         prepare_ragcore_imports(self.settings)
-        from ..ragcore.rag3.config import load_config
         from ..ragcore.rag3.models import get_backend
         from ..ragcore.rag3.add_doc import add_documents, invalidate_flat_cache
 
-        rag_config = load_config(str(self.settings.ragcore_config))
-        rag_config.documents_dir = self.docs_dir.resolve()
+        rag_config = self._get_rag_config()
         rag_backend = get_backend(rag_config)
 
         # 단일 문서 추가/교체 실행
@@ -360,12 +419,10 @@ class DocumentManager:
         # 활성 인덱스에서 청크/페이지 원자적 제거
         try:
             prepare_ragcore_imports(self.settings)
-            from ..ragcore.rag3.config import load_config
             from ..ragcore.rag3.models import get_backend
             from ..ragcore.rag3.add_doc import remove_document, invalidate_flat_cache
 
-            rag_config = load_config(str(self.settings.ragcore_config))
-            rag_config.documents_dir = self.docs_dir.resolve()
+            rag_config = self._get_rag_config()
             rag_backend = get_backend(rag_config)
             remove_document(rag_config, rag_backend, slug)
             invalidate_flat_cache()
@@ -439,12 +496,10 @@ class DocumentManager:
         # 활성 색인(page_store.json, flat_chunk docs.json, vectors.npz) 식별자 및 내용 원자적 이전
         try:
             prepare_ragcore_imports(self.settings)
-            from ..ragcore.rag3.config import load_config
             from ..ragcore.rag3.models import get_backend
             from ..ragcore.rag3.add_doc import rename_document_index, invalidate_flat_cache
 
-            rag_config = load_config(str(self.settings.ragcore_config))
-            rag_config.documents_dir = self.docs_dir.resolve()
+            rag_config = self._get_rag_config()
             rag_backend = get_backend(rag_config)
 
             idx_res = rename_document_index(

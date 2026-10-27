@@ -494,18 +494,48 @@ export function RagTab({ onUpdateBadge }) {
     }
   };
 
-  // 재색인 시작 및 SSE 스트리밍 구독 (isForce: true = 전체 완전 재파싱, false = 고속 증분 재색인)
+  // 미색인 대상 재색인 시작 및 실시간 스트리밍
   const handleStartReindexAction = async (isForce = false) => {
     isStartingRef.current = true;
     isClearedRef.current = false;
     setReindexing(true);
     setReindexingForce(isForce);
-    setReindexStep(1); // 1단계 즉시 불 켜기
-    const startMsg = `[${new Date().toLocaleTimeString()}] 🚀 ${isForce ? '전체 완전 재파싱 & 강제 재색인' : '미색인 대상 재색인'} 파이프라인 가동 요청 중…`;
-    const waitMsg = `[${new Date().toLocaleTimeString()}] ⏳ 서버 백엔드 연결 및 프로세스 시작 대기 중…`;
-    setTerminalLogs([startMsg, waitMsg]);
+    setReindexStep(1); // 1단계 즉시 점등
+    const startMsg = `[${new Date().toLocaleTimeString()}] 🚀 미색인 대상 고속 재색인 파이프라인 가동 요청 중…`;
+    setTerminalLogs([startMsg]);
 
     try {
+      // 1. 미색인 대상 즉각 자동 복구 시도 (수 초~수십 초 고속 완료)
+      try {
+        const uRes = await fetch('/api/admin/reindex/unindexed', { method: 'POST' });
+        if (uRes.ok) {
+          const uData = await uRes.json();
+          if (uData.healed_count > 0) {
+            const healedNames = uData.healed_docs.map(d => d.name).join(', ');
+            setTerminalLogs((prev) => [
+              ...prev,
+              `[${new Date().toLocaleTimeString()}] ⚡ 미색인 문서 탐색 및 색인 복구 완료: 총 ${uData.healed_count}건 (${healedNames})`,
+              `[${new Date().toLocaleTimeString()}] ✅ 런타임 핫리로드가 완료되어 챗봇에서 즉시 검색 가능합니다.`
+            ]);
+            setReindexStep(5);
+            setReindexing(false);
+            setReindexingForce(false);
+            isStartingRef.current = false;
+            fetchStats();
+            fetchDocs();
+            alert(`🎉 미색인 문서 ${uData.healed_count}건의 지식 색인이 성공적으로 복구되었습니다!\n\n[반영 문서]\n• ${uData.healed_docs.map(d => d.name).join('\n• ')}\n\n챗봇에 즉시 반영되었습니다.`);
+            return;
+          } else {
+            setTerminalLogs((prev) => [
+              ...prev,
+              `[${new Date().toLocaleTimeString()}] ℹ️ 모든 문서가 이미 정상 색인되어 있습니다. 전체 파이프라인 동기화 검증을 진행합니다…`
+            ]);
+          }
+        }
+      } catch (uErr) {
+        console.warn('미색인 즉각 치유 폴백:', uErr);
+      }
+
       setReindexSummary(null);
       let res = await fetch('/api/admin/reindex', {
         method: 'POST',
