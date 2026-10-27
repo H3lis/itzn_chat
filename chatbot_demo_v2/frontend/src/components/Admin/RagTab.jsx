@@ -1010,21 +1010,6 @@ export function RagTab({ onUpdateBadge }) {
                   </td>
                   <td style={{ textAlign: 'center' }}>
                     <div style={{ display: 'inline-flex', gap: '0.35rem' }}>
-                      {(doc.is_supported || doc.is_pdf) && (
-                        <button
-                          className="btn btn-zap btn-sm"
-                          disabled={indexingPath === (doc.rel_path || doc.name)}
-                          onClick={() => handleIndexSingleDoc(doc)}
-                          title="단일 문서 즉시 증분 색인 (기존 인덱스에 원자적 고속 추가, 약 10~20초)"
-                        >
-                          {indexingPath === (doc.rel_path || doc.name) ? (
-                            <Loader2 size={13} className="spin" />
-                          ) : (
-                            <Zap size={13} />
-                          )}
-                          <span>{indexingPath === (doc.rel_path || doc.name) ? '색인중' : '색인'}</span>
-                        </button>
-                      )}
                       <button
                         className="btn btn-secondary btn-sm"
                         onClick={() => handleOpenMetadata(doc)}
