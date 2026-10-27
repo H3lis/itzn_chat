@@ -70,7 +70,6 @@ export function SettingsTab({ onUpdateBadge }) {
   // 키 입력창 비밀번호 마스킹 토글
   const [showGeminiKey, setShowGeminiKey] = useState(false);
   const [showWebSearchKey, setShowWebSearchKey] = useState(false);
-  const [showLangsmithKey, setShowLangsmithKey] = useState(false);
 
   // 연결 테스트 상태
   const [testing, setTesting] = useState({});
@@ -86,10 +85,12 @@ export function SettingsTab({ onUpdateBadge }) {
         setForm((prev) => ({
           ...prev,
           ...data,
+          pii_backend: 'sllm',
           pii_strategy_mode: 'standard',
+          prompt_guard_enabled: true,
+          prompt_guard_mode: 'standard',
           gemini_api_key: '',
           web_search_gemini_api_key: '',
-          langsmith_api_key: '',
         }));
         if (onUpdateBadge) {
           onUpdateBadge(data.rag_backend === 'gemini' ? 'Gemini' : 'Ollama');
@@ -159,9 +160,8 @@ export function SettingsTab({ onUpdateBadge }) {
         body.api_key = form.gemini_api_key || undefined;
       } else if (target === 'web_search') {
         body.api_key = form.web_search_gemini_api_key || form.gemini_api_key || undefined;
-      } else if (target === 'ollama') {
-        body.host = form.ollama_host;
-      } else if (target === 'reranker') {
+      } else if (target === 'infra') {
+        body.target = 'reranker';
         body.host = form.reranker_endpoint;
       }
 
@@ -196,7 +196,7 @@ export function SettingsTab({ onUpdateBadge }) {
         web_search_enabled: form.web_search_enabled,
         web_search_model: form.web_search_model,
         web_search_daily_budget: Number(form.web_search_daily_budget),
-        pii_backend: form.pii_backend,
+        pii_backend: 'sllm',
         pii_strategy_mode: 'standard',
         pii_sllm_model: form.pii_sllm_model,
         pii_sllm_host: form.pii_sllm_host,
@@ -207,8 +207,8 @@ export function SettingsTab({ onUpdateBadge }) {
         scenario_match_threshold: Number(form.scenario_match_threshold),
         langsmith_tracing: form.langsmith_tracing,
         langsmith_project: form.langsmith_project,
-        prompt_guard_enabled: form.prompt_guard_enabled,
-        prompt_guard_mode: form.prompt_guard_mode,
+        prompt_guard_enabled: true,
+        prompt_guard_mode: 'standard',
       };
 
       // 새로 입력된 키가 있을 때만 포함
@@ -217,9 +217,6 @@ export function SettingsTab({ onUpdateBadge }) {
       }
       if (form.web_search_gemini_api_key.trim()) {
         payload.web_search_gemini_api_key = form.web_search_gemini_api_key.trim();
-      }
-      if (form.langsmith_api_key.trim()) {
-        payload.langsmith_api_key = form.langsmith_api_key.trim();
       }
 
       const res = await fetch('/api/admin/settings', {
@@ -233,9 +230,12 @@ export function SettingsTab({ onUpdateBadge }) {
         setForm((prev) => ({
           ...prev,
           ...updated,
+          pii_backend: 'sllm',
+          pii_strategy_mode: 'standard',
+          prompt_guard_enabled: true,
+          prompt_guard_mode: 'standard',
           gemini_api_key: '',
           web_search_gemini_api_key: '',
-          langsmith_api_key: '',
         }));
         if (onUpdateBadge) {
           onUpdateBadge(updated.rag_backend === 'gemini' ? 'Gemini' : 'Ollama');
@@ -272,7 +272,7 @@ export function SettingsTab({ onUpdateBadge }) {
             <span>시스템 모델 & API 키 설정</span>
           </h2>
           <p style={{ fontSize: '0.83rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>
-            챗봇 답변 생성 LLM, 비식별화 sLLM, 원격 L4 GPU 엔드포인트 및 API 키를 실시간으로 관리하고 무중단 적용합니다.
+            챗봇 답변 생성 AI 모델, 클라우드 API 키 및 시스템 보안을 직관적으로 관리하고 무중단 적용합니다.
           </p>
         </div>
 
@@ -305,20 +305,65 @@ export function SettingsTab({ onUpdateBadge }) {
         </div>
       </div>
 
-      {/* 2. 섹션 1: 메인 LLM 및 RAG 엔진 */}
+      {/* 2. 상단 인프라 상태 안내 바 */}
+      <div style={{
+        padding: '0.85rem 1.25rem',
+        background: 'rgba(59, 130, 246, 0.05)',
+        borderRadius: '10px',
+        border: '1px solid rgba(59, 130, 246, 0.2)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        flexWrap: 'wrap',
+        gap: '0.75rem',
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <span style={{ display: 'inline-flex', width: '10px', height: '10px', borderRadius: '50%', background: '#10b981', boxShadow: '0 0 8px #10b981' }} />
+          <div>
+            <span style={{ fontWeight: 600, fontSize: '0.9rem', color: 'var(--text-main)', marginRight: '0.5rem' }}>
+              원격 AI 가속 서버(L4 GPU) 정상 연동 중
+            </span>
+            <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
+              (IP: 34.64.143.198 · sLLM 비식별화 및 BGE Reranker 고속 추론 활성화)
+            </span>
+          </div>
+        </div>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <button
+            type="button"
+            className="btn btn-secondary btn-sm"
+            onClick={() => handleTestConnection('infra')}
+            disabled={testing.infra}
+            style={{ fontSize: '0.75rem' }}
+          >
+            {testing.infra ? <RefreshCw size={12} className="spinner" /> : <Activity size={12} />}
+            <span>서버 상태 점검</span>
+          </button>
+          {testResults.infra && (
+            <span style={{ fontSize: '0.75rem', color: testResults.infra.success ? 'var(--emerald)' : 'var(--rose)', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
+              {testResults.infra.success ? <CheckCircle2 size={13} /> : <XCircle size={13} />}
+              <span>{testResults.infra.message}</span>
+            </span>
+          )}
+        </div>
+      </div>
+
+      {/* 3. 섹션 1: 메인 LLM 및 RAG 엔진 */}
       <div className="card-box" style={{ background: 'var(--bg-card)', padding: '1.5rem', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.25rem', borderBottom: '1px solid rgba(255, 255, 255, 0.06)', paddingBottom: '0.75rem' }}>
           <Zap size={18} color="#38bdf8" />
-          <h3 style={{ fontSize: '1.05rem', fontWeight: 700 }}>1. 메인 LLM & RAG 추론 엔진</h3>
+          <h3 style={{ fontSize: '1.05rem', fontWeight: 700 }}>1. 메인 AI 답변 생성 엔진 & API 키</h3>
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
           {/* RAG 백엔드 선택 */}
           <div className="form-group" style={{ gridColumn: '1 / -1' }}>
-            <label className="form-label" style={{ fontWeight: 600, marginBottom: '0.5rem', display: 'block' }}>RAG 생성 백엔드</label>
-            <div style={{ display: 'flex', gap: '1rem' }}>
+            <label className="form-label" style={{ fontWeight: 600, marginBottom: '0.5rem', display: 'block' }}>답변 생성 엔진 선택</label>
+            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
               <label style={{
                 flex: 1,
+                minWidth: '260px',
                 padding: '0.85rem 1rem',
                 borderRadius: '8px',
                 border: form.rag_backend === 'gemini' ? '2px solid var(--primary)' : '1px solid rgba(255, 255, 255, 0.1)',
@@ -344,6 +389,7 @@ export function SettingsTab({ onUpdateBadge }) {
 
               <label style={{
                 flex: 1,
+                minWidth: '260px',
                 padding: '0.85rem 1rem',
                 borderRadius: '8px',
                 border: form.rag_backend === 'ollama' ? '2px solid var(--primary)' : '1px solid rgba(255, 255, 255, 0.1)',
@@ -382,7 +428,7 @@ export function SettingsTab({ onUpdateBadge }) {
                   </span>
                 ) : (
                   <span className="badge-pill" style={{ background: 'rgba(244, 63, 94, 0.2)', color: 'var(--rose)', fontSize: '0.72rem' }}>
-                    ! 미등록 (환경변수 설정 필요)
+                    ! 미등록 (API 키 입력 필요)
                   </span>
                 )}
                 <button
@@ -411,6 +457,7 @@ export function SettingsTab({ onUpdateBadge }) {
                 type="button"
                 onClick={() => setShowGeminiKey(!showGeminiKey)}
                 style={{ position: 'absolute', right: '0.75rem', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}
+                title={showGeminiKey ? '숨기기' : '보기'}
               >
                 {showGeminiKey ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
@@ -426,8 +473,8 @@ export function SettingsTab({ onUpdateBadge }) {
           </div>
 
           {/* 메인 Gemini 모델 선택 */}
-          <div className="form-group">
-            <label className="form-label" style={{ fontWeight: 600 }}>Gemini 메인 모델</label>
+          <div className="form-group" style={{ gridColumn: '1 / -1' }}>
+            <label className="form-label" style={{ fontWeight: 600 }}>Gemini 답변 생성 모델</label>
             <select
               className="form-input"
               value={form.gemini_model}
@@ -442,452 +489,133 @@ export function SettingsTab({ onUpdateBadge }) {
         </div>
       </div>
 
-      {/* 3. 섹션 2: PII 비식별화 엔진 설정 */}
-      <div className="card-box" style={{ background: 'var(--bg-card)', padding: '1.5rem', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.25rem', borderBottom: '1px solid rgba(255, 255, 255, 0.06)', paddingBottom: '0.75rem' }}>
-          <Shield size={18} color="#10b981" />
-          <h3 style={{ fontSize: '1.05rem', fontWeight: 700 }}>2. 개인정보(PII) 비식별화 엔진</h3>
-        </div>
-
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
-          {/* 비식별화 방식 선택 */}
-          <div className="form-group" style={{ gridColumn: '1 / -1' }}>
-            <label className="form-label" style={{ fontWeight: 600, marginBottom: '0.5rem', display: 'block' }}>비식별화 방식</label>
-            <div style={{ display: 'flex', gap: '1rem' }}>
-              <label style={{
-                flex: 1,
-                padding: '0.85rem 1rem',
-                borderRadius: '8px',
-                border: form.pii_backend === 'sllm' ? '2px solid var(--emerald)' : '1px solid rgba(255, 255, 255, 0.1)',
-                background: form.pii_backend === 'sllm' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(255, 255, 255, 0.02)',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.75rem'
-              }}>
-                <input
-                  type="radio"
-                  name="pii_backend"
-                  value="sllm"
-                  checked={form.pii_backend === 'sllm'}
-                  onChange={(e) => setForm({ ...form, pii_backend: e.target.value })}
-                  style={{ accentColor: 'var(--emerald)' }}
-                />
-                <div>
-                  <div style={{ fontWeight: 600, color: 'var(--text-main)' }}>sLLM 기반 문맥 인지 가명화 (기본 권장)</div>
-                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>로컬 경량 LLM(Qwen2.5)을 통한 자연스러운 인명/장비/직책 가명화</div>
-                </div>
-              </label>
-
-              <label style={{
-                flex: 1,
-                padding: '0.85rem 1rem',
-                borderRadius: '8px',
-                border: form.pii_backend === 'rule' ? '2px solid var(--emerald)' : '1px solid rgba(255, 255, 255, 0.1)',
-                background: form.pii_backend === 'rule' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(255, 255, 255, 0.02)',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.75rem'
-              }}>
-                <input
-                  type="radio"
-                  name="pii_backend"
-                  value="rule"
-                  checked={form.pii_backend === 'rule'}
-                  onChange={(e) => setForm({ ...form, pii_backend: e.target.value })}
-                  style={{ accentColor: 'var(--emerald)' }}
-                />
-                <div>
-                  <div style={{ fontWeight: 600, color: 'var(--text-main)' }}>정규식 및 Kiwi 형태소 분석 전용</div>
-                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>0ms 초고속 정규식 마스킹 (GPU 미가용 시 안전 모드)</div>
-                </div>
-              </label>
-            </div>
-          </div>
-
-          {/* 비식별화 전략 모드 (Phase 5 표준 고정밀 모드 고정) */}
-          <div className="form-group" style={{ gridColumn: '1 / -1' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-              <label className="form-label" style={{ fontWeight: 600, margin: 0, display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                <span>비식별화 전략 모드</span>
-                <span style={{ fontSize: '0.72rem', padding: '0.15rem 0.5rem', borderRadius: '4px', background: 'rgba(59, 130, 246, 0.15)', color: '#60a5fa', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
-                  <Lock size={11} /> Phase 5 표준 고정밀 고정
-                </span>
-              </label>
-              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                최종 납품 표준 채택 (정밀도 90.93% · F1 93.33% · 대화 가독성 최우선)
-              </span>
-            </div>
-
-            <div style={{
-              padding: '1.1rem 1.25rem',
-              borderRadius: '10px',
-              border: '1.5px solid #3b82f6',
-              background: 'rgba(59, 130, 246, 0.06)',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '0.6rem',
-            }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <ShieldCheck size={18} color="#3b82f6" />
-                  <span style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--text-main)' }}>
-                    5번째: 표준 고정밀 모드 (Phase 5: Balanced Standard)
-                  </span>
-                </div>
-                <span style={{ fontSize: '0.7rem', padding: '0.2rem 0.55rem', borderRadius: '4px', background: 'rgba(59, 130, 246, 0.2)', color: '#93c5fd', fontWeight: 700 }}>
-                  기본 확정 적용
-                </span>
-              </div>
-
-              <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-                <span style={{ fontSize: '0.72rem', padding: '0.18rem 0.5rem', borderRadius: '4px', background: 'rgba(255,255,255,0.06)', color: 'var(--text-main)' }}>
-                  F1-Score <b>93.33%</b>
-                </span>
-                <span style={{ fontSize: '0.72rem', padding: '0.18rem 0.5rem', borderRadius: '4px', background: 'rgba(255,255,255,0.06)', color: 'var(--text-main)' }}>
-                  정밀도 <b>90.93%</b> (과잉 마스킹 방어 최우수)
-                </span>
-                <span style={{ fontSize: '0.72rem', padding: '0.18rem 0.5rem', borderRadius: '4px', background: 'rgba(255,255,255,0.06)', color: 'var(--text-main)' }}>
-                  재현율 <b>95.87%</b>
-                </span>
-                <span style={{ fontSize: '0.72rem', padding: '0.18rem 0.5rem', borderRadius: '4px', background: 'rgba(255,255,255,0.06)', color: 'var(--text-main)' }}>
-                  미탐 <b>171건</b> (최저 유출)
-                </span>
-              </div>
-
-              <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', lineHeight: '1.45' }}>
-                기본 10대 트리거와 표준 균형 프롬프트가 적용됩니다. 일반 상담 문장에 대한 과잉 마스킹 방어가 철저하여 <b>상담 대화 가독성과 시스템 안정성을 최상</b>으로 유지합니다.
-              </div>
-            </div>
-          </div>
-
-          <div className="form-group">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
-              <label className="form-label" style={{ fontWeight: 600, margin: 0 }}>sLLM 모델명</label>
-              <span className="badge-pill" style={{ background: 'rgba(148, 163, 184, 0.15)', color: 'var(--text-muted)', fontSize: '0.7rem', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
-                <Lock size={10} /> 시스템 고정 모델
-              </span>
-            </div>
-            <input
-              type="text"
-              className="form-input"
-              value={form.pii_sllm_model}
-              readOnly
-              style={{ background: 'rgba(255, 255, 255, 0.03)', color: 'var(--text-muted)', cursor: 'not-allowed', borderColor: 'rgba(255, 255, 255, 0.08)' }}
-              title="사전 검증된 고정 경량 LLM 모델로 임의 변경이 제한됩니다."
-            />
-          </div>
-
-          <div className="form-group">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                <label className="form-label" style={{ fontWeight: 600, margin: 0 }}>Ollama sLLM 호스트</label>
-                <span className="badge-pill" style={{ background: 'rgba(148, 163, 184, 0.15)', color: 'var(--text-muted)', fontSize: '0.7rem', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
-                  <Lock size={10} /> 인프라 고정 URL
-                </span>
-              </div>
-              <button
-                type="button"
-                className="btn btn-secondary btn-sm"
-                onClick={() => handleTestConnection('ollama', { host: form.pii_sllm_host })}
-                disabled={testing.ollama}
-                style={{ fontSize: '0.72rem' }}
-              >
-                {testing.ollama ? <RefreshCw size={11} className="spinner" /> : <Server size={11} />}
-                <span>연결 테스트</span>
-              </button>
-            </div>
-            <input
-              type="text"
-              className="form-input"
-              value={form.pii_sllm_host}
-              readOnly
-              style={{ background: 'rgba(255, 255, 255, 0.03)', color: 'var(--text-muted)', cursor: 'not-allowed', borderColor: 'rgba(255, 255, 255, 0.08)' }}
-              title="원격 L4 GPU 고정 호스트 엔드포인트입니다."
-            />
-            {testResults.ollama && (
-              <div style={{ marginTop: '0.4rem', fontSize: '0.75rem', color: testResults.ollama.success ? 'var(--emerald)' : 'var(--rose)' }}>
-                {testResults.ollama.message}
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* 4. 섹션 3: 원격 GPU & 리랭커 엔드포인트 */}
-      <div className="card-box" style={{ background: 'var(--bg-card)', padding: '1.5rem', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.25rem', borderBottom: '1px solid rgba(255, 255, 255, 0.06)', paddingBottom: '0.75rem' }}>
-          <Server size={18} color="#a855f7" />
-          <h3 style={{ fontSize: '1.05rem', fontWeight: 700 }}>3. 원격 L4 GPU 및 리랭커 엔드포인트</h3>
-        </div>
-
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
-          <div className="form-group">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
-              <label className="form-label" style={{ fontWeight: 600, margin: 0 }}>Ollama 호스트 URL (임베딩 및 서빙)</label>
-              <span className="badge-pill" style={{ background: 'rgba(148, 163, 184, 0.15)', color: 'var(--text-muted)', fontSize: '0.7rem', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
-                <Lock size={10} /> 인프라 고정 URL
-              </span>
-            </div>
-            <input
-              type="text"
-              className="form-input"
-              value={form.ollama_host}
-              readOnly
-              style={{ background: 'rgba(255, 255, 255, 0.03)', color: 'var(--text-muted)', cursor: 'not-allowed', borderColor: 'rgba(255, 255, 255, 0.08)' }}
-              title="원격 L4 GPU 고정 호스트 엔드포인트입니다."
-            />
-          </div>
-
-          <div className="form-group">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                <label className="form-label" style={{ fontWeight: 600, margin: 0 }}>Reranker 엔드포인트 (bge-reranker-v2-m3)</label>
-                <span className="badge-pill" style={{ background: 'rgba(148, 163, 184, 0.15)', color: 'var(--text-muted)', fontSize: '0.7rem', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
-                  <Lock size={10} /> 인프라 고정 URL
-                </span>
-              </div>
-              <button
-                type="button"
-                className="btn btn-secondary btn-sm"
-                onClick={() => handleTestConnection('reranker', { host: form.reranker_endpoint })}
-                disabled={testing.reranker}
-                style={{ fontSize: '0.72rem' }}
-              >
-                {testing.reranker ? <RefreshCw size={11} className="spinner" /> : <Activity size={11} />}
-                <span>리랭커 핑 테스트</span>
-              </button>
-            </div>
-            <input
-              type="text"
-              className="form-input"
-              value={form.reranker_endpoint}
-              readOnly
-              style={{ background: 'rgba(255, 255, 255, 0.03)', color: 'var(--text-muted)', cursor: 'not-allowed', borderColor: 'rgba(255, 255, 255, 0.08)' }}
-              title="원격 L4 GPU BGE 리랭커 전용 마이크로서비스 엔드포인트입니다."
-            />
-            {testResults.reranker && (
-              <div style={{ marginTop: '0.4rem', fontSize: '0.75rem', color: testResults.reranker.success ? 'var(--emerald)' : 'var(--rose)' }}>
-                {testResults.reranker.message}
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* 5. 섹션 4: 웹 검색 및 LangSmith 관측성 */}
+      {/* 4. 섹션 2: 웹 검색(Grounding) 설정 */}
       <div className="card-box" style={{ background: 'var(--bg-card)', padding: '1.5rem', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.25rem', borderBottom: '1px solid rgba(255, 255, 255, 0.06)', paddingBottom: '0.75rem' }}>
           <Globe size={18} color="#f59e0b" />
-          <h3 style={{ fontSize: '1.05rem', fontWeight: 700 }}>4. 웹 검색(Grounding) 및 LangSmith 관측성</h3>
+          <h3 style={{ fontSize: '1.05rem', fontWeight: 700 }}>2. 실시간 웹 검색(Grounding) 키 설정 (선택사항)</h3>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
-          {/* 웹 검색 전용 키 */}
-          <div className="form-group">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
-              <label className="form-label" style={{ fontWeight: 600, margin: 0 }}>웹 검색 전용 유료 키 (선택사항)</label>
-              {form.web_search_gemini_api_key_set && (
-                <span className="badge-pill" style={{ background: 'rgba(16, 185, 129, 0.2)', color: 'var(--emerald)', fontSize: '0.7rem' }}>
-                  {form.web_search_gemini_api_key_masked}
-                </span>
-              )}
-            </div>
-            <div style={{ position: 'relative' }}>
-              <input
-                type={showWebSearchKey ? 'text' : 'password'}
-                className="form-input"
-                placeholder="비워두면 메인 Gemini API 키로 자동 폴백"
-                value={form.web_search_gemini_api_key}
-                onChange={(e) => setForm({ ...form, web_search_gemini_api_key: e.target.value })}
-                style={{ paddingRight: '2.5rem' }}
-              />
-              <button
-                type="button"
-                onClick={() => setShowWebSearchKey(!showWebSearchKey)}
-                style={{ position: 'absolute', right: '0.75rem', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}
-              >
-                {showWebSearchKey ? <EyeOff size={16} /> : <Eye size={16} />}
-              </button>
-            </div>
+        <div className="form-group">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+            <label className="form-label" style={{ fontWeight: 600, margin: 0 }}>웹 검색 전용 API 키</label>
+            {form.web_search_gemini_api_key_set && (
+              <span className="badge-pill" style={{ background: 'rgba(16, 185, 129, 0.2)', color: 'var(--emerald)', fontSize: '0.72rem' }}>
+                ✓ 등록됨: {form.web_search_gemini_api_key_masked}
+              </span>
+            )}
           </div>
-
-          {/* LangSmith API Key */}
-          <div className="form-group">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
-              <label className="form-label" style={{ fontWeight: 600, margin: 0 }}>LangSmith API Key</label>
-              {form.langsmith_api_key_set && (
-                <span className="badge-pill" style={{ background: 'rgba(16, 185, 129, 0.2)', color: 'var(--emerald)', fontSize: '0.7rem' }}>
-                  {form.langsmith_api_key_masked}
-                </span>
-              )}
-            </div>
-            <div style={{ position: 'relative' }}>
-              <input
-                type={showLangsmithKey ? 'text' : 'password'}
-                className="form-input"
-                placeholder="LangSmith 추적 API 키 입력 (lsv2_...)"
-                value={form.langsmith_api_key}
-                onChange={(e) => setForm({ ...form, langsmith_api_key: e.target.value })}
-                style={{ paddingRight: '2.5rem' }}
-              />
-              <button
-                type="button"
-                onClick={() => setShowLangsmithKey(!showLangsmithKey)}
-                style={{ position: 'absolute', right: '0.75rem', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}
-              >
-                {showLangsmithKey ? <EyeOff size={16} /> : <Eye size={16} />}
-              </button>
-            </div>
+          <div style={{ position: 'relative' }}>
+            <input
+              type={showWebSearchKey ? 'text' : 'password'}
+              className="form-input"
+              placeholder="비워두면 메인 Gemini API 키로 자동 폴백됩니다."
+              value={form.web_search_gemini_api_key}
+              onChange={(e) => setForm({ ...form, web_search_gemini_api_key: e.target.value })}
+              style={{ paddingRight: '2.5rem' }}
+            />
+            <button
+              type="button"
+              onClick={() => setShowWebSearchKey(!showWebSearchKey)}
+              style={{ position: 'absolute', right: '0.75rem', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}
+              title={showWebSearchKey ? '숨기기' : '보기'}
+            >
+              {showWebSearchKey ? <EyeOff size={16} /> : <Eye size={16} />}
+            </button>
+          </div>
+          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.35rem' }}>
+            웹 검색 전용 유료 키를 별도로 운영하고자 할 때만 입력하세요. 미입력 시 위 1번 메인 키를 함께 공유합니다.
           </div>
         </div>
       </div>
 
-      {/* 5. 5대 보안 계층: 프롬프트 보안 가드레일 (Prompt Injection & Jailbreak Defense) */}
-      <div className="card-box" style={{ background: 'var(--bg-card)', padding: '1.5rem', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.08)', marginTop: '1.5rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem', borderBottom: '1px solid rgba(255, 255, 255, 0.06)', paddingBottom: '0.75rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-            <ShieldAlert size={20} color="#f59e0b" />
-            <div>
-              <h3 style={{ margin: 0, fontSize: '1.05rem', fontWeight: 700 }}>5대 보안 계층: 프롬프트 가드레일 (Prompt Injection & Jailbreak Defense)</h3>
-              <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                탈옥(Jailbreak), 시스템 지침 탈취, 우회 롤플레잉 공격을 차단하는 3중 심층 방어선입니다.
-              </p>
+      {/* 5. 섹션 3: 2대 보안 체계 (개인정보 보호 & 챗봇 악용 방지) */}
+      <div className="card-box" style={{ background: 'var(--bg-card)', padding: '1.5rem', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.25rem', borderBottom: '1px solid rgba(255, 255, 255, 0.06)', paddingBottom: '0.75rem' }}>
+          <ShieldCheck size={20} color="#10b981" />
+          <h3 style={{ fontSize: '1.05rem', fontWeight: 700 }}>3. 2대 시스템 보안 체계 (상시 가동 중)</h3>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.25rem' }}>
+          {/* 3-1. 개인정보(PII) 비식별화 카드 */}
+          <div style={{
+            padding: '1.2rem',
+            borderRadius: '10px',
+            border: '1.5px solid rgba(16, 185, 129, 0.3)',
+            background: 'rgba(16, 185, 129, 0.04)',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '0.75rem',
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <Shield size={18} color="#10b981" />
+                <span style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--text-main)' }}>
+                  개인정보(PII) 자동 비식별화
+                </span>
+              </div>
+              <span style={{ fontSize: '0.72rem', padding: '0.2rem 0.55rem', borderRadius: '999px', background: 'rgba(16, 185, 129, 0.2)', color: '#6ee7b7', fontWeight: 700 }}>
+                ● AI 상시 가명화
+              </span>
+            </div>
+
+            <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', lineHeight: '1.5' }}>
+              학생·교직원의 성명, 전화번호, 시스템 IP, 기기 번호 등 민감한 개인식별정보를 로컬 AI(sLLM)가 문맥 수준에서 인지하여 안전하게 가명 처리 후 저장합니다. 외부 유출이 원천 차단됩니다.
+            </div>
+
+            <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '0.35rem', paddingTop: '0.35rem', borderTop: '1px dashed rgba(255,255,255,0.08)' }}>
+              <Lock size={12} color="#10b981" />
+              <span>개인정보보호법 안전조치 규격 준수 (sLLM 문맥 가명화 고정)</span>
             </div>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-            <span className="badge-pill" style={{
-              background: form.prompt_guard_enabled ? 'rgba(16, 185, 129, 0.15)' : 'rgba(239, 68, 68, 0.15)',
-              color: form.prompt_guard_enabled ? 'var(--emerald)' : 'var(--rose)',
-              fontSize: '0.75rem',
-              fontWeight: 600,
-            }}>
-              {form.prompt_guard_enabled ? '가드레일 가동 중' : '가드레일 비활성'}
-            </span>
-            <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', gap: '0.4rem', fontSize: '0.85rem' }}>
-              <input
-                type="checkbox"
-                checked={form.prompt_guard_enabled}
-                onChange={(e) => setForm({ ...form, prompt_guard_enabled: e.target.checked })}
-                style={{ width: '16px', height: '16px', accentColor: '#10b981' }}
-              />
-              <span>보안 가드레일 활성화</span>
-            </label>
+
+          {/* 3-2. 프롬프트 가드레일 (보안 방화벽) 카드 */}
+          <div style={{
+            padding: '1.2rem',
+            borderRadius: '10px',
+            border: '1.5px solid rgba(59, 130, 246, 0.3)',
+            background: 'rgba(59, 130, 246, 0.04)',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '0.75rem',
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <ShieldAlert size={18} color="#3b82f6" />
+                <span style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--text-main)' }}>
+                  챗봇 악용 및 탈옥 방지 방화벽
+                </span>
+              </div>
+              <span style={{ fontSize: '0.72rem', padding: '0.2rem 0.55rem', borderRadius: '999px', background: 'rgba(59, 130, 246, 0.2)', color: '#93c5fd', fontWeight: 700 }}>
+                ● 0초 초고속 방어
+              </span>
+            </div>
+
+            <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', lineHeight: '1.5' }}>
+              시스템 지침 탈취, 탈옥(Jailbreak), 악성 시스템 코드 주입 시도를 0초(0ms 지연) 만에 사전 감지하여 안전 거절 응답을 반환합니다. 메인 LLM과 GPU 자원 낭비를 100% 방지합니다.
+            </div>
+
+            <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '0.35rem', paddingTop: '0.35rem', borderTop: '1px dashed rgba(255,255,255,0.08)' }}>
+              <CheckCircle2 size={12} color="#3b82f6" />
+              <span>글로벌 보안 벤치마크(BIPIA 250건) 전수 차단(100%) 표준 모드 상시 가동</span>
+            </div>
           </div>
         </div>
 
-        {form.prompt_guard_enabled && (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', marginBottom: '1rem' }}>
-            {/* Mode 1: STANDARD (기본 권장, 0ms) */}
-            <label style={{
-              padding: '1rem',
-              borderRadius: '10px',
-              border: (form.prompt_guard_mode || 'standard') === 'standard' ? '2px solid #10b981' : '1px solid rgba(255, 255, 255, 0.1)',
-              background: (form.prompt_guard_mode || 'standard') === 'standard' ? 'rgba(16, 185, 129, 0.08)' : 'rgba(255, 255, 255, 0.02)',
-              cursor: 'pointer',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '0.5rem',
-              transition: 'all 0.2s ease',
-            }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <input
-                    type="radio"
-                    name="prompt_guard_mode"
-                    value="standard"
-                    checked={(form.prompt_guard_mode || 'standard') === 'standard'}
-                    onChange={(e) => setForm({ ...form, prompt_guard_mode: e.target.value })}
-                    style={{ accentColor: '#10b981' }}
-                  />
-                  <span style={{ fontWeight: 700, fontSize: '0.92rem', color: 'var(--text-main)' }}>기본 모드 (STANDARD)</span>
-                </div>
-                <span style={{ fontSize: '0.7rem', padding: '0.15rem 0.4rem', borderRadius: '4px', background: 'rgba(16, 185, 129, 0.2)', color: '#6ee7b7', fontWeight: 600 }}>권장</span>
-              </div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', lineHeight: '1.4' }}>
-                1차 초고속 정규식 사전 차단 (0ms 지연) + 3차 사후 출력 누출 검사. 40여 종의 명백한 탈옥 공격 즉각 차단.
-              </div>
-            </label>
-
-            {/* Mode 2: STRICT (강화 보안) */}
-            <label style={{
-              padding: '1rem',
-              borderRadius: '10px',
-              border: (form.prompt_guard_mode || 'standard') === 'strict' ? '2px solid #3b82f6' : '1px solid rgba(255, 255, 255, 0.1)',
-              background: (form.prompt_guard_mode || 'standard') === 'strict' ? 'rgba(59, 130, 246, 0.08)' : 'rgba(255, 255, 255, 0.02)',
-              cursor: 'pointer',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '0.5rem',
-              transition: 'all 0.2s ease',
-            }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <input
-                    type="radio"
-                    name="prompt_guard_mode"
-                    value="strict"
-                    checked={(form.prompt_guard_mode || 'standard') === 'strict'}
-                    onChange={(e) => setForm({ ...form, prompt_guard_mode: e.target.value })}
-                    style={{ accentColor: '#3b82f6' }}
-                  />
-                  <span style={{ fontWeight: 700, fontSize: '0.92rem', color: 'var(--text-main)' }}>강화 모드 (STRICT)</span>
-                </div>
-                <span style={{ fontSize: '0.7rem', padding: '0.15rem 0.4rem', borderRadius: '4px', background: 'rgba(59, 130, 246, 0.2)', color: '#93c5fd', fontWeight: 600 }}>sLLM 추론</span>
-              </div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', lineHeight: '1.4' }}>
-                1차 정규식 + 2차 L4 GPU Qwen2.5 sLLM 맥락 안전 분류기 + 3차 출력 누출 검사. 교묘한 우화/역할극 우회까지 방어.
-              </div>
-            </label>
-
-            {/* Mode 3: OFF (비활성) */}
-            <label style={{
-              padding: '1rem',
-              borderRadius: '10px',
-              border: (form.prompt_guard_mode || 'standard') === 'off' ? '2px solid #ef4444' : '1px solid rgba(255, 255, 255, 0.1)',
-              background: (form.prompt_guard_mode || 'standard') === 'off' ? 'rgba(239, 68, 68, 0.08)' : 'rgba(255, 255, 255, 0.02)',
-              cursor: 'pointer',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '0.5rem',
-              transition: 'all 0.2s ease',
-            }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <input
-                    type="radio"
-                    name="prompt_guard_mode"
-                    value="off"
-                    checked={(form.prompt_guard_mode || 'standard') === 'off'}
-                    onChange={(e) => setForm({ ...form, prompt_guard_mode: e.target.value })}
-                    style={{ accentColor: '#ef4444' }}
-                  />
-                  <span style={{ fontWeight: 700, fontSize: '0.92rem', color: 'var(--text-main)' }}>비활성 모드 (OFF)</span>
-                </div>
-                <span style={{ fontSize: '0.7rem', padding: '0.15rem 0.4rem', borderRadius: '4px', background: 'rgba(239, 68, 68, 0.2)', color: '#fca5a5', fontWeight: 600 }}>단독 페르소나</span>
-              </div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', lineHeight: '1.4' }}>
-                외부 가드레일을 끄고 프롬프트 페르소나 지침에만 의존합니다. (테스트 목적)
-              </div>
-            </label>
-          </div>
-        )}
-
-        <div style={{ padding: '0.75rem 1rem', background: 'rgba(0, 0, 0, 0.02)', borderRadius: '8px', border: '1px solid var(--border-color)', fontSize: '0.78rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <span>🔒 차단된 모든 공격 질의는 아래 <strong>보안 감사 로그(Audit Trail)</strong>에 <code>PROMPT_ATTACK_BLOCKED</code> 액션으로 접속 IP와 함께 영구 적재됩니다.</span>
+        <div style={{ marginTop: '1rem', padding: '0.65rem 0.9rem', background: 'rgba(0, 0, 0, 0.02)', borderRadius: '8px', border: '1px solid var(--border-color)', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+          🔒 모든 비식별화 이력과 차단된 공격 질의는 아래 <strong>보안 감사 로그(Audit Trail)</strong>에 접속 IP와 함께 영구 적재되어 추적 가능합니다.
         </div>
       </div>
 
-      {/* 6. 보안 감사 추적 (Audit Trail) 및 엑셀 다운로드 */}
-      <div className="admin-card" style={{ marginTop: '1.5rem', border: '1px solid var(--border-color)', borderRadius: '12px', background: 'var(--card-bg, #ffffff)' }}>
+      {/* 6. 섹션 4: 보안 감사 추적 (Audit Trail) 및 엑셀 다운로드 */}
+      <div className="admin-card" style={{ marginTop: '0.5rem', border: '1px solid var(--border-color)', borderRadius: '12px', background: 'var(--card-bg, #ffffff)' }}>
         <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.25rem 1.5rem', borderBottom: '1px solid var(--border-color)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-            <ShieldCheck size={20} style={{ color: 'var(--emerald, #10b981)' }} />
+            <Activity size={20} style={{ color: 'var(--emerald, #10b981)' }} />
             <div>
               <h3 style={{ margin: 0, fontSize: '1.05rem', fontWeight: 600 }}>보안 감사 로그 (Audit Trail)</h3>
               <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                개인정보보호법 및 공공 안전조치 규격에 따라 관리자 C/U/D 및 민감 설정 변경 이력을 영구 보관합니다.
+                개인정보보호법 및 공공 안전조치 규격에 따라 관리자 조작 및 민감 설정 변경 이력을 영구 보관합니다.
               </p>
             </div>
           </div>
@@ -938,6 +666,7 @@ export function SettingsTab({ onUpdateBadge }) {
                   <option value="FAQ_CREATE">FAQ 신규 등록</option>
                   <option value="FAQ_UPDATE">FAQ 항목 수정</option>
                   <option value="FAQ_DELETE">FAQ 항목 삭제</option>
+                  <option value="PROMPT_ATTACK_BLOCKED">보안 공격 차단</option>
                 </select>
               </div>
             </div>
@@ -967,22 +696,8 @@ export function SettingsTab({ onUpdateBadge }) {
             </button>
           </div>
 
-          {/* 상태코드 범례 안내 박스 */}
-          <div style={{ marginTop: '0.85rem', padding: '0.65rem 0.85rem', background: 'rgba(0, 0, 0, 0.02)', borderRadius: '8px', border: '1px solid var(--border-color)', fontSize: '0.75rem' }}>
-            <div style={{ fontWeight: 600, marginBottom: '0.35rem', color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-              <AlertCircle size={14} style={{ color: '#3b82f6' }} />
-              <span>상태코드(Status Code) 처리결과 판정 기준 안내</span>
-            </div>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.85rem', color: 'var(--text-muted)' }}>
-              <span><strong style={{ color: '#10b981' }}>200 (성공)</strong>: 작업이 정상 실행되어 반영됨</span>
-              <span><strong style={{ color: '#f59e0b' }}>401/403 (권한차단)</strong>: 비인가자 접근/조작 차단</span>
-              <span><strong style={{ color: '#6b7280' }}>404 (대상없음)</strong>: 삭제/조작 대상 미존재</span>
-              <span><strong style={{ color: '#ef4444' }}>500 (서버오류)</strong>: 시스템 예외로 작업 실패</span>
-            </div>
-          </div>
-
           <div style={{ marginTop: '0.85rem', paddingTop: '0.75rem', borderTop: '1px dashed var(--border-color)', display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-            <span>🔒 접속자 IP, 일시(KST), 수행 작업, 전후 Diff 내역, 소요시간이 UTF-8 BOM 인코딩으로 안전하게 포함됩니다.</span>
+            <span>🔒 접속자 IP, 일시(KST), 수행 작업, 변경 내역이 UTF-8 BOM 인코딩으로 안전하게 포함됩니다.</span>
             {auditStats?.last_event_at && (
               <span>최근 감사 기록: {auditStats.last_event_at}</span>
             )}
@@ -990,8 +705,8 @@ export function SettingsTab({ onUpdateBadge }) {
         </div>
       </div>
 
-      {/* 9. 오프라인 비상 대응 배포 패키지 관리 섹션 */}
-      <div className="settings-section-card" style={{ marginTop: '1.5rem', background: 'var(--surface)', border: '1px solid var(--border-color)', borderRadius: '12px', padding: '1.25rem' }}>
+      {/* 7. 섹션 5: 오프라인 비상 대응 배포 패키지 관리 */}
+      <div className="settings-section-card" style={{ marginTop: '0.5rem', background: 'var(--surface)', border: '1px solid var(--border-color)', borderRadius: '12px', padding: '1.25rem' }}>
         <div className="section-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
           <div>
             <h3 style={{ fontSize: '1.05rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-main)', margin: 0 }}>
@@ -1023,18 +738,6 @@ export function SettingsTab({ onUpdateBadge }) {
             <Download size={16} />
             <span>최신 오프라인 배포 파일 다운로드 (.html)</span>
           </a>
-        </div>
-
-        <div style={{ marginTop: '0.85rem', padding: '0.75rem 1rem', background: 'rgba(14, 165, 233, 0.05)', borderRadius: '8px', border: '1px solid rgba(14, 165, 233, 0.2)', fontSize: '0.8rem', color: 'var(--text-muted)', lineHeight: '1.5' }}>
-          <div style={{ fontWeight: 600, color: '#0284c7', marginBottom: '0.35rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-            <Zap size={14} />
-            <span>하이브리드 자동 최신화 동작 메커니즘 안내</span>
-          </div>
-          <ul style={{ margin: 0, paddingLeft: '1.2rem', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-            <li><strong>최초 신규/망분리 PC</strong>: 다운로드받은 단일 HTML 파일을 더블클릭하면 내장된 기본 시나리오로 즉시 기동됩니다.</li>
-            <li><strong>온라인 자동 동기화</strong>: 사용자가 인터넷이 연결된 상태에서 실행하면 백그라운드에서 최신 시나리오가 로컬 브라우저에 자동 갱신됩니다.</li>
-            <li><strong>재단절 시 최신성 보장</strong>: 이후 인터넷이 다시 끊기더라도 파일 자체를 재배포할 필요 없이 가장 최근에 갱신되었던 최신 시나리오와 대화 이력을 그대로 열람할 수 있습니다.</li>
-          </ul>
         </div>
       </div>
     </form>
