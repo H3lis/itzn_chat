@@ -81,6 +81,7 @@ export function ScenarioTab({ onUpdateBadge }) {
   // 노드 생성/수정 모달
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState('create'); // 'create' | 'edit'
+  const [customGroupMode, setCustomGroupMode] = useState(false);
   const [nodeForm, setNodeForm] = useState({
     node_id: '',
     scenario_id: '',
@@ -231,10 +232,23 @@ export function ScenarioTab({ onUpdateBadge }) {
       .sort((a, b) => a.name.localeCompare(b.name, 'ko'));
   }, [draftNodes, nodeForm.node_id, incomingParentsMap]);
 
+  // 등록된 시나리오 그룹 고유 목록 (드롭다운 제공용)
+  const existingScenarioGroups = useMemo(() => {
+    const set = new Set();
+    if (draftNodes) {
+      Object.values(draftNodes).forEach((n) => {
+        if (n.scenario_id && n.scenario_id.trim()) set.add(n.scenario_id.trim());
+      });
+    }
+    if (set.size === 0) set.add('general');
+    return Array.from(set).sort();
+  }, [draftNodes]);
+
   // 신규 노드 추가 모달 (사용자가 이름을 직접 정할 수 있도록 지원)
   const handleOpenCreate = () => {
     setModalMode('create');
-    const flow = selectedNode?.scenario_id || 'general';
+    setCustomGroupMode(false);
+    const flow = selectedNode?.scenario_id || (existingScenarioGroups[0] || 'general');
     const initId = generateNodeIdFromLabel('', flow, 'question');
     setNodeForm({
       name: '',
@@ -266,6 +280,7 @@ export function ScenarioTab({ onUpdateBadge }) {
     const initialContent = isTerminal ? '해결 가이드 내용을 확인하세요.' : '';
 
     setModalMode('create');
+    setCustomGroupMode(false);
     setNodeForm({
       name: initialLabel,
       node_id: childId,
@@ -286,6 +301,7 @@ export function ScenarioTab({ onUpdateBadge }) {
   const handleOpenEdit = (node) => {
     if (!node) return;
     setModalMode('edit');
+    setCustomGroupMode(false);
     const incomingName = incomingParentsMap[node.node_id || node.id]?.[0]?.buttonLabel;
     const initialName = node.name || node.title || incomingName || node.parentOptionLabel || node.node_id || '';
     const nodeContent = node.text || node.answer?.text || node.answer_text || '';
@@ -670,10 +686,11 @@ export function ScenarioTab({ onUpdateBadge }) {
       {/* 2. 상단 통계 및 툴바 */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '0.75rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
-          <div className="faq-stat-pill primary">
-            <GitFork size={15} />
-            <span>전체 상담 항목 :</span>
-            <span className="val">{data?.total_nodes || 0}개</span>
+          {/* 전체 장애 상담 항목: 버튼식이 아닌 순수 텍스트로 표시 */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.92rem', color: 'var(--text-main)', fontWeight: 600 }}>
+            <GitFork size={16} style={{ color: 'var(--primary)' }} />
+            <span>전체 장애 상담 항목 :</span>
+            <span style={{ color: 'var(--primary)', fontWeight: 800 }}>{data?.total_nodes || 0}개</span>
           </div>
 
           {validation && (
@@ -692,7 +709,7 @@ export function ScenarioTab({ onUpdateBadge }) {
               {validation.is_valid ? <CheckCircle2 size={14} /> : <AlertTriangle size={14} />}
               <span>
                 {validation.is_valid
-                  ? `상담 흐름 상태 : 정상 (도달 가능 ${validation.reachable_count}개)`
+                  ? `장애 상담 흐름 상태 : 정상 (도달 가능 ${validation.reachable_count}개)`
                   : `오류 ${validation.errors?.length || 0}건 / 미도달 ${validation.unreachable_count || 0}개`}
               </span>
             </div>
@@ -715,7 +732,7 @@ export function ScenarioTab({ onUpdateBadge }) {
               title="인터랙티브 캔버스에서 노드를 클릭하고 드래그하며 시각적으로 편집"
             >
               <LayoutGrid size={13} style={{ marginRight: '0.3rem' }} />
-              <span>상담 흐름 보기</span>
+              <span>장애 상담 흐름 보기</span>
             </button>
             <button
               type="button"
@@ -740,7 +757,7 @@ export function ScenarioTab({ onUpdateBadge }) {
           </button>
           <button className="btn btn-primary btn-sm" onClick={handleOpenCreate}>
             <Plus size={14} />
-            <span>상담 항목 추가</span>
+            <span>장애 상담 항목 추가</span>
           </button>
         </div>
       </div>
@@ -777,11 +794,8 @@ export function ScenarioTab({ onUpdateBadge }) {
                 }}>
                   {selectedNode.type === 'terminal' ? '답변 노드' : '질문 노드'}
                 </span>
-                <strong style={{ fontFamily: 'var(--font-mono)', fontSize: '0.9rem', color: 'var(--text-main)', flexShrink: 0 }}>
-                  {selectedNode.node_id || selectedNode.id}
-                </strong>
-                <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '460px' }}>
-                  {selectedNode.text || selectedNode.answer?.text || ''}
+                <span style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--text-main)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '460px' }}>
+                  {selectedNode.name || selectedNode.text || selectedNode.answer?.text || '선택된 항목'}
                 </span>
               </div>
 
@@ -789,10 +803,10 @@ export function ScenarioTab({ onUpdateBadge }) {
                 <button
                   className="btn btn-primary btn-sm"
                   onClick={() => handleOpenEdit(selectedNode)}
-                  title="선택된 상담 흐름 내용 및 분기 옵션 수정"
+                  title="선택된 장애 상담 흐름 내용 및 분기 옵션 수정"
                 >
                   <Edit2 size={13} />
-                  <span>상담 흐름 수정</span>
+                  <span>장애 상담 흐름 수정</span>
                 </button>
                 {selectedNode.type !== 'terminal' ? (
                   <>
@@ -808,7 +822,7 @@ export function ScenarioTab({ onUpdateBadge }) {
                       }}
                     >
                       <Plus size={13} />
-                      <span>하위 답변 추가</span>
+                      <span>최종 선택 버튼 추가</span>
                     </button>
                     <button
                       className="btn btn-secondary btn-sm"
@@ -817,13 +831,13 @@ export function ScenarioTab({ onUpdateBadge }) {
                       style={{ fontWeight: 600 }}
                     >
                       <Plus size={13} />
-                      <span>하위 질문 추가</span>
+                      <span>선택지(중간 안내) 추가</span>
                     </button>
                   </>
                 ) : (
                   <span style={{ fontSize: '0.78rem', color: 'var(--emerald)', fontWeight: 700, padding: '0.2rem 0.55rem', background: 'rgba(5, 150, 105, 0.1)', borderRadius: '6px', border: '1px solid rgba(5, 150, 105, 0.3)', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
                     <Lock size={12} />
-                    <span>최종 상담 종결 항목 (하위 추가 불가)</span>
+                    <span>최종 장애 상담 종결 항목 (하위 추가 불가)</span>
                   </span>
                 )}
               </div>
@@ -990,8 +1004,7 @@ export function ScenarioTab({ onUpdateBadge }) {
                       </span>
                     </div>
                     <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '0.25rem', display: 'flex', gap: '0.8rem', flexWrap: 'wrap' }}>
-                      <span>시나리오: <strong style={{ color: 'var(--text-main)' }}>{selectedNode.scenario_id || '미지정'}</strong></span>
-                      <span>내부 ID: <code style={{ fontSize: '0.74rem' }}>{selectedNode.node_id || selectedNode.id}</code></span>
+                      <span>시나리오 그룹: <strong style={{ color: 'var(--text-main)' }}>{selectedNode.scenario_id || '미지정'}</strong></span>
                     </div>
                   </div>
 
@@ -1001,7 +1014,7 @@ export function ScenarioTab({ onUpdateBadge }) {
                       <span>수정</span>
                     </button>
                     {selectedNode.node_id !== rootId && (
-                      <button className="btn btn-danger btn-sm" onClick={() => handleDeleteNode(selectedNode.node_id || selectedNode.id)} title="이 상담 항목 삭제">
+                      <button className="btn btn-danger btn-sm" onClick={() => handleDeleteNode(selectedNode.node_id || selectedNode.id)} title="이 장애 상담 항목 삭제">
                         <Trash2 size={13} />
                       </button>
                     )}
@@ -1027,7 +1040,7 @@ export function ScenarioTab({ onUpdateBadge }) {
                       </div>
                       {isRoot ? (
                         <div style={{ fontSize: '0.84rem', color: 'var(--text-sub)', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                          <span>🏁 최상위 상담 시작 항목입니다. (상위 항목 없음)</span>
+                          <span>🏁 최상위 장애 상담 시작 항목입니다. (상위 항목 없음)</span>
                         </div>
                       ) : parents.length === 0 ? (
                         <div style={{ fontSize: '0.82rem', color: 'var(--rose)', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
@@ -1054,7 +1067,7 @@ export function ScenarioTab({ onUpdateBadge }) {
                                   버튼: {p.buttonLabel}
                                 </span>
                                 <span style={{ color: 'var(--text-muted)', fontSize: '0.78rem' }}>from</span>
-                                <code style={{ fontSize: '0.8rem', fontWeight: 600 }}>{p.parentId}</code>
+                                <span style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-main)' }}>{p.parentText}</span>
                               </div>
                               <button
                                 type="button"
@@ -1085,7 +1098,7 @@ export function ScenarioTab({ onUpdateBadge }) {
 
                 <div>
                   <label className="form-label" style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-sub)', marginBottom: '0.4rem', display: 'block' }}>
-                    🔀 버튼 목록 (버튼명 - 버튼 ID) ({selectedNode.options?.length || 0}개)
+                    🔀 버튼 목록 ({selectedNode.options?.length || 0}개)
                   </label>
                   {selectedNode.options && selectedNode.options.length > 0 ? (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '0.25rem' }}>
@@ -1114,15 +1127,15 @@ export function ScenarioTab({ onUpdateBadge }) {
                               </span>
                             )}
                           </div>
-                          <div style={{ color: opt.next_node ? 'var(--primary)' : 'var(--text-muted)', fontSize: '0.82rem', fontFamily: 'var(--font-mono)', fontWeight: 600, flexShrink: 0, paddingLeft: '0.5rem' }}>
-                            ➔ 버튼 ID: {opt.next_node || '종료'}
+                          <div style={{ color: opt.next_node ? 'var(--primary)' : 'var(--text-muted)', fontSize: '0.82rem', fontWeight: 600, flexShrink: 0, paddingLeft: '0.5rem' }}>
+                            ➔ 이동: {opt.next_node ? (nodes[opt.next_node]?.name || opt.next_node) : '종료'}
                           </div>
                         </div>
                       ))}
                     </div>
                   ) : (
                     <div style={{ background: '#f8fafc', border: '1px solid var(--border-color)', padding: '1.25rem', borderRadius: '8px', fontSize: '0.85rem', color: 'var(--text-muted)', textAlign: 'center' }}>
-                      {selectedNode.type === 'terminal' ? '🎉 상담 종결 리프(Leaf) 노드입니다. (하위 질문/선택지 없음)' : '설정된 하위 버튼이 없습니다.'}
+                      {selectedNode.type === 'terminal' ? '🎉 장애 상담 종결 항목입니다. (하위 질문/선택지 없음)' : '설정된 하위 버튼이 없습니다.'}
                     </div>
                   )}
                 </div>
@@ -1141,16 +1154,55 @@ export function ScenarioTab({ onUpdateBadge }) {
         <div className="modal-backdrop active">
           <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '620px' }}>
             <div className="modal-header">
-              <h3>{modalMode === 'create' ? (nodeForm.parentNodeId ? '새 하위 상담 항목 추가' : '새 상담 항목 등록') : `상담 흐름 수정: ${nodeForm.name || nodeForm.node_id}`}</h3>
+              <h3>{modalMode === 'create' ? (nodeForm.parentNodeId ? '새 하위 장애 상담 항목 추가' : '새 장애 상담 항목 등록') : `장애 상담 흐름 수정: ${nodeForm.name || nodeForm.node_id}`}</h3>
               <button className="btn-close" onClick={() => setModalOpen(false)}>×</button>
             </div>
             <form onSubmit={handleSubmitNode}>
               <div className="modal-body" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                {/* ★ [사용자 피드백 반영] 의미 없는 ID 대신 사용자가 직접 이름을 지정할 수 있는 전용 필드 */}
+                {/* 1. 상위 질문 안내 카드 (하위 항목 추가 시 어떤 질문에 대한 건지 명확히 노출) */}
+                {nodeForm.parentNodeId && (() => {
+                  const parentNode = draftNodes[nodeForm.parentNodeId];
+                  const parentQuestion = parentNode?.text || parentNode?.answer?.text || parentNode?.name || nodeForm.parentNodeId;
+                  return (
+                    <div style={{
+                      background: 'rgba(37, 99, 235, 0.05)',
+                      border: '1px solid rgba(37, 99, 235, 0.25)',
+                      borderRadius: '8px',
+                      padding: '0.85rem 1rem',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '0.5rem'
+                    }}>
+                      <div style={{ fontSize: '0.8rem', color: 'var(--primary)', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                        <GitFork size={15} />
+                        <span>연결 대상 상위 질문</span>
+                      </div>
+                      <div style={{ background: '#ffffff', padding: '0.6rem 0.8rem', borderRadius: '6px', border: '1px solid #dbeafe', fontSize: '0.88rem', fontWeight: 700, color: 'var(--text-main)', lineHeight: 1.5 }}>
+                        ❓ {parentQuestion}
+                      </div>
+                      <div className="form-group" style={{ margin: 0, marginTop: '0.2rem' }}>
+                        <label className="form-label" style={{ fontSize: '0.78rem', fontWeight: 600, marginBottom: '0.25rem', color: 'var(--text-secondary)' }}>
+                          상위 질문 화면에서 클릭할 버튼 명칭
+                        </label>
+                        <input
+                          type="text"
+                          className="form-input"
+                          value={nodeForm.parentOptionLabel}
+                          onChange={(e) => setNodeForm({ ...nodeForm, parentOptionLabel: e.target.value })}
+                          placeholder="예: 상세 점검 진행, 네 맞아요, 공유기 재부팅 완료"
+                          required
+                          style={{ fontSize: '0.88rem', fontWeight: 600 }}
+                        />
+                      </div>
+                    </div>
+                  );
+                })()}
+
+                {/* 2. 항목 명칭 입력 */}
                 <div className="form-group" style={{ margin: 0 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.3rem' }}>
                     <label className="form-label" style={{ margin: 0, fontWeight: 700, fontSize: '0.88rem', color: 'var(--text-main)' }}>
-                      🏷️ 상담 항목 이름 (사용자 지정 명칭)
+                      🏷️ 장애 상담 항목 이름 (사용자 지정 명칭)
                     </label>
                     <span style={{ fontSize: '0.72rem', color: 'var(--primary)', fontWeight: 600 }}>
                       * 캔버스와 관리 화면에 노출될 명칭
@@ -1178,58 +1230,73 @@ export function ScenarioTab({ onUpdateBadge }) {
                   />
                 </div>
 
-                {nodeForm.parentNodeId && (
-                  <div style={{
-                    background: 'rgba(37, 99, 235, 0.05)',
-                    border: '1px solid rgba(37, 99, 235, 0.2)',
-                    borderRadius: '8px',
-                    padding: '0.75rem 0.85rem',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '0.5rem'
-                  }}>
-                    <div style={{ fontSize: '0.8rem', color: 'var(--primary)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                      <GitFork size={14} />
-                      <span>상위 항목 <code>{nodeForm.parentNodeId}</code>의 하위 단계로 자동 연결됩니다.</span>
-                    </div>
+                {/* 3. 시나리오 그룹 (추가/수정 시 기존 그룹 고정, 처음 질문 등록 시 드롭다운 선택 제공) */}
+                {(() => {
+                  const isGroupFixed = modalMode === 'edit' || Boolean(nodeForm.parentNodeId);
+                  return (
                     <div className="form-group" style={{ margin: 0 }}>
-                      <label className="form-label" style={{ fontSize: '0.74rem', marginBottom: '0.2rem' }}>
-                        상위 항목에 노출될 선택지 버튼 명칭
-                      </label>
-                      <input
-                        type="text"
-                        className="form-input"
-                        value={nodeForm.parentOptionLabel}
-                        onChange={(e) => setNodeForm({ ...nodeForm, parentOptionLabel: e.target.value })}
-                        placeholder="예: 상세 점검 진행, 네 맞아요, 공유기 재부팅 완료"
-                        required
-                      />
-                    </div>
-                  </div>
-                )}
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
+                        <label className="form-label" style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-secondary)', margin: 0 }}>
+                          시나리오 그룹
+                        </label>
+                        {isGroupFixed ? (
+                          <span style={{ fontSize: '0.72rem', color: '#94a3b8', fontWeight: 600 }}>
+                            🔒 상위 흐름에 자동 고정됨 (수정 불가)
+                          </span>
+                        ) : (
+                          <span style={{ fontSize: '0.72rem', color: 'var(--primary)', fontWeight: 600 }}>
+                            * 기존 그룹 선택 또는 신규 그룹 입력
+                          </span>
+                        )}
+                      </div>
 
-                {/* 시나리오 그룹 및 내부 관리 ID (보조 정보로 깔끔하게 정리) */}
-                <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '0.75rem', background: '#f8fafc', padding: '0.65rem 0.85rem', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-                  <div className="form-group" style={{ margin: 0 }}>
-                    <label className="form-label" style={{ fontSize: '0.74rem', color: '#64748b', marginBottom: '0.2rem' }}>시나리오 그룹</label>
-                    <input
-                      type="text"
-                      className="form-input"
-                      style={{ fontSize: '0.82rem', padding: '0.4rem 0.6rem' }}
-                      value={nodeForm.scenario_id}
-                      onChange={(e) => setNodeForm({ ...nodeForm, scenario_id: e.target.value })}
-                      placeholder="예: wired_network"
-                    />
-                  </div>
-                  <div className="form-group" style={{ margin: 0 }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.2rem' }}>
-                      <label className="form-label" style={{ fontSize: '0.74rem', color: '#64748b', margin: 0 }}>내부 시스템 ID (자동 관리)</label>
+                      {isGroupFixed ? (
+                        <input
+                          type="text"
+                          className="form-input"
+                          style={{ fontSize: '0.85rem', padding: '0.45rem 0.65rem', background: '#f1f5f9', cursor: 'not-allowed', color: '#64748b' }}
+                          value={nodeForm.scenario_id}
+                          disabled
+                          readOnly
+                        />
+                      ) : (
+                        <div style={{ display: 'flex', gap: '0.5rem' }}>
+                          <select
+                            className="faq-select"
+                            style={{ flex: 1, fontSize: '0.85rem', fontWeight: 600 }}
+                            value={customGroupMode ? '__new__' : nodeForm.scenario_id}
+                            onChange={(e) => {
+                              if (e.target.value === '__new__') {
+                                setCustomGroupMode(true);
+                                setNodeForm({ ...nodeForm, scenario_id: '' });
+                              } else {
+                                setCustomGroupMode(false);
+                                setNodeForm({ ...nodeForm, scenario_id: e.target.value });
+                              }
+                            }}
+                          >
+                            {existingScenarioGroups.map((grp) => (
+                              <option key={grp} value={grp}>{grp}</option>
+                            ))}
+                            <option value="__new__">+ 직접 새 시나리오 그룹 입력…</option>
+                          </select>
+                          {customGroupMode && (
+                            <input
+                              type="text"
+                              className="form-input"
+                              style={{ flex: 1, fontSize: '0.85rem' }}
+                              placeholder="새 그룹명 입력 (영문/한글)"
+                              value={nodeForm.scenario_id}
+                              onChange={(e) => setNodeForm({ ...nodeForm, scenario_id: e.target.value })}
+                              autoFocus
+                              required
+                            />
+                          )}
+                        </div>
+                      )}
                     </div>
-                    <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.76rem', color: '#64748b', padding: '0.4rem 0.6rem', background: '#f1f5f9', borderRadius: '6px', border: '1px dashed #cbd5e1', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={nodeForm.node_id}>
-                      {nodeForm.node_id}
-                    </div>
-                  </div>
-                </div>
+                  );
+                })()}
 
                 <div className="form-group">
                   <label className="form-label">항목 유형 (종류)</label>
@@ -1411,11 +1478,11 @@ export function ScenarioTab({ onUpdateBadge }) {
                             <div style={{ paddingLeft: '63px', fontSize: '0.74rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
                               {matchedNode ? (
                                 <span style={{ color: '#059669', background: 'rgba(5, 150, 105, 0.08)', padding: '0.15rem 0.5rem', borderRadius: '4px', fontWeight: 600 }}>
-                                  ✓ 연결 완료: <strong>{matchedNode.name}</strong> ({matchedNode.typeLabel} / ID: {matchedNode.id})
+                                  ✓ 연결 완료: <strong>{matchedNode.name}</strong> ({matchedNode.typeLabel})
                                 </span>
                               ) : currentNext ? (
                                 <span style={{ color: '#d97706', background: 'rgba(217, 119, 6, 0.08)', padding: '0.15rem 0.5rem', borderRadius: '4px', fontWeight: 600 }}>
-                                  ✎ 직접 지정 ID: <strong>{currentNext}</strong> (목록 외 항목)
+                                  ✎ 직접 연결: <strong>{currentNext}</strong> (목록 외 항목)
                                 </span>
                               ) : (
                                 <span style={{ color: 'var(--text-muted)', background: 'rgba(100, 116, 139, 0.08)', padding: '0.15rem 0.5rem', borderRadius: '4px' }}>

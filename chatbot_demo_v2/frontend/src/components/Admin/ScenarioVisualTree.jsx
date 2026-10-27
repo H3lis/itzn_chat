@@ -672,11 +672,11 @@ export function ScenarioVisualTree({
     if (connectingPort) {
       e.stopPropagation();
       if (connectingPort.sourceId === targetId) {
-        alert('자기 자신 항목으로는 바로 연결할 수 없습니다. 다른 상담 항목을 선택해주세요.');
+        alert('자기 자신 항목으로는 바로 연결할 수 없습니다. 다른 장애 상담 항목을 선택해주세요.');
         return;
       }
       if (targetId === rootId) {
-        alert('상담 시작 항목으로는 역연결할 수 없습니다.');
+        alert('장애 상담 시작 항목으로는 역연결할 수 없습니다.');
         return;
       }
       if (onConnectNodes) {
@@ -912,7 +912,7 @@ export function ScenarioVisualTree({
               whiteSpace: 'nowrap',
               boxShadow: '0 2px 6px rgba(99, 102, 241, 0.35)'
             }}
-            title="새로운 대화 주제 플로우 생성 (상담 시작 연동 및 시작 항목 생성)"
+            title="새로운 대화 주제 플로우 생성 (장애 상담 시작 연동 및 시작 항목 생성)"
           >
             <Plus size={13} />
             <span>+ 새 플로우 추가</span>
@@ -939,51 +939,6 @@ export function ScenarioVisualTree({
           boxShadow: '0 4px 16px rgba(0, 0, 0, 0.06)'
         }}
       >
-        {/* 🚀 2. 신규 항목 추가 버튼 (질문 / 답변) */}
-        {onCreateVisualNode && (
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}>
-            <button
-              type="button"
-              className="btn btn-sm btn-ghost"
-              onClick={() => onCreateVisualNode('question', activeFlow)}
-              style={{
-                padding: '0.3rem 0.55rem',
-                fontSize: '0.76rem',
-                fontWeight: 600,
-                color: 'var(--primary)',
-                background: 'rgba(37, 99, 235, 0.08)',
-                border: '1px solid rgba(37, 99, 235, 0.25)',
-                borderRadius: '6px'
-              }}
-              title="현재 플로우에 새 질문 추가"
-            >
-              <Plus size={12} style={{ marginRight: '0.15rem' }} />
-              <span>질문 추가</span>
-            </button>
-
-            <button
-              type="button"
-              className="btn btn-sm btn-ghost"
-              onClick={() => onCreateVisualNode('terminal', activeFlow)}
-              style={{
-                padding: '0.3rem 0.55rem',
-                fontSize: '0.76rem',
-                fontWeight: 600,
-                color: 'var(--emerald)',
-                background: 'rgba(5, 150, 105, 0.08)',
-                border: '1px solid rgba(5, 150, 105, 0.25)',
-                borderRadius: '6px'
-              }}
-              title="현재 플로우에 새 최종 답변 추가"
-            >
-              <Plus size={12} style={{ marginRight: '0.15rem' }} />
-              <span>답변 추가</span>
-            </button>
-          </div>
-        )}
-
-        <div style={{ width: '1px', height: '16px', background: 'var(--border-color)' }} />
-
         {/* 🚀 3. 실시간 무결성 검증 배지 및 상세 팝오버 */}
         <div style={{ position: 'relative' }}>
           <button
@@ -1117,7 +1072,7 @@ export function ScenarioVisualTree({
           <Search size={13} style={{ position: 'absolute', left: '8px', color: 'var(--text-muted)' }} />
           <input
             type="text"
-            placeholder="상담 항목 검색..."
+            placeholder="장애 상담 항목 검색..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             style={{
@@ -1319,7 +1274,7 @@ export function ScenarioVisualTree({
         <button
           className="canvas-control-btn btn btn-secondary btn-sm"
           onClick={() => focusOnNode(rootId || 'root')}
-          title="상담 시작 항목으로 화면 이동"
+          title="장애 상담 시작 항목으로 화면 이동"
         >
           <Compass size={14} style={{ marginRight: '0.2rem' }} />
           <span>시작 맞춤</span>
@@ -1655,12 +1610,12 @@ export function ScenarioVisualTree({
                       flexShrink: 0
                     }}
                   >
-                    {isRoot ? '상담 시작' : isTerminal ? 'FINAL' : theme.badge}
+                    {isRoot ? '장애 상담 시작' : isTerminal ? 'FINAL' : theme.badge}
                   </span>
                   {/* ★ [요청 ⑧] 노드상 아이디 대신 버튼명이 보이게끔 수정 */}
                   {(() => {
                     const buttonName = incomingLabelsMap[nid] || node.parentOptionLabel;
-                    const mainTitle = isRoot ? '상담 시작' : (buttonName || node.title || nid);
+                    const mainTitle = isRoot ? '장애 상담 시작' : (buttonName || node.title || nid);
                     const showSubId = !isRoot && mainTitle !== nid;
 
                     return (
@@ -1678,63 +1633,12 @@ export function ScenarioVisualTree({
                         >
                           {buttonName ? `🔘 ${buttonName}` : mainTitle}
                         </span>
-                        {showSubId && (
-                          <span
-                            style={{
-                              fontFamily: 'var(--font-mono)',
-                              fontSize: '0.67rem',
-                              opacity: isRoot || isTerminal ? 0.85 : 0.65,
-                              overflow: 'hidden',
-                              textOverflow: 'ellipsis',
-                              whiteSpace: 'nowrap',
-                              lineHeight: 1.1
-                            }}
-                          >
-                            id: {nid}
-                          </span>
-                        )}
                       </div>
                     );
                   })()}
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.2rem', flexShrink: 0 }}>
-                  {/* ★ [신규] 이전 단계 노드로 바로 돌아가기 빠른 버튼 */}
-                  {!isRoot && parents.length > 0 && (
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleJumpToParent(parents[0].parentId);
-                      }}
-                      title={`이전 단계 '${parents[0].parentTitle}'(으)로 돌아가기${parents.length > 1 ? ` (총 ${parents.length}개 상위 경로)` : ''}`}
-                      style={{
-                        background: isRoot || isTerminal ? 'rgba(255, 255, 255, 0.25)' : 'rgba(37, 99, 235, 0.1)',
-                        border: isRoot || isTerminal ? '1px solid rgba(255, 255, 255, 0.4)' : '1px solid rgba(37, 99, 235, 0.25)',
-                        borderRadius: '5px',
-                        padding: '0.15rem 0.4rem',
-                        cursor: 'pointer',
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '0.2rem',
-                        color: isRoot || isTerminal ? '#ffffff' : '#2563eb',
-                        fontSize: '0.68rem',
-                        fontWeight: 700,
-                        transition: 'all 0.15s ease'
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.background = isRoot || isTerminal ? 'rgba(255, 255, 255, 0.4)' : '#2563eb';
-                        e.currentTarget.style.color = '#ffffff';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.background = isRoot || isTerminal ? 'rgba(255, 255, 255, 0.25)' : 'rgba(37, 99, 235, 0.1)';
-                        e.currentTarget.style.color = isRoot || isTerminal ? '#ffffff' : '#2563eb';
-                      }}
-                    >
-                      <CornerUpLeft size={11} />
-                      이전
-                    </button>
-                  )}
                   {hasChildren && (
                     <button
                       type="button"
@@ -1760,7 +1664,7 @@ export function ScenarioVisualTree({
                       e.stopPropagation();
                       onEditNode(node);
                     }}
-                    title="상담 흐름 수정"
+                    title="장애 상담 흐름 수정"
                     style={{
                       background: 'none',
                       border: 'none',
@@ -1778,7 +1682,7 @@ export function ScenarioVisualTree({
                         e.stopPropagation();
                         onDeleteNode(nid);
                       }}
-                      title="상담 항목 삭제"
+                      title="장애 상담 항목 삭제"
                       style={{
                         background: 'none',
                         border: 'none',
@@ -1867,10 +1771,10 @@ export function ScenarioVisualTree({
                         e.currentTarget.style.color = '#2563eb';
                         e.currentTarget.style.borderColor = '#bfdbfe';
                       }}
-                      title={`이전 단계 '${parents[0].parentTitle}'(으)로 돌아가기`}
+                      title={`이전 단계 '${parents[0].parentTitle}'(으)로 이동`}
                     >
                       <CornerUpLeft size={10} />
-                      돌아가기
+                      이전
                     </button>
                   ) : (
                     <div style={{ display: 'flex', gap: '0.2rem', flexShrink: 0 }}>
@@ -1941,33 +1845,6 @@ export function ScenarioVisualTree({
                   {node.text || node.answer?.text || '(내용 없음)'}
                 </div>
 
-                {/* 최종 답변 안내 */}
-                {isTerminal && node.answer?.text && (
-                  <div
-                    style={{
-                      fontSize: '0.75rem',
-                      lineHeight: 1.35,
-                      color: '#065f46',
-                      background: '#ecfdf5',
-                      padding: '0.4rem 0.6rem',
-                      borderRadius: '8px',
-                      border: '1px solid #a7f3d0'
-                    }}
-                  >
-                    <span style={{ fontWeight: 700, marginRight: '0.3rem' }}>✓ 안내:</span>
-                    <span
-                      style={{
-                        display: '-webkit-box',
-                        WebkitLineClamp: isCompact ? 2 : 4,
-                        WebkitBoxOrient: 'vertical',
-                        overflow: 'hidden'
-                      }}
-                    >
-                      {node.answer.text}
-                    </span>
-                  </div>
-                )}
-
                 {/* 선택지 분기 버튼 목록 */}
                 {node.options && node.options.length > 0 && !isCollapsed && (
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem', marginTop: '0.4rem' }}>
@@ -1997,10 +1874,10 @@ export function ScenarioVisualTree({
                               alignItems: 'center',
                               gap: '0.15rem'
                             }}
-                            title="이 버튼에 연결될 최종 해결 답변('처음으로' 리셋 포함) 생성"
+                            title="이 버튼에 연결될 최종 해결 답변('처음으로' 리셋 포함) 항목 생성"
                           >
                             <Plus size={10} />
-                            답변 추가
+                            최종 선택 버튼 추가
                           </button>
                           <button
                             type="button"
@@ -2021,10 +1898,10 @@ export function ScenarioVisualTree({
                               alignItems: 'center',
                               gap: '0.15rem'
                             }}
-                            title="이 버튼에 연결될 추가 하위 질문 항목 생성"
+                            title="이 버튼에 연결될 중간 선택지 및 안내 항목 생성"
                           >
                             <Plus size={10} />
-                            질문 추가
+                            선택지(중간 안내) 추가
                           </button>
                         </div>
                       )}
@@ -2089,7 +1966,6 @@ export function ScenarioVisualTree({
                                 display: 'inline-flex',
                                 alignItems: 'center',
                                 gap: '0.2rem',
-                                fontFamily: 'var(--font-mono)',
                                 fontSize: '0.68rem',
                                 fontWeight: 700,
                                 color: isReturnToRoot ? 'var(--text-muted)' : hasNext ? 'var(--primary)' : 'var(--rose)'
@@ -2098,10 +1974,7 @@ export function ScenarioVisualTree({
                               {isReturnToRoot ? (
                                 '↩ 처음으로'
                               ) : hasNext ? (
-                                <>
-                                  <ArrowRight size={10} />
-                                  {nextId.split('.').pop()}
-                                </>
+                                <ArrowRight size={11} />
                               ) : (
                                 '미연결'
                               )}
