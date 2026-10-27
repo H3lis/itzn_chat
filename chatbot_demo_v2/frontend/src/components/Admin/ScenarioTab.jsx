@@ -1152,51 +1152,49 @@ export function ScenarioTab({ onUpdateBadge }) {
       {/* 상담 항목 생성/수정 모달 - ★ [요청 ⑦] X 버튼 또는 취소 버튼을 누를 때만 닫히도록 backdrop onClick 제거 */}
       {modalOpen && (
         <div className="modal-backdrop active">
-          <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '620px' }}>
-            <div className="modal-header">
-              <h3>{modalMode === 'create' ? (nodeForm.parentNodeId ? '새 하위 장애 상담 항목 추가' : '새 장애 상담 항목 등록') : `장애 상담 흐름 수정: ${nodeForm.name || nodeForm.node_id}`}</h3>
-              <button className="btn-close" onClick={() => setModalOpen(false)}>×</button>
-            </div>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '640px' }}>
+            {(() => {
+              const parentNode = nodeForm.parentNodeId ? draftNodes[nodeForm.parentNodeId] : null;
+              const parentQuestion = parentNode ? (parentNode.text || parentNode.answer?.text || parentNode.name || nodeForm.parentNodeId) : '';
+              const modalTitle = modalMode === 'create'
+                ? (nodeForm.parentNodeId
+                    ? `새 하위 장애 상담 항목 추가: ${parentQuestion}`
+                    : '새 장애 상담 항목 등록')
+                : `장애 상담 흐름 수정: ${nodeForm.name || nodeForm.node_id}`;
+
+              return (
+                <div className="modal-header" style={{ alignItems: 'flex-start' }}>
+                  <h3 style={{ fontSize: '1.02rem', fontWeight: 700, lineHeight: 1.45, wordBreak: 'break-word', flex: 1, margin: 0, paddingRight: '0.75rem', color: 'var(--text-main)' }}>
+                    {modalTitle}
+                  </h3>
+                  <button className="btn-close" onClick={() => setModalOpen(false)}>×</button>
+                </div>
+              );
+            })()}
             <form onSubmit={handleSubmitNode}>
               <div className="modal-body" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                {/* 1. 상위 질문 안내 카드 (하위 항목 추가 시 어떤 질문에 대한 건지 명확히 노출) */}
-                {nodeForm.parentNodeId && (() => {
-                  const parentNode = draftNodes[nodeForm.parentNodeId];
-                  const parentQuestion = parentNode?.text || parentNode?.answer?.text || parentNode?.name || nodeForm.parentNodeId;
-                  return (
-                    <div style={{
-                      background: 'rgba(37, 99, 235, 0.05)',
-                      border: '1px solid rgba(37, 99, 235, 0.25)',
-                      borderRadius: '8px',
-                      padding: '0.85rem 1rem',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: '0.5rem'
-                    }}>
-                      <div style={{ fontSize: '0.8rem', color: 'var(--primary)', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                        <GitFork size={15} />
-                        <span>연결 대상 상위 질문</span>
-                      </div>
-                      <div style={{ background: '#ffffff', padding: '0.6rem 0.8rem', borderRadius: '6px', border: '1px solid #dbeafe', fontSize: '0.88rem', fontWeight: 700, color: 'var(--text-main)', lineHeight: 1.5 }}>
-                        ❓ {parentQuestion}
-                      </div>
-                      <div className="form-group" style={{ margin: 0, marginTop: '0.2rem' }}>
-                        <label className="form-label" style={{ fontSize: '0.78rem', fontWeight: 600, marginBottom: '0.25rem', color: 'var(--text-secondary)' }}>
-                          상위 질문 화면에서 클릭할 버튼 명칭
-                        </label>
-                        <input
-                          type="text"
-                          className="form-input"
-                          value={nodeForm.parentOptionLabel}
-                          onChange={(e) => setNodeForm({ ...nodeForm, parentOptionLabel: e.target.value })}
-                          placeholder="예: 상세 점검 진행, 네 맞아요, 공유기 재부팅 완료"
-                          required
-                          style={{ fontSize: '0.88rem', fontWeight: 600 }}
-                        />
-                      </div>
+                {/* 1. 상위 질문에서 클릭할 버튼 명칭 (하위 항목 추가 시) */}
+                {nodeForm.parentNodeId && (
+                  <div className="form-group" style={{ margin: 0 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.3rem' }}>
+                      <label className="form-label" style={{ margin: 0, fontWeight: 700, fontSize: '0.86rem', color: 'var(--text-main)' }}>
+                        상위 질문 화면에서 클릭할 버튼 명칭
+                      </label>
+                      <span style={{ fontSize: '0.72rem', color: 'var(--primary)', fontWeight: 600 }}>
+                        * 상위 질문에서 사용자가 누를 선택 버튼
+                      </span>
                     </div>
-                  );
-                })()}
+                    <input
+                      type="text"
+                      className="form-input"
+                      value={nodeForm.parentOptionLabel}
+                      onChange={(e) => setNodeForm({ ...nodeForm, parentOptionLabel: e.target.value })}
+                      placeholder="예: 상세 점검 진행, 네 맞아요, 공유기 재부팅 완료"
+                      required
+                      style={{ fontSize: '0.88rem', fontWeight: 600 }}
+                    />
+                  </div>
+                )}
 
                 {/* 2. 항목 명칭 입력 */}
                 <div className="form-group" style={{ margin: 0 }}>
@@ -1426,8 +1424,8 @@ export function ScenarioTab({ onUpdateBadge }) {
 
                             {/* 2행: 이동할 다음 항목 (직접 입력창 + 빠른 드롭다운 선택) */}
                             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                              <span style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--text-secondary)', minWidth: '58px' }}>
-                                연결 항목:
+                              <span style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--text-secondary)', minWidth: '85px', whiteSpace: 'nowrap' }}>
+                                버튼 연결 항목:
                               </span>
                               {/* ✏️ 직접 텍스트 입력창 (항목 이름 또는 ID 모두 인식) */}
                               <input
