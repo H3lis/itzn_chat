@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   FileText, UploadCloud, RefreshCw, Trash2, Edit3, Sparkles, Play, Terminal, Copy,
-  Clock, Zap, Loader2, Hourglass
+  Check, Clock, Zap, Loader2, Hourglass
 } from 'lucide-react';
 
 export function RagTab({ onUpdateBadge }) {
@@ -53,6 +53,7 @@ export function RagTab({ onUpdateBadge }) {
   const [reindexingForce, setReindexingForce] = useState(false);
   const [reindexStep, setReindexStep] = useState(0); // 0: 준비, 1~5: 각 파이프라인 단계
   const [terminalLogs, setTerminalLogs] = useState([]);
+  const [copiedLogs, setCopiedLogs] = useState(false); // 로그 복사 완료 피드백 상태
   const terminalEndRef = useRef(null);
   const sseRef = useRef(null);
   const isClearedRef = useRef(false); // 사용자가 지우기 눌렀을 때 과거 로그 부활 방지 플래그
@@ -118,6 +119,52 @@ export function RagTab({ onUpdateBadge }) {
       setLoadingDocs(false);
     }
   }, []);
+
+  // 터미널 로그 전체 복사 (HTTPS / HTTP IP / 망분리 오프라인 HTML 환경 100% 호환 fallback 지원)
+  const handleCopyLogs = async () => {
+    if (!terminalLogs || terminalLogs.length === 0) {
+      alert('복사할 터미널 로그가 없습니다.');
+      return;
+    }
+    const text = terminalLogs.join('\n');
+    let success = false;
+
+    // 1차 시도: Clipboard API (HTTPS 및 localhost)
+    if (navigator?.clipboard?.writeText) {
+      try {
+        await navigator.clipboard.writeText(text);
+        success = true;
+      } catch (err) {
+        console.warn('navigator.clipboard.writeText 실패, fallback 시도:', err);
+      }
+    }
+
+    // 2차 시도 (Fallback): textarea execCommand (HTTP IP 접속 및 file:/// 단일 HTML 환경 지원)
+    if (!success) {
+      try {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed';
+        textarea.style.left = '-9999px';
+        textarea.style.top = '-9999px';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.focus();
+        textarea.select();
+        success = document.execCommand('copy');
+        document.body.removeChild(textarea);
+      } catch (e) {
+        console.error('execCommand 복사 fallback 실패:', e);
+      }
+    }
+
+    if (success) {
+      setCopiedLogs(true);
+      setTimeout(() => setCopiedLogs(false), 2000);
+    } else {
+      alert('로그 복사에 실패했습니다. 브라우저 클립보드 복사 권한을 확인해주세요.');
+    }
+  };
 
   // 터미널 화면 및 서버 로그 깔끔하게 지우기 (과거 로그 부활 원천 차단)
   const handleClearLogs = async () => {
@@ -1161,12 +1208,23 @@ export function RagTab({ onUpdateBadge }) {
             </div>
             <div style={{ display: 'flex', gap: '0.5rem' }}>
               <button
+                type="button"
                 className="btn btn-secondary btn-sm"
-                onClick={() => navigator.clipboard.writeText(terminalLogs.join('\n'))}
-                title="로그 전체 복사"
-                style={{ background: '#1e293b', border: '1px solid #334155', color: '#cbd5e1' }}
+                onClick={handleCopyLogs}
+                title={copiedLogs ? '클립보드 복사 완료!' : '로그 전체 복사'}
+                style={{
+                  background: copiedLogs ? 'rgba(16, 185, 129, 0.2)' : '#1e293b',
+                  border: copiedLogs ? '1px solid #10b981' : '1px solid #334155',
+                  color: copiedLogs ? '#34d399' : '#cbd5e1',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.35rem',
+                  transition: 'all 0.2s',
+                  padding: '0.25rem 0.6rem'
+                }}
               >
-                <Copy size={12} />
+                {copiedLogs ? <Check size={12} /> : <Copy size={12} />}
+                <span style={{ fontSize: '0.74rem', fontWeight: 600 }}>{copiedLogs ? '복사됨!' : '복사'}</span>
               </button>
               <button
                 className="btn btn-secondary btn-sm"
