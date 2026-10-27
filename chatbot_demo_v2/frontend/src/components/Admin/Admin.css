@@ -1106,39 +1106,44 @@
 /* ==================== 탭 네비게이션 (Navigation Tabs) ==================== */
 .admin-nav-tabs {
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  border-bottom: 1px solid var(--border-color);
+  align-items: stretch;
+  gap: 0.65rem;
+  border-bottom: 2px solid var(--border-color);
   margin-bottom: 2rem;
-  padding: 0 0.5rem;
+  padding: 0;
+  width: 100%;
 }
 
 .nav-tab-btn {
+  flex: 1;
+  min-width: 140px;
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.85rem 1.35rem;
-  font-size: 0.95rem;
+  justify-content: center;
+  gap: 0.55rem;
+  padding: 1rem 1.25rem;
+  font-size: 0.96rem;
   font-weight: 600;
   color: var(--text-muted);
-  background: transparent;
-  border: none;
-  border-bottom: 2px solid transparent;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-bottom: 3px solid transparent;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
-  border-radius: 0.5rem 0.5rem 0 0;
+  border-radius: 0.6rem 0.6rem 0 0;
+  text-align: center;
 }
 
 .nav-tab-btn:hover {
   color: var(--text-main);
-  background: #f1f5f9;
+  background: rgba(255, 255, 255, 0.06);
 }
 
 .nav-tab-btn.active {
   color: var(--primary);
   border-bottom-color: var(--primary);
-  background: #eff6ff;
+  background: rgba(59, 130, 246, 0.09);
   font-weight: 700;
 }
 
