@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   FileText, UploadCloud, RefreshCw, Trash2, Edit3, Sparkles, Play, Terminal, Copy,
-  Clock, Zap, Loader2
+  Clock, Zap, Loader2, Hourglass
 } from 'lucide-react';
 
 export function RagTab({ onUpdateBadge }) {
@@ -24,6 +24,7 @@ export function RagTab({ onUpdateBadge }) {
   // 업로드 상태
   const [uploading, setUploading] = useState(false);
   const [uploadStatus, setUploadStatus] = useState('');
+  const [isDragging, setIsDragging] = useState(false);
   const [autoIndexOnUpload, setAutoIndexOnUpload] = useState(true);
   const [indexingPath, setIndexingPath] = useState(null);
   const fileInputRef = useRef(null);
@@ -120,6 +121,9 @@ export function RagTab({ onUpdateBadge }) {
 
   // 터미널 화면 및 서버 로그 깔끔하게 지우기 (과거 로그 부활 원천 차단)
   const handleClearLogs = async () => {
+    if (!window.confirm("터미널에 출력된 파이프라인 로그를 모두 지우시겠습니까?\n\n확인을 누르면 화면과 서버의 최근 실행 로그가 완전히 비워집니다.")) {
+      return;
+    }
     setTerminalLogs([]);
     isClearedRef.current = true;
     try {
@@ -129,6 +133,9 @@ export function RagTab({ onUpdateBadge }) {
 
   // 파이프라인 강제 초기화 및 상태 잠금 해제 (버튼 비활성화/대기 멈춤 복구)
   const handleResetPipeline = async () => {
+    if (!window.confirm("파이프라인 상태를 강제 초기화하시겠습니까?\n\n진행 중인 재색인 연결이 종료되고 프로세스 락이 즉시 해제됩니다.")) {
+      return;
+    }
     // 로컬 UI 상태는 서버 응답 여부와 무관하게 100% 무조건 즉시 정상화
     setReindexing(false);
     setReindexingForce(false);
@@ -255,13 +262,25 @@ export function RagTab({ onUpdateBadge }) {
   // 드래그 앤 드롭 파일 업로드
   const handleFileUpload = async (files) => {
     if (!files || files.length === 0) return;
+
+    const fileList = Array.from(files);
+    const fileNames = fileList.map((f) => f.name);
+    const fileNamesText = fileNames.map((n) => `• ${n}`).join('\n');
+
+    // 1. 업로드 전 재차 확인 팝업
+    const confirmMsg = `선택하신 문서가 맞습니까?\n\n${fileNamesText}\n\n[확인]을 누르면 파일 업로드 및 RAG 지식 색인 파이프라인이 즉시 가동됩니다.`;
+    if (!window.confirm(confirmMsg)) {
+      if (fileInputRef.current) fileInputRef.current.value = '';
+      return;
+    }
+
     const formData = new FormData();
-    for (let i = 0; i < files.length; i++) {
-      formData.append('files', files[i]);
+    for (let i = 0; i < fileList.length; i++) {
+      formData.append('files', fileList[i]);
     }
     formData.append('auto_index', autoIndexOnUpload);
     setUploading(true);
-    setUploadStatus(autoIndexOnUpload ? `${files.length}개 파일 업로드 및 실시간 색인 중… (약 15~25초)` : `${files.length}개 파일 업로드 중…`);
+    setUploadStatus(autoIndexOnUpload ? `${fileList.length}개 파일 업로드 및 실시간 색인 중… (약 15~25초)` : `${fileList.length}개 파일 업로드 중…`);
     try {
       const res = await fetch('/api/admin/documents/upload', {
         method: 'POST',
@@ -270,10 +289,11 @@ export function RagTab({ onUpdateBadge }) {
       if (res.ok) {
         const data = await res.json();
         const indexedItems = (data.saved || []).filter(s => s.indexed);
+        // 2. 완성 팝업에도 문서 명 명시
         if (indexedItems.length > 0) {
-          alert(`🎉 업로드 및 증분 색인 완료!\n- 저장: ${data.total}개 파일\n- 실시간 색인 반영: ${indexedItems.length}개 문서\n런타임 핫리로드가 완료되어 챗봇에서 즉시 검색 가능합니다.`);
+          alert(`🎉 업로드 및 색인 완료!\n\n[반영 문서 목록]\n${fileNamesText}\n\n총 ${data.total}개 파일 저장 및 실시간 지식 색인 반영 완료!\n런타임 핫리로드가 완료되어 챗봇에서 즉시 검색 가능합니다.`);
         } else {
-          alert(`업로드 완료: ${data.total}개 파일 저장 성공`);
+          alert(`🎉 업로드 완료!\n\n[업로드 문서 목록]\n${fileNamesText}\n\n총 ${data.total}개 파일 저장이 성공적으로 완료되었습니다.`);
         }
         fetchStats();
         fetchDocs();
@@ -286,6 +306,7 @@ export function RagTab({ onUpdateBadge }) {
     } finally {
       setUploading(false);
       setUploadStatus('');
+      if (fileInputRef.current) fileInputRef.current.value = '';
     }
   };
 
@@ -480,7 +501,7 @@ export function RagTab({ onUpdateBadge }) {
     setReindexing(true);
     setReindexingForce(isForce);
     setReindexStep(1); // 1단계 즉시 불 켜기
-    const startMsg = `[${new Date().toLocaleTimeString()}] 🚀 ${isForce ? '전체 완전 재파싱 & 강제 재색인' : '고속 증분 재색인'} 파이프라인 가동 요청 중…`;
+    const startMsg = `[${new Date().toLocaleTimeString()}] 🚀 ${isForce ? '전체 완전 재파싱 & 강제 재색인' : '미색인 대상 재색인'} 파이프라인 가동 요청 중…`;
     const waitMsg = `[${new Date().toLocaleTimeString()}] ⏳ 서버 백엔드 연결 및 프로세스 시작 대기 중…`;
     setTerminalLogs([startMsg, waitMsg]);
 
@@ -706,46 +727,110 @@ export function RagTab({ onUpdateBadge }) {
         </div>
       </div>
 
-      {/* 2. 드래그앤드롭 업로드 존 */}
+      {/* 2. 드래그앤드롭 업로드 존 (밝기 대폭 상향 & 업로드 중 모래시계/커서 가시성 강화) */}
       <div
         className="dropzone-box"
         style={{
-          border: '2px dashed var(--border-color)',
-          borderRadius: '12px',
-          padding: '2rem',
+          border: uploading
+            ? '2px solid #38bdf8'
+            : isDragging
+            ? '2px dashed #0284c7'
+            : '2px dashed #93c5fd',
+          borderRadius: '14px',
+          padding: '2.2rem 1.5rem',
           textAlign: 'center',
-          background: 'rgba(15, 23, 42, 0.4)',
+          background: uploading
+            ? '#f0f9ff'
+            : isDragging
+            ? '#e0f2fe'
+            : '#f8fafc',
           marginBottom: '1.5rem',
-          cursor: 'pointer'
+          cursor: uploading ? 'wait' : 'pointer',
+          pointerEvents: uploading ? 'none' : 'auto',
+          boxShadow: isDragging
+            ? '0 8px 24px rgba(2, 132, 199, 0.18)'
+            : '0 2px 10px rgba(0, 0, 0, 0.04)',
+          transition: 'all 0.2s ease',
+          position: 'relative'
         }}
-        onClick={() => fileInputRef.current && fileInputRef.current.click()}
-        onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
+        onClick={() => {
+          if (!uploading && fileInputRef.current) {
+            fileInputRef.current.click();
+          }
+        }}
+        onDragOver={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          if (!uploading) setIsDragging(true);
+        }}
+        onDragLeave={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          setIsDragging(false);
+        }}
         onDrop={(e) => {
           e.preventDefault();
           e.stopPropagation();
-          if (e.dataTransfer.files) handleFileUpload(e.dataTransfer.files);
+          setIsDragging(false);
+          if (!uploading && e.dataTransfer.files) {
+            handleFileUpload(e.dataTransfer.files);
+          }
         }}
       >
-        <UploadCloud size={36} color="var(--primary)" style={{ margin: '0 auto 0.5rem' }} />
-        <div style={{ fontWeight: 600, fontSize: '1rem', color: 'var(--text-main)' }}>
-          PDF, HWP/HWPX, 워드(DOCX), 파워포인트(PPTX), 엑셀(XLSX/XLS), 텍스트 문서를 이곳으로 드래그하거나 클릭하여 업로드
-        </div>
-        <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginTop: '0.35rem' }}>
-          DOCX·HWP·PPTX는 슬라이드/문서 구조화 및 표/이미지 추출, 엑셀은 시트별 표 추출을 거쳐 실시간 파이프라인에서 자동 처리됩니다.
-        </div>
+        {uploading ? (
+          /* 업로드 중일 때: 대형 모래시계 + 로딩 스피너 + 대형 가시성 배너 */
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '0.5rem 0' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', marginBottom: '0.75rem' }}>
+              <Hourglass size={38} color="#0284c7" style={{ animation: 'spin 3s linear infinite' }} />
+              <Loader2 size={38} className="spinner" color="#0284c7" />
+            </div>
+            <div style={{ fontWeight: 800, fontSize: '1.18rem', color: '#0369a1', letterSpacing: '-0.01em' }}>
+              ⏳ 문서 업로드 및 AI 지식 색인 파이프라인 처리 중…
+            </div>
+            <div style={{ fontSize: '0.88rem', color: '#0284c7', marginTop: '0.45rem', fontWeight: 600 }}>
+              {uploadStatus}
+            </div>
+            <div style={{ fontSize: '0.8rem', color: '#64748b', marginTop: '0.35rem' }}>
+              잠시만 기다려 주세요. 텍스트 추출 및 벡터 임베딩이 완료되면 챗봇에 즉시 반영됩니다.
+            </div>
+            {/* 프로그레스 로딩 바 애니메이션 */}
+            <div style={{ width: '100%', maxWidth: '380px', height: '6px', background: '#bae6fd', borderRadius: '4px', marginTop: '1rem', overflow: 'hidden' }}>
+              <div
+                style={{
+                  width: '60%',
+                  height: '100%',
+                  background: 'linear-gradient(90deg, #0284c7, #38bdf8)',
+                  borderRadius: '4px',
+                  animation: 'pulse 1.2s ease-in-out infinite'
+                }}
+              />
+            </div>
+          </div>
+        ) : (
+          /* 일반 상태: 밝고 선명한 드래그앤드롭 가이드 */
+          <>
+            <UploadCloud size={42} color="#0284c7" style={{ margin: '0 auto 0.6rem' }} />
+            <div style={{ fontWeight: 700, fontSize: '1.05rem', color: '#0f172a' }}>
+              PDF, HWP/HWPX, 워드(DOCX), 파워포인트(PPTX), 엑셀(XLSX/XLS), 텍스트 문서를 이곳으로 드래그하거나 클릭하여 업로드
+            </div>
+            <div style={{ fontSize: '0.84rem', color: '#475569', marginTop: '0.4rem', lineHeight: '1.5' }}>
+              DOCX·HWP·PPTX는 슬라이드/문서 구조화 및 표/이미지 추출, 엑셀은 시트별 표 추출을 거쳐 실시간 파이프라인에서 자동 처리됩니다.
+            </div>
+            <div style={{ fontSize: '0.78rem', color: '#64748b', marginTop: '0.4rem', fontWeight: 500 }}>
+              💡 클릭 시 파일 선택창이 열리며, 업로드 전 대상 문서를 다시 한번 확인하실 수 있습니다.
+            </div>
+          </>
+        )}
+
         <input
           type="file"
           ref={fileInputRef}
           style={{ display: 'none' }}
           multiple
+          disabled={uploading}
           accept=".pdf,.docx,.hwpx,.hwp,.xlsx,.xls,.csv,.pptx,.ppt,.txt,.md"
           onChange={(e) => handleFileUpload(e.target.files)}
         />
-        {uploading && (
-          <div style={{ marginTop: '0.75rem', color: 'var(--primary)', fontWeight: 600 }}>
-            {uploadStatus}
-          </div>
-        )}
       </div>
 
 
@@ -948,64 +1033,28 @@ export function RagTab({ onUpdateBadge }) {
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
-            {/* 버튼 1: 고속 재색인 (캐시 재사용) */}
+            {/* 미색인 대상 재색인 버튼 */}
             <button
               className="btn btn-primary"
               onClick={() => {
                 if (reindexing) {
-                  alert("현재 재색인이 이미 진행 중입니다.\n\n터미널 로그를 확인하시거나, 멈추어 있는 경우 우측 [초기화] 버튼을 눌러 상태를 잠금 해제해 주세요.");
+                  alert("현재 재색인이 이미 진행 중입니다.\n\n터미널 로그를 확인하시거나, 멈추어 있는 경우 우측 [초기화] 버튼을 눌러 상태를 초기화해 주세요.");
                   return;
                 }
                 setReindexConfirmModal({ isOpen: true, isForce: false });
               }}
-              title="기존 문서 파싱 캐시는 100% 재사용하고 신규 문서(PPTX 등)를 자동 파싱하여 전체 색인을 갱신합니다. (약 60초 소요)"
-              style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', padding: '0.55rem 0.95rem', fontWeight: 600 }}
+              title="이미 색인이 완료된 문서는 건너뛰고, 미색인 또는 신규 추가된 문서만 고속으로 탐색하여 RAG 색인을 갱신합니다."
+              style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', padding: '0.55rem 1rem', fontWeight: 600 }}
             >
-              {reindexing && !reindexingForce ? (
+              {reindexing ? (
                 <>
                   <RefreshCw size={15} className="spinner" />
-                  <span>고속 재색인 진행 중…</span>
+                  <span>미색인 대상 재색인 진행 중…</span>
                 </>
               ) : (
                 <>
                   <Zap size={15} />
-                  <span>⚡ 고속 재색인 (캐시 재사용)</span>
-                </>
-              )}
-            </button>
-
-            {/* 버튼 2: 전체 완전 재파싱 & 강제 재색인 */}
-            <button
-              className="btn"
-              onClick={() => {
-                if (reindexing) {
-                  alert("현재 재색인이 이미 진행 중입니다.\n\n터미널 로그를 확인하시거나, 멈추어 있는 경우 우측 [초기화] 버튼을 눌러 상태를 잠금 해제해 주세요.");
-                  return;
-                }
-                setReindexConfirmModal({ isOpen: true, isForce: true });
-              }}
-              title="기존 캐시를 무시하고 1페이지부터 처음부터 끝까지 전체 문서를 완전히 재파싱 및 벡터 재구축합니다. (수 분 소요)"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.45rem',
-                padding: '0.55rem 0.95rem',
-                background: 'rgba(239, 68, 68, 0.12)',
-                border: '1px solid rgba(239, 68, 68, 0.4)',
-                color: '#f87171',
-                fontWeight: 600,
-                cursor: 'pointer'
-              }}
-            >
-              {reindexing && reindexingForce ? (
-                <>
-                  <RefreshCw size={15} className="spinner" />
-                  <span>전체 재구축 진행 중…</span>
-                </>
-              ) : (
-                <>
-                  <RefreshCw size={15} />
-                  <span>🔄 전체 완전 재파싱 & 강제 재색인</span>
+                  <span>⚡ 미색인 대상 재색인</span>
                 </>
               )}
             </button>
@@ -1306,58 +1355,34 @@ export function RagTab({ onUpdateBadge }) {
         </div>
       )}
 
-      {/* 재색인 파이프라인 가동 확인 커스텀 모달 (브라우저 window.confirm 차단 100% 회피) */}
+      {/* 미색인 대상 재색인 파이프라인 가동 확인 모달 */}
       {reindexConfirmModal.isOpen && (
         <div className="modal-backdrop active" onClick={() => setReindexConfirmModal({ isOpen: false, isForce: false })}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '560px' }}>
             <div className="modal-header">
               <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                {reindexConfirmModal.isForce ? (
-                  <>
-                    <RefreshCw size={18} color="#ef4444" />
-                    <span>전체 완전 재파싱 & 강제 재색인 가동</span>
-                  </>
-                ) : (
-                  <>
-                    <Zap size={18} color="#10b981" />
-                    <span>고속 증분 재색인 (캐시 재사용) 가동</span>
-                  </>
-                )}
+                <Zap size={18} color="#10b981" />
+                <span>미색인 대상 재색인 가동</span>
               </h3>
               <button className="btn-close" onClick={() => setReindexConfirmModal({ isOpen: false, isForce: false })}>×</button>
             </div>
             <div className="modal-body" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               <div style={{
-                background: reindexConfirmModal.isForce ? 'rgba(239, 68, 68, 0.08)' : 'rgba(16, 185, 129, 0.08)',
-                border: `1px solid ${reindexConfirmModal.isForce ? 'rgba(239, 68, 68, 0.25)' : 'rgba(16, 185, 129, 0.25)'}`,
+                background: 'rgba(16, 185, 129, 0.08)',
+                border: '1px solid rgba(16, 185, 129, 0.25)',
                 padding: '1rem',
                 borderRadius: '8px',
                 fontSize: '0.9rem',
                 lineHeight: 1.6
               }}>
-                {reindexConfirmModal.isForce ? (
-                  <>
-                    <div style={{ fontWeight: 700, color: '#f87171', marginBottom: '0.5rem' }}>
-                      ⚠️ 주의: 전체 문서를 처음부터 완전히 다시 파싱합니다. (최소 30분~1시간 소요)
-                    </div>
-                    <ul style={{ paddingLeft: '1.2rem', margin: 0, color: 'var(--text-muted)' }}>
-                      <li>기존의 모든 파싱 캐시를 무시하고 1,000여 페이지를 처음부터 정밀 분석합니다.</li>
-                      <li>문서량이 많아 <strong>최소 30분~1시간 이상</strong>의 긴 시간이 소요될 수 있습니다.</li>
-                      <li>💡 <strong>권장:</strong> 새로 추가된 파일(PPTX 등)을 즉시 반영하시려면 취소 후 <strong>[⚡ 고속 재색인]</strong>(약 70초 소요)을 사용해 주세요!</li>
-                    </ul>
-                  </>
-                ) : (
-                  <>
-                    <div style={{ fontWeight: 700, color: '#10b981', marginBottom: '0.5rem' }}>
-                      ⚡ 고속 증분 모드로 안전하고 빠르게 색인을 갱신합니다.
-                    </div>
-                    <ul style={{ paddingLeft: '1.2rem', margin: 0, color: 'var(--text-muted)' }}>
-                      <li>기존 문서의 파싱 캐시는 100% 재사용하여 즉시 통과합니다.</li>
-                      <li>새로 추가된 문서(PPTX 등)만 고속 파싱하여 전체 RAG 색인을 갱신합니다.</li>
-                      <li>예상 소요 시간: <strong>약 60~80초</strong> 내외로 빠르게 완료됩니다.</li>
-                    </ul>
-                  </>
-                )}
+                <div style={{ fontWeight: 700, color: '#10b981', marginBottom: '0.5rem' }}>
+                  ⚡ 미색인 문서 및 신규 추가 문서를 자동 탐색하여 색인을 갱신합니다.
+                </div>
+                <ul style={{ paddingLeft: '1.2rem', margin: 0, color: 'var(--text-muted)' }}>
+                  <li>기존에 색인이 완료된 문서는 캐시를 재사용하여 즉시 통과합니다.</li>
+                  <li>아직 색인되지 않았거나 새로 업로드된 문서만 선택적으로 파싱·임베딩합니다.</li>
+                  <li>예상 소요 시간: <strong>약 30~60초</strong> 내외로 빠르게 완료됩니다.</li>
+                </ul>
               </div>
 
               <div style={{ fontSize: '0.83rem', color: 'var(--text-muted)' }}>
@@ -1375,17 +1400,11 @@ export function RagTab({ onUpdateBadge }) {
               </button>
               <button
                 type="button"
-                className={reindexConfirmModal.isForce ? "btn" : "btn btn-primary"}
-                style={reindexConfirmModal.isForce ? {
-                  background: 'rgba(239, 68, 68, 0.85)',
-                  color: '#fff',
-                  border: 'none',
-                  fontWeight: 600
-                } : { fontWeight: 600 }}
+                className="btn btn-primary"
+                style={{ fontWeight: 600 }}
                 onClick={() => {
-                  const force = reindexConfirmModal.isForce;
                   setReindexConfirmModal({ isOpen: false, isForce: false });
-                  handleStartReindexAction(force);
+                  handleStartReindexAction(false);
                 }}
               >
                 🚀 지금 바로 가동 시작
