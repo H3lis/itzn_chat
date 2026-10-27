@@ -62,6 +62,7 @@ from .schemas import (
 )
 from ..observability.langsmith import build_invoke_config
 from ..rag.adapter_util import RagBusyError, RagUnavailableError
+from .time_util import now_kst_str
 
 from .prompt_guard import SAFE_REFUSAL_MESSAGE
 
@@ -923,9 +924,52 @@ def admin_start_reindex(request: Request, body: Optional[ReindexRequest] = None)
 
 @router.post("/api/admin/reindex/unindexed")
 def admin_reindex_unindexed(request: Request) -> dict:
-    """미색인 상태의 문서들만 탐색하여 고속으로 증분 색인 및 복구."""
+    """미색인 상태의 문서들만 탐색하여 고속으로 증분 색인 및 실시간 SSE 스트리밍 연동 복구."""
     ctx = _ctx(request)
-    return ctx.doc_manager.self_heal_unindexed_documents()
+    runner = ctx.reindex_runner
+    with runner._lock:
+        runner.status = "running"
+        runner.stage = "scan"
+        runner.progress_pct = 10
+        runner.started_at = now_kst_str()
+        runner.logs.clear()
+        runner._drain_listeners()
+    runner._add_log("🚀 미색인 대상 고속 재색인 파이프라인 가동 요청 접수", stage="scan", progress=10)
+    try:
+        res = ctx.doc_manager.self_heal_unindexed_documents(runner=runner)
+        with runner._lock:
+            runner.status = "completed"
+            runner.stage = "ready"
+            runner.progress_pct = 100
+            runner.finished_at = now_kst_str()
+            runner.summary = res
+        done_payload = {"type": "completed", "status": "completed", "stage": "ready", "progress_pct": 100, "summary": res}
+        for q in list(runner._listeners):
+            try:
+                if runner._loop and runner._loop.is_running():
+                    runner._loop.call_soon_threadsafe(q.put_nowait, done_payload)
+                else:
+                    q.put_nowait(done_payload)
+            except Exception:
+                pass
+        return res
+    except Exception as e:
+        with runner._lock:
+            runner.status = "failed"
+            runner.stage = "ready"
+            runner.error_msg = str(e)
+            runner.finished_at = now_kst_str()
+        runner._add_log(f"❌ 미색인 재색인 실패: {e}", stage="ready")
+        fail_payload = {"type": "failed", "status": "failed", "stage": "ready", "error": str(e)}
+        for q in list(runner._listeners):
+            try:
+                if runner._loop and runner._loop.is_running():
+                    runner._loop.call_soon_threadsafe(q.put_nowait, fail_payload)
+                else:
+                    q.put_nowait(fail_payload)
+            except Exception:
+                pass
+        raise
 
 
 @router.get("/api/admin/reindex/status")

@@ -309,31 +309,46 @@ class DocumentManager:
             "status": "saved",
         }
 
-    def self_heal_unindexed_documents(self) -> dict[str, Any]:
+    def self_heal_unindexed_documents(self, runner=None) -> dict[str, Any]:
         """미색인 상태의 문서를 자동 감지하여 인덱스에 원자적으로 복원/보강 (Git pull/재시작 후 미색인 방지 자가 치유)."""
+        def _log(text: str, stage: Optional[str] = None, progress: Optional[int] = None):
+            logger.info(text)
+            if runner and hasattr(runner, "_add_log"):
+                runner._add_log(text, stage=stage, progress=progress)
+
+        _log("📁 지원 포맷 문서 검사 및 미색인 대상 탐색 중...", stage="scan", progress=10)
         docs = self.list_documents()
         unindexed = [d for d in docs if not d.get("is_indexed") and d.get("is_supported")]
         if not unindexed:
+            _log("ℹ️ 모든 지원 문서가 이미 정상 색인되어 있습니다. (미색인 대상 0건)", stage="ready", progress=100)
             return {"healed_count": 0, "healed_docs": [], "message": "모든 지원 문서가 이미 정상 색인되어 있습니다."}
+
+        total_u = len(unindexed)
+        names_str = ", ".join(d["name"] for d in unindexed)
+        _log(f"🔍 미색인 대상 문서 {total_u}건 발견! 고속 복구 색인을 시작합니다. ({names_str})", stage="scan", progress=20)
 
         healed = []
         errors = []
-        for d in unindexed:
+        for idx, d in enumerate(unindexed, 1):
             rel = d["rel_path"]
+            doc_name = d["name"]
+            pct = 20 + int((idx / total_u) * 70)
             try:
-                logger.info("[Auto-Self-Heal] 미색인 문서 자동 복구 색인 시작: %s", rel)
+                _log(f"⚡ [{idx}/{total_u}] '{doc_name}' 파싱 및 임베딩 파이프라인 가동 중...", stage="parse", progress=pct - 10)
                 res = self.index_single_document(rel, run_vlm=False)
-                healed.append({"rel_path": rel, "name": d["name"], "chunks": res.get("chunks_added", 0)})
+                chunks = res.get("chunks_added", 0)
+                healed.append({"rel_path": rel, "name": doc_name, "chunks": chunks})
+                _log(f"✅ [{idx}/{total_u}] '{doc_name}' 색인 복구 완료! (신규 청크 {chunks}개 적재)", stage="embed", progress=pct)
             except Exception as e:
-                logger.warning("[Auto-Self-Heal] 미색인 문서 복구 실패 [%s]: %s", rel, e)
+                _log(f"❌ [{idx}/{total_u}] '{doc_name}' 복구 실패: {e}", stage="embed", progress=pct)
                 errors.append({"rel_path": rel, "error": str(e)})
 
-        logger.info("[Auto-Self-Heal] 자가 치유 완료: %d건 색인 복구 성공, %d건 실패", len(healed), len(errors))
+        _log(f"✨ 자가 치유 파이프라인 완료: 총 {len(healed)}건 성공, {len(errors)}건 실패", stage="ready", progress=100)
         return {
             "healed_count": len(healed),
             "healed_docs": healed,
             "errors": errors,
-            "total_unindexed_found": len(unindexed),
+            "total_unindexed_found": total_u,
         }
 
     def index_single_document(self, rel_path: str, run_vlm: bool = False, force_parse: bool = False) -> dict[str, Any]:
@@ -761,6 +776,118 @@ class ReindexRunner:
         thread.start()
         return True
 
+    def start_unindexed_reindex(self, doc_manager: DocumentManager) -> bool:
+        """비동기 스레드로 미색인 문서 전용 고속 자가치유 파이프라인 시작 및 실시간 SSE 스트리밍."""
+        with self._lock:
+            if self.status == "running":
+                return False
+            self.status = "running"
+            self.stage = "scan"
+            self.progress_pct = 5
+            self.started_at = now_kst_str()
+            self.finished_at = None
+            self.elapsed_s = 0.0
+            self.error_msg = None
+            self.summary = None
+            self.logs.clear()
+            self._drain_listeners()
+
+        try:
+            self.live_reports_dir.mkdir(parents=True, exist_ok=True)
+            if self.live_log_file.is_file():
+                self.live_log_file.unlink(missing_ok=True)
+            if self.live_status_file.is_file():
+                self.live_status_file.unlink(missing_ok=True)
+            self.live_log_file.write_text("", encoding="utf-8")
+            self.live_status_file.write_text(json.dumps({
+                "status": "running",
+                "stage": "scan",
+                "progress_pct": 5,
+                "started_at": self.started_at,
+                "updated_at": self.started_at
+            }, ensure_ascii=False, indent=2), encoding="utf-8")
+        except Exception as e:
+            logger.debug("unindexed 시작 시 live 파일 초기화 실패: %s", e)
+
+        self._add_log("🚀 미색인 대상 고속 재색인 파이프라인 가동 요청 접수", stage="scan", progress=5)
+
+        def _worker():
+            t0 = time.time()
+            try:
+                res = doc_manager.self_heal_unindexed_documents(runner=self)
+                elapsed = round(time.time() - t0, 1)
+                with self._lock:
+                    self.status = "completed"
+                    self.stage = "ready"
+                    self.progress_pct = 100
+                    self.finished_at = now_kst_str()
+                    self.elapsed_s = elapsed
+                    self.summary = res
+
+                # 디스크 상태 파일도 완료 상태로 동기화
+                try:
+                    self.live_status_file.write_text(json.dumps({
+                        "status": "completed",
+                        "stage": "ready",
+                        "progress_pct": 100,
+                        "started_at": self.started_at,
+                        "updated_at": self.finished_at,
+                        "finished_at": self.finished_at,
+                        "elapsed_seconds": elapsed,
+                        "summary": res,
+                    }, ensure_ascii=False, indent=2), encoding="utf-8")
+                except Exception:
+                    pass
+
+                done_payload = {
+                    "type": "completed",
+                    "status": "completed",
+                    "stage": "ready",
+                    "progress_pct": 100,
+                    "summary": res,
+                    "elapsed_seconds": elapsed,
+                }
+                for q in list(self._listeners):
+                    try:
+                        if self._loop and self._loop.is_running():
+                            self._loop.call_soon_threadsafe(q.put_nowait, done_payload)
+                        else:
+                            q.put_nowait(done_payload)
+                    except Exception:
+                        pass
+            except Exception as exc:
+                elapsed = round(time.time() - t0, 1)
+                err_text = str(exc)
+                logger.exception("미색인 재색인 실패: %s", exc)
+                self._add_log(f"❌ 미색인 재색인 실패: {err_text}", stage="ready")
+                with self._lock:
+                    self.status = "failed"
+                    self.stage = "ready"
+                    self.progress_pct = 0
+                    self.finished_at = now_kst_str()
+                    self.elapsed_s = elapsed
+                    self.error_msg = err_text
+
+                fail_payload = {
+                    "type": "failed",
+                    "status": "failed",
+                    "stage": "ready",
+                    "error": err_text,
+                    "elapsed_seconds": elapsed,
+                }
+                for q in list(self._listeners):
+                    try:
+                        if self._loop and self._loop.is_running():
+                            self._loop.call_soon_threadsafe(q.put_nowait, fail_payload)
+                        else:
+                            q.put_nowait(fail_payload)
+                    except Exception:
+                        pass
+
+        thread = threading.Thread(target=_worker, name="unindexed-reindex-worker", daemon=True)
+        thread.start()
+        return True
+
     def clear_logs(self) -> None:
         """터미널 로그 및 재색인 전용 임시 로그/상태 파일을 물리적으로 완전 삭제한다 (메인 서버 로그는 절대 보존)."""
         with self._lock:
@@ -799,10 +926,16 @@ class ReindexRunner:
     def _run_pipeline(self, force: bool):
         t0 = time.time()
 
-        # 로그 인터셉터 설정
+        # 로그 인터셉터 설정 (루트 및 서브 로거 전체 바인딩)
         log_handler = _LogCapturingHandler(lambda msg, stg=None, prg=None: self._add_log(msg, stage=stg, progress=prg))
-        root_logger = logging.getLogger()
-        root_logger.addHandler(log_handler)
+        target_loggers = [
+            logging.getLogger(),
+            logging.getLogger("chatbot_demo_v2"),
+            logging.getLogger("ragcore"),
+            logging.getLogger("scripts.reindex"),
+        ]
+        for l in target_loggers:
+            l.addHandler(log_handler)
 
         try:
             prepare_ragcore_imports(self.settings)
@@ -922,7 +1055,11 @@ class ReindexRunner:
                     pass
 
         finally:
-            root_logger.removeHandler(log_handler)
+            for l in target_loggers:
+                try:
+                    l.removeHandler(log_handler)
+                except Exception:
+                    pass
 
     def register_listener(self) -> asyncio.Queue:
         """SSE 스트림용 큐 등록."""

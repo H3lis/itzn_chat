@@ -542,6 +542,7 @@ export function RagTab({ onUpdateBadge }) {
   };
 
   // 미색인 대상 재색인 시작 및 실시간 스트리밍
+  // 미색인 대상 재색인 시작 및 실시간 스트리밍
   const handleStartReindexAction = async (isForce = false) => {
     isStartingRef.current = true;
     isClearedRef.current = false;
@@ -550,102 +551,13 @@ export function RagTab({ onUpdateBadge }) {
     setReindexStep(1); // 1단계 즉시 점등
     const startMsg = `[${new Date().toLocaleTimeString()}] 🚀 ${isForce ? '전체 완전 재파싱 & 강제 재색인' : '미색인 대상 고속 재색인'} 파이프라인 가동 요청 중…`;
     setTerminalLogs([startMsg]);
+    setReindexSummary(null);
 
     try {
-      // 1. 미색인 대상 고속 재색인 모드일 때만 unindexed 즉각 자동 복구 시도 (수 초~수십 초 고속 완료)
-      if (!isForce) {
-        try {
-          const uRes = await fetch('/api/admin/reindex/unindexed', { method: 'POST' });
-          if (uRes.ok) {
-            const uData = await uRes.json();
-            if (uData.healed_count > 0) {
-              const healedNames = uData.healed_docs.map(d => d.name).join(', ');
-              setTerminalLogs((prev) => [
-                ...prev,
-                `[${new Date().toLocaleTimeString()}] ⚡ 미색인 문서 탐색 및 색인 복구 완료: 총 ${uData.healed_count}건 (${healedNames})`,
-                `[${new Date().toLocaleTimeString()}] ✅ 런타임 핫리로드가 완료되어 챗봇에서 즉시 검색 가능합니다.`
-              ]);
-              setReindexStep(5);
-              setReindexing(false);
-              setReindexingForce(false);
-              isStartingRef.current = false;
-              fetchStats();
-              fetchDocs();
-              alert(`🎉 미색인 문서 ${uData.healed_count}건의 지식 색인이 성공적으로 복구되었습니다!\n\n[반영 문서]\n• ${uData.healed_docs.map(d => d.name).join('\n• ')}\n\n챗봇에 즉시 반영되었습니다.`);
-              return;
-            } else {
-              setTerminalLogs((prev) => [
-                ...prev,
-                `[${new Date().toLocaleTimeString()}] ℹ️ 모든 문서가 이미 정상 색인되어 있습니다. (미색인 대상 0건)`
-              ]);
-              setReindexStep(5);
-              setReindexing(false);
-              setReindexingForce(false);
-              isStartingRef.current = false;
-              alert('모든 문서가 이미 정상 색인되어 있습니다.');
-              return;
-            }
-          }
-        } catch (uErr) {
-          console.warn('미색인 즉각 치유 폴백:', uErr);
-        }
-      }
+      const endpoint = isForce ? '/api/admin/reindex' : '/api/admin/reindex/unindexed';
+      const bodyPayload = isForce ? JSON.stringify({ force: true }) : undefined;
 
-      setReindexSummary(null);
-      let res = await fetch('/api/admin/reindex', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ force: isForce })
-      });
-
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({}));
-        alert(`재색인 시작 실패: ${err.detail || '통신 오류'}`);
-        setReindexing(false);
-        setReindexStep(0);
-        isStartingRef.current = false;
-        return;
-      }
-
-      let initData = await res.json();
-      if (initData.started === false) {
-        // 서버에 이전 락이 남아있다면 1회 자동 초기화 후 즉시 자동 재시도
-        console.warn('서버 재색인 락 감지: 자동 리셋 후 1회 즉시 재시도');
-        try {
-          await fetch('/api/admin/reindex/reset', { method: 'POST' });
-          await fetch('/api/admin/reindex/logs', { method: 'DELETE' });
-          res = await fetch('/api/admin/reindex', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ force: isForce })
-          });
-          if (res.ok) {
-            initData = await res.json();
-          }
-        } catch (retryErr) {
-          console.error('자동 재시도 실패:', retryErr);
-        }
-
-        if (initData.started === false) {
-          alert("⚠️ 재색인 시작 불가: 서버에서 이미 다른 재색인 작업이 실행 중입니다.\n\n터미널 우측 [초기화] 버튼을 누른 후 다시 실행해 주세요.");
-          setReindexing(false);
-          setReindexStep(0);
-          isStartingRef.current = false;
-          return;
-        }
-      }
-
-      // 새 파이프라인 가동 성공: 서버 초기 로그 즉시 반영
-      const serverLogs = Array.isArray(initData.recent_logs) && initData.recent_logs.length > 0
-        ? initData.recent_logs
-        : [`[${new Date().toLocaleTimeString()}] ✅ 서버 파이프라인 정상 가동 확인! 실시간 처리 로그 수신 중…`];
-      setTerminalLogs([startMsg, ...serverLogs]);
-
-      if (initData.stage) {
-        setReindexStep(Math.max(1, getStageStep(initData.stage, initData.status)));
-      }
-
-      // SSE 구독 시작
+      // 1. SSE 구독 먼저 가동하여 초기 처리 로그 실시간 누락 방지
       if (sseRef.current) sseRef.current.close();
       const es = new EventSource('/api/admin/reindex/stream');
       sseRef.current = es;
@@ -676,12 +588,23 @@ export function RagTab({ onUpdateBadge }) {
             setReindexingForce(false);
             setReindexStep(5);
             setReindexSummary(data.summary || { message: '재색인 완료' });
+            isStartingRef.current = false;
             es.close();
             fetchStats();
             fetchDocs();
+            if (data.summary?.healed_count !== undefined) {
+              const count = data.summary.healed_count;
+              if (count > 0) {
+                const names = (data.summary.healed_docs || []).map(d => `• ${d.name}`).join('\n');
+                alert(`🎉 미색인 문서 ${count}건의 지식 색인이 성공적으로 복구되었습니다!\n\n[반영 문서]\n${names}\n\n챗봇에 즉시 반영되었습니다.`);
+              } else {
+                alert('모든 문서가 이미 정상 색인되어 있습니다.');
+              }
+            }
           } else if (data.status === 'failed' || data.type === 'failed' || data.status === 'error') {
             setReindexing(false);
             setReindexingForce(false);
+            isStartingRef.current = false;
             alert(`재색인 실패: ${data.error || '오류가 발생했습니다.'}`);
             es.close();
           }
@@ -691,10 +614,83 @@ export function RagTab({ onUpdateBadge }) {
       };
 
       es.onmessage = handleStreamEvent;
-
       es.onerror = (e) => {
         console.warn('SSE 연결 상태 변경:', e);
       };
+
+      // 2. 파이프라인 가동 요청
+      let res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: bodyPayload
+      });
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        alert(`재색인 시작 실패: ${err.detail || '통신 오류'}`);
+        setReindexing(false);
+        setReindexStep(0);
+        isStartingRef.current = false;
+        es.close();
+        return;
+      }
+
+      let initData = await res.json();
+      if (initData.started === false) {
+        // 서버에 이전 락이 남아있다면 1회 자동 초기화 후 즉시 자동 재시도
+        console.warn('서버 재색인 락 감지: 자동 리셋 후 1회 즉시 재시도');
+        try {
+          await fetch('/api/admin/reindex/reset', { method: 'POST' });
+          await fetch('/api/admin/reindex/logs', { method: 'DELETE' });
+          res = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: bodyPayload
+          });
+          if (res.ok) {
+            initData = await res.json();
+          }
+        } catch (retryErr) {
+          console.error('자동 재시도 실패:', retryErr);
+        }
+
+        if (initData.started === false) {
+          alert("⚠️ 재색인 시작 불가: 서버에서 이미 다른 재색인 작업이 실행 중입니다.\n\n터미널 우측 [초기화] 버튼을 누른 후 다시 실행해 주세요.");
+          setReindexing(false);
+          setReindexStep(0);
+          isStartingRef.current = false;
+          es.close();
+          return;
+        }
+      }
+
+      // unindexed 동기 완료 응답 처리
+      if (initData.healed_count !== undefined) {
+        setReindexStep(5);
+        setReindexing(false);
+        setReindexingForce(false);
+        isStartingRef.current = false;
+        fetchStats();
+        fetchDocs();
+        const count = initData.healed_count;
+        if (count > 0) {
+          const names = (initData.healed_docs || []).map(d => `• ${d.name}`).join('\n');
+          alert(`🎉 미색인 문서 ${count}건의 지식 색인이 성공적으로 복구되었습니다!\n\n[반영 문서]\n${names}\n\n챗봇에 즉시 반영되었습니다.`);
+        } else {
+          alert('모든 문서가 이미 정상 색인되어 있습니다.');
+        }
+        return;
+      }
+
+      // 강제 재색인 새 파이프라인 가동 성공: 서버 초기 로그 즉시 반영
+      const serverLogs = Array.isArray(initData.recent_logs) && initData.recent_logs.length > 0
+        ? initData.recent_logs
+        : [`[${new Date().toLocaleTimeString()}] ✅ 서버 파이프라인 정상 가동 확인! 실시간 처리 로그 수신 중…`];
+      setTerminalLogs([startMsg, ...serverLogs]);
+
+      if (initData.stage) {
+        setReindexStep(Math.max(1, getStageStep(initData.stage, initData.status)));
+      }
 
       // 폴백 폴링 (SSE 지연/누락 시 1.5초마다 상태 동기화)
       const pollInterval = setInterval(async () => {
@@ -718,6 +714,7 @@ export function RagTab({ onUpdateBadge }) {
               setReindexingForce(false);
               setReindexStep(5);
               setReindexSummary(sData.summary || { message: '재색인 완료' });
+              isStartingRef.current = false;
               if (sseRef.current) sseRef.current.close();
               fetchStats();
               fetchDocs();
@@ -725,6 +722,7 @@ export function RagTab({ onUpdateBadge }) {
               clearInterval(pollInterval);
               setReindexing(false);
               setReindexingForce(false);
+              isStartingRef.current = false;
               alert(`재색인 실패: ${sData.error || '오류가 발생했습니다.'}`);
               if (sseRef.current) sseRef.current.close();
             }

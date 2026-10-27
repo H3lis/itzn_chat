@@ -15,9 +15,11 @@ venv/
 # --- 대용량 빌드 산출물 (재생성 가능) ---
 **/cache/
 **/parsed_v25/
+**/index/
 **/index_new/
 **/index_prev/
 **/index_old*/
+**/ragdata/index/
 쓰잘데기/
 
 # --- 실행 로그 / 임시 ---
