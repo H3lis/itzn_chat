@@ -518,7 +518,7 @@ sudo reboot
 ```
 
 ### 4-3. Ollama 설치 및 외부 접속(0.0.0.0) 활성화
-VM에서 임베딩(`embeddinggemma`) 또는 LLM(`gemma4:e4b`)을 제공하도록 Ollama를 설치합니다.
+VM에서 임베딩(`embeddinggemma`) 또는 LLM(`qwen2.5:3b`)을 제공하도록 Ollama를 설치합니다.
 ```bash
 # Ollama 설치
 curl -fsSL https://ollama.com/install.sh | sh
@@ -537,8 +537,8 @@ sudo systemctl restart ollama
 
 # 프로젝트에 필요한 모델 다운로드
 ollama pull embeddinggemma
-# (필요시 LLM 모델 추가)
-ollama pull gemma4:e4b
+# RAG 답변 생성 및 PII 고성능 sLLM 모델
+ollama pull qwen2.5:3b
 ```
 
 ### 4-4. 프로젝트 코드 가져오기 및 가상환경 구성
