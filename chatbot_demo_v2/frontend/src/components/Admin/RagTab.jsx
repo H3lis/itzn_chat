@@ -553,6 +553,21 @@ export function RagTab({ onUpdateBadge }) {
     setTerminalLogs([startMsg]);
     setReindexSummary(null);
 
+    let hasAlerted = false;
+    const notifyHealedResult = (summaryData) => {
+      if (hasAlerted) return;
+      hasAlerted = true;
+      if (summaryData?.healed_count !== undefined) {
+        const count = summaryData.healed_count;
+        if (count > 0) {
+          const names = (summaryData.healed_docs || []).map(d => `• ${d.name}`).join('\n');
+          alert(`🎉 미색인 문서 ${count}건의 지식 색인이 성공적으로 복구되었습니다!\n\n[반영 문서]\n${names}\n\n챗봇에 즉시 반영되었습니다.`);
+        } else {
+          alert('모든 문서가 이미 정상 색인되어 있습니다.');
+        }
+      }
+    };
+
     try {
       const endpoint = isForce ? '/api/admin/reindex' : '/api/admin/reindex/unindexed';
       const bodyPayload = isForce ? JSON.stringify({ force: true }) : undefined;
@@ -592,15 +607,7 @@ export function RagTab({ onUpdateBadge }) {
             es.close();
             fetchStats();
             fetchDocs();
-            if (data.summary?.healed_count !== undefined) {
-              const count = data.summary.healed_count;
-              if (count > 0) {
-                const names = (data.summary.healed_docs || []).map(d => `• ${d.name}`).join('\n');
-                alert(`🎉 미색인 문서 ${count}건의 지식 색인이 성공적으로 복구되었습니다!\n\n[반영 문서]\n${names}\n\n챗봇에 즉시 반영되었습니다.`);
-              } else {
-                alert('모든 문서가 이미 정상 색인되어 있습니다.');
-              }
-            }
+            notifyHealedResult(data.summary);
           } else if (data.status === 'failed' || data.type === 'failed' || data.status === 'error') {
             setReindexing(false);
             setReindexingForce(false);
@@ -664,21 +671,16 @@ export function RagTab({ onUpdateBadge }) {
         }
       }
 
-      // unindexed 동기 완료 응답 처리
+      // unindexed 동기 완료 응답 처리 (SSE보다 늦게 도착하거나 SSE 미지원 환경 Fallback)
       if (initData.healed_count !== undefined) {
         setReindexStep(5);
         setReindexing(false);
         setReindexingForce(false);
         isStartingRef.current = false;
+        if (sseRef.current) sseRef.current.close();
         fetchStats();
         fetchDocs();
-        const count = initData.healed_count;
-        if (count > 0) {
-          const names = (initData.healed_docs || []).map(d => `• ${d.name}`).join('\n');
-          alert(`🎉 미색인 문서 ${count}건의 지식 색인이 성공적으로 복구되었습니다!\n\n[반영 문서]\n${names}\n\n챗봇에 즉시 반영되었습니다.`);
-        } else {
-          alert('모든 문서가 이미 정상 색인되어 있습니다.');
-        }
+        notifyHealedResult(initData);
         return;
       }
 

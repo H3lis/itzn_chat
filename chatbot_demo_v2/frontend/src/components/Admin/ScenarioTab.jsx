@@ -808,38 +808,6 @@ export function ScenarioTab({ onUpdateBadge }) {
                   <Edit2 size={13} />
                   <span>장애 상담 흐름 수정</span>
                 </button>
-                {selectedNode.type !== 'terminal' ? (
-                  <>
-                    <button
-                      className="btn btn-emerald btn-sm"
-                      onClick={() => handleOpenCreateChild(selectedNode, 'terminal')}
-                      title="이 항목의 하위 최종 해결 답변('처음으로' 리셋 포함) 생성"
-                      style={{
-                        background: 'rgba(5, 150, 105, 0.15)',
-                        color: 'var(--emerald)',
-                        border: '1px solid var(--emerald)',
-                        fontWeight: 700
-                      }}
-                    >
-                      <Plus size={13} />
-                      <span>최종 선택 버튼 추가</span>
-                    </button>
-                    <button
-                      className="btn btn-secondary btn-sm"
-                      onClick={() => handleOpenCreateChild(selectedNode, 'question')}
-                      title="이 항목의 하위 질문/선택 항목 생성"
-                      style={{ fontWeight: 600 }}
-                    >
-                      <Plus size={13} />
-                      <span>선택지(중간 안내) 추가</span>
-                    </button>
-                  </>
-                ) : (
-                  <span style={{ fontSize: '0.78rem', color: 'var(--emerald)', fontWeight: 700, padding: '0.2rem 0.55rem', background: 'rgba(5, 150, 105, 0.1)', borderRadius: '6px', border: '1px solid rgba(5, 150, 105, 0.3)', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
-                    <Lock size={12} />
-                    <span>최종 장애 상담 종결 항목 (하위 추가 불가)</span>
-                  </span>
-                )}
               </div>
             </div>
           )}
