@@ -94,6 +94,7 @@ class Settings:
     persona_prompts_enabled: bool
     contextualize_enabled: bool
     grader_enabled: bool
+    grader_escalate_faq_enabled: bool
     robustness_tool_enabled: bool
 
     # RAG 결과 캐시 및 부스팅/형광펜
@@ -235,6 +236,7 @@ def load_settings(env: Mapping[str, str] | None = None) -> Settings:
         persona_prompts_enabled=_get_bool(env, "PERSONA_PROMPTS_ENABLED", True),
         contextualize_enabled=_get_bool(env, "CONTEXTUALIZE_ENABLED", True),
         grader_enabled=_get_bool(env, "GRADER_ENABLED", True),
+        grader_escalate_faq_enabled=_get_bool(env, "GRADER_ESCALATE_FAQ_ENABLED", False),
         robustness_tool_enabled=_get_bool(env, "ROBUSTNESS_TOOL_ENABLED", "pytest" not in sys.modules),
         rag_cache_ttl_s=_get_int(env, "RAG_CACHE_TTL_S", 3600),
         metadata_boosting_enabled=_get_bool(env, "ENABLE_METADATA_BOOSTING", True),

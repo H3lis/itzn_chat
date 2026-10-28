@@ -158,7 +158,12 @@ def test_rag_abstain_is_not_composed(tmp_path):
 def test_grader_escalates_faq_to_rag_once(tmp_path):
     """FAQ 답변이 미해결이면 RAG로 1회 재시도(메인그래프 사이클)."""
     llm = ScriptedLlm(compose=None, grade="UNRESOLVED")
-    s = _settings(tmp_path, COMPOSER_FAQ_ENABLED="false", COMPOSER_RAG_ENABLED="false")
+    s = _settings(
+        tmp_path,
+        COMPOSER_FAQ_ENABLED="false",
+        COMPOSER_RAG_ENABLED="false",
+        GRADER_ESCALATE_FAQ_ENABLED="true",
+    )
     rag = FakeRagAdapter()
     ctx = build_context(s, rag_adapter=rag, llm=llm)
     q = ctx.faq.entries[0].question

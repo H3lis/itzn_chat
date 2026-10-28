@@ -892,7 +892,14 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
                 ]
             return out
 
-        escalate = verdict == "unresolved" and int(state.get("escalate_budget") or 0) > 0
+        # FAQ 경로는 검증된 공식 모범 답변이므로, 설정(grader_escalate_faq_enabled)이 True일 때만
+        # RAG로 재시도(에스컬레이션)한다. 기본값은 False로 불필요한 40~70초 RAG 이중 루프를 원천 방지한다.
+        allow_faq_escalate = getattr(settings, "grader_escalate_faq_enabled", False)
+        escalate = (
+            verdict == "unresolved"
+            and int(state.get("escalate_budget") or 0) > 0
+            and (route != "faq" or allow_faq_escalate)
+        )
         _node_meta({"grader_verdict": verdict, "escalate": escalate},
                    tags=[f"grader:{verdict or 'unknown'}"])
         if escalate:
