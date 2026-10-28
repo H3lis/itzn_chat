@@ -43,9 +43,10 @@ systemctl daemon-reload
 systemctl restart ollama
 sleep 5
 
-# 임베딩 모델 사전 다운로드
-echo ">>> 4. Ollama embeddinggemma 모델 다운로드 중..."
+# 임베딩 모델 및 RAG 답변/PII sLLM 모델 사전 다운로드
+echo ">>> 4. Ollama 모델 다운로드 중 (embeddinggemma, qwen2.5:3b)..."
 ollama pull embeddinggemma || true
+ollama pull qwen2.5:3b || true
 
 # 4. 서비스 디렉토리 및 Python 가상환경 구성
 echo ">>> 5. Python 3.11 가상환경 및 PyTorch CUDA 12.1 설치 중..."

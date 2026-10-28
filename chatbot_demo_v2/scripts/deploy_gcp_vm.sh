@@ -92,8 +92,8 @@ OLLAMA_CONF
 
 systemctl daemon-reload
 systemctl restart ollama
-sleep 5
 ollama pull embeddinggemma || true
+ollama pull qwen2.5:3b || true
 
 WORK_DIR="/opt/chatbot"
 mkdir -p "${WORK_DIR}"

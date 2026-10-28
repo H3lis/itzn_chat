@@ -1,3 +1,9 @@
+# ==============================================================================
+# 학교 챗봇 시스템 Python 패키지 의존성 (chatbot_demo_v2)
+# ※ 필수 Ollama 모델 요구사항:
+#   - RAG 답변 생성 / PII 비식별화 sLLM : qwen2.5:3b (ollama pull qwen2.5:3b)
+#   - RAG 문서 청크 밀집 벡터 임베딩   : embeddinggemma (ollama pull embeddinggemma)
+# ==============================================================================
 fastapi>=0.115.0
 uvicorn>=0.30.0
 sentence-transformers>=3.0.0

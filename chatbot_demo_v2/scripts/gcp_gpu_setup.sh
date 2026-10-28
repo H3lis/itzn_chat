@@ -37,8 +37,9 @@ sudo systemctl daemon-reload
 sudo systemctl restart ollama
 sleep 3
 
-echo "=== [4/6] Ollama 임베딩 모델(embeddinggemma) 다운로드 ==="
+echo "=== [4/6] Ollama 모델 다운로드 (embeddinggemma, qwen2.5:3b) ==="
 ollama pull embeddinggemma
+ollama pull qwen2.5:3b
 
 echo "=== [5/6] Python 3.11 가상환경 생성 및 PyTorch CUDA 패키지 설치 ==="
 cd "$(dirname "$0")/../.."
