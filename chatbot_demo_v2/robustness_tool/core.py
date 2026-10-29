@@ -433,21 +433,14 @@ class SpokenRobustnessEngine:
         """구어체 강건성 파이프라인 전체 과정을 수행합니다."""
         is_col = self.is_colloquial_query(question)
         
-        # 1단계: 형태소/오타 전처리 (초고속 5ms)
+        # 1단계: 형태소/오타 전처리
         preprocessed = self.preprocess_query(question)
         
         # 2단계: 구어체 판단에 따른 LLM 재작성
-        # [2026-10-28 지연 최적화 Fast-Path]
-        # 짧은 단문(3단어 이하이거나 14자 이하)은 오타 교정 및 동의어 치환만으로도
-        # BGE 의미 임베딩/리랭커가 정확도 99%로 매칭하므로, 굳이 3~15초짜리 LLM 재작성을
-        # 동기 호출하지 않고 초고속(5ms)으로 반환하여 응답 지연을 방지한다.
-        words = question.strip().split()
-        needs_llm = is_col and (len(words) > 3 or len(question.strip()) > 14)
-        
         llm_rewritten = ""
         llm_applied = False
         
-        if needs_llm:
+        if is_col:
             try:
                 llm_rewritten = self.rewrite_query_with_llm(question)
                 llm_applied = True

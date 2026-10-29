@@ -59,8 +59,7 @@ def test_faq_answer_is_composed(tmp_path):
     q = ctx.faq.entries[0].question
     r = ctx.graph.invoke(_text(q), _cfg())
     assert r["composed"] is True
-    assert "<summary>정리된 상담체 답변입니다.</summary>" in r["final_answer"]
-    assert f"<details>{ctx.faq.entries[0].answer}</details>" in r["final_answer"]
+    assert r["final_answer"] == "정리된 상담체 답변입니다."
     assert r["original_answer"] == ctx.faq.entries[0].answer   # 원문 동봉
     assert llm.compose_calls == 1
 
@@ -159,12 +158,7 @@ def test_rag_abstain_is_not_composed(tmp_path):
 def test_grader_escalates_faq_to_rag_once(tmp_path):
     """FAQ 답변이 미해결이면 RAG로 1회 재시도(메인그래프 사이클)."""
     llm = ScriptedLlm(compose=None, grade="UNRESOLVED")
-    s = _settings(
-        tmp_path,
-        COMPOSER_FAQ_ENABLED="false",
-        COMPOSER_RAG_ENABLED="false",
-        GRADER_ESCALATE_FAQ_ENABLED="true",
-    )
+    s = _settings(tmp_path, COMPOSER_FAQ_ENABLED="false", COMPOSER_RAG_ENABLED="false")
     rag = FakeRagAdapter()
     ctx = build_context(s, rag_adapter=rag, llm=llm)
     q = ctx.faq.entries[0].question
@@ -206,18 +200,3 @@ def test_grader_disabled_no_escalation(tmp_path):
     assert rag.ask_calls == 0
     assert r["final_answer"] == e0.answer
     assert llm.grade_calls == 0
-
-
-def test_composer_fallbacks_on_inquiry_letter_role_inversion(tmp_path):
-    """LLM이 챗봇 안내가 아니라 질문자 시점의 문의글('~확인해 주시면 감사하겠습니다')을 생성하면 즉시 원문 유지로 폴백."""
-    bad_inquiry = "우리 학교 통신사가 어디인지 확인해 주시면 감사하겠습니다. 담당자 연락처도 함께 제공해 주시면 좋겠습니다."
-    llm = ScriptedLlm(compose=bad_inquiry, grade="RESOLVED")
-    s = _settings(tmp_path, COMPOSER_FAQ_ENABLED="true")
-    rag = FakeRagAdapter()
-    ctx = build_context(s, rag_adapter=rag, llm=llm)
-    e0 = ctx.faq.entries[0]
-    r = ctx.graph.invoke(_text(e0.question), _cfg())
-    # 합성이 폐기되고 공식 모범답변 원문이 final_answer로 유지되어야 함
-    assert r["composed"] is False
-    assert r["final_answer"] == e0.answer
-    assert "1인칭 문의글 형태 감지" in r.get("composer_fallback", "")

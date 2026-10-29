@@ -28,9 +28,9 @@ mineru_backend: "pipeline"
 mineru_lang: "korean"
 
 llm_provider: "ollama"
-text_answer_model: "qwen2.5:3b"
-vision_answer_model: "qwen2.5:3b"
-fallback_model: "qwen2.5:3b"
+text_answer_model: "gemma4:e4b"
+vision_answer_model: "gemma4:e4b"
+fallback_model: "gemma4:e4b"
 
 embedding_model: "embeddinggemma"
 # EmbeddingGemma는 task prefix에 민감함 (Ollama 문서 권장값)

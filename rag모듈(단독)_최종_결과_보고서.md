@@ -22,7 +22,7 @@
 
 ## 2. 공통 스택 (전 세대 공유)
 
-- **LLM/VLM**: `qwen2.5:3b`(Ollama, 한국어 문해력 및 RAG 최적화 SOTA 모델), 폴백 `qwen2.5:1.5b`. **임베딩**: `embeddinggemma`(768d, task-prefix, Ollama).
+- **LLM/VLM**: `gemma4:12b`(Ollama), 폴백 `gemma4:e4b`. **임베딩**: `embeddinggemma`(768d, task-prefix, Ollama).
 - **희소검색**: rank-bm25(BM25Okapi) + **RRF(k=60)**. **형태소**: test_1 char_bigram → test_2/3 **kiwipiepy**.
 - **코퍼스**: 13개 PDF / 969페이지(학내망·무선랜·MDM·이용/통합관제 매뉴얼 등), DCAT 카탈로그 Excel.
 - **런타임**: Python 3.11 · conda `intern_chatbot` · RTX 5060 Ti 16GB · Windows. (16GB 제약으로 `gemma4:26b` 미사용.)
