@@ -436,11 +436,12 @@ class SpokenRobustnessEngine:
         # 1단계: 형태소/오타 전처리
         preprocessed = self.preprocess_query(question)
         
-        # 2단계: 구어체 판단에 따른 LLM 재작성
+        # 2단계: 구어체 판단에 따른 LLM 재작성 (기본 비활성화로 25초 지연 방지)
         llm_rewritten = ""
         llm_applied = False
+        enable_llm_rewrite = getattr(self.config, "robustness_llm_rewrite_enabled", False) if self.config else False
         
-        if is_col:
+        if is_col and enable_llm_rewrite:
             try:
                 llm_rewritten = self.rewrite_query_with_llm(question)
                 llm_applied = True

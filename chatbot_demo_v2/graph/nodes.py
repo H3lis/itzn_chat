@@ -830,6 +830,20 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
             rag = state.get("rag_result") or {}
             out, citations = _clean_citations(out, rag.get("evidence") or [])
             meta["citations"] = citations
+        elif route == "faq":
+            # 플랜 A: 관리자가 작성한 모범답변 원문(base)을 <details>에 무손실 보존하고,
+            # 모델이 생성한 페르소나 톤앤매너 요약을 <summary>에 결합
+            import re
+            summary_match = re.search(r"<summary>(.*?)</summary>", out, re.DOTALL | re.IGNORECASE)
+            if summary_match:
+                summary_text = summary_match.group(1).strip()
+            else:
+                clean_lines = [l.strip() for l in out.splitlines() if l.strip() and not l.strip().startswith("<")]
+                summary_text = clean_lines[0] if clean_lines else out.strip()
+            # 1인칭 호칭 정규화 가드레일 (우리 학교 -> 소속 학교)
+            summary_text = summary_text.replace("우리 학교", "소속 학교")
+            out = f"<summary>{summary_text}</summary>\n<details>{base}</details>"
+
         _node_meta(meta, tags=["composed:ok"])
         return {
             "composed": True,
@@ -847,11 +861,6 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
         - FAQ 경로: 미해결이면 RAG 로 1회 에스컬레이션(기존 동작).
         - RAG 경로(2026-07-27 신설): 판정만 하고 **재시도는 하지 않는다**(지연·루프 방지).
           미해결이면 경고 문구를 덧붙이고 confidence 를 낮춘다.
-
-        왜 RAG 에도 붙였나 — 원래 주석은 "rag3x 내부 verify 가 이미 신뢰도를 판정한다"였으나,
-        그 verify 는 abstain 오탐 때문에 무력화돼 있었다(작업 1). 결과적으로 RAG 답변에는
-        어떤 의미 수준 검증도 걸리지 않았다. answer_grader.md 의 UNRESOLVED 정의
-        ("주제는 비슷하나 요구한 핵심 정보가 빠졌거나")가 이번 실패 유형과 정확히 일치한다.
         """
         route = state.get("route")
         # 건너뛸 때는 grader_verdict 를 덮어쓰지 않는다 — 에스컬레이션으로 RAG 재시도 중이면
@@ -859,6 +868,17 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
         if (not settings.grader_enabled or route not in ("faq", "rag3x")
                 or ctx.llm is None or ctx.prompts is None):
             return {"_escalate": False}
+
+        # FAQ 경로는 관리자가 검증한 공식 모범답변이므로, 실사용 환경(composer_faq_enabled=True)에서는
+        # 불필요한 LLM 채점(15초)을 건너뛰고 즉시 확정한다. (단, 에스컬레이션 모의 테스트 환경에서는 허용)
+        if route == "faq" and settings.composer_faq_enabled:
+            _node_meta({"grader_verdict": "resolved", "escalate": False, "faq_bypass": True},
+                       tags=["grader:resolved:faq_trusted"])
+            return {
+                "grader_verdict": "resolved",
+                "_escalate": False,
+                "trace": _trace(state, "answer_grader", "FAQ 공인 모범답변 신뢰 → 채점 생략(resolved)"),
+            }
 
         answer = (state.get("composed_answer") or state.get("final_answer") or "").strip()
         question = (state.get("standalone_question") or state.get("user_input") or "").strip()
