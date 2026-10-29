@@ -59,7 +59,8 @@ def test_faq_answer_is_composed(tmp_path):
     q = ctx.faq.entries[0].question
     r = ctx.graph.invoke(_text(q), _cfg())
     assert r["composed"] is True
-    assert r["final_answer"] == "정리된 상담체 답변입니다."
+    assert "<summary>정리된 상담체 답변입니다.</summary>" in r["final_answer"]
+    assert f"<details>{ctx.faq.entries[0].answer}</details>" in r["final_answer"]
     assert r["original_answer"] == ctx.faq.entries[0].answer   # 원문 동봉
     assert llm.compose_calls == 1
 

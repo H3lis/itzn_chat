@@ -844,6 +844,26 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
                 "trace": _trace(state, "compose_answer",
                                 "합성 폐기(1인칭 문의글 형태 감지) → 공식 원문 유지"),
             }
+        # 2026-10-29 방안 B 적용: FAQ 경로는 qwen2 모델이 1문장 핵심 요약(<summary>)을 생성하고,
+        # <details> 영역에는 관리자가 검증한 100% 공식 모범답변 원문(base)을 무손실 보존하여 결합한다.
+        if route == "faq":
+            import re
+            m = re.search(r"<summary>(.*?)</summary>", out, re.DOTALL | re.IGNORECASE)
+            clean_summary = m.group(1).strip() if m else out.strip()
+            clean_summary = re.sub(r"</?details>", "", clean_summary).strip()
+
+            # 호칭 및 어투 정규화 (질문자 시점의 '우리 학교' 및 어색한 청유형 '~확인해 주세요'를 정중한 챗봇 안내체로 교정)
+            clean_summary = clean_summary.replace("우리 학교의", "학교").replace("우리 학교", "소속 학교")
+            clean_summary = clean_summary.replace("문의하여 확인해 주세요", "문의하시면 확인하실 수 있습니다")
+            clean_summary = clean_summary.replace("확인해 주세요", "확인하실 수 있습니다")
+            clean_summary = clean_summary.replace("문의해 주세요", "문의하시면 안내받으실 수 있습니다")
+            clean_summary = clean_summary.replace("문의하세요", "문의하시면 확인하실 수 있습니다")
+
+            # 만약 요약 생성이 비었거나 너무 짧으면 원문의 첫 문장으로 안전 폴백
+            if not clean_summary or len(clean_summary) < 5:
+                clean_summary = base.split(".")[0].strip() + "."
+            out = f"<summary>{clean_summary}</summary>\n<details>{base}</details>"
+
         # 2026-07-27(작업 9): RAG 경로는 문장별 출처 표기 [p53] 을 실제 근거와 대조해 정리한다.
         citations: list[int] = []
         if route == "rag3x":
