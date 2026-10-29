@@ -98,9 +98,7 @@ context_max_chars: 10000     # 답변 컨텍스트 토큰 예산(페이지 텍�
 crag_retry_floor: 0.02       # 리랭크 top이 [이 값, rerank_score_floor) 사이면 재작성 재시도(경계 관련).
                              # 무관(max 0.013)은 이 미만이라 재시도 안 함 -> 무관거절 유지.
 rollback_rerank_tau_high: 0.5  # 빈응답/확인불가 롤백은 리랭크 top이 이 이상(=검색 신뢰)일 때만.
-deadline_seconds: 240        # 문항 wall-clock 상한. 초과 시 best-effort 반환.
-                             # (2026-07-21: 긴 답변의 length 재발행이 겹치는 최악 문항이 ~177s라
-                             #  180 한도에 아슬아슬 -> 라이브 데모 안전 마진으로 240 상향. 평균은 여전히 ~63s.)
+deadline_seconds: 180        # 문항 wall-clock 상한. 초과 시 best-effort 반환.
 verify_model: ""             # 비우면 text_answer_model(12b) 겸용(Phase 0-E: 스왑 0). e4b 쓰려면 "gemma4:e4b".
 
 # Phase 0-C 근거: num_ctx 8192는 큰 표HTML 컨텍스트에서 출력 토큰 굶김으로 빈 응답 유발.
