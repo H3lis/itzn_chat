@@ -832,8 +832,13 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
         if persona_text:
             prompt = f"{persona_text}\n\n{prompt}"
 
-        # FAQ 경로는 초고속 경량 모델(기본: qwen2.5:3b) 전담 호출로 1~2초대 응답 달성
-        model_to_use = settings.faq_composer_model if route == "faq" else None
+        # FAQ 및 로컬 Ollama RAG 경로는 경량 고속 모델(기본: qwen2.5:3b) 전담 호출로 1~2초대 초고속 합성 달성
+        if route == "faq":
+            model_to_use = settings.faq_composer_model
+        elif settings.rag_backend == "ollama":
+            model_to_use = getattr(settings, "rag_composer_model", "qwen2.5:3b")
+        else:
+            model_to_use = None  # Gemini API 백엔드일 때는 초고속 Gemini Flash(1.4초) 자동 적용
 
         _progress("compose", "찾은 근거를 종합해 답변을 정리하고 있어요…")
         t0 = time.time()

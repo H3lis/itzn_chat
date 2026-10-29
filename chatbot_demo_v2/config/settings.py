@@ -92,6 +92,7 @@ class Settings:
     composer_rag_enabled: bool
     composer_faq_enabled: bool
     faq_composer_model: str       # FAQ 답변 재구성 전담 경량 모델 (기본: "qwen2.5:3b")
+    rag_composer_model: str       # 로컬 백엔드 시 RAG 답변 재구성 전담 경량 모델 (기본: "qwen2.5:3b")
     persona_prompts_enabled: bool
     contextualize_enabled: bool
     grader_enabled: bool
@@ -235,6 +236,7 @@ def load_settings(env: Mapping[str, str] | None = None) -> Settings:
         composer_rag_enabled=_get_bool(env, "COMPOSER_RAG_ENABLED", True),
         composer_faq_enabled=_get_bool(env, "COMPOSER_FAQ_ENABLED", True),
         faq_composer_model=_get(env, "FAQ_COMPOSER_MODEL", "qwen2.5:3b"),
+        rag_composer_model=_get(env, "RAG_COMPOSER_MODEL", "qwen2.5:3b"),
         persona_prompts_enabled=_get_bool(env, "PERSONA_PROMPTS_ENABLED", True),
         contextualize_enabled=_get_bool(env, "CONTEXTUALIZE_ENABLED", True),
         grader_enabled=_get_bool(env, "GRADER_ENABLED", True),
