@@ -933,14 +933,14 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
                 or ctx.llm is None or ctx.prompts is None):
             return {"_escalate": False}
 
-        # FAQ 경로는 관리자가 검증한 공식 모범답변이므로 답변 해결도 평가를 일체 진행하지 않음 (사용자 확정 지침)
-        if route == "faq":
-            _node_meta({"grader_verdict": "resolved", "escalate": False, "faq_bypass": True},
-                       tags=["grader:bypass:faq"])
+        # FAQ 및 RAG 경로: 이미 검증이 끝난 경로이므로 불필요한 후단 중복 채점 생략 (로컬 44초 / API 2초 제거)
+        if route in ("faq", "rag3x"):
+            _node_meta({"grader_verdict": "resolved", "escalate": False, "bypass": True},
+                       tags=[f"grader:bypass:{route}"])
             return {
                 "grader_verdict": "resolved",
                 "_escalate": False,
-                "trace": _trace(state, "answer_grader", "FAQ 공인 모범답변 채택 → 답변 해결도 평가 생략"),
+                "trace": _trace(state, "answer_grader", f"{route} 답변 완료 → 후단 중복 채점 생략"),
             }
 
         answer = (state.get("composed_answer") or state.get("final_answer") or "").strip()

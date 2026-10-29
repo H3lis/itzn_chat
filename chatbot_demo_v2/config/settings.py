@@ -206,7 +206,7 @@ def load_settings(env: Mapping[str, str] | None = None) -> Settings:
     return Settings(
         ragcore_root=ragcore_root,
         ragcore_config=ragcore_config,
-        rag_backend=_get(env, "RAG_BACKEND", "ollama"),
+        rag_backend=_get(env, "RAG_BACKEND", "gemini"),
         rag_deep_warmup=_get_bool(env, "RAG_DEEP_WARMUP", False),
         # 2026-07-27: 문자 유사도(fuzz.ratio) → 의미 유사도(임베딩+리랭커)로 기본값 전환.
         # 임계값은 스케일이 완전히 달라 함께 교체해야 한다. 아래 값은

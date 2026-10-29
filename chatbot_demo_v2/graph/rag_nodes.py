@@ -200,6 +200,19 @@ def make_rag_nodes(deps: RagDeps) -> tuple[dict[str, Callable], dict[str, Callab
         if not pages:
             return {"graded_pages": [], "grade_detail": []}
 
+        top_score = rr.get("rerank_top_score") or 0.0
+        # BGE 리랭커가 0.85 이상의 압도적 고득점인 경우, LLM 판정을 건너뛰고 1순위를 primary 로 즉시 직행 (Fast-path)
+        if top_score >= 0.85 and pages:
+            grades = ["primary"] + ["supporting"] * (len(pages) - 1)
+            kept = [dict(p, _grade=g) for p, g in zip(pages, grades)]
+            _emit("grade", f"리랭커 신뢰도 우수({top_score:.3f}) — 1순위 근거로 즉시 직행")
+            return {
+                "graded_pages": kept,
+                "grade_detail": [{"document_name": p.get("document_name"), "page_number": p.get("page_number"),
+                                  "page_score": p.get("page_score"), "grade": g} for p, g in zip(pages, grades)],
+                "grade_raw": "fast_path_bge_high_confidence",
+            }
+
         _emit("grade", f"찾은 근거 {len(pages)}건이 질문에 맞는지 판별하는 중…")
         grades = ["supporting"] * len(pages)
         raw = ""
