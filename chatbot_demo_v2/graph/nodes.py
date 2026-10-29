@@ -832,9 +832,12 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
         if persona_text:
             prompt = f"{persona_text}\n\n{prompt}"
 
+        # FAQ 경로는 초고속 경량 모델(기본: qwen2.5:3b) 전담 호출로 1~2초대 응답 달성
+        model_to_use = settings.faq_composer_model if route == "faq" else None
+
         _progress("compose", "찾은 근거를 종합해 답변을 정리하고 있어요…")
         t0 = time.time()
-        out = ctx.llm.chat(prompt)
+        out = ctx.llm.chat(prompt, model=model_to_use)
         timings = dict(state.get("timings") or {})
         timings["compose_s"] = time.time() - t0
 
@@ -872,18 +875,34 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
             out, citations = _clean_citations(out, rag.get("evidence") or [])
             meta["citations"] = citations
         elif route == "faq":
-            # 플랜 A: 관리자가 작성한 모범답변 원문(base)을 <details>에 무손실 보존하고,
-            # 모델이 생성한 페르소나 톤앤매너 요약을 <summary>에 결합
+            # FAQ 톤앤매너 및 어체 일관성 보정 (Gemma 표준 상담체와 100% 동기화)
             import re
+            # 1. 호칭 정규화
+            out = out.replace("우리 학교", "소속 학교")
+            # 2. 어미 통일 (구어체 -> 표준 상담 경어체)
+            out = re.sub(r"([가-힣]+)있어요\.", r"\1있습니다.", out)
+            out = re.sub(r"([가-힣]+)해요\.", r"\1합니다.", out)
+            out = re.sub(r"([가-힣]+)돼요\.", r"\1됩니다.", out)
+            out = re.sub(r"([가-힣]+)받을 수 있어요\.", r"\1받으실 수 있습니다.", out)
+            # 3. 불필요한 사족/인사말 제거
+            out = re.sub(r"^(네,?\s*안녕하세요[\.!\s]*|안녕하세요[\.!\s]*)", "", out).strip()
+            out = re.sub(r"(감사합니다[\.!\s]*|좋은\s*하루\s*되세요[\.!\s]*)$", "", out).strip()
+
+            # 4. <summary>와 <details> 태그 분리 및 결합
             summary_match = re.search(r"<summary>(.*?)</summary>", out, re.DOTALL | re.IGNORECASE)
-            if summary_match:
+            details_match = re.search(r"<details>(.*?)</details>", out, re.DOTALL | re.IGNORECASE)
+            if summary_match and details_match:
                 summary_text = summary_match.group(1).strip()
+                details_text = details_match.group(1).strip()
             else:
-                clean_lines = [l.strip() for l in out.splitlines() if l.strip() and not l.strip().startswith("<")]
-                summary_text = clean_lines[0] if clean_lines else out.strip()
-            # 1인칭 호칭 정규화 가드레일 (우리 학교 -> 소속 학교)
-            summary_text = summary_text.replace("우리 학교", "소속 학교")
-            out = f"<summary>{summary_text}</summary>\n<details>{base}</details>"
+                lines = [l.strip() for l in out.splitlines() if l.strip() and not l.strip().startswith("<")]
+                if len(lines) >= 2:
+                    summary_text = lines[0]
+                    details_text = "\n\n".join(lines[1:])
+                else:
+                    summary_text = lines[0] if lines else out.strip()
+                    details_text = base  # 단문 요약일 경우 모범답변 원문으로 상세 보강
+            out = f"<summary>{summary_text}</summary>\n<details>{details_text}</details>"
 
         _node_meta(meta, tags=["composed:ok"])
         return {

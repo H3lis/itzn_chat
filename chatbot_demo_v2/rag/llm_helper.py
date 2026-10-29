@@ -63,13 +63,19 @@ class LlmHelper:
                 self._failed = True
                 return False
 
-    def chat(self, prompt: str) -> Optional[str]:
-        """단발 텍스트 생성. 실패 시 None(노드가 pass-through 판단)."""
+    def chat(self, prompt: str, *, model: str | None = None) -> Optional[str]:
+        """단발 텍스트 생성. 특정 모델(e.g. qwen2.5:3b) 지정 가능. 실패 시 None."""
         if not self._ensure():
             return None
         try:
             self.calls += 1
-            out = self._backend.chat_text(prompt)
+            if model:
+                try:
+                    out = self._backend.chat_text(prompt, model=model)
+                except TypeError:
+                    out = self._backend.chat_text(prompt)
+            else:
+                out = self._backend.chat_text(prompt)
             return (out or "").strip() or None
         except Exception:  # noqa: BLE001
             return None

@@ -20,7 +20,7 @@ class ScriptedLlm:
         self.compose_calls = 0
         self.grade_calls = 0
 
-    def chat(self, prompt: str):
+    def chat(self, prompt: str, *args, **kwargs):
         # answer_grader.md 에만 'UNRESOLVED' 토큰이 들어 있다.
         if "UNRESOLVED" in prompt:
             self.grade_calls += 1
@@ -199,7 +199,7 @@ def test_contextualize_bypasses_when_faq_matched(tmp_path):
     calls = []
 
     class MockLlm:
-        def chat(self, prompt: str):
+        def chat(self, prompt: str, *args, **kwargs):
             calls.append(prompt)
             return "테스트 응답"
 
