@@ -869,15 +869,14 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
                 or ctx.llm is None or ctx.prompts is None):
             return {"_escalate": False}
 
-        # FAQ 경로는 관리자가 검증한 공식 모범답변이므로, 실사용 환경(composer_faq_enabled=True)에서는
-        # 불필요한 LLM 채점(15초)을 건너뛰고 즉시 확정한다. (단, 에스컬레이션 모의 테스트 환경에서는 허용)
-        if route == "faq" and settings.composer_faq_enabled:
+        # FAQ 경로는 관리자가 검증한 공식 모범답변이므로 답변 해결도 평가를 일체 진행하지 않음 (사용자 확정 지침)
+        if route == "faq":
             _node_meta({"grader_verdict": "resolved", "escalate": False, "faq_bypass": True},
-                       tags=["grader:resolved:faq_trusted"])
+                       tags=["grader:bypass:faq"])
             return {
                 "grader_verdict": "resolved",
                 "_escalate": False,
-                "trace": _trace(state, "answer_grader", "FAQ 공인 모범답변 신뢰 → 채점 생략(resolved)"),
+                "trace": _trace(state, "answer_grader", "FAQ 공인 모범답변 채택 → 답변 해결도 평가 생략"),
             }
 
         answer = (state.get("composed_answer") or state.get("final_answer") or "").strip()

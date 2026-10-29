@@ -157,26 +157,17 @@ def test_rag_abstain_is_not_composed(tmp_path):
 # ---------- grader + 에스컬레이션 사이클 ----------
 
 def test_grader_escalates_faq_to_rag_once(tmp_path):
-    """FAQ 답변이 미해결이면 RAG로 1회 재시도(메인그래프 사이클)."""
+    """FAQ 답변은 공인 모범답변이므로 answer_grader 평가를 생략하고 즉시 resolved 확정 (에스컬레이션 차단)."""
     llm = ScriptedLlm(compose=None, grade="UNRESOLVED")
     s = _settings(tmp_path, COMPOSER_FAQ_ENABLED="false", COMPOSER_RAG_ENABLED="false")
     rag = FakeRagAdapter()
     ctx = build_context(s, rag_adapter=rag, llm=llm)
     q = ctx.faq.entries[0].question
     r = ctx.graph.invoke(_text(q), _cfg())
-    assert r["grader_verdict"] == "unresolved"
-    assert rag.ask_calls == 1                 # RAG 재시도 1회
-    assert r["answer_source"] == "rag3x"      # 최종은 RAG 답변
-    assert r["escalate_budget"] == 0          # 예산 소진(무한루프 방지)
-    # 2026-07-27(작업 4): RAG 경로에도 grader 를 적용하도록 바꿨다. 원래 주석은
-    # "rag3x 내부 verify 가 신뢰도를 판정하므로 생략"이었으나, 그 verify 는 abstain
-    # 오탐으로 무력화돼 있어 RAG 답변에 의미 수준 검증이 전혀 없었다(작업 1 참조).
-    # 따라서 FAQ 판정 1회 + RAG 판정 1회 = 2회가 정상이다.
-    assert llm.grade_calls == 2
-    # 다만 RAG 경로는 **재시도하지 않는다** — 같은 질문으로 RAG 를 또 돌리면 결과가 같고
-    # 지연만 2배가 된다. 판정은 경고·confidence 로만 반영한다.
-    assert r["confidence"] == "low"
-    assert any("핵심을 충분히" in w for w in (r.get("warnings") or []))
+    assert r["grader_verdict"] == "resolved"
+    assert rag.ask_calls == 0                 # FAQ는 RAG로 에스컬레이션되지 않음
+    assert r["answer_source"] == "faq_match"  # 최종은 FAQ 모범답변 확정
+    assert llm.grade_calls == 0               # FAQ 경로는 LLM 채점 생략
 
 
 def test_grader_resolved_keeps_faq_answer(tmp_path):
