@@ -205,3 +205,18 @@ def test_grader_disabled_no_escalation(tmp_path):
     assert rag.ask_calls == 0
     assert r["final_answer"] == e0.answer
     assert llm.grade_calls == 0
+
+
+def test_composer_fallbacks_on_inquiry_letter_role_inversion(tmp_path):
+    """LLM이 챗봇 안내가 아니라 질문자 시점의 문의글('~확인해 주시면 감사하겠습니다')을 생성하면 즉시 원문 유지로 폴백."""
+    bad_inquiry = "우리 학교 통신사가 어디인지 확인해 주시면 감사하겠습니다. 담당자 연락처도 함께 제공해 주시면 좋겠습니다."
+    llm = ScriptedLlm(compose=bad_inquiry, grade="RESOLVED")
+    s = _settings(tmp_path, COMPOSER_FAQ_ENABLED="true")
+    rag = FakeRagAdapter()
+    ctx = build_context(s, rag_adapter=rag, llm=llm)
+    e0 = ctx.faq.entries[0]
+    r = ctx.graph.invoke(_text(e0.question), _cfg())
+    # 합성이 폐기되고 공식 모범답변 원문이 final_answer로 유지되어야 함
+    assert r["composed"] is False
+    assert r["final_answer"] == e0.answer
+    assert "1인칭 문의글 형태 감지" in r.get("composer_fallback", "")

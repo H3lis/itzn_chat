@@ -824,6 +824,26 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
                 "trace": _trace(state, "compose_answer",
                                 f"합성 폐기(근거 밖 수치 {unsupported[:3]}) → 원문 유지"),
             }
+
+        # 2026-10-29 추가: 역할 전도(1인칭 문의글 오작성) 방지 가드레일.
+        # 챗봇이 사용자에게 조치를 안내하는 대신, 질문자 시점의 문의글/이메일(예: "문의합니다", "확인해 주시면 감사하겠습니다")
+        # 형태로 잘못 생성한 경우 합성을 즉시 폐기하고 공식 검증 원문(모범답변/초안)을 그대로 유지한다.
+        inquiry_patterns = (
+            "문의합니다", "문의하려고", "문의드립니다",
+            "확인해 주시면 감사하겠습니다", "확인 부탁드립니다", "확인해 주시면 좋겠습니다",
+            "알려주시면 감사하겠습니다", "알려주시면 좋겠습니다",
+            "제공해 주시면 감사하겠습니다", "제공해 주시면 좋겠습니다",
+            "도와주시면 감사하겠습니다", "처리해 주시면 감사하겠습니다",
+        )
+        if any(p in out for p in inquiry_patterns):
+            _node_meta(meta, tags=["composed:fallback_inquiry_artifact"])
+            return {
+                "composed": False,
+                "composer_fallback": "1인칭 문의글 형태 감지(역할 왜곡) → 공식 원문 유지",
+                "timings": timings,
+                "trace": _trace(state, "compose_answer",
+                                "합성 폐기(1인칭 문의글 형태 감지) → 공식 원문 유지"),
+            }
         # 2026-07-27(작업 9): RAG 경로는 문장별 출처 표기 [p53] 을 실제 근거와 대조해 정리한다.
         citations: list[int] = []
         if route == "rag3x":
