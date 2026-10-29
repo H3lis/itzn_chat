@@ -877,15 +877,23 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
         elif route == "faq":
             # FAQ 톤앤매너 및 어체 일관성 보정 (Gemma 표준 상담체와 100% 동기화)
             import re
+            # 0. 모델이 프롬프트의 헤더 메타데이터를 복사 출력한 경우 완전 스트립
+            out = re.sub(r"\[(질문|답변|상담원\s*답변|핵심\s*요약|공식\s*모범답변)\].*?(\n|$)", "", out)
+            if question:
+                escaped_q = re.escape(question)
+                out = re.sub(rf"^(질문\s*:\s*)?{escaped_q}\s*", "", out, flags=re.IGNORECASE).strip()
+            out = re.sub(r"^\[상담원\s*답변\]\s*", "", out, flags=re.IGNORECASE).strip()
+
             # 1. 호칭 정규화
             out = out.replace("우리 학교", "소속 학교")
-            # 2. 어미 통일 (구어체 -> 표준 상담 경어체)
+            # 2. 어미 통일 (구어체 / 추측형 -> 표준 상담 경어체)
             out = re.sub(r"([가-힣]+)있어요\.", r"\1있습니다.", out)
             out = re.sub(r"([가-힣]+)해요\.", r"\1합니다.", out)
             out = re.sub(r"([가-힣]+)돼요\.", r"\1됩니다.", out)
             out = re.sub(r"([가-힣]+)받을 수 있어요\.", r"\1받으실 수 있습니다.", out)
+            out = re.sub(r"좋을\s*것\s*(같습니다|같아요)\.", "권장합니다.", out)
             # 3. 불필요한 사족/인사말 제거
-            out = re.sub(r"^(네,?\s*안녕하세요[\.!\s]*|안녕하세요[\.!\s]*)", "", out).strip()
+            out = re.sub(r"^(네,?\s*안녕하세요[\.!\s]*|안녕하세요[\.!\s]*|네,?\s*)", "", out).strip()
             out = re.sub(r"(감사합니다[\.!\s]*|좋은\s*하루\s*되세요[\.!\s]*)$", "", out).strip()
 
             # 4. <summary>와 <details> 태그 분리 및 결합
@@ -896,12 +904,8 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
                 details_text = details_match.group(1).strip()
             else:
                 lines = [l.strip() for l in out.splitlines() if l.strip() and not l.strip().startswith("<")]
-                if len(lines) >= 2:
-                    summary_text = lines[0]
-                    details_text = "\n\n".join(lines[1:])
-                else:
-                    summary_text = lines[0] if lines else out.strip()
-                    details_text = base  # 단문 요약일 경우 모범답변 원문으로 상세 보강
+                summary_text = lines[0] if lines else out.strip()
+                details_text = base  # 관리자 검증 공식 모범답변 원문을 <details>에 무손실 보존
             out = f"<summary>{summary_text}</summary>\n<details>{details_text}</details>"
 
         _node_meta(meta, tags=["composed:ok"])

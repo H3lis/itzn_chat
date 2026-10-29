@@ -70,10 +70,12 @@ class LlmHelper:
         try:
             self.calls += 1
             if model:
+                # GeminiBackend 인 경우 외부 API 타임아웃(30초) 없이 내부 로컬 Ollama 로 즉시 직결
+                target = getattr(self._backend, "_local", self._backend)
                 try:
-                    out = self._backend.chat_text(prompt, model=model)
+                    out = target.chat_text(prompt, model=model)
                 except TypeError:
-                    out = self._backend.chat_text(prompt)
+                    out = target.chat_text(prompt)
             else:
                 out = self._backend.chat_text(prompt)
             return (out or "").strip() or None
