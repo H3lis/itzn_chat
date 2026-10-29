@@ -348,7 +348,7 @@ export function AdminLayout({ onNavigate }) {
             className={`nav-tab-btn ${activeTab === 'faq' ? 'active' : ''}`}
             onClick={() => setActiveTab('faq')}
           >
-            <span>💬 FAQ관리</span>
+            <span>💬 FAQ</span>
             <span className="tab-badge">{badges.faq}</span>
           </button>
 
@@ -356,14 +356,14 @@ export function AdminLayout({ onNavigate }) {
             className={`nav-tab-btn ${activeTab === 'rag' ? 'active' : ''}`}
             onClick={() => setActiveTab('rag')}
           >
-            <span>📂 RAG 문서관리</span>
+            <span>📂 RAG 문서</span>
           </button>
 
           <button
             className={`nav-tab-btn ${activeTab === 'scenario' ? 'active' : ''}`}
             onClick={() => setActiveTab('scenario')}
           >
-            <span>🌳 장애 상담 흐름 관리</span>
+            <span>🌳 장애상담흐름</span>
             <span className="tab-badge">{badges.scenario}</span>
           </button>
 

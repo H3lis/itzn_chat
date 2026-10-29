@@ -253,7 +253,6 @@ export function ScenarioVisualTree({
   // { sourceId, optionIndex, label, startX, startY }
   const [connectingPort, setConnectingPort] = useState(null);
   const [mouseWorldPos, setMouseWorldPos] = useState({ x: 0, y: 0 });
-  const [showValidationPopover, setShowValidationPopover] = useState(false);
 
   // 모든 동적 플로우 목록 추출
   const allFlowKeys = useMemo(() => {
@@ -939,93 +938,6 @@ export function ScenarioVisualTree({
           boxShadow: '0 4px 16px rgba(0, 0, 0, 0.06)'
         }}
       >
-        {/* 🚀 3. 실시간 무결성 검증 배지 및 상세 팝오버 */}
-        <div style={{ position: 'relative' }}>
-          <button
-            type="button"
-            onClick={() => setShowValidationPopover((p) => !p)}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.35rem',
-              padding: '0.3rem 0.6rem',
-              borderRadius: '9999px',
-              fontSize: '0.75rem',
-              fontWeight: 700,
-              background: validationResult.is_valid ? 'rgba(16, 185, 129, 0.12)' : 'rgba(244, 63, 94, 0.12)',
-              color: validationResult.is_valid ? 'var(--emerald)' : 'var(--rose)',
-              border: validationResult.is_valid ? '1px solid rgba(16, 185, 129, 0.3)' : '1px solid rgba(244, 63, 94, 0.3)',
-              cursor: 'pointer'
-            }}
-            title="실시간 상담 흐름 연결 상태 (클릭 시 세부 항목 확인)"
-          >
-            {validationResult.is_valid ? <CheckCircle2 size={13} /> : <AlertTriangle size={13} />}
-            <span>
-              {validationResult.is_valid
-                ? '연결 상태 정상'
-                : `오류 ${validationResult.errors?.length || 0}건`}
-            </span>
-          </button>
-
-          {/* 무결성 결과 팝오버 */}
-          {showValidationPopover && (
-            <div
-              style={{
-                position: 'absolute',
-                top: '100%',
-                right: 0,
-                marginTop: '8px',
-                width: '320px',
-                background: '#ffffff',
-                border: '1px solid var(--border-color)',
-                borderRadius: '10px',
-                boxShadow: '0 10px 25px rgba(0,0,0,0.15)',
-                padding: '0.8rem',
-                zIndex: 60,
-                fontSize: '0.78rem'
-              }}
-            >
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem', fontWeight: 700 }}>
-                <span>상담 흐름 연결 진단 리포트</span>
-                <button
-                  type="button"
-                  onClick={() => setShowValidationPopover(false)}
-                  style={{ border: 'none', background: 'none', cursor: 'pointer', fontSize: '13px' }}
-                >
-                  ×
-                </button>
-              </div>
-
-              {validationResult.is_valid ? (
-                <div style={{ color: 'var(--emerald)', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                  <CheckCircle2 size={16} />
-                  <span>모든 상담 항목과 선택 버튼이 완벽하게 연결되어 있습니다!</span>
-                </div>
-              ) : (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                  <div style={{ color: 'var(--rose)', fontWeight: 600 }}>해결이 필요한 결함 ({validationResult.errors.length}건):</div>
-                  <ul style={{ margin: 0, paddingLeft: '1.2rem', color: '#334155' }}>
-                    {validationResult.errors.map((err, i) => (
-                      <li key={i} style={{ marginBottom: '0.2rem' }}>{err}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {validationResult.warnings && validationResult.warnings.length > 0 && (
-                <div style={{ marginTop: '0.6rem', paddingTop: '0.5rem', borderTop: '1px solid #f1f5f9', color: '#d97706' }}>
-                  <div style={{ fontWeight: 600 }}>참고 사항:</div>
-                  <ul style={{ margin: 0, paddingLeft: '1.2rem' }}>
-                    {validationResult.warnings.map((w, i) => (
-                      <li key={i}>{w}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-
         {/* 🚀 4. 저장 및 취소 버튼 (드래프트 변경사항 있을 때) */}
         {isDirty && (
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
