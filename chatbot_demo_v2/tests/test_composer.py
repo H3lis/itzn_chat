@@ -192,3 +192,31 @@ def test_grader_disabled_no_escalation(tmp_path):
     assert rag.ask_calls == 0
     assert r["final_answer"] == e0.answer
     assert llm.grade_calls == 0
+
+
+def test_contextualize_bypasses_when_faq_matched(tmp_path):
+    """연속 대화(2턴 이상)에서도 질문 원문이 FAQ에 매칭되면 contextualize LLM 호출을 건너뛴다."""
+    calls = []
+
+    class MockLlm:
+        def chat(self, prompt: str):
+            calls.append(prompt)
+            return "테스트 응답"
+
+    s = _settings(tmp_path, CONTEXTUALIZE_ENABLED="true", COMPOSER_FAQ_ENABLED="false")
+    ctx = build_context(s, rag_adapter=FakeRagAdapter(), llm=MockLlm())
+    tid = "multi_turn_test"
+    cfg = {"configurable": {"thread_id": tid}}
+
+    # 1턴: 일반 질문
+    ctx.graph.invoke(_text("처음 인사드립니다", tid=tid), cfg)
+
+    # 2턴: FAQ에 있는 질문 (후속 대화)
+    q = ctx.faq.entries[0].question
+    r2 = ctx.graph.invoke(_text(q, tid=tid), cfg)
+
+    # 2턴에서 contextualize 프롬프트가 호출되지 않았어야 함 (FAQ 원문 매칭으로 바이패스)
+    contextualize_calls = [c for c in calls if "대화 기록" in c or "자립형 질문" in c or "contextualize" in c]
+    assert len(contextualize_calls) == 0
+    assert r2["route"] == "faq"
+

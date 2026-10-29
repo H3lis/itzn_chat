@@ -394,6 +394,30 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
         if not settings.contextualize_enabled or len(humans) < 2:
             return {"standalone_question": user_q, "contextualized": False}
 
+        # [최적화] 사용자의 현재 질문 원문 자체가 이미 FAQ/시나리오에 명확히 매칭(exact/accept)되는 경우,
+        # 15~18초가 소요되는 대화 맥락 재작성(LLM)을 건너뛰고 원문 그대로 즉시 매칭으로 직행한다.
+        # (원문 왜곡 방지 및 FAQ 연속 질의 응답 시간 10초대 유지)
+        norm_q = state.get("normalized_question") or normalize_text(user_q)
+        try:
+            matcher = _get_matcher()
+            mr_pre = matcher.match(norm_q)
+            if mr_pre.accepted:
+                _node_meta(
+                    {"pre_matched": True, "decision": mr_pre.decision, "matched_id": mr_pre.matched_id},
+                    tags=["contextualize:bypass:faq_matched"],
+                )
+                return {
+                    "standalone_question": user_q,
+                    "normalized_question": norm_q,
+                    "contextualized": False,
+                    "scenario_match": mr_pre.to_dict(),
+                    "scenario_match_score": mr_pre.best_score,
+                    "scenario_match_margin": mr_pre.margin_observed,
+                    "trace": _trace(state, "contextualize_query", f"원문 FAQ 매칭 성공({mr_pre.decision}) → 대화 맥락 재작성 생략"),
+                }
+        except Exception:
+            pass
+
         _progress("contextualize", "이전 대화를 참고해 질문을 정리하고 있어요…")
         history = _format_history(msgs[:-1], limit_chars=2000)
         rewritten = user_q
@@ -419,6 +443,23 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
 
     # ---------- 4. scenario_matcher ----------
     def scenario_matcher(state: ChatState) -> dict:
+        # contextualize_query 단계에서 이미 pre_matched 된 결과가 있다면 재계산 없이 즉시 사용
+        existing_match = state.get("scenario_match")
+        if existing_match and existing_match.get("decision") in ("exact", "accept"):
+            _node_meta(
+                {
+                    "match_decision": existing_match["decision"],
+                    "best_score": round(existing_match.get("best_score", 0.0), 4),
+                    "threshold": existing_match.get("threshold", 0.0),
+                    "matched_id": existing_match.get("matched_id"),
+                    "pre_matched": True,
+                },
+                tags=[f"match:{existing_match['decision']}"],
+            )
+            return {
+                "trace": _trace(state, "scenario_matcher", f"사전 매칭 결과 재사용({existing_match['decision']})"),
+            }
+
         norm = state.get("normalized_question") or ""
         mr = _get_matcher().match(norm)
         _node_meta(
