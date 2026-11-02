@@ -533,11 +533,16 @@ def admin_login(request: Request, body: AdminLoginRequest, response: Response) -
 
     try:
         result = ctx.auth_service.login(body.username, body.password, client_ip=client_ip)
+        is_https = (
+            request.url.scheme == "https"
+            or request.headers.get("x-forwarded-proto", "").lower() == "https"
+        )
         response.set_cookie(
             key="admin_token",
             value=result["access_token"],
             max_age=result["expires_in"],
             httponly=True,
+            secure=is_https,
             samesite="lax",
         )
         return AdminLoginResponse(**result)

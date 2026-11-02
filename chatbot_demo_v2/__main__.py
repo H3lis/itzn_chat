@@ -25,10 +25,26 @@ def main() -> None:
     args = parser.parse_args()
 
     if args.reload:
-        uvicorn.run("chatbot_demo_v2.app.main:create_app", host=args.host, port=args.port, log_level=args.log_level, reload=True, factory=True)
+        uvicorn.run(
+            "chatbot_demo_v2.app.main:create_app",
+            host=args.host,
+            port=args.port,
+            log_level=args.log_level,
+            reload=True,
+            factory=True,
+            proxy_headers=True,
+            forwarded_allow_ips="*",
+        )
     else:
         app = create_app()
-        uvicorn.run(app, host=args.host, port=args.port, log_level=args.log_level)
+        uvicorn.run(
+            app,
+            host=args.host,
+            port=args.port,
+            log_level=args.log_level,
+            proxy_headers=True,
+            forwarded_allow_ips="*",
+        )
 
 
 if __name__ == "__main__":
