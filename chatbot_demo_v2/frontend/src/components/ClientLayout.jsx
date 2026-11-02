@@ -114,10 +114,26 @@ export function ClientLayout({
     onSyncSuccess: (newPayload) => {
       setScenarioPayload(newPayload);
       navigatorRef.current.updateTree(newPayload.data);
+      setOfflineOptions(navigatorRef.current.getRootOptions());
       setShowSyncToast(true);
       setTimeout(() => setShowSyncToast(false), 4000);
     },
   });
+
+  // 관리자 콘솔(장애상담흐름) 등에서 시나리오 트리가 수정/저장되었을 때 실시간 즉각 동기화
+  useEffect(() => {
+    const handleScenarioUpdate = (e) => {
+      const treeData = e.detail?.nodes ? e.detail : (e.detail?.data || null);
+      if (treeData) {
+        navigatorRef.current.updateTree(treeData);
+        setOfflineOptions(navigatorRef.current.getRootOptions());
+      }
+    };
+    window.addEventListener('scenario_tree_updated', handleScenarioUpdate);
+    return () => {
+      window.removeEventListener('scenario_tree_updated', handleScenarioUpdate);
+    };
+  }, []);
 
   const isReady = !isOfflineMode && status === 'ready';
   const isError = isOfflineMode || status === 'error';

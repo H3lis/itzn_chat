@@ -78,6 +78,7 @@ export function ChatColumn({
       <div className="chat-messages" ref={containerRef}>
         {messages.length === 0 && (
           <WelcomeCarousel
+            options={scenarioOptions}
             onSelectOption={handleOptionClick}
             onSend={onSend}
             isOffline={isOffline}

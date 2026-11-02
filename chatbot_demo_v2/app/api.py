@@ -1197,7 +1197,12 @@ def admin_save_scenario_tree(request: Request, body: dict) -> dict:
             ctx.scenario_manager._write_data(backup_data)
             logger.error("런타임 핫리로드 실패로 트리 일괄 저장 자동 롤백: %s", re)
             raise ValueError(f"시나리오 런타임 핫리로드 실패 (자동 롤백됨): {re}")
-        return {"success": True, "total_nodes": len(saved.get("nodes", {}))}
+        return {
+            "success": True,
+            "total_nodes": len(saved.get("nodes", {})),
+            "version": saved.get("version", "custom"),
+            "updated_at": saved.get("updated_at"),
+        }
     except ValueError as ve:
         raise HTTPException(status_code=400, detail=str(ve))
     except Exception as e:

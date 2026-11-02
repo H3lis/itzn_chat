@@ -14,7 +14,7 @@ import {
   MoreHorizontal
 } from 'lucide-react';
 
-export function WelcomeCarousel({ onSelectOption, onSend, isOffline = false }) {
+export function WelcomeCarousel({ options = [], onSelectOption, onSend, isOffline = false }) {
   const carouselRef = useRef(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -78,8 +78,12 @@ export function WelcomeCarousel({ onSelectOption, onSend, isOffline = false }) {
     }
   };
 
-  // 카드 1: AI 빠른 장애 진단
-  const aiDiagnosisOptions = [
+  // 기본 시나리오 옵션 폴백 정의
+  const defaultCard1Ids = ['internet_down', 'internet_slow', 'ap_no_light'];
+  const defaultCard2Ids = ['callcenter', 'nms_no_account', 'my_pc_only'];
+  const defaultCard3Ids = ['tablet_power', 'tablet_wifi', 'nms_lost_account'];
+
+  const fallbackCard1 = [
     {
       scenario_id: 'root',
       node_id: 'root',
@@ -103,8 +107,7 @@ export function WelcomeCarousel({ onSelectOption, onSend, isOffline = false }) {
     }
   ];
 
-  // 카드 2: 스쿨넷 지원 서비스
-  const schoolnetServiceOptions = [
+  const fallbackCard2 = [
     {
       scenario_id: 'root',
       node_id: 'root',
@@ -128,8 +131,7 @@ export function WelcomeCarousel({ onSelectOption, onSend, isOffline = false }) {
     }
   ];
 
-  // 카드 3: 스마트단말기 및 관제망 점검
-  const smartDeviceOptions = [
+  const fallbackCard3 = [
     {
       scenario_id: 'root',
       node_id: 'root',
@@ -153,8 +155,90 @@ export function WelcomeCarousel({ onSelectOption, onSend, isOffline = false }) {
     }
   ];
 
-  // 카드 4: 기타 서비스 안내 및 추가 질문 슬롯 (임의 예시 배제, 빈칸 슬롯)
-  const etcOptions = [];
+  // 동적 옵션 분류: 전달받은 options 기반으로 매핑하되, 관리자가 새로 추가한 항목(예: test)은 전부 etcOptions로 투입
+  const { aiDiagnosisOptions, schoolnetServiceOptions, smartDeviceOptions, etcOptions } = React.useMemo(() => {
+    if (!options || options.length === 0) {
+      return {
+        aiDiagnosisOptions: fallbackCard1,
+        schoolnetServiceOptions: fallbackCard2,
+        smartDeviceOptions: fallbackCard3,
+        etcOptions: []
+      };
+    }
+
+    const card1 = [];
+    const card2 = [];
+    const card3 = [];
+    const cardEtc = [];
+
+    const optionsMap = new Map();
+    options.forEach((opt) => {
+      if (opt.option_id) optionsMap.set(opt.option_id, opt);
+    });
+
+    // 1. 카드 1 배정 (기존 id 매칭 또는 fallback)
+    defaultCard1Ids.forEach((id) => {
+      if (optionsMap.has(id)) {
+        card1.push({
+          scenario_id: 'root',
+          node_id: 'root',
+          ...optionsMap.get(id)
+        });
+      } else {
+        const fb = fallbackCard1.find((f) => f.option_id === id);
+        if (fb) card1.push(fb);
+      }
+    });
+
+    // 2. 카드 2 배정
+    defaultCard2Ids.forEach((id) => {
+      if (optionsMap.has(id)) {
+        card2.push({
+          scenario_id: 'root',
+          node_id: 'root',
+          ...optionsMap.get(id)
+        });
+      } else {
+        const fb = fallbackCard2.find((f) => f.option_id === id);
+        if (fb) card2.push(fb);
+      }
+    });
+
+    // 3. 카드 3 배정
+    defaultCard3Ids.forEach((id) => {
+      if (optionsMap.has(id)) {
+        card3.push({
+          scenario_id: 'root',
+          node_id: 'root',
+          ...optionsMap.get(id)
+        });
+      } else {
+        const fb = fallbackCard3.find((f) => f.option_id === id);
+        if (fb) card3.push(fb);
+      }
+    });
+
+    // 4. 기본 9개 및 특수 버튼(__restart__)을 제외한 모든 신규/기타 옵션은 카드 4(etcOptions)로 자동 할당
+    const standardIds = new Set([...defaultCard1Ids, ...defaultCard2Ids, ...defaultCard3Ids, '__restart__']);
+    options.forEach((opt) => {
+      if (!standardIds.has(opt.option_id) && opt.label?.trim() !== '처음으로') {
+        cardEtc.push({
+          scenario_id: opt.scenario_id || 'root',
+          node_id: opt.node_id || 'root',
+          option_id: opt.option_id,
+          label: opt.label,
+          next_node_id: opt.next_node_id || opt.next_node
+        });
+      }
+    });
+
+    return {
+      aiDiagnosisOptions: card1,
+      schoolnetServiceOptions: card2,
+      smartDeviceOptions: card3,
+      etcOptions: cardEtc
+    };
+  }, [options]);
 
   const handleCardButtonClick = (item) => {
     if (item.type === 'query') {
@@ -317,9 +401,6 @@ export function WelcomeCarousel({ onSelectOption, onSend, isOffline = false }) {
               </div>
             </div>
             <div className="welcome-card-body">
-              <p className="welcome-card-desc">
-                향후 추가될 기타 질문 및 항목을 위한 자리입니다.
-              </p>
               <div className="welcome-card-actions">
                 {etcOptions.length === 0 ? (
                   <div className="welcome-card-empty-slot">

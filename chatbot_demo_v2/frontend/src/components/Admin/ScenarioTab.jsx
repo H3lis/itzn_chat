@@ -4,6 +4,7 @@ import {
   LayoutGrid, List, Eye, ArrowUp, CornerUpLeft, Lock
 } from 'lucide-react';
 import { ScenarioVisualTree } from './ScenarioVisualTree';
+import { saveScenarioCache } from '../../utils/TieredDataLoader';
 
 /**
  * 버튼명을 기반으로 안전한 노드 식별자(ID) 자동 생성 헬퍼
@@ -644,6 +645,10 @@ export function ScenarioTab({ onUpdateBadge }) {
 
       if (res.ok) {
         const json = await res.json();
+        // 최신 시나리오 트리를 로컬 캐시에 즉각 동기화하고 커스텀 이벤트 발행
+        saveScenarioCache(payload, json.version || 'custom', json.updated_at || new Date().toISOString());
+        window.dispatchEvent(new CustomEvent('scenario_tree_updated', { detail: payload }));
+
         alert(`🎉 상담 흐름이 성공적으로 저장 및 즉시 반영되었습니다!\n(총 ${json.total_nodes || Object.keys(draftNodes).length}개 항목 가동 중)`);
         setIsDirty(false);
         fetchTree();
