@@ -66,15 +66,6 @@ export function ChatColumn({
             )
           )}
         </div>
-        <button
-          type="button"
-          className="reset-btn"
-          onClick={onReset}
-          title="대화 및 세션을 처음 상태로 리셋합니다"
-        >
-          <RotateCcw size={14} />
-          <span>처음으로</span>
-        </button>
       </div>
 
       {/* Message Feed */}

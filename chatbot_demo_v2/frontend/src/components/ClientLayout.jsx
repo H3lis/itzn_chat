@@ -375,15 +375,6 @@ export function ClientLayout({
             <div className="history-header-actions" style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
               <button
                 type="button"
-                className="btn-new-chat-sidebar"
-                onClick={handleStartNewChat}
-                title="새로운 질문으로 대화 시작"
-              >
-                <PlusCircle size={14} />
-                <span>새 상담</span>
-              </button>
-              <button
-                type="button"
                 className="btn-close-sidebar-header"
                 onClick={() => setIsSidebarOpen(false)}
                 title="히스토리 사이드바 접기"
