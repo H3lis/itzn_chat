@@ -115,7 +115,7 @@ export function WelcomeCarousel({ onSelectOption, onSend, isOffline = false }) {
     }
   ];
 
-  // 카드 3: 스마트단말기 및 FAQ
+  // 카드 3: 스마트단말기 및 관제망 점검
   const smartDeviceOptions = [
     {
       option_id: 'tablet_power',
@@ -128,9 +128,9 @@ export function WelcomeCarousel({ onSelectOption, onSend, isOffline = false }) {
       next_node_id: 'tablet_wifi.answer'
     },
     {
-      type: 'query',
-      label: '자주 묻는 질문(FAQ) 모음',
-      query: '스쿨넷 주요 FAQ 알려줘'
+      option_id: 'nms_lost_account',
+      label: '관제시스템 계정 분실 안내',
+      next_node_id: 'nms_account.answer'
     }
   ];
 
@@ -245,20 +245,20 @@ export function WelcomeCarousel({ onSelectOption, onSend, isOffline = false }) {
             </div>
           </div>
 
-          {/* 카드 3: 스마트단말기 및 FAQ */}
+          {/* 카드 3: 스마트단말기 및 관제망 점검 */}
           <div className="welcome-card card-device">
             <div className="welcome-card-header header-device">
               <div className="welcome-card-icon-badge badge-violet">
                 <Tablet size={20} strokeWidth={2.4} />
               </div>
               <div className="welcome-card-header-texts">
-                <div className="welcome-card-subtitle">학내 단말기 & 지식베이스</div>
-                <div className="welcome-card-title">스마트기기 및 FAQ</div>
+                <div className="welcome-card-subtitle">학내 단말기 & 관제 점검</div>
+                <div className="welcome-card-title">스마트기기 및 전산망</div>
               </div>
             </div>
             <div className="welcome-card-body">
               <p className="welcome-card-desc">
-                학생·교사용 스마트기기 조치법과 자주 묻는 질문을 확인하세요.
+                학생·교사용 스마트 단말기 및 관제시스템 장애를 점검하세요.
               </p>
               <div className="welcome-card-actions">
                 {smartDeviceOptions.map((opt, idx) => (
@@ -296,3 +296,4 @@ export function WelcomeCarousel({ onSelectOption, onSend, isOffline = false }) {
     </div>
   );
 }
+

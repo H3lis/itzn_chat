@@ -263,10 +263,7 @@ export function ClientLayout({
             <School size={22} color="#38bdf8" />
           </div>
 
-          <div className="brand-title" style={{ display: 'flex', flexDirection: 'column', gap: '2px', lineHeight: 1.25 }}>
-            <span className="brand-slogan" style={{ fontSize: '0.72rem', color: '#94a3b8', fontWeight: 500, letterSpacing: '-0.2px' }}>
-              언제 어디서나 신속하고 편리한
-            </span>
+          <div className="brand-title">
             <span className="brand-title-text client-title-prominent">
               학교 유무선 장애상담 스쿨넷 고객센터
             </span>

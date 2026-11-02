@@ -3078,5 +3078,71 @@ body {
   font-weight: 500;
 }
 
+/* Similar Questions (비슷한 질문 추천 후순위 박스) */
+.similar-questions-box {
+  margin-top: 0.85rem;
+  padding: 0.75rem 0.9rem;
+  background: var(--bg-subtle, #f8fafc);
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.similar-questions-header {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-main, #0f172a);
+}
+
+.similar-questions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.similar-q-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.75rem;
+  background: var(--surface, #ffffff);
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 8px;
+  font-size: 0.78rem;
+  color: var(--text-main, #1e293b);
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s ease;
+}
+
+.similar-q-btn:hover {
+  background: var(--primary-light, #eff6ff);
+  border-color: var(--primary-border, #bfdbfe);
+  color: var(--primary, #0284c7);
+  transform: translateX(2px);
+}
+
+.similar-q-text {
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.similar-q-arrow {
+  color: var(--text-muted, #94a3b8);
+  flex-shrink: 0;
+  margin-left: 0.5rem;
+  transition: transform 0.15s ease;
+}
+
+.similar-q-btn:hover .similar-q-arrow {
+  color: var(--primary, #0284c7);
+  transform: translateX(2px);
+}
+
 
 

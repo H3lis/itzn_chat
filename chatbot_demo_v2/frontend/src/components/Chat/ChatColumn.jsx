@@ -27,10 +27,15 @@ export function ChatColumn({
   isOffline = false,
 }) {
   const messagesEndRef = useRef(null);
+  const containerRef = useRef(null);
 
-  // Auto-scroll to bottom on new messages or busy changes
+  // Auto-scroll to bottom on new messages or busy changes (초기 화면 진입 시에는 최상단이 먼저 보이도록 유지)
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (messages.length > 0 || inFlight || (busySteps && busySteps.length > 0)) {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    } else if (containerRef.current) {
+      containerRef.current.scrollTop = 0;
+    }
   }, [messages, inFlight, busySteps]);
 
   // 시나리오 칩 중 '처음으로'(__restart__) 선택 시 세션 초기화(onReset) 트리거
@@ -70,7 +75,7 @@ export function ChatColumn({
       </div>
 
       {/* Message Feed */}
-      <div className="chat-messages">
+      <div className="chat-messages" ref={containerRef}>
         {messages.length === 0 && (
           <WelcomeCarousel
             onSelectOption={handleOptionClick}
@@ -98,6 +103,7 @@ export function ChatColumn({
                   onSelect={() => onSelectMsg(m.id)}
                   onOpenEvidence={onOpenEvidence}
                   onFeedback={onFeedback}
+                  onSend={onSend}
                   isClient={isClient}
                 />
               </div>

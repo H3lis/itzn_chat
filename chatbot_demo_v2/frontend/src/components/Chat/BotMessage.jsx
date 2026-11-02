@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { ThumbsUp, ThumbsDown, CheckCircle2, Sparkles, FileText } from 'lucide-react';
+import { ThumbsUp, ThumbsDown, CheckCircle2, Sparkles, FileText, HelpCircle, ChevronRight } from 'lucide-react';
 import { AnswerRenderer } from './AnswerRenderer';
 
 function confLabel(c) {
@@ -7,10 +7,13 @@ function confLabel(c) {
   return map[c] || c;
 }
 
-export function BotMessage({ resp, isActive, onSelect, onOpenEvidence, onFeedback, isClient = false }) {
+export function BotMessage({ resp, isActive, onSelect, onOpenEvidence, onFeedback, onSend, isClient = false }) {
   const safeResp = resp || {};
   const [feedbackState, setFeedbackState] = useState(null); // 'pos' | 'neg' | null
   const [feedbackSent, setFeedbackSent] = useState(false);
+
+  // 비슷한 질문(후순위 추천) 목록 추출
+  const similarCandidates = safeResp.clarify?.candidates || [];
 
   // 유효한 근거 문서(이미지 URL 보유) 중복 제거 목록
   const validEvidence = useMemo(() => {
@@ -78,6 +81,33 @@ export function BotMessage({ resp, isActive, onSelect, onOpenEvidence, onFeedbac
                   <span className="chip-page-bold">{pageStr}</span>
                   <span className="chip-doc-title">{docShort}</span>
                   {hasHl && <span className="chip-hl-badge">✨ 형광펜</span>}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* 💡 비슷한 질문 추천 (답변 완료 후 후순위 안내) */}
+      {similarCandidates.length > 0 && (
+        <div className="similar-questions-box" onClick={(e) => e.stopPropagation()}>
+          <div className="similar-questions-header">
+            <HelpCircle size={14} color="#0284c7" />
+            <span>비슷한 질문으로 이런 항목들도 확인해 보세요:</span>
+          </div>
+          <div className="similar-questions-list">
+            {similarCandidates.map((cd, idx) => {
+              const qText = cd.question || cd.label || cd;
+              return (
+                <button
+                  key={idx}
+                  type="button"
+                  className="similar-q-btn"
+                  onClick={() => onSend?.(qText)}
+                  title="클릭하여 이 질문으로 바로 상담 진행"
+                >
+                  <span className="similar-q-text">{qText}</span>
+                  <ChevronRight size={13} className="similar-q-arrow" />
                 </button>
               );
             })}

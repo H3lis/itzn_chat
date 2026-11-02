@@ -1098,6 +1098,23 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
         timings["total_s"] = total
         out["timings"] = timings
 
+        # 후순위 연관 질문(비슷한 질문) 추출: 답변 완료 후 유사한 상위 FAQ 질문 추천
+        norm_q = state.get("normalized_question") or state.get("raw_question") or ""
+        if norm_q and route in ("rag3x", "web_search", "faq"):
+            try:
+                curr_matcher = _get_matcher()
+                if curr_matcher:
+                    raw_cands = curr_matcher.top_candidates(norm_q, k=3)
+                    matched_id = (state.get("scenario_match") or {}).get("matched_id")
+                    valid_cands = [
+                        c for c in raw_cands
+                        if float(c.get("score") or 0.0) >= 0.25 and c.get("faq_id") != matched_id
+                    ]
+                    if valid_cands:
+                        out["clarify"] = {"candidates": valid_cands}
+            except Exception:
+                pass
+
         # 대화 메모리: 상담봇 최종 답변을 이력에 추가(빈 답변/시나리오 메뉴 텍스트도 포함).
         ans_text = out.get("final_answer")
         if ans_text is None:
