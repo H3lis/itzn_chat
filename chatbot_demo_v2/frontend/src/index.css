@@ -3058,6 +3058,14 @@ body {
   margin-top: auto;
 }
 
+.card-etc .welcome-card-actions {
+  margin-top: 0;
+}
+
+.card-etc .welcome-card-body {
+  justify-content: flex-start;
+}
+
 .welcome-card-btn {
   background: var(--bg, #f8fafc);
   border: 1px solid var(--border, #e2e8f0);
