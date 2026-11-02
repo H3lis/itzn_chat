@@ -372,8 +372,8 @@ export function useChatStream() {
         user_id: getOrCreateUserId(),
         action: {
           type: 'scenario_option',
-          scenario_id: option.scenario_id,
-          node_id: option.node_id,
+          scenario_id: option.scenario_id || 'root',
+          node_id: option.node_id || 'root',
           option_id: option.option_id,
           label: option.label,
         },

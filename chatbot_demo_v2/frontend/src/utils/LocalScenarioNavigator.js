@@ -69,6 +69,8 @@ export class LocalScenarioNavigator {
       return [];
     }
     return rootNode.options.map((opt) => ({
+      scenario_id: rootNode.scenario_id || 'root',
+      node_id: rootNode.node_id || 'root',
       option_id: opt.option_id,
       label: opt.label,
       next_node_id: opt.next_node_id,
@@ -92,7 +94,14 @@ export class LocalScenarioNavigator {
    * @returns {Object} { userMsg, botMsg, nextOptions, nextNodeId, completed }
    */
   step(optionItem, currentNodeId = null) {
-    const nextNodeId = optionItem.next_node_id;
+    let nextNodeId = optionItem.next_node_id;
+    if (!nextNodeId && optionItem.option_id) {
+      const activeNode = this.nodes[currentNodeId || this.rootNodeId] || this.nodes[this.rootNodeId];
+      const found = (activeNode?.options || []).find((o) => o.option_id === optionItem.option_id);
+      if (found) {
+        nextNodeId = found.next_node_id;
+      }
+    }
     const targetNode = nextNodeId ? this.nodes[nextNodeId] : null;
 
     const userMsg = {
