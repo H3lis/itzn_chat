@@ -10,7 +10,8 @@ import {
   Server,
   HelpCircle,
   FileQuestion,
-  PhoneCall
+  PhoneCall,
+  MoreHorizontal
 } from 'lucide-react';
 
 export function WelcomeCarousel({ onSelectOption, onSend, isOffline = false }) {
@@ -131,6 +132,25 @@ export function WelcomeCarousel({ onSelectOption, onSend, isOffline = false }) {
       option_id: 'nms_lost_account',
       label: '관제시스템 계정 분실 안내',
       next_node_id: 'nms_account.answer'
+    }
+  ];
+
+  // 카드 4: 기타 서비스 안내 및 추가 질문 슬롯 (확장형)
+  const etcOptions = [
+    {
+      type: 'query',
+      label: '나이스(NEIS) / 행정망 접속 문의',
+      query: '나이스 행정망 접속 방법 알려줘'
+    },
+    {
+      type: 'query',
+      label: '학내 정보화기기 고장 및 교체 문의',
+      query: '학교 전산 장비 및 정보화기기 고장 접수 절차'
+    },
+    {
+      type: 'query',
+      label: '스쿨넷 서비스 이용 일반 문의',
+      query: '스쿨넷 서비스 이용 및 지원 안내'
     }
   ];
 
@@ -264,6 +284,36 @@ export function WelcomeCarousel({ onSelectOption, onSend, isOffline = false }) {
                 {smartDeviceOptions.map((opt, idx) => (
                   <button
                     key={opt.option_id || `faq_${idx}`}
+                    type="button"
+                    className="welcome-card-btn"
+                    onClick={() => handleCardButtonClick(opt)}
+                  >
+                    <span>{opt.label}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* 카드 4: 기타 서비스 안내 및 추가 질문 슬롯 */}
+          <div className="welcome-card card-etc">
+            <div className="welcome-card-header header-etc">
+              <div className="welcome-card-icon-badge badge-amber">
+                <MoreHorizontal size={20} strokeWidth={2.4} />
+              </div>
+              <div className="welcome-card-header-texts">
+                <div className="welcome-card-subtitle">일반 행정 & 추가 문의</div>
+                <div className="welcome-card-title">기타 서비스 안내</div>
+              </div>
+            </div>
+            <div className="welcome-card-body">
+              <p className="welcome-card-desc">
+                학내 전산망 이용 및 기타 자주 발생하는 문의 사항을 확인하세요.
+              </p>
+              <div className="welcome-card-actions">
+                {etcOptions.map((opt, idx) => (
+                  <button
+                    key={opt.option_id || `etc_${idx}`}
                     type="button"
                     className="welcome-card-btn"
                     onClick={() => handleCardButtonClick(opt)}

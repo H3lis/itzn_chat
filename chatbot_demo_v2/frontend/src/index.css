@@ -2982,6 +2982,10 @@ body {
   background: linear-gradient(135deg, rgba(245, 243, 255, 0.9), rgba(250, 245, 255, 0.6));
 }
 
+.header-etc {
+  background: linear-gradient(135deg, rgba(254, 243, 199, 0.9), rgba(255, 251, 235, 0.6));
+}
+
 .welcome-card-icon-badge {
   width: 36px;
   height: 36px;
@@ -3005,6 +3009,11 @@ body {
 .badge-violet {
   background: #ede9fe;
   color: #7c3aed;
+}
+
+.badge-amber {
+  background: #fef3c7;
+  color: #d97706;
 }
 
 .welcome-card-header-texts {
