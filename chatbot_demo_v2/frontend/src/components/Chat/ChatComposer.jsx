@@ -28,7 +28,7 @@ export function ChatComposer({ inFlight, onSend, isOffline = false }) {
       <input
         type="text"
         className="composer-input"
-        placeholder={isOffline ? "오프라인 상태입니다. 상단 시나리오 버튼을 선택해 주세요." : "궁금한 내용을 입력하세요..."}
+        placeholder={isOffline ? "오프라인 상태입니다. 바로가기 버튼을 선택해 주세요." : "문의사항을 입력해주세요"}
         value={text}
         disabled={inFlight || isOffline}
         onChange={(e) => setText(e.target.value)}

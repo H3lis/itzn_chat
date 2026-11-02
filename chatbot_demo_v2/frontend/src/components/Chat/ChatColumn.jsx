@@ -5,6 +5,7 @@ import { ClarifyCard } from './ClarifyCard';
 import { BusyIndicator } from './BusyIndicator';
 import { ScenarioStrip } from './ScenarioStrip';
 import { ChatComposer } from './ChatComposer';
+import { WelcomeCarousel } from './WelcomeCarousel';
 
 export function ChatColumn({
   messages,
@@ -71,17 +72,11 @@ export function ChatColumn({
       {/* Message Feed */}
       <div className="chat-messages">
         {messages.length === 0 && (
-          <div className="chat-empty-state">
-            <div className="chat-empty-icon">
-              <Sparkles size={24} />
-            </div>
-            <div className="chat-empty-title">학교 장애상담 스쿨넷봇</div>
-            <div className="chat-empty-desc">
-              {isOffline
-                ? '현재 오프라인 모드로 동작 중입니다. 아래 시나리오 버튼을 선택하여 네트워크 및 장비 장애 조치를 진행해 주세요.'
-                : '궁금한 내용을 직접 질문하시거나, 아래 주요 장애 시나리오 버튼을 선택해 주세요.'}
-            </div>
-          </div>
+          <WelcomeCarousel
+            onSelectOption={handleOptionClick}
+            onSend={onSend}
+            isOffline={isOffline}
+          />
         )}
 
         {messages.map((m) => {
@@ -146,12 +141,14 @@ export function ChatColumn({
         elapsedSeconds={elapsedSeconds}
       />
 
-      {/* Scenario Action Strip */}
-      <ScenarioStrip
-        options={scenarioOptions}
-        inFlight={inFlight}
-        onSelectOption={handleOptionClick}
-      />
+      {/* Scenario Action Strip (대화 진행 중일 때 하단 시나리오 칩 노출) */}
+      {messages.length > 0 && (
+        <ScenarioStrip
+          options={scenarioOptions}
+          inFlight={inFlight}
+          onSelectOption={handleOptionClick}
+        />
+      )}
 
       {/* Chat Composer */}
       <ChatComposer inFlight={inFlight} onSend={onSend} isOffline={isOffline} />

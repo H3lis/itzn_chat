@@ -2806,5 +2806,277 @@ body {
   }
 }
 
+/* ==========================================================================
+   Welcome Screen & Carousel Cards (공공 고객센터형 웰컴 UI)
+   ========================================================================== */
+
+.welcome-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  padding: 0.25rem 0.25rem 1rem 0.25rem;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 1. 이전 상담 & 오늘 날짜 구분선 */
+.welcome-divider-row,
+.welcome-date-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  margin: 0.2rem 0;
+}
+
+.welcome-divider-line,
+.welcome-date-line {
+  flex: 1;
+  height: 1px;
+  background: var(--border, #e2e8f0);
+}
+
+.welcome-divider-text,
+.welcome-date-text {
+  font-size: 0.76rem;
+  color: var(--text-muted, #64748b);
+  font-weight: 500;
+  letter-spacing: -0.2px;
+  white-space: nowrap;
+}
+
+/* 2. 환영 인사 말풍선 */
+.welcome-bubble-container {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 0.2rem;
+}
+
+.welcome-greeting-bubble {
+  background: var(--surface, #ffffff);
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 18px 18px 18px 4px;
+  padding: 1rem 1.25rem;
+  max-width: 520px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.welcome-greeting-title {
+  margin: 0 0 0.45rem 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--text-main, #0f172a);
+}
+
+.welcome-greeting-title strong {
+  color: var(--primary, #0284c7);
+  font-weight: 700;
+}
+
+.welcome-greeting-desc {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--text-sub, #475569);
+}
+
+/* 3. 캐러셀 카드 트랙 및 네비게이션 */
+.welcome-carousel-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-top: 0.25rem;
+}
+
+.welcome-carousel-track {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 4px 4px 10px 4px;
+  width: 100%;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.welcome-carousel-track::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid var(--border-strong, #cbd5e1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  color: var(--text-main, #334155);
+  transition: all 0.2s ease;
+}
+
+.carousel-nav-btn.prev {
+  left: -10px;
+}
+
+.carousel-nav-btn.next {
+  right: -10px;
+}
+
+.carousel-nav-btn:hover {
+  background: var(--primary, #0284c7);
+  color: #ffffff;
+  border-color: var(--primary, #0284c7);
+  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35);
+}
+
+/* 4. 개별 캐러셀 카드 */
+.welcome-card {
+  flex: 0 0 255px;
+  scroll-snap-align: start;
+  background: var(--surface, #ffffff);
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.welcome-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  border-color: var(--border-strong, #cbd5e1);
+}
+
+.welcome-card-header {
+  padding: 0.9rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.header-ai {
+  background: linear-gradient(135deg, rgba(239, 246, 255, 0.9), rgba(240, 253, 250, 0.6));
+}
+
+.header-service {
+  background: linear-gradient(135deg, rgba(236, 253, 245, 0.9), rgba(240, 253, 244, 0.6));
+}
+
+.header-device {
+  background: linear-gradient(135deg, rgba(245, 243, 255, 0.9), rgba(250, 245, 255, 0.6));
+}
+
+.welcome-card-icon-badge {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.badge-blue {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.badge-emerald {
+  background: #d1fae5;
+  color: #059669;
+}
+
+.badge-violet {
+  background: #ede9fe;
+  color: #7c3aed;
+}
+
+.welcome-card-header-texts {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.welcome-card-subtitle {
+  font-size: 0.68rem;
+  color: var(--text-muted, #64748b);
+  font-weight: 600;
+  letter-spacing: -0.1px;
+}
+
+.welcome-card-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-main, #0f172a);
+  margin-top: 1px;
+}
+
+.welcome-card-body {
+  padding: 0.85rem 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.welcome-card-desc {
+  font-size: 0.76rem;
+  line-height: 1.45;
+  color: var(--text-muted, #64748b);
+  margin: 0;
+}
+
+.welcome-card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin-top: auto;
+}
+
+.welcome-card-btn {
+  background: var(--bg, #f8fafc);
+  border: 1px solid var(--border, #e2e8f0);
+  color: var(--text-main, #1e293b);
+  padding: 0.55rem 0.75rem;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  width: 100%;
+}
+
+.welcome-card-btn:hover {
+  background: var(--primary, #0284c7);
+  border-color: var(--primary, #0284c7);
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(2, 132, 199, 0.25);
+}
+
+.welcome-timestamp {
+  font-size: 0.72rem;
+  color: var(--text-light, #94a3b8);
+  padding-left: 0.25rem;
+  font-weight: 500;
+}
+
 
 
