@@ -302,6 +302,102 @@ class AuditService:
                     "db_size_bytes": self.db_path.stat().st_size if self.db_path.is_file() else 0,
                 }
 
+    def get_logs(
+        self,
+        *,
+        start_date: Optional[str] = None,
+        end_date: Optional[str] = None,
+        action_type: Optional[str] = None,
+        search: Optional[str] = None,
+        limit: int = 100,
+        offset: int = 0,
+    ) -> dict[str, Any]:
+        """보안 감사 로그 목록 및 페이징 조회."""
+        where_clauses = ["1=1"]
+        params: list[Any] = []
+
+        if start_date:
+            where_clauses.append("timestamp >= ?")
+            params.append(f"{start_date.strip()} 00:00:00")
+        if end_date:
+            where_clauses.append("timestamp <= ?")
+            params.append(f"{end_date.strip()} 23:59:59")
+        if action_type:
+            where_clauses.append("action_type = ?")
+            params.append(action_type.strip().upper())
+        if search:
+            s = f"%{search.strip()}%"
+            where_clauses.append("(client_ip LIKE ? OR target_resource LIKE ? OR actor LIKE ? OR payload_summary LIKE ?)")
+            params.extend([s, s, s, s])
+
+        where_sql = " AND ".join(where_clauses)
+
+        with self._db_lock:
+            with self._get_conn() as conn:
+                cur = conn.cursor()
+                cur.execute(f"SELECT COUNT(*) FROM audit_logs WHERE {where_sql};", params)
+                total = cur.fetchone()[0]
+
+                query = f"""
+                    SELECT id, timestamp, actor, client_ip, user_agent, action_type,
+                           target_resource, request_method, endpoint, status_code,
+                           payload_summary, diff_detail, elapsed_ms
+                    FROM audit_logs
+                    WHERE {where_sql}
+                    ORDER BY id DESC
+                    LIMIT ? OFFSET ?;
+                """
+                cur.execute(query, params + [limit, offset])
+                rows = cur.fetchall()
+                logs = [dict(row) for row in rows]
+
+                return {
+                    "total": total,
+                    "limit": limit,
+                    "offset": offset,
+                    "logs": logs,
+                }
+
+    def get_daily_counts(
+        self,
+        *,
+        year: Optional[int] = None,
+        month: Optional[int] = None,
+        start_date: Optional[str] = None,
+        end_date: Optional[str] = None,
+    ) -> list[dict[str, Any]]:
+        """달력형 표출을 위한 일자별(YYYY-MM-DD) 감사 로그 집계."""
+        where_clauses = ["1=1"]
+        params: list[Any] = []
+
+        if year and month:
+            prefix = f"{year:04d}-{month:02d}"
+            where_clauses.append("timestamp LIKE ?")
+            params.append(f"{prefix}%")
+        else:
+            if start_date:
+                where_clauses.append("timestamp >= ?")
+                params.append(f"{start_date.strip()} 00:00:00")
+            if end_date:
+                where_clauses.append("timestamp <= ?")
+                params.append(f"{end_date.strip()} 23:59:59")
+
+        where_sql = " AND ".join(where_clauses)
+        query = f"""
+            SELECT substr(timestamp, 1, 10) as log_date,
+                   COUNT(*) as count,
+                   SUM(CASE WHEN action_type = 'PROMPT_ATTACK_BLOCKED' THEN 1 ELSE 0 END) as security_alerts
+            FROM audit_logs
+            WHERE {where_sql}
+            GROUP BY substr(timestamp, 1, 10)
+            ORDER BY log_date ASC;
+        """
+        with self._db_lock:
+            with self._get_conn() as conn:
+                cur = conn.cursor()
+                cur.execute(query, params)
+                return [dict(row) for row in cur.fetchall()]
+
     def export_csv(
         self,
         *,

@@ -1898,4 +1898,48 @@ def admin_audit_export(
     )
 
 
+@router.get("/api/admin/audit/logs")
+def admin_audit_logs(
+    request: Request,
+    start_date: Optional[str] = Query(None, description="시작일 (YYYY-MM-DD)"),
+    end_date: Optional[str] = Query(None, description="종료일 (YYYY-MM-DD)"),
+    action_type: Optional[str] = Query(None, description="액션 유형 (DOC_DELETE 등)"),
+    search: Optional[str] = Query(None, description="검색어 (IP, 자원, 작업자 등)"),
+    limit: int = Query(50, ge=1, le=500),
+    offset: int = Query(0, ge=0),
+) -> dict:
+    """보안 감사 로그 목록 및 페이징 조회."""
+    ctx = _ctx(request)
+    if not getattr(ctx, "audit_service", None):
+        return {"total": 0, "limit": limit, "offset": offset, "logs": []}
+    return ctx.audit_service.get_logs(
+        start_date=start_date,
+        end_date=end_date,
+        action_type=action_type,
+        search=search,
+        limit=limit,
+        offset=offset,
+    )
+
+
+@router.get("/api/admin/audit/daily-counts")
+def admin_audit_daily_counts(
+    request: Request,
+    year: Optional[int] = Query(None, description="연도 (예: 2026)"),
+    month: Optional[int] = Query(None, description="월 (1~12)"),
+    start_date: Optional[str] = Query(None, description="시작일 (YYYY-MM-DD)"),
+    end_date: Optional[str] = Query(None, description="종료일 (YYYY-MM-DD)"),
+) -> list:
+    """달력형 표출을 위한 일자별 감사 로그 집계."""
+    ctx = _ctx(request)
+    if not getattr(ctx, "audit_service", None):
+        return []
+    return ctx.audit_service.get_daily_counts(
+        year=year,
+        month=month,
+        start_date=start_date,
+        end_date=end_date,
+    )
+
+
 
