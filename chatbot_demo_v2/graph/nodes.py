@@ -34,6 +34,46 @@ def _format_history(messages: list, limit_chars: int = 2000) -> str:
     return text[-limit_chars:] if len(text) > limit_chars else text
 
 
+def _build_default_clarify_message(question: str, candidates: list[dict]) -> str:
+    """LLM 미응답/오프라인 시 사용할 대화형 의도 확인(되묻기) 기본 멘트."""
+    q_clean = (question or "문의하신 내용").strip()
+    if len(candidates) >= 2:
+        c1 = (candidates[0].get("question") or "").strip()
+        c2 = (candidates[1].get("question") or "").strip()
+        return (
+            f"말씀하신 **\"{q_clean}\"**와 관련하여 정확한 안내를 위해 확인 부탁드립니다. "
+            f"혹시 찾으시는 내용이 **① {c1}**에 대한 것인가요, 아니면 **② {c2}**와 같은 상황이신가요? "
+            f"아래 선택지를 눌러주시거나, 구체적인 증상을 채팅창에 편하게 말씀해 주시면 바로 안내해 드리겠습니다."
+        )
+    if len(candidates) == 1:
+        c1 = (candidates[0].get("question") or "").strip()
+        return (
+            f"문의하신 내용이 혹시 **\"{c1}\"**에 관한 것이 맞으신가요? "
+            f"맞다면 아래 항목을 선택해 주시고, 다른 상황이라면 구체적인 증상을 편하게 입력해 주세요."
+        )
+    return "정확한 해결 방법을 안내해 드릴 수 있도록 현재 겪고 계신 증상이나 상황을 조금 더 구체적으로 말씀해 주시겠어요?"
+
+
+_ORDINAL_FIRST_RE = re.compile(
+    r"^(1\s*번?(째|이요|이야|입니다|맞아요|맞음|할래요|선택)?|첫\s*번째(\s*거|\s*항목|\s*맞아요|\s*이요)?|앞\s*에\s*거|전자(요|입니다)?)$"
+)
+_ORDINAL_SECOND_RE = re.compile(
+    r"^(2\s*번?(째|이요|이야|입니다|맞아요|맞음|할래요|선택)?|두\s*번째(\s*거|\s*항목|\s*맞아요|\s*이요)?|뒤\s*에\s*거|후자(요|입니다)?)$"
+)
+
+
+def _match_ordinal_clarify_reply(user_q: str, candidates: list[dict]) -> dict | None:
+    """사용자가 되묻기 직후 버튼 대신 '1번이요', '두 번째 거요' 등 텍스트로 답한 경우 즉시 후보 매칭."""
+    if not user_q or not candidates:
+        return None
+    cleaned = re.sub(r"[.!?\s]+$", "", user_q.strip())
+    if _ORDINAL_FIRST_RE.match(cleaned) and len(candidates) >= 1:
+        return candidates[0]
+    if _ORDINAL_SECOND_RE.match(cleaned) and len(candidates) >= 2:
+        return candidates[1]
+    return None
+
+
 _PERSONA_PROMPT_NAMES = (
     "persona/persona",
     "persona/response_policy",
@@ -249,6 +289,9 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
             if not state.get("action_node_id") or not state.get("selected_option_id"):
                 raise InvalidActionError("action 에 node_id/option_id 누락")
             out["normalized_question"] = None
+            act_label = (state.get("action_label") or "").strip()
+            if act_label:
+                out["messages"] = [HumanMessage(content=f"[선택] {act_label}")]
             out["trace"] = _trace(
                 {"trace": out["trace"]},
                 "normalize_input",
@@ -323,15 +366,18 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
     def load_or_update_session(state: ChatState) -> dict:
         out: dict = {}
         if state.get("input_type") == "text":
-            # 자유 입력: 이전 시나리오 위치가 라우팅에 영향 주지 않도록 중단.
-            # (messages 는 절대 초기화하지 않는다 — 대화 메모리 유지.)
+            # 자유 입력: 이전 시나리오 위치가 라우팅에 영향 주지 않도록 중단하되,
+            # 직전 시나리오 이동 경로는 last_scenario_path 에 보존해 후속 질문 맥락화에 활용한다.
+            prev_path = list(state.get("scenario_path") or [])
             out.update(
                 scenario_id=None,
                 current_node_id=None,
                 scenario_completed=False,
                 scenario_path=[],
             )
-            detail = "자유 입력 → 시나리오 상태 중단"
+            if prev_path:
+                out["last_scenario_path"] = prev_path
+            detail = "자유 입력 → 시나리오 상태 중단(직전 경로 맥락 보존)"
         else:
             if state.get("scenario_path") is None:
                 out["scenario_path"] = []
@@ -379,11 +425,11 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
         }
         return out
 
-    # ---------- 3.5 contextualize_query (Phase 3, 후속질문 재작성) ----------
+    # ---------- 3.5 contextualize_query (Phase 3, 후속질문 재작성 + 감독관 되묻기 연동) ----------
     def contextualize_query(state: ChatState) -> dict:
         """자유입력 & 후속질문일 때만 대화 이력으로 자립형 질문 재작성.
 
-        게이트: settings.contextualize_enabled ∧ text ∧ 이전 사용자 발화 ≥1(=후속).
+        게이트: settings.contextualize_enabled ∧ text ∧ (이전 사용자 발화 ≥1 또는 직전 시나리오/되묻기 존재).
         그 외에는 pass-through(standalone_question=원문). LLM 실패 시에도 원문 유지.
         """
         if state.get("input_type") != "text":
@@ -391,12 +437,48 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
         user_q = (state.get("user_input") or "").strip()
         msgs = state.get("messages") or []
         humans = [m for m in msgs if isinstance(m, HumanMessage)]
-        if not settings.contextualize_enabled or len(humans) < 2:
+        pending_cands = list(state.get("pending_clarify_candidates") or [])
+        last_scen_path = list(state.get("last_scenario_path") or [])
+
+        # [감독관 되묻기 직후 자유입력 번호 선택("1번이요", "두 번째 거") 0초 즉시 해소]
+        if pending_cands:
+            picked = _match_ordinal_clarify_reply(user_q, pending_cands)
+            curr_faq = _get_faq()
+            if picked and curr_faq and curr_faq.get(picked.get("faq_id")) is not None:
+                entry = curr_faq.get(picked.get("faq_id"))
+                new_match = {
+                    "decision": "accept",
+                    "decision_reason": "clarify 되묻기 후 사용자 텍스트 번호 선택",
+                    "best_score": 1.0,
+                    "matched_id": entry.id,
+                    "matched_question": entry.question,
+                    "matched_sheet": entry.sheet,
+                    "matched_row": entry.row,
+                }
+                _node_meta(
+                    {"rewritten": True, "clarify_text_pick": entry.id, "standalone_question": entry.question},
+                    tags=["contextualized", "clarify_resolved:text_ordinal"],
+                )
+                return {
+                    "standalone_question": entry.question,
+                    "normalized_question": normalize_text(entry.question),
+                    "contextualized": True,
+                    "scenario_match": new_match,
+                    "scenario_match_score": 1.0,
+                    "scenario_match_margin": 1.0,
+                    "pending_clarify_candidates": [],
+                    "trace": _trace(
+                        state, "contextualize_query",
+                        f"되묻기 텍스트 번호 선택({user_q}) → {entry.id} 즉시 매칭",
+                    ),
+                }
+
+        has_prior_context = len(humans) >= 2 or bool(pending_cands) or bool(last_scen_path)
+        if not settings.contextualize_enabled or not has_prior_context:
             return {"standalone_question": user_q, "contextualized": False}
 
         # [최적화] 사용자의 현재 질문 원문 자체가 이미 FAQ/시나리오에 명확히 매칭(exact/accept)되는 경우,
-        # 15~18초가 소요되는 대화 맥락 재작성(LLM)을 건너뛰고 원문 그대로 즉시 매칭으로 직행한다.
-        # (원문 왜곡 방지 및 FAQ 연속 질의 응답 시간 10초대 유지)
+        # 대화 맥락 재작성(LLM)을 건너뛰고 원문 그대로 즉시 매칭으로 직행한다.
         norm_q = state.get("normalized_question") or normalize_text(user_q)
         try:
             matcher = _get_matcher()
@@ -420,6 +502,9 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
 
         _progress("contextualize", "이전 대화를 참고해 질문을 정리하고 있어요…")
         history = _format_history(msgs[:-1], limit_chars=2000)
+        if last_scen_path:
+            scen_prefix = f"[직전 시나리오 상담 경로: {' > '.join(last_scen_path)}]"
+            history = f"{scen_prefix}\n{history}".strip()
         rewritten = user_q
         if ctx.llm is not None and ctx.prompts is not None:
             prompt = ctx.prompts.render("contextualize", history=history, question=user_q)
@@ -488,33 +573,98 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
 
     # ---------- 5. route_decider ----------
     def route_decider(state: ChatState) -> dict:
+        was_pending_clarify = bool(state.get("pending_clarify_candidates"))
         route, reason = decide_route(
             state,
             clarify_enabled=settings.clarify_enabled,
             clarify_min_score=settings.clarify_min_score,
         )
+        # 직전 턴에 이미 되묻기(clarify)를 수행했고 사용자가 텍스트로 후속 답변을 입력한 경우,
+        # 연속 되묻기 루프에 빠지지 않도록 RAG 상세 검색으로 바로 진입시킨다.
+        if route == "clarify" and was_pending_clarify:
+            route = "rag3x"
+            reason = "되묻기 직후 후속 질문 → 연속 되묻기 방지 및 RAG 직행"
+
         _node_meta({"route": route, "route_reason": reason}, tags=[f"route:{route}"])
+
+        if route == "clarify":
+            norm = state.get("normalized_question") or ""
+            curr_matcher = _get_matcher()
+            candidates = curr_matcher.top_candidates(norm, k=2) if curr_matcher else []
+            user_q = (state.get("standalone_question") or state.get("user_input") or "").strip()
+            clarify_msg = None
+
+            if ctx.llm is not None and ctx.prompts is not None and candidates:
+                _progress("clarify", "정확한 안내를 위해 질문 의도를 확인하고 있어요…")
+                history_text = _format_history((state.get("messages") or [])[:-1], limit_chars=800) or "(첫 질문)"
+                cands_text = "\n".join(
+                    f"{idx + 1}. {c.get('question', '')}" for idx, c in enumerate(candidates)
+                )
+                prompt = ctx.prompts.render_optional(
+                    "supervisor_clarify",
+                    question=user_q,
+                    history=history_text,
+                    candidates_text=cands_text,
+                )
+                if prompt:
+                    model_to_use = (
+                        settings.faq_composer_model
+                        if getattr(settings, "rag_backend", "gemini") == "ollama"
+                        else None
+                    )
+                    try:
+                        raw_out = ctx.llm.chat(prompt, model=model_to_use) if model_to_use else ctx.llm.chat(prompt)
+                    except TypeError:
+                        raw_out = ctx.llm.chat(prompt)
+                    if raw_out and str(raw_out).strip():
+                        clarify_msg = str(raw_out).strip()
+
+            if not clarify_msg:
+                clarify_msg = _build_default_clarify_message(user_q, candidates)
+
+            return {
+                "route": route,
+                "route_reason": reason,
+                "clarify_candidates": candidates,
+                "clarify_message": clarify_msg,
+                "pending_clarify_candidates": candidates,
+                "messages": [AIMessage(content=clarify_msg)],
+                "trace": _trace(state, "route_decider", f"route={route} ({reason}) | 감독관 되묻기 생성"),
+            }
+
         return {
             "route": route,
             "route_reason": reason,
+            "pending_clarify_candidates": [],
             "trace": _trace(state, "route_decider", f"route={route} ({reason})"),
         }
 
     # ---------- 5.5 clarify_node (Phase 3, HITL 인터럽트) ----------
     def clarify_node(state: ChatState) -> Command:
-        """애매 매칭 시 상위 후보를 제시하고 실행을 일시정지(interrupt).
+        """애매 매칭 시 감독관 되묻기 메시지와 상위 후보를 제시하고 실행을 일시정지(interrupt).
 
         재개(Command(resume={"choice": faq_id | "__none__"})) 시:
           - 후보 선택 → scenario_match 를 해당 FAQ accept 로 덮어쓰고 route="faq" → scenario_answer.
           - "__none__" → route="rag3x" → rag3x_answer.
-        interrupt() 이전 코드는 재개 시 재실행되므로 부작용을 두지 않는다(후보 조회만).
+        interrupt() 이전 코드는 재개 시 재실행되므로 부작용을 두지 않는다(상태 조회만).
         """
         norm = state.get("normalized_question") or ""
         curr_matcher = _get_matcher()
         curr_faq = _get_faq()
-        candidates = curr_matcher.top_candidates(norm, k=2)
+        candidates = state.get("clarify_candidates")
+        if not candidates and curr_matcher:
+            candidates = curr_matcher.top_candidates(norm, k=2)
+        candidates = candidates or []
+        clarify_msg = state.get("clarify_message") or _build_default_clarify_message(
+            state.get("user_input") or "", candidates
+        )
+
         # 여기서 일시정지. resume 값이 choice 로 반환된다.
-        resume = interrupt({"type": "clarify", "candidates": candidates})
+        resume = interrupt({
+            "type": "clarify",
+            "message": clarify_msg,
+            "candidates": candidates,
+        })
         choice = (resume or {}).get("choice") if isinstance(resume, dict) else resume
 
         if choice and choice != "__none__" and curr_faq and curr_faq.get(choice) is not None:
@@ -535,6 +685,7 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
                     "route": "faq",
                     "route_reason": "clarify 후 사용자 후보 선택",
                     "clarify_choice": choice,
+                    "pending_clarify_candidates": [],
                     "scenario_match": new_match,
                     "trace": _trace(state, "clarify_node", f"후보 선택 → {entry.id}"),
                 },
@@ -546,6 +697,7 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
                 "route": "rag3x",
                 "route_reason": "clarify 후 '해당없음' → RAG",
                 "clarify_choice": "__none__",
+                "pending_clarify_candidates": [],
                 "trace": _trace(state, "clarify_node", "해당없음 → RAG"),
             },
         )
@@ -842,7 +994,10 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
 
         _progress("compose", "찾은 근거를 종합해 답변을 정리하고 있어요…")
         t0 = time.time()
-        out = ctx.llm.chat(prompt, model=model_to_use)
+        try:
+            out = ctx.llm.chat(prompt, model=model_to_use) if model_to_use else ctx.llm.chat(prompt)
+        except TypeError:
+            out = ctx.llm.chat(prompt)
         timings = dict(state.get("timings") or {})
         timings["compose_s"] = time.time() - t0
 

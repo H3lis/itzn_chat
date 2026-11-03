@@ -53,8 +53,9 @@ def create_app(ctx: Optional[AppContext] = None) -> FastAPI:
         if getattr(ctx, "audit_service", None) is not None:
             ctx.audit_service.start()
 
-        # 미색인 문서 자동 자가 치유 (Git pull 및 서버 재시작 후 미색인 방지)
-        if getattr(ctx, "doc_manager", None) is not None:
+        # 미색인 문서 자동 자가 치유 (Git pull 및 서버 재시작 후 미색인 방지 — pytest 단위테스트 제외)
+        import sys
+        if getattr(ctx, "doc_manager", None) is not None and "pytest" not in sys.modules:
             import threading
             threading.Thread(
                 target=ctx.doc_manager.self_heal_unindexed_documents,

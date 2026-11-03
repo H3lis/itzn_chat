@@ -91,3 +91,49 @@ def test_clarify_disabled_no_interrupt(tmp_path):
     out = ctx.graph.invoke(_text("애매한 질문", "c4", "tc4"), _cfg("tc4"))
     assert "__interrupt__" not in out                     # 되묻지 않고
     assert out["route"] == "rag3x"                         # 바로 RAG
+
+
+def test_supervisor_llm_generates_conversational_clarify_message(settings):
+    """Phase 1: 감독관 LLM이 활성화된 경우 자연어 되묻기 메시지('~가 맞나요?')가 interrupt payload 및 대화 메모리에 포함됨."""
+    class SupervisorMockLlm:
+        def chat(self, prompt: str, model=None):
+            if "감독관" in prompt:
+                return "선생님, 말씀하신 내용이 **① 첫 번째 후보**에 대한 것인가요, 아니면 **② 두 번째 후보**와 같은 상황이신가요?"
+            return None
+
+    ctx = build_context(settings, rag_adapter=FakeRagAdapter(), llm=SupervisorMockLlm())
+    _force_ambiguous(ctx)
+    out = ctx.graph.invoke(_text("와이파이가 이상해요", "c5", "tc5"), _cfg("tc5"))
+    assert "__interrupt__" in out
+    payload = out["__interrupt__"][0].value
+    assert "말씀하신 내용이" in payload["message"]
+    assert "첫 번째 후보" in payload["message"]
+
+
+def test_clarify_followed_by_free_text_ordinal_reply_resolves_faq(settings):
+    """Phase 1: 사용자가 되묻기 버튼을 누르지 않고 채팅창에 '1번이요'라고 입력해도 즉시 1번 후보 FAQ로 매칭됨."""
+    ctx = build_context(settings, rag_adapter=FakeRagAdapter(), llm=FakeLlm())
+    e0, _ = _force_ambiguous(ctx)
+    # 1턴: 애매한 질문 -> clarify 인터럽트
+    ctx.graph.invoke(_text("애매한 질문", "c6", "tc6"), _cfg("tc6"))
+    # 2턴: 버튼 클릭(Command) 대신 일반 자유 텍스트로 "1번이요" 입력
+    r2 = ctx.graph.invoke(_text("1번이요", "c6", "tc6"), _cfg("tc6"))
+    assert "__interrupt__" not in r2
+    assert r2["route"] == "faq"
+    assert r2["final_answer"] == e0.answer
+
+
+def test_clarify_prevents_back_to_back_clarify_loop(settings):
+    """Phase 1: 되묻기 직후 사용자가 자유 텍스트로 부연 설명을 입력했을 때 또 애매 점수가 나와도 연속 되묻기 루프를 방지하고 RAG로 직행."""
+    fake_rag = FakeRagAdapter()
+    ctx = build_context(settings, rag_adapter=fake_rag, llm=FakeLlm())
+    _force_ambiguous(ctx)
+    # 1턴: clarify 인터럽트 발생
+    out1 = ctx.graph.invoke(_text("애매한 질문", "c7", "tc7"), _cfg("tc7"))
+    assert "__interrupt__" in out1
+    # 2턴: 자유 텍스트로 다른 설명을 입력 (여전히 fake_match는 reject_ambiguous 반환)
+    out2 = ctx.graph.invoke(_text("그거 말고 물리적 장비 설치 절차가 궁금해요", "c7", "tc7"), _cfg("tc7"))
+    assert "__interrupt__" not in out2
+    assert out2["route"] == "rag3x"
+    assert fake_rag.ask_calls == 1
+

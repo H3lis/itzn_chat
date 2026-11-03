@@ -14,6 +14,7 @@ from chatbot_demo_v2.rag.adapter_util import FakeRagAdapter
 def _base_env(tmp_path: Path | None = None) -> dict:
     env = {
         "RAG_BACKEND": "gemini",
+        "SCENARIO_MATCH_BACKEND": "fuzz",
         "SCENARIO_MATCH_THRESHOLD": "0.90",
         "SCENARIO_MATCH_MARGIN": "0.05",
         "CLARIFY_ENABLED": "true",

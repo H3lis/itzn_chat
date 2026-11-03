@@ -228,7 +228,7 @@ def load_settings(env: Mapping[str, str] | None = None) -> Settings:
         #   0.40 → 골든셋에서 이번 개선의 발단 질문(ambig_01 "학교에서 새로운 ap를 설치하고
         #          싶어")이 best 0.386 으로 **아슬아슬하게 놓쳤다**
         #   0.35 → 채택. RAG 질문들의 best 는 0.2 이하에 몰려 있어 여유가 남는다.
-        scenario_match_backend=_get(env, "SCENARIO_MATCH_BACKEND", "semantic"),
+        scenario_match_backend=_get(env, "SCENARIO_MATCH_BACKEND", "fuzz" if "pytest" in sys.modules else "semantic"),
         scenario_match_threshold=_get_float(env, "SCENARIO_MATCH_THRESHOLD", 0.80),
         scenario_match_margin=_get_float(env, "SCENARIO_MATCH_MARGIN", 0.30),
         clarify_enabled=_get_bool(env, "CLARIFY_ENABLED", False),

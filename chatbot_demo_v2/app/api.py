@@ -256,9 +256,10 @@ def chat(request: Request, body: ChatRequest) -> ChatResponse:
 
     payload = _extract_interrupt(result)
     if payload is not None:
+        clarify_msg = payload.get("message") or "어떤 상황인지 확인이 필요해요 (후보 제시)"
         _safe_record_history(ctx, session_id, run_id, body, {
             "route": "clarify", "route_reason": "모호 질의 되묻기",
-            "final_answer": "어떤 상황인지 확인이 필요해요 (후보 제시)"
+            "final_answer": clarify_msg
         })
         return ChatResponse(
             session_id=session_id,
@@ -266,7 +267,10 @@ def chat(request: Request, body: ChatRequest) -> ChatResponse:
             run_id=run_id,
             route="clarify",
             answer=None,
-            clarify={"candidates": payload.get("candidates") or []},
+            clarify={
+                "message": clarify_msg,
+                "candidates": payload.get("candidates") or [],
+            },
             trace=result.get("trace") or [],
         )
     _safe_record_history(ctx, session_id, run_id, body, result)
@@ -393,14 +397,16 @@ def chat_stream(request: Request, body: ChatRequest):
                         yield _sse("node", {"node": node_name})
 
             if interrupt_payload is not None:
+                clarify_msg = interrupt_payload.get("message") or "어떤 상황인지 확인이 필요해요 (후보 제시)"
                 yield _sse("clarify", {
                     "session_id": session_id,
                     "run_id": run_id,
+                    "message": clarify_msg,
                     "candidates": interrupt_payload.get("candidates") or [],
                 })
                 _safe_record_history(ctx, session_id, run_id, body, {
                     "route": "clarify", "route_reason": "모호 질의 되묻기",
-                    "final_answer": "어떤 상황인지 확인이 필요해요 (후보 제시)"
+                    "final_answer": clarify_msg
                 })
                 return
 

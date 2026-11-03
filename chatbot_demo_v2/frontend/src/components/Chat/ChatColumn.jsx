@@ -117,6 +117,7 @@ export function ChatColumn({
                 <ClarifyCard
                   payload={m.payload}
                   disabled={m.disabled}
+                  isClient={isClient}
                   onSelect={(choice, label) => onSelectClarify(choice, label, m.id)}
                 />
               </div>

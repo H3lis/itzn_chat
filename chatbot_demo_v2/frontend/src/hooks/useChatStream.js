@@ -307,7 +307,10 @@ export function useChatStream() {
   const sendMessage = useCallback(async (text) => {
     if (inFlight || !text.trim()) return;
     const userMsgId = 'user_' + Date.now();
-    setMessages((prev) => [...prev, { id: userMsgId, type: 'user', text: text.trim() }]);
+    setMessages((prev) => [
+      ...prev.map((m) => (m.type === 'clarify' && !m.disabled ? { ...m, disabled: true } : m)),
+      { id: userMsgId, type: 'user', text: text.trim() },
+    ]);
     startBusy('질문을 확인하고 있어요…');
 
     try {

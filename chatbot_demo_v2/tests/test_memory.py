@@ -24,6 +24,7 @@ class FakeLlm:
 
 def _settings(tmp_path, **over):
     env = {
+        "SCENARIO_MATCH_BACKEND": "fuzz",
         "COMPOSER_FAQ_ENABLED": "false",
         "COMPOSER_RAG_ENABLED": "false",
         "GRADER_ENABLED": "false",

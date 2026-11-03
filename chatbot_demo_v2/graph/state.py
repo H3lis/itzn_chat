@@ -25,7 +25,9 @@ class ChatState(TypedDict, total=False):
     scenario_id: Optional[str]
     current_node_id: Optional[str]
     scenario_path: list[str]
+    last_scenario_path: list[str]              # 직전 시나리오 이동 경로(자유입력 전환 시 맥락 보존)
     scenario_completed: bool
+    pending_clarify_candidates: list[dict]     # 직전 턴 되묻기 후보(자유입력 응답 시 맥락/선택 연동)
     messages: Annotated[list, add_messages]   # 대화 이력(Human/AI) — 절대 매 턴 초기화 금지
 
     # --- 입력(per-turn) ---
@@ -47,7 +49,9 @@ class ChatState(TypedDict, total=False):
 
     # --- clarify(HITL, per-turn) ---
     clarify_candidates: list[dict]       # [{faq_id, question, score}]
+    clarify_message: Optional[str]       # 감독관 LLM이 생성한 대화형 되묻기 메시지
     clarify_choice: Optional[str]        # resume 값: faq_id | "__none__"
+    clarify: Optional[dict]              # 최종 응답에 동봉되는 연관/되묻기 페이로드
 
     # --- 라우팅(per-turn) ---
     route: Optional[str]           # "scenario" | "faq" | "clarify" | "rag3x" | "web_search" | "abstain"
@@ -97,7 +101,9 @@ def new_turn_defaults() -> dict:
         "scenario_match_score": None,
         "scenario_match_margin": None,
         "clarify_candidates": [],
+        "clarify_message": None,
         "clarify_choice": None,
+        "clarify": None,
         "route": None,
         "route_reason": None,
         "rag_result": None,

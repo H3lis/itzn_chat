@@ -44,7 +44,7 @@ def _parse_sse(text: str) -> list[tuple[str, dict]]:
 
 
 def _settings(tmp_path, **over):
-    env = {"DEMO_EVIDENCE_DIR": str(tmp_path / "ev"), "CONTEXTUALIZE_ENABLED": "false"}
+    env = {"SCENARIO_MATCH_BACKEND": "fuzz", "DEMO_EVIDENCE_DIR": str(tmp_path / "ev"), "CONTEXTUALIZE_ENABLED": "false"}
     env.update(over)
     return load_settings(env=env)
 
