@@ -368,11 +368,15 @@ class SpokenRobustnessEngine:
         """조사/어미 분리 오타 교정 및 복합 동의어 치환을 적용합니다."""
         if not text:
             return text
-            
-        # 1. 띄어쓰기(어절) 단위 조사 및 어미 분리형 오타 교정 (정적 리스트 방식)
+
+        # 0. 원문 대상 복합 동의어 1차 선행 치환 (단일 동의어로 쪼개지기 전 '와이파이 기기' -> 'AP' 등 우선 매칭)
+        if self.compound_pattern:
+            text = self.compound_pattern.sub(lambda m: COMPOUND_SYNONYMS[m.group(0)], text)
+
+        # 1. 띄어쓰기(어절) 단위 조사 및 어미 분리형 오타 교정 (단일 동의어 치환 전 오타만 먼저 복원)
         words = text.split()
-        corrected_words = []
-        
+        typo_corrected_words = []
+
         suffix_list = [
             '하다는데', '하는데', '하고싶어요', '하고싶습니다', '하고싶은데', '하고싶다', '하고싶어', '하고있다', '하고있어',
             '하고있는', '하십시오', '하더라도', '해보면', '해보고', '해주는', '해주고',
@@ -382,41 +386,72 @@ class SpokenRobustnessEngine:
             '하세요', '합니다', '해줘', '해', '함', '가', '이', '는', '은', '를', '을', '에', '의', '로', '과', '와', '고', '며', '인'
         ]
         sorted_suffixes = sorted(suffix_list, key=len, reverse=True)
-        
+
         for word in words:
             clean_word = word.rstrip(".,?!~")
             punct = word[len(clean_word):]
-            
+
+            # 0단계: 이미 동의어 사전이나 스펠링 사전에 등록된 온전한 단어이거나 유효 단일 명사인 경우
+            # 끝 글자('이', '인', '가' 등)를 조사로 오인해 절단하지 않고 원형 그대로 보존
+            if (
+                clean_word in SINGLE_SYNONYMS
+                or clean_word in self.auto_spell_dict
+                or self._is_valid_standalone_noun(clean_word)
+            ):
+                typo_corrected_words.append(clean_word + punct)
+                continue
+
             # 1단계: 꼬리를 자르지 않은 원본 상태로 먼저 교정 시도 (예: 와이ㅏ이 보호)
             corrected_full = self.correct_typo(clean_word)
             if corrected_full != clean_word:
-                if corrected_full in SINGLE_SYNONYMS:
-                    corrected_full = SINGLE_SYNONYMS[corrected_full]
-                corrected_words.append(corrected_full + punct)
+                typo_corrected_words.append(corrected_full + punct)
                 continue
-            
+
             # 2단계: 실패 시 어미/조사 리스트를 기반으로 분리 후 재시도 (예: ㅇ녀결이 분리)
             matched_suffix = ""
             base_word = clean_word
-            
+
             for suffix in sorted_suffixes:
                 if clean_word.endswith(suffix) and len(clean_word) > len(suffix):
                     base_word = clean_word[:-len(suffix)]
                     matched_suffix = suffix
                     break
-            
+
             corrected_base = self.correct_typo(base_word)
-            if corrected_base in SINGLE_SYNONYMS:
-                corrected_base = SINGLE_SYNONYMS[corrected_base]
-            corrected_words.append(corrected_base + matched_suffix + punct)
-                
-        text = " ".join(corrected_words)
-        
-        # 2. 복합 동의어 치환
+            typo_corrected_words.append(corrected_base + matched_suffix + punct)
+
+        text = " ".join(typo_corrected_words)
+
+        # 2. 오타 교정 후 복합 동의어 2차 치환 (예: '와이ㅏ이 기기' -> '와이파이 기기' -> 'AP')
         if self.compound_pattern:
             text = self.compound_pattern.sub(lambda m: COMPOUND_SYNONYMS[m.group(0)], text)
-            
-        return text
+
+        # 3. 남은 개별 어절에 대한 단일 동의어 치환 ('와이파이' -> '무선랜' 등)
+        final_words = []
+        for word in text.split():
+            clean_word = word.rstrip(".,?!~")
+            punct = word[len(clean_word):]
+
+            if clean_word in SINGLE_SYNONYMS:
+                final_words.append(SINGLE_SYNONYMS[clean_word] + punct)
+                continue
+
+            # 온전한 사전 등록 단어/단일 명사가 아닌 경우에만 조사 분리 후 어근 단일 동의어 치환
+            if clean_word not in self.auto_spell_dict and not self._is_valid_standalone_noun(clean_word):
+                matched_suffix = ""
+                base_word = clean_word
+                for suffix in sorted_suffixes:
+                    if clean_word.endswith(suffix) and len(clean_word) > len(suffix):
+                        base_word = clean_word[:-len(suffix)]
+                        matched_suffix = suffix
+                        break
+                if matched_suffix and base_word in SINGLE_SYNONYMS:
+                    final_words.append(SINGLE_SYNONYMS[base_word] + matched_suffix + punct)
+                    continue
+
+            final_words.append(clean_word + punct)
+
+        return " ".join(final_words)
 
     def deduplicate_query(self, query: str) -> str:
         """검색 쿼리 내의 중복 단어를 순서를 유지하며 제거합니다."""
@@ -439,7 +474,7 @@ class SpokenRobustnessEngine:
         # 2단계: 구어체 판단에 따른 LLM 재작성 (기본 비활성화로 25초 지연 방지)
         llm_rewritten = ""
         llm_applied = False
-        enable_llm_rewrite = getattr(self.config, "robustness_llm_rewrite_enabled", False) if self.config else False
+        enable_llm_rewrite = getattr(self.config, "robustness_llm_rewrite_enabled", False) if self.config is not None else bool(self.backend)
         
         if is_col and enable_llm_rewrite:
             try:

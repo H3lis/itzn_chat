@@ -23,6 +23,7 @@ def test_robustness_tool_integration_enabled(tmp_path):
     env = {
         "DEMO_EVIDENCE_DIR": str(tmp_path / "ev"),
         "ROBUSTNESS_TOOL_ENABLED": "true",
+        "ROBUSTNESS_LLM_REWRITE_ENABLED": "true",
         "CONTEXTUALIZE_ENABLED": "false",
         "GRADER_ENABLED": "false"
     }
@@ -143,6 +144,13 @@ def test_spoken_robustness_improvements():
     res_geo = engine.preprocess_query("강북 지역 학교 무선 인터넷 연결 상태")
     assert "강북" in res_geo
     assert "경상북도" not in res_geo
+
+    # (6) '와이파이' 끝 글자 '이' 조사 오인 절단 방지 및 '와이파이 기기' 복합 동의어 선행 치환 검증
+    res_wifi = engine.preprocess_query("와이파이 기기를 새걸로 가져왔는데 뭐뭐 설정해야해?")
+    assert "무선랜이" not in res_wifi
+    assert "AP를" in res_wifi
+    assert "신규 설치하는데" in res_wifi
+
 
 
 
