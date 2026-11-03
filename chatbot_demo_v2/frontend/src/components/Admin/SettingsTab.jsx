@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import {
   Cpu,
   Key,
@@ -48,15 +48,17 @@ export function SettingsTab({ onUpdateBadge, onUpdateWebSearchStatus }) {
   const [auditTotal, setAuditTotal] = useState(0);
   const [auditLoading, setAuditLoading] = useState(false);
   const [auditPage, setAuditPage] = useState(1);
-  const [auditViewMode, setAuditViewMode] = useState('calendar'); // 'calendar' | 'list'
   const [selectedAuditLog, setSelectedAuditLog] = useState(null);
+
+  // 날짜 클릭 시 나타나는 달력 팝오버 상태
+  const [showCalendarPopover, setShowCalendarPopover] = useState(false);
+  const [dateSelectionStep, setDateSelectionStep] = useState('start'); // 'start' | 'end'
+  const calendarPopoverRef = useRef(null);
 
   // 달력(캘린더) 탐색 상태
   const [calYear, setCalYear] = useState(() => new Date().getFullYear());
   const [calMonth, setCalMonth] = useState(() => new Date().getMonth() + 1); // 1~12
   const [dailyCounts, setDailyCounts] = useState({});
-  const [calLoading, setCalLoading] = useState(false);
-  const [selectedCalDate, setSelectedCalDate] = useState(() => new Date().toISOString().split('T')[0]);
   const [exportingAudit, setExportingAudit] = useState(false);
 
   // 폼 상태
@@ -235,7 +237,22 @@ export function SettingsTab({ onUpdateBadge, onUpdateWebSearchStatus }) {
     fetchAuditLogs();
   }, [fetchAuditLogs]);
 
-  // 기간 프리셋 변경 핸들러
+  // 달력 팝오버 외부 클릭 감지
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (calendarPopoverRef.current && !calendarPopoverRef.current.contains(e.target)) {
+        setShowCalendarPopover(false);
+      }
+    };
+    if (showCalendarPopover) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showCalendarPopover]);
+
+  // 기간 프리셋 변경 핸들러 (오늘, 7일, 30일, 한달, 전체)
   const handlePeriodPreset = (preset) => {
     setAuditPeriod(preset);
     const now = new Date();
@@ -244,7 +261,6 @@ export function SettingsTab({ onUpdateBadge, onUpdateWebSearchStatus }) {
 
     if (preset === 'today') {
       setStartDate(todayStr);
-      setSelectedCalDate(todayStr);
     } else if (preset === '7d') {
       const d = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
       setStartDate(d.toISOString().split('T')[0]);
@@ -258,7 +274,29 @@ export function SettingsTab({ onUpdateBadge, onUpdateWebSearchStatus }) {
       setStartDate('');
       setEndDate('');
     }
+    setDateSelectionStep('start');
+    setShowCalendarPopover(false);
     setAuditPage(1);
+  };
+
+  // 달력 팝오버에서 날짜 클릭 시 (시작일 -> 종료일 범위 설정)
+  const handleCalendarDayClick = (dateStr) => {
+    if (dateSelectionStep === 'start') {
+      setStartDate(dateStr);
+      setEndDate(dateStr);
+      setDateSelectionStep('end');
+      setAuditPeriod('custom');
+    } else {
+      if (dateStr < startDate) {
+        setEndDate(startDate);
+        setStartDate(dateStr);
+      } else {
+        setEndDate(dateStr);
+      }
+      setDateSelectionStep('start');
+      setAuditPeriod('custom');
+      setAuditPage(1);
+    }
   };
 
   // 달력 월 이동
@@ -287,18 +325,10 @@ export function SettingsTab({ onUpdateBadge, onUpdateWebSearchStatus }) {
     const todayStr = now.toISOString().split('T')[0];
     setCalYear(y);
     setCalMonth(m);
-    setSelectedCalDate(todayStr);
     setStartDate(todayStr);
     setEndDate(todayStr);
+    setDateSelectionStep('start');
     setAuditPeriod('today');
-    setAuditPage(1);
-  };
-
-  const handleSelectCalDate = (dateStr) => {
-    setSelectedCalDate(dateStr);
-    setStartDate(dateStr);
-    setEndDate(dateStr);
-    setAuditPeriod('custom');
     setAuditPage(1);
   };
 
@@ -890,59 +920,36 @@ export function SettingsTab({ onUpdateBadge, onUpdateWebSearchStatus }) {
               </p>
             </div>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
-            {auditStats && (
-              <div style={{ display: 'flex', gap: '0.45rem', alignItems: 'center' }}>
-                <span className="badge-pill" style={{ background: 'rgba(59, 130, 246, 0.1)', color: '#3b82f6', fontSize: '0.75rem', padding: '0.25rem 0.6rem', borderRadius: '999px', fontWeight: 600 }}>
-                  누적 {auditStats.total_count || 0}건
-                </span>
-                <span className="badge-pill" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', fontSize: '0.75rem', padding: '0.25rem 0.6rem', borderRadius: '999px', fontWeight: 600 }}>
-                  최근 7일 {auditStats.recent_7d_count || 0}건
-                </span>
-              </div>
-            )}
-            {/* 뷰 모드 토글: 달력 뷰 vs 목록 테이블 */}
-            <div style={{ display: 'inline-flex', padding: '3px', background: '#f1f5f9', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
-              <button
-                type="button"
-                className={`btn btn-sm ${auditViewMode === 'calendar' ? 'btn-primary' : 'btn-ghost'}`}
-                onClick={() => setAuditViewMode('calendar')}
-                style={{ padding: '0.3rem 0.65rem', fontSize: '0.8rem', fontWeight: auditViewMode === 'calendar' ? 700 : 500, borderRadius: '6px', display: 'flex', alignItems: 'center', gap: '0.35rem' }}
-                title="월별 달력 형태로 일자별 감사 기록 건수 및 상세 내역 확인"
-              >
-                <CalendarDays size={13} />
-                <span>달력 뷰</span>
-              </button>
-              <button
-                type="button"
-                className={`btn btn-sm ${auditViewMode === 'list' ? 'btn-primary' : 'btn-ghost'}`}
-                onClick={() => setAuditViewMode('list')}
-                style={{ padding: '0.3rem 0.65rem', fontSize: '0.8rem', fontWeight: auditViewMode === 'list' ? 700 : 500, borderRadius: '6px', display: 'flex', alignItems: 'center', gap: '0.35rem' }}
-                title="전체 감사 로그 상세 목록 테이블 보기"
-              >
-                <List size={13} />
-                <span>목록 뷰</span>
-              </button>
+          {auditStats && (
+            <div style={{ display: 'flex', gap: '0.45rem', alignItems: 'center' }}>
+              <span className="badge-pill" style={{ background: 'rgba(59, 130, 246, 0.1)', color: '#3b82f6', fontSize: '0.75rem', padding: '0.25rem 0.6rem', borderRadius: '999px', fontWeight: 600 }}>
+                누적 {auditStats.total_count || 0}건
+              </span>
+              <span className="badge-pill" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', fontSize: '0.75rem', padding: '0.25rem 0.6rem', borderRadius: '999px', fontWeight: 600 }}>
+                최근 7일 {auditStats.recent_7d_count || 0}건
+              </span>
             </div>
-          </div>
+          )}
         </div>
 
         <div className="card-body" style={{ padding: '1.25rem 1.5rem' }}>
           {/* 기간 및 필터 툴바 */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem', marginBottom: '1.2rem', paddingBottom: '1rem', borderBottom: '1px solid var(--border-color)' }}>
-            {/* 1행: 빠른 기간 프리셋 칩 + 달력 직접 선택 (시작일 ~ 종료일) */}
+            {/* 1행: 기간 프리셋 버튼 (오늘, 7일, 30일, 한달, 전체) + 날짜 클릭 시 나오는 달력 팝오버 + 엑셀 다운로드 */}
             <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '0.75rem', justifyContent: 'space-between' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
                 <span style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
                   <Calendar size={14} style={{ color: 'var(--primary)' }} />
                   <span>기간 설정:</span>
                 </span>
+
+                {/* 기간 프리셋 버튼 (오늘, 7일, 30일, 한달, 전체 유지) */}
                 <div style={{ display: 'flex', gap: '0.3rem', flexWrap: 'wrap' }}>
                   {[
                     { id: 'today', label: '오늘' },
-                    { id: '7d', label: '최근 7일' },
-                    { id: '30d', label: '최근 30일' },
-                    { id: 'month', label: '이번 달' },
+                    { id: '7d', label: '7일' },
+                    { id: '30d', label: '30일' },
+                    { id: 'month', label: '한달' },
                     { id: 'all', label: '전체' },
                   ].map((p) => (
                     <button
@@ -950,40 +957,152 @@ export function SettingsTab({ onUpdateBadge, onUpdateWebSearchStatus }) {
                       type="button"
                       className={`btn btn-sm ${auditPeriod === p.id ? 'btn-primary' : 'btn-secondary'}`}
                       onClick={() => handlePeriodPreset(p.id)}
-                      style={{ padding: '0.25rem 0.55rem', fontSize: '0.78rem', borderRadius: '6px', fontWeight: auditPeriod === p.id ? 700 : 500 }}
+                      style={{ padding: '0.25rem 0.6rem', fontSize: '0.78rem', borderRadius: '6px', fontWeight: auditPeriod === p.id ? 700 : 500 }}
                     >
                       {p.label}
                     </button>
                   ))}
                 </div>
 
-                {/* 달력 날짜 피커 (직접 입력 및 달력 선택) */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginLeft: '0.3rem', flexWrap: 'wrap' }}>
-                  <input
-                    type="date"
-                    className="form-input"
-                    value={startDate}
-                    onChange={(e) => {
-                      setStartDate(e.target.value);
-                      setAuditPeriod('custom');
-                      setAuditPage(1);
+                {/* 날짜 눌렀을 때 나오는 달력 팝오버 트리거 버튼 */}
+                <div style={{ position: 'relative' }} ref={calendarPopoverRef}>
+                  <button
+                    type="button"
+                    className={`btn btn-sm ${showCalendarPopover || auditPeriod === 'custom' ? 'btn-primary' : 'btn-secondary'}`}
+                    onClick={() => setShowCalendarPopover((v) => !v)}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.4rem',
+                      padding: '0.25rem 0.7rem',
+                      fontSize: '0.78rem',
+                      borderRadius: '6px',
+                      fontWeight: 600,
                     }}
-                    style={{ padding: '0.3rem 0.5rem', fontSize: '0.8rem', borderRadius: '6px', border: '1px solid var(--border-color)' }}
-                    title="감사 로그 시작일"
-                  />
-                  <span style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>~</span>
-                  <input
-                    type="date"
-                    className="form-input"
-                    value={endDate}
-                    onChange={(e) => {
-                      setEndDate(e.target.value);
-                      setAuditPeriod('custom');
-                      setAuditPage(1);
-                    }}
-                    style={{ padding: '0.3rem 0.5rem', fontSize: '0.8rem', borderRadius: '6px', border: '1px solid var(--border-color)' }}
-                    title="감사 로그 종료일"
-                  />
+                    title="클릭하여 달력에서 기간 직접 선택"
+                  >
+                    <Calendar size={13} />
+                    <span>{startDate && endDate ? `${startDate} ~ ${endDate}` : (startDate ? `${startDate} ~` : '날짜 직접 선택')}</span>
+                  </button>
+
+                  {/* 날짜를 눌렀을 때 나타나는 달력 팝오버 */}
+                  {showCalendarPopover && (
+                    <div
+                      style={{
+                        position: 'absolute',
+                        top: 'calc(100% + 6px)',
+                        left: 0,
+                        zIndex: 1000,
+                        background: '#ffffff',
+                        border: '1px solid var(--border-color)',
+                        borderRadius: '10px',
+                        padding: '0.85rem',
+                        boxShadow: '0 10px 25px -5px rgba(0,0,0,0.15)',
+                        width: '290px',
+                      }}
+                    >
+                      {/* 달력 월 네비게이션 */}
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.65rem' }}>
+                        <button
+                          type="button"
+                          className="btn btn-secondary btn-sm"
+                          onClick={handlePrevMonth}
+                          style={{ padding: '0.2rem 0.45rem', borderRadius: '4px' }}
+                        >
+                          <ChevronLeft size={14} />
+                        </button>
+                        <span style={{ fontSize: '0.88rem', fontWeight: 800, color: 'var(--text-main)' }}>
+                          {calYear}년 {calMonth}월
+                        </span>
+                        <button
+                          type="button"
+                          className="btn btn-secondary btn-sm"
+                          onClick={handleNextMonth}
+                          style={{ padding: '0.2rem 0.45rem', borderRadius: '4px' }}
+                        >
+                          <ChevronRight size={14} />
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-ghost btn-sm"
+                          onClick={handleTodayCal}
+                          style={{ padding: '0.2rem 0.45rem', fontSize: '0.72rem', borderRadius: '4px', border: '1px solid var(--border-color)' }}
+                        >
+                          오늘
+                        </button>
+                      </div>
+
+                      {/* 요일 헤더 */}
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '2px', textAlign: 'center', fontWeight: 700, fontSize: '0.72rem', marginBottom: '4px', color: 'var(--text-muted)' }}>
+                        <div style={{ color: '#ef4444' }}>일</div>
+                        <div>월</div>
+                        <div>화</div>
+                        <div>수</div>
+                        <div>목</div>
+                        <div>금</div>
+                        <div style={{ color: '#3b82f6' }}>토</div>
+                      </div>
+
+                      {/* 날짜 그리드 */}
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '2px' }}>
+                        {calendarCells.map((cell, idx) => {
+                          const inRange = startDate && endDate && cell.dateStr >= startDate && cell.dateStr <= endDate;
+                          const isStart = startDate && cell.dateStr === startDate;
+                          const isEnd = endDate && cell.dateStr === endDate;
+                          const isToday = cell.dateStr === new Date().toISOString().split('T')[0];
+
+                          let bg = 'transparent';
+                          let color = cell.isCurrentMonth ? 'var(--text-main)' : '#cbd5e1';
+                          let borderRadius = '4px';
+
+                          if (isStart || isEnd) {
+                            bg = 'var(--primary, #0284c7)';
+                            color = '#ffffff';
+                          } else if (inRange) {
+                            bg = 'rgba(2, 132, 199, 0.12)';
+                            color = '#0284c7';
+                          }
+
+                          return (
+                            <button
+                              key={idx}
+                              type="button"
+                              onClick={() => handleCalendarDayClick(cell.dateStr)}
+                              style={{
+                                padding: '0.35rem 0',
+                                border: isToday && !isStart && !isEnd ? '1px solid #3b82f6' : 'none',
+                                background: bg,
+                                color: color,
+                                borderRadius,
+                                fontSize: '0.75rem',
+                                fontWeight: isStart || isEnd || isToday ? 800 : 500,
+                                cursor: 'pointer',
+                                textAlign: 'center',
+                              }}
+                              title={cell.dateStr}
+                            >
+                              {cell.day}
+                            </button>
+                          );
+                        })}
+                      </div>
+
+                      {/* 팝오버 하단 안내 및 완료 */}
+                      <div style={{ marginTop: '0.65rem', paddingTop: '0.55rem', borderTop: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.72rem' }}>
+                        <span style={{ color: 'var(--text-muted)' }}>
+                          {dateSelectionStep === 'start' ? '시작일을 선택하세요' : '종료일을 선택하세요'}
+                        </span>
+                        <button
+                          type="button"
+                          className="btn btn-primary btn-sm"
+                          onClick={() => setShowCalendarPopover(false)}
+                          style={{ padding: '0.2rem 0.6rem', fontSize: '0.72rem', borderRadius: '4px' }}
+                        >
+                          완료
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -1063,7 +1182,6 @@ export function SettingsTab({ onUpdateBadge, onUpdateWebSearchStatus }) {
                 onClick={() => {
                   setAuditPage(1);
                   fetchAuditLogs();
-                  fetchDailyCounts(calYear, calMonth);
                 }}
                 style={{ padding: '0.35rem 0.75rem', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.3rem' }}
               >
@@ -1073,347 +1191,131 @@ export function SettingsTab({ onUpdateBadge, onUpdateWebSearchStatus }) {
             </div>
           </div>
 
-          {/* 달력(캘린더) 뷰 */}
-          {auditViewMode === 'calendar' && (
-            <div className="audit-calendar-container" style={{ background: 'var(--bg, #f8fafc)', padding: '1rem', borderRadius: '10px', border: '1px solid var(--border-color)' }}>
-              {/* 달력 월 이동 헤더 */}
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.85rem' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <button
-                    type="button"
-                    className="btn btn-secondary btn-sm"
-                    onClick={handlePrevMonth}
-                    style={{ padding: '0.3rem 0.5rem', borderRadius: '6px' }}
-                    title="이전 달"
-                  >
-                    <ChevronLeft size={15} />
-                  </button>
-                  <span style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--text-main)', minWidth: '120px', textAlign: 'center' }}>
-                    {calYear}년 {calMonth}월
+          {/* 메인: 보안 감사 로그 목록 테이블 */}
+          <div className="audit-list-container" style={{ background: '#ffffff', borderRadius: '10px', border: '1px solid var(--border-color)', overflow: 'hidden' }}>
+            <div style={{ padding: '0.75rem 1rem', background: '#f8fafc', borderBottom: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-main)' }}>
+                보안 감사 기록 ({auditTotal}건)
+                {startDate && endDate && (
+                  <span style={{ fontWeight: 500, color: 'var(--primary)', marginLeft: '0.5rem' }}>
+                    [{startDate} ~ {endDate}]
                   </span>
-                  <button
-                    type="button"
-                    className="btn btn-secondary btn-sm"
-                    onClick={handleNextMonth}
-                    style={{ padding: '0.3rem 0.5rem', borderRadius: '6px' }}
-                    title="다음 달"
-                  >
-                    <ChevronRight size={15} />
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-ghost btn-sm"
-                    onClick={handleTodayCal}
-                    style={{ padding: '0.3rem 0.6rem', fontSize: '0.78rem', borderRadius: '6px', border: '1px solid var(--border-color)', background: '#fff' }}
-                  >
-                    오늘
-                  </button>
-                </div>
-                <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-                  <span>날짜를 클릭하면 해당 일자의 감사 로그가 아래에 즉시 표출됩니다.</span>
-                </div>
-              </div>
-
-              {/* 달력 요일 헤더 */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '4px', textAlign: 'center', fontWeight: 700, fontSize: '0.78rem', marginBottom: '4px', color: 'var(--text-muted)' }}>
-                <div style={{ color: '#ef4444' }}>일</div>
-                <div>월</div>
-                <div>화</div>
-                <div>수</div>
-                <div>목</div>
-                <div>금</div>
-                <div style={{ color: '#3b82f6' }}>토</div>
-              </div>
-
-              {/* 달력 그리드 일자 셀 */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '4px' }}>
-                {calendarCells.map((cell, idx) => {
-                  const stat = dailyCounts[cell.dateStr];
-                  const hasLogs = stat && stat.count > 0;
-                  const isSelected = selectedCalDate === cell.dateStr;
-                  const isToday = cell.dateStr === new Date().toISOString().split('T')[0];
-
-                  return (
-                    <div
-                      key={idx}
-                      onClick={() => handleSelectCalDate(cell.dateStr)}
-                      style={{
-                        minHeight: '62px',
-                        padding: '0.35rem 0.45rem',
-                        background: isSelected ? 'rgba(2, 132, 199, 0.08)' : (cell.isCurrentMonth ? '#ffffff' : '#f1f5f9'),
-                        border: isSelected ? '2px solid var(--primary, #0284c7)' : (isToday ? '1.5px solid #3b82f6' : '1px solid var(--border-color)'),
-                        borderRadius: '8px',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'space-between',
-                        opacity: cell.isCurrentMonth ? 1 : 0.45,
-                        transition: 'all 0.15s ease',
-                      }}
-                      title={`${cell.dateStr} (클릭하여 이 날짜 로그 조회)`}
-                    >
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <span style={{
-                          fontSize: '0.78rem',
-                          fontWeight: isToday || isSelected ? 800 : 600,
-                          color: isToday ? '#2563eb' : (isSelected ? 'var(--primary)' : 'var(--text-main)'),
-                        }}>
-                          {cell.day}
-                        </span>
-                        {isToday && (
-                          <span style={{ fontSize: '0.62rem', background: '#dbeafe', color: '#1d4ed8', padding: '1px 4px', borderRadius: '4px', fontWeight: 700 }}>
-                            오늘
-                          </span>
-                        )}
-                      </div>
-
-                      {hasLogs && (
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', marginTop: '2px' }}>
-                          <span style={{
-                            fontSize: '0.68rem',
-                            fontWeight: 700,
-                            padding: '1px 4px',
-                            borderRadius: '4px',
-                            background: 'rgba(16, 185, 129, 0.15)',
-                            color: '#059669',
-                            textAlign: 'center',
-                          }}>
-                            {stat.count}건 기록
-                          </span>
-                          {stat.security_alerts > 0 && (
-                            <span style={{
-                              fontSize: '0.64rem',
-                              fontWeight: 700,
-                              padding: '1px 3px',
-                              borderRadius: '4px',
-                              background: 'rgba(239, 68, 68, 0.15)',
-                              color: '#dc2626',
-                              textAlign: 'center',
-                            }}>
-                              차단 {stat.security_alerts}건
-                            </span>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-
-              {/* 달력 하단: 선택된 날짜 상세 로그 피드 */}
-              <div style={{ marginTop: '1rem', paddingTop: '0.9rem', borderTop: '1px solid var(--border-color)' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.6rem' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.88rem', fontWeight: 700, color: 'var(--text-main)' }}>
-                    <Calendar size={15} style={{ color: 'var(--primary)' }} />
-                    <span>선택 일자: <strong>{selectedCalDate}</strong> 감사 기록 ({auditTotal}건)</span>
-                  </div>
-                  <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                    상세 내역을 보시려면 행을 클릭하세요.
-                  </span>
-                </div>
-
-                {auditLoading ? (
-                  <div style={{ padding: '1.5rem', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.82rem' }}>
-                    감사 로그를 불러오는 중입니다...
-                  </div>
-                ) : auditLogs.length === 0 ? (
-                  <div style={{ padding: '1.5rem', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.82rem', background: '#fff', borderRadius: '8px', border: '1px dashed var(--border-color)' }}>
-                    선택한 날짜({selectedCalDate})에 기록된 보안 감사 이벤트가 없습니다.
-                  </div>
-                ) : (
-                  <div style={{ background: '#ffffff', borderRadius: '8px', border: '1px solid var(--border-color)', overflow: 'hidden' }}>
-                    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.78rem' }}>
-                      <thead>
-                        <tr style={{ background: '#f8fafc', borderBottom: '1px solid var(--border-color)', color: 'var(--text-muted)', textAlign: 'left' }}>
-                          <th style={{ padding: '0.5rem 0.75rem' }}>시각</th>
-                          <th style={{ padding: '0.5rem 0.75rem' }}>작업 유형</th>
-                          <th style={{ padding: '0.5rem 0.75rem' }}>대상 자원</th>
-                          <th style={{ padding: '0.5rem 0.75rem' }}>작업자 / IP</th>
-                          <th style={{ padding: '0.5rem 0.75rem' }}>처리 결과</th>
-                          <th style={{ padding: '0.5rem 0.75rem', textAlign: 'center' }}>상세</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {auditLogs.map((log) => (
-                          <tr
-                            key={log.id}
-                            style={{ borderBottom: '1px solid var(--border-color)', cursor: 'pointer' }}
-                            onClick={() => setSelectedAuditLog(log)}
-                            className="audit-table-row"
-                          >
-                            <td style={{ padding: '0.5rem 0.75rem', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>
-                              {log.timestamp?.split(' ')[1] || log.timestamp}
-                            </td>
-                            <td style={{ padding: '0.5rem 0.75rem' }}>
-                              <span style={{
-                                padding: '2px 6px',
-                                borderRadius: '4px',
-                                fontSize: '0.72rem',
-                                fontWeight: 700,
-                                background: log.action_type === 'PROMPT_ATTACK_BLOCKED' ? 'rgba(239, 68, 68, 0.15)' : 'rgba(59, 130, 246, 0.12)',
-                                color: log.action_type === 'PROMPT_ATTACK_BLOCKED' ? '#dc2626' : '#2563eb',
-                              }}>
-                                {log.action_type}
-                              </span>
-                            </td>
-                            <td style={{ padding: '0.5rem 0.75rem', fontWeight: 600, color: 'var(--text-main)', maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                              {log.target_resource}
-                            </td>
-                            <td style={{ padding: '0.5rem 0.75rem', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>
-                              {log.actor} ({log.client_ip})
-                            </td>
-                            <td style={{ padding: '0.5rem 0.75rem' }}>
-                              <span style={{
-                                fontWeight: 700,
-                                color: log.status_code >= 200 && log.status_code < 300 ? '#10b981' : '#ef4444',
-                              }}>
-                                {log.status_code}
-                              </span>
-                            </td>
-                            <td style={{ padding: '0.5rem 0.75rem', textAlign: 'center' }}>
-                              <button
-                                type="button"
-                                className="btn btn-ghost btn-sm"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  setSelectedAuditLog(log);
-                                }}
-                                style={{ padding: '2px 6px', fontSize: '0.72rem', borderRadius: '4px' }}
-                              >
-                                보기
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
                 )}
-              </div>
+              </span>
+              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                페이지 {auditPage} / {Math.max(1, Math.ceil(auditTotal / 20))}
+              </span>
             </div>
-          )}
 
-          {/* 목록 테이블 뷰 */}
-          {auditViewMode === 'list' && (
-            <div className="audit-list-container" style={{ background: '#ffffff', borderRadius: '10px', border: '1px solid var(--border-color)', overflow: 'hidden' }}>
-              <div style={{ padding: '0.75rem 1rem', background: '#f8fafc', borderBottom: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-main)' }}>
-                  전체 감사 로그 검색 결과 (총 {auditTotal}건)
-                </span>
-                <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                  페이지 {auditPage} / {Math.max(1, Math.ceil(auditTotal / 20))}
-                </span>
+            {auditLoading ? (
+              <div style={{ padding: '2.5rem', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.82rem' }}>
+                감사 로그를 조회하는 중입니다...
               </div>
-
-              {auditLoading ? (
-                <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.82rem' }}>
-                  로그 목록을 조회하는 중입니다...
-                </div>
-              ) : auditLogs.length === 0 ? (
-                <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.82rem' }}>
-                  해당 기간 및 조건에 부합하는 보안 감사 기록이 없습니다.
-                </div>
-              ) : (
-                <div style={{ overflowX: 'auto' }}>
-                  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.78rem' }}>
-                    <thead>
-                      <tr style={{ background: '#f8fafc', borderBottom: '1px solid var(--border-color)', color: 'var(--text-muted)', textAlign: 'left' }}>
-                        <th style={{ padding: '0.55rem 0.85rem' }}>번호</th>
-                        <th style={{ padding: '0.55rem 0.85rem' }}>발생일시 (KST)</th>
-                        <th style={{ padding: '0.55rem 0.85rem' }}>작업 유형</th>
-                        <th style={{ padding: '0.55rem 0.85rem' }}>대상 자원</th>
-                        <th style={{ padding: '0.55rem 0.85rem' }}>작업자 / IP</th>
-                        <th style={{ padding: '0.55rem 0.85rem' }}>메서드 / URL</th>
-                        <th style={{ padding: '0.55rem 0.85rem' }}>결과</th>
-                        <th style={{ padding: '0.55rem 0.85rem', textAlign: 'center' }}>상세</th>
+            ) : auditLogs.length === 0 ? (
+              <div style={{ padding: '2.5rem', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.82rem' }}>
+                해당 기간 및 조건에 부합하는 보안 감사 기록이 없습니다.
+              </div>
+            ) : (
+              <div style={{ overflowX: 'auto' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.78rem' }}>
+                  <thead>
+                    <tr style={{ background: '#f8fafc', borderBottom: '1px solid var(--border-color)', color: 'var(--text-muted)', textAlign: 'left' }}>
+                      <th style={{ padding: '0.55rem 0.85rem' }}>번호</th>
+                      <th style={{ padding: '0.55rem 0.85rem' }}>발생일시 (KST)</th>
+                      <th style={{ padding: '0.55rem 0.85rem' }}>작업 유형</th>
+                      <th style={{ padding: '0.55rem 0.85rem' }}>대상 자원</th>
+                      <th style={{ padding: '0.55rem 0.85rem' }}>작업자 / IP</th>
+                      <th style={{ padding: '0.55rem 0.85rem' }}>메서드 / URL</th>
+                      <th style={{ padding: '0.55rem 0.85rem' }}>결과</th>
+                      <th style={{ padding: '0.55rem 0.85rem', textAlign: 'center' }}>상세</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {auditLogs.map((log) => (
+                      <tr
+                        key={log.id}
+                        style={{ borderBottom: '1px solid var(--border-color)', cursor: 'pointer' }}
+                        onClick={() => setSelectedAuditLog(log)}
+                        className="audit-table-row"
+                      >
+                        <td style={{ padding: '0.55rem 0.85rem', color: 'var(--text-muted)' }}>{log.id}</td>
+                        <td style={{ padding: '0.55rem 0.85rem', whiteSpace: 'nowrap' }}>{log.timestamp}</td>
+                        <td style={{ padding: '0.55rem 0.85rem' }}>
+                          <span style={{
+                            padding: '2px 6px',
+                            borderRadius: '4px',
+                            fontSize: '0.72rem',
+                            fontWeight: 700,
+                            background: log.action_type === 'PROMPT_ATTACK_BLOCKED' ? 'rgba(239, 68, 68, 0.15)' : 'rgba(59, 130, 246, 0.12)',
+                            color: log.action_type === 'PROMPT_ATTACK_BLOCKED' ? '#dc2626' : '#2563eb',
+                          }}>
+                            {log.action_type}
+                          </span>
+                        </td>
+                        <td style={{ padding: '0.55rem 0.85rem', fontWeight: 600, color: 'var(--text-main)', maxWidth: '240px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                          {log.target_resource}
+                        </td>
+                        <td style={{ padding: '0.55rem 0.85rem', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>
+                          {log.actor} ({log.client_ip})
+                        </td>
+                        <td style={{ padding: '0.55rem 0.85rem', color: 'var(--text-muted)', fontFamily: 'monospace', fontSize: '0.72rem' }}>
+                          {log.request_method} {log.endpoint}
+                        </td>
+                        <td style={{ padding: '0.55rem 0.85rem' }}>
+                          <span style={{
+                            fontWeight: 700,
+                            color: log.status_code >= 200 && log.status_code < 300 ? '#10b981' : '#ef4444',
+                          }}>
+                            {log.status_code} ({log.elapsed_ms}ms)
+                          </span>
+                        </td>
+                        <td style={{ padding: '0.55rem 0.85rem', textAlign: 'center' }}>
+                          <button
+                            type="button"
+                            className="btn btn-ghost btn-sm"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedAuditLog(log);
+                            }}
+                            style={{ padding: '2px 6px', fontSize: '0.72rem', borderRadius: '4px' }}
+                          >
+                            보기
+                          </button>
+                        </td>
                       </tr>
-                    </thead>
-                    <tbody>
-                      {auditLogs.map((log) => (
-                        <tr
-                          key={log.id}
-                          style={{ borderBottom: '1px solid var(--border-color)', cursor: 'pointer' }}
-                          onClick={() => setSelectedAuditLog(log)}
-                        >
-                          <td style={{ padding: '0.55rem 0.85rem', color: 'var(--text-muted)' }}>{log.id}</td>
-                          <td style={{ padding: '0.55rem 0.85rem', whiteSpace: 'nowrap' }}>{log.timestamp}</td>
-                          <td style={{ padding: '0.55rem 0.85rem' }}>
-                            <span style={{
-                              padding: '2px 6px',
-                              borderRadius: '4px',
-                              fontSize: '0.72rem',
-                              fontWeight: 700,
-                              background: log.action_type === 'PROMPT_ATTACK_BLOCKED' ? 'rgba(239, 68, 68, 0.15)' : 'rgba(59, 130, 246, 0.12)',
-                              color: log.action_type === 'PROMPT_ATTACK_BLOCKED' ? '#dc2626' : '#2563eb',
-                            }}>
-                              {log.action_type}
-                            </span>
-                          </td>
-                          <td style={{ padding: '0.55rem 0.85rem', fontWeight: 600, color: 'var(--text-main)', maxWidth: '240px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                            {log.target_resource}
-                          </td>
-                          <td style={{ padding: '0.55rem 0.85rem', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>
-                            {log.actor} ({log.client_ip})
-                          </td>
-                          <td style={{ padding: '0.55rem 0.85rem', color: 'var(--text-muted)', fontFamily: 'monospace', fontSize: '0.72rem' }}>
-                            {log.request_method} {log.endpoint}
-                          </td>
-                          <td style={{ padding: '0.55rem 0.85rem' }}>
-                            <span style={{
-                              fontWeight: 700,
-                              color: log.status_code >= 200 && log.status_code < 300 ? '#10b981' : '#ef4444',
-                            }}>
-                              {log.status_code} ({log.elapsed_ms}ms)
-                            </span>
-                          </td>
-                          <td style={{ padding: '0.55rem 0.85rem', textAlign: 'center' }}>
-                            <button
-                              type="button"
-                              className="btn btn-ghost btn-sm"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setSelectedAuditLog(log);
-                              }}
-                              style={{ padding: '2px 6px', fontSize: '0.72rem', borderRadius: '4px' }}
-                            >
-                              보기
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
 
-              {/* 페이징 버튼 */}
-              {auditTotal > 20 && (
-                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem', padding: '0.75rem', borderTop: '1px solid var(--border-color)', background: '#f8fafc' }}>
-                  <button
-                    type="button"
-                    className="btn btn-secondary btn-sm"
-                    disabled={auditPage <= 1}
-                    onClick={() => setAuditPage((p) => Math.max(1, p - 1))}
-                    style={{ padding: '0.25rem 0.6rem', fontSize: '0.78rem' }}
-                  >
-                    이전
-                  </button>
-                  <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-                    {auditPage} / {Math.ceil(auditTotal / 20)}
-                  </span>
-                  <button
-                    type="button"
-                    className="btn btn-secondary btn-sm"
-                    disabled={auditPage >= Math.ceil(auditTotal / 20)}
-                    onClick={() => setAuditPage((p) => p + 1)}
-                    style={{ padding: '0.25rem 0.6rem', fontSize: '0.78rem' }}
-                  >
-                    다음
-                  </button>
-                </div>
-              )}
-            </div>
-          )}
+            {/* 페이징 버튼 */}
+            {auditTotal > 20 && (
+              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem', padding: '0.75rem', borderTop: '1px solid var(--border-color)', background: '#f8fafc' }}>
+                <button
+                  type="button"
+                  className="btn btn-secondary btn-sm"
+                  disabled={auditPage <= 1}
+                  onClick={() => setAuditPage((p) => Math.max(1, p - 1))}
+                  style={{ padding: '0.25rem 0.6rem', fontSize: '0.78rem' }}
+                >
+                  이전
+                </button>
+                <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
+                  {auditPage} / {Math.ceil(auditTotal / 20)}
+                </span>
+                <button
+                  type="button"
+                  className="btn btn-secondary btn-sm"
+                  disabled={auditPage >= Math.ceil(auditTotal / 20)}
+                  onClick={() => setAuditPage((p) => p + 1)}
+                  style={{ padding: '0.25rem 0.6rem', fontSize: '0.78rem' }}
+                >
+                  다음
+                </button>
+              </div>
+            )}
+          </div>
 
           {/* 하단 공공 가이드라인 안내 배너 */}
           <div style={{ marginTop: '0.85rem', paddingTop: '0.75rem', borderTop: '1px dashed var(--border-color)', display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: 'var(--text-muted)', flexWrap: 'wrap', gap: '0.5rem' }}>
