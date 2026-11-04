@@ -26,7 +26,7 @@ X_DEFAULTS: dict[str, Any] = {
     "x_gemini_max_retries": 4,       # 429/5xx 지수 백오프 재시도 횟수
     # 무료 티어 20 RPM(실측) 준수용 프로세스 전역 최소 호출 간격(초). 20rpm→3.2s.
     # 이 sleep은 raw API 지연과 분리 계측한다(속도 판정은 raw 기준 + 스로틀 오버헤드 별도 보고).
-    "x_gemini_min_interval_s": 3.2,
+    "x_gemini_min_interval_s": 0.5,
     "x_gemini_fallback_local": True, # 네트워크/재시도 소진 시 로컬 12b 폴백
     "x_gemini_vision": False,        # 가설4: vision 경로도 Flash로
     # 2.5 Flash는 기본 thinking ON(지연·비용↑). 답변/검증 경로는 속도·결정론 위해 0(비활성).

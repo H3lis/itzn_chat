@@ -73,7 +73,7 @@ class GeminiBackend(Backend):
         self._fallback_local = bool(getattr(config, "x_gemini_fallback_local", True))
         self._vision_on = bool(getattr(config, "x_gemini_vision", False))
         self._cost_log = getattr(config, "x_cost_log_path", None)
-        self._min_interval = float(getattr(config, "x_gemini_min_interval_s", 3.2))
+        self._min_interval = float(getattr(config, "x_gemini_min_interval_s", 0.5))
 
     # --- 임베딩: 로컬 불변 위임 ---
     def embed(self, texts, *, is_query: bool = False):

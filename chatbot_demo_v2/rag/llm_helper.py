@@ -51,7 +51,10 @@ class LlmHelper:
 
                 config = load_x_config(
                     str(self._settings.ragcore_config),
-                    x_overrides={"x_backend": self._settings.rag_backend},
+                    x_overrides={
+                        "x_backend": self._settings.rag_backend,
+                        "x_gemini_min_interval_s": 0.5,
+                    },
                 )
                 self._backend = get_x_backend(config)
                 self._ready = True

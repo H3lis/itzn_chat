@@ -198,6 +198,7 @@ class SemanticScenarioMatcher(ScenarioMatcher):
         self._mat = None          # np.ndarray (N, D), L2 정규화
         self._backend = None
         self._reranker = None
+        self._score_cache: dict[str, list[tuple[str, str, float]]] = {}
 
     # ---------- 지연 초기화 ----------
     def _ensure(self) -> bool:
@@ -252,17 +253,26 @@ class SemanticScenarioMatcher(ScenarioMatcher):
 
     # ---------- 점수 계산 ----------
     def _scored(self, question: str, k: int) -> list[tuple[str, str, float]]:
-        """[(faq_id, 질문, 점수)] 를 점수 내림차순 상위 k개로 반환."""
+        """[(faq_id, 질문, 점수)] 를 점수 내림차순 상위 k개로 반환 (동일 질문 인메모리 캐시 지원)."""
         import numpy as np
+
+        cache_k = max(k, 5)
+        cached = self._score_cache.get(question)
+        if cached is not None and len(cached) >= k:
+            return cached[:k]
 
         q = np.asarray(self._backend.embed([question], is_query=True)[0], dtype=np.float32)
         q = q / (np.linalg.norm(q) + 1e-8)
         cos = self._mat @ q
-        pool = np.argsort(-cos)[: max(self._topk, k)]
+        pool = np.argsort(-cos)[: max(self._topk, cache_k)]
         hits = self._reranker.rank(question, [self._questions[i] for i in pool])
         out = [(self._ids[pool[h.index]], self._questions[pool[h.index]], float(h.score))
                for h in hits]
-        return out[:k]
+        res = out[:cache_k]
+        if len(self._score_cache) >= 128:
+            self._score_cache.pop(next(iter(self._score_cache)), None)
+        self._score_cache[question] = res
+        return res[:k]
 
     # ---------- 공개 API (부모와 동일 시그니처) ----------
     def top_candidates(self, normalized_question: str, k: int = 2) -> list[dict]:

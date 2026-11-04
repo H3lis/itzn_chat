@@ -66,6 +66,7 @@ def _x_overrides(settings: Settings) -> dict:
         "x_backend": settings.rag_backend,
         "x_gemini_timeout_s": 25,
         "x_gemini_max_retries": 2,
+        "x_gemini_min_interval_s": 0.5,
         "x_conditional_verify_skip": True,
     }
 
