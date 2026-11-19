@@ -282,3 +282,42 @@ def test_rag_composer_followup_multi_turn_contextualize(tmp_path):
     assert r2["standalone_question"] == "AP 엑셀 일괄 업로드 등록 방법은 어떻게 되나요?"
 
 
+def test_followup_splits_two_buttons_and_prevents_session_cycle(tmp_path):
+    """<followup>의 2개 주제가 각각 개별 버튼(<followup_options>)으로 분리되고, 같은 세션에서 중복/순환 추천되지 않는다."""
+    class CycleMockLlm:
+        def chat(self, prompt: str, *args, **kwargs):
+            return (
+                "<summary>요약 답변입니다.</summary>\n"
+                "<details>상세 답변입니다.</details>\n"
+                "<followup>관련된 내용으로는 무선 AP의 상태 확인 방법이나 SWIMS 연동 관련 조치 사항과 같은 내용이 있습니다. "
+                "혹시 무선 AP의 상세 설정이나 장애 유형별 조치 방법에 대해서도 함께 안내해 드릴까요?</followup>"
+            )
+
+    s = _settings(tmp_path, CONTEXTUALIZE_ENABLED="true", GRADER_ENABLED="false")
+    rag = FakeRagAdapter(result={
+        "run_id": "r_cycle",
+        "final_answer": "초안 답변",
+        "answer_context": "무선 AP의 상태 확인 방법 및 SWIMS 연동 관련 조치 사항 안내",
+        "answer_path": "text",
+        "confidence": "high",
+        "verification": {"abstain": False},
+        "evidence": [],
+        "metrics": {},
+        "selected_pages": [{"document_name": "무선랜가이드.pdf", "page_number": 22}],
+    })
+    ctx = build_context(s, rag_adapter=rag, llm=CycleMockLlm())
+    tid = "cycle_test_thread"
+
+    # 1턴: 2개의 개별 후속 질문 버튼이 생성되어야 함
+    r1 = ctx.graph.invoke(_text("AP 신규 설치 방법 zzz", tid=tid), _cfg(tid))
+    assert "네, 무선 AP의 상태 확인 방법에 대해 알려주세요" in r1["final_answer"]
+    assert "네, SWIMS 연동 관련 조치 사항에 대해 알려주세요" in r1["final_answer"]
+
+    # 2턴: 사용자가 2번째 버튼을 클릭했을 때 첫 번째 주제로 덮어써지지 않고 2번째 주제로 정확히 검색되며,
+    # 이미 1턴에서 추천되었던 두 주제는 2턴 답변에서 다시 중복 추천되지 않고 제거되어야 함
+    r2 = ctx.graph.invoke(_text("네, SWIMS 연동 관련 조치 사항에 대해 알려주세요", tid=tid), _cfg(tid))
+    assert "SWIMS" in r2["standalone_question"]
+    assert "<followup_options>" not in r2["final_answer"]
+
+
+

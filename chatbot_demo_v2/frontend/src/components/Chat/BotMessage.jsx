@@ -21,6 +21,7 @@ export function BotMessage({
   const safeResp = resp || {};
   const [feedbackState, setFeedbackState] = useState(null); // 'pos' | 'neg' | null
   const [feedbackSent, setFeedbackSent] = useState(false);
+  const [clickedSimilar, setClickedSimilar] = useState({});
 
   // 시나리오 하위 선택지 (초기 화면에서 시나리오를 선택해 다음 단계 질문이 이어질 때만 말풍선 내부에 표시)
   const scenarioStepOptions = (safeResp.options || []).filter(
@@ -136,13 +137,18 @@ export function BotMessage({
           <div className="similar-questions-list">
             {similarCandidates.map((cd, idx) => {
               const qText = cd.question || cd.label || cd;
+              const isClicked = Boolean(clickedSimilar[qText]);
               return (
                 <button
                   key={idx}
                   type="button"
-                  className="similar-q-btn"
-                  onClick={() => onSend?.(qText)}
-                  title="클릭하여 이 질문으로 바로 상담 진행"
+                  className={`similar-q-btn ${isClicked ? 'clicked' : ''}`}
+                  disabled={isClicked}
+                  onClick={() => {
+                    setClickedSimilar((prev) => ({ ...prev, [qText]: true }));
+                    onSend?.(qText);
+                  }}
+                  title={isClicked ? '이미 질문한 항목입니다' : '클릭하여 이 질문으로 바로 상담 진행'}
                 >
                   <span className="similar-q-text">{qText}</span>
                   <ChevronRight size={13} className="similar-q-arrow" />

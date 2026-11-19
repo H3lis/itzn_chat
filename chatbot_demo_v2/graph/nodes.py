@@ -74,6 +74,176 @@ def _match_ordinal_clarify_reply(user_q: str, candidates: list[dict]) -> dict | 
     return None
 
 
+_EXPLICIT_FOLLOWUP_BTN_RE = re.compile(
+    r"^네,\s*(.+?)\s*(?:에\s*대해(?:서)?\s*|관련해서\s*|방법을\s*)?알려주세요[.!?]?$"
+)
+_VAGUE_FOLLOWUP_WORDS = ("방금", "관련 내용", "그것", "그거", "이 부분", "이어서 자세히", "해당 내용")
+
+
+def _extract_explicit_followup_query(raw: str) -> str | None:
+    """'네, 무선 AP의 상태 확인 방법에 대해 알려주세요' 형태의 명시적 후속 질문 버튼 클릭인지 판별하고 핵심 질문을 추출한다."""
+    if not raw:
+        return None
+    s = raw.strip()
+    if any(vw in s for vw in _VAGUE_FOLLOWUP_WORDS):
+        return None
+    m = _EXPLICIT_FOLLOWUP_BTN_RE.match(s)
+    if not m:
+        return None
+    topic = m.group(1).strip()
+    if len(topic) < 3:
+        return None
+    return re.sub(r"^네,\s*", "", s).strip()
+
+
+def _normalize_topic_core(text: str) -> str:
+    """세션 내 중복 질문/추천 비교를 위해 장식 어구를 제거한 핵심 주제 문자열을 반환한다."""
+    if not text:
+        return ""
+    s = str(text).strip()
+    s = re.sub(r"^\[선택\]\s*|^▶\s*|^네,\s*|^혹시\s*|^관련된\s*내용으로는\s*", "", s)
+    s = re.sub(
+        r"(에\s*대해서도\s*함께\s*안내해\s*드릴까요|에\s*대해\s*자세히\s*알려주세요|"
+        r"에\s*대해서\s*알려주세요|에\s*대해\s*알려주세요|에\s*관해\s*알려주세요|"
+        r"방법을\s*알려주세요|절차를\s*알려주세요|알려주세요|알려줘요|알려줘|"
+        r"어떻게\s*해야\s*하나요|어떻게\s*해야해|어떻게\s*되나요|무엇인가요|뭔가요)[.!?~\s]*$",
+        "",
+        s,
+    )
+    s = re.sub(r"[^가-힣a-zA-Z0-9]", "", s).lower()
+    return s
+
+
+def _is_duplicate_topic(candidate: str, seen_list: list[str]) -> bool:
+    """후보 질문/주제가 세션 내 이미 질문했거나 추천했던 목록(seen_list)과 중복되는지 판별한다."""
+    c_core = _normalize_topic_core(candidate)
+    if not c_core or len(c_core) < 2:
+        return True
+    c_bi = {c_core[i : i + 2] for i in range(len(c_core) - 1)} if len(c_core) >= 2 else {c_core}
+    for seen in seen_list or []:
+        s_core = _normalize_topic_core(seen)
+        if not s_core:
+            continue
+        if c_core == s_core:
+            return True
+        if len(c_core) >= 4 and len(s_core) >= 4 and (c_core in s_core or s_core in c_core):
+            return True
+        s_bi = {s_core[i : i + 2] for i in range(len(s_core) - 1)} if len(s_core) >= 2 else {s_core}
+        if c_bi and s_bi:
+            overlap = len(c_bi & s_bi) / max(1, min(len(c_bi), len(s_bi)))
+            if overlap >= 0.72:
+                return True
+    return False
+
+
+def _format_followup_option_btn(topic: str) -> str:
+    """연관 주제를 '네, [주제]에 대해 알려주세요' 버튼 문구로 정규화한다."""
+    t = re.sub(r"^[-*•\d.)\s\"'`]+|[\"'`.!?]+$", "", (topic or "").strip()).strip()
+    if not t:
+        return ""
+    if t.startswith("네,") and "알려주세요" in t:
+        return re.sub(r"[.!?]+$", "", t).strip()
+    t = re.sub(r"^네,\s*", "", t).strip()
+    t = re.sub(
+        r"\s*(?:에\s*대해(?:서)?(?:도)?|에\s*관해(?:서)?|도\s*함께)?\s*(?:안내해\s*드릴까요|알려주세요|알려줘요|알려줘)?[.!?]*$",
+        "",
+        t,
+    ).strip()
+    if not t:
+        return ""
+    return f"네, {t}에 대해 알려주세요"
+
+
+def _extract_followup_options(followup_text: str, raw_options_block: str) -> list[str]:
+    """<followup_options> 또는 <followup> 본문에서 최대 2개의 개별 후속 질문 버튼 문구를 추출한다."""
+    opts: list[str] = []
+    if raw_options_block:
+        for line in raw_options_block.splitlines():
+            cleaned = _format_followup_option_btn(line)
+            if cleaned and len(cleaned) >= 10 and not any(vw in cleaned for vw in _VAGUE_FOLLOWUP_WORDS):
+                if not _is_duplicate_topic(cleaned, opts):
+                    opts.append(cleaned)
+            if len(opts) >= 2:
+                return opts
+
+    if followup_text and len(opts) < 2:
+        # 1차: '관련된 내용으로는 A이나 B와 같은 내용이' 패턴에서 추출
+        m = re.search(
+            r"관련된\s*내용으로는\s*(.+?)\s*(?:와|과)\s*같은\s*(?:내용|항목|사항|절차|정보)",
+            followup_text,
+        )
+        target_phrase = m.group(1).strip() if m else ""
+        if not target_phrase:
+            m2 = re.search(
+                r"혹시\s*(.+?)\s*(?:에\s*대해서도|에\s*대해|도\s*함께)\s*(?:함께\s*)?안내해",
+                followup_text,
+            )
+            if m2:
+                target_phrase = m2.group(1).strip()
+        if target_phrase:
+            parts = re.split(
+                r"\s*(?:이나|거나|또는|및|그리고|,\s*)\s*|\s+나\s+",
+                target_phrase,
+            )
+            for p in parts:
+                p_clean = p.strip()
+                if len(p_clean) < 3:
+                    continue
+                btn = _format_followup_option_btn(p_clean)
+                if btn and not any(vw in btn for vw in _VAGUE_FOLLOWUP_WORDS):
+                    if not _is_duplicate_topic(btn, opts):
+                        opts.append(btn)
+                if len(opts) >= 2:
+                    break
+    return opts[:2]
+
+
+def _collect_session_seen(state: ChatState) -> tuple[list[str], list[str]]:
+    """현재 세션에서 이미 다룬 FAQ ID 목록과 이미 질문/추천된 주제 목록을 수집한다."""
+    seen_fids: list[str] = []
+    for fid in state.get("seen_faq_ids") or []:
+        if fid and fid not in seen_fids:
+            seen_fids.append(fid)
+
+    matched_id = (state.get("scenario_match") or {}).get("matched_id")
+    if state.get("route") == "faq" and matched_id and matched_id not in seen_fids:
+        seen_fids.append(matched_id)
+
+    seen_qs: list[str] = []
+
+    def _add_q(q_str: str | None) -> None:
+        if not q_str:
+            return
+        q_c = str(q_str).strip()
+        if not q_c or any(vw in q_c for vw in _VAGUE_FOLLOWUP_WORDS):
+            return
+        if q_c not in seen_qs:
+            seen_qs.append(q_c)
+
+    for q in state.get("seen_questions") or []:
+        _add_q(q)
+
+    for m in state.get("messages") or []:
+        content = (getattr(m, "content", "") or "").strip()
+        if isinstance(m, HumanMessage):
+            _add_q(content)
+        elif isinstance(m, AIMessage):
+            for opt_m in re.finditer(
+                r"<followup_options>(.*?)</followup_options>",
+                content,
+                flags=re.DOTALL | re.IGNORECASE,
+            ):
+                for line in opt_m.group(1).splitlines():
+                    _add_q(_format_followup_option_btn(line))
+
+    _add_q(state.get("user_input"))
+    _add_q(state.get("standalone_question"))
+    if state.get("route") == "faq":
+        _add_q((state.get("scenario_match") or {}).get("matched_question"))
+
+    return seen_fids, seen_qs
+
+
 _PERSONA_PROMPT_NAMES = (
     "persona/persona",
     "persona/response_policy",
@@ -302,15 +472,20 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
             raw = (state.get("user_input") or "").strip()
             if not raw:
                 raise EmptyInputError("빈 질문")
-            
-            # 먼저 원본 질문(raw)이 FAQ와 정확히 일치(Exact Match)하는지 확인
-            norm_raw = normalize_text(raw)
+
+            # '네, [구체적 주제]에 대해 알려주세요' 형태의 명시적 후속 질문 버튼 클릭인 경우
+            # 대화 메모리(messages)에는 원본(raw)을 남기되, 검색용 쿼리에서는 앞의 '네, '를 제거해 검색 정밀도를 높인다.
+            explicit_followup_q = _extract_explicit_followup_query(raw)
+            search_raw = explicit_followup_q if explicit_followup_q else raw
+
+            # 먼저 질문(search_raw)이 FAQ와 정확히 일치(Exact Match)하는지 확인
+            norm_raw = normalize_text(search_raw)
             curr_faq = _get_faq()
             exact_entry = curr_faq.exact(norm_raw) if curr_faq else None
-            
+
             if exact_entry is not None:
                 # 정확히 일치하는 FAQ가 있으면 강건성 툴을 거치지 않고 우회하여 바로 매칭
-                out["user_input"] = raw
+                out["user_input"] = search_raw
                 out["normalized_question"] = norm_raw
                 out["messages"] = [HumanMessage(content=raw)]
                 out["trace"] = _trace(
@@ -321,7 +496,7 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
             elif spoken_engine is not None:
                 # 구어체 및 오타 강건성 툴 적용
                 _progress("robustness", "구어체 및 오타 자동 교정 중...")
-                robust_res = spoken_engine.run(raw)
+                robust_res = spoken_engine.run(search_raw)
                 final_query = robust_res["final_query"]
 
                 out["user_input"] = final_query
@@ -330,7 +505,7 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
                 out["messages"] = [HumanMessage(content=raw)]
 
                 detail_msg = f"자유 입력 정규화(len={len(raw)})"
-                if robust_res["is_colloquial"] or robust_res["preprocessed_query"] != raw:
+                if robust_res["is_colloquial"] or robust_res["preprocessed_query"] != search_raw:
                     detail_msg += f" | 강건성 툴 적용: {raw} -> {final_query}"
 
                 out["trace"] = _trace(
@@ -352,7 +527,8 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
                     tags=["robustness_tool"],
                 )
             else:
-                out["normalized_question"] = normalize_text(raw)
+                out["user_input"] = search_raw
+                out["normalized_question"] = normalize_text(search_raw)
                 # 대화 메모리: 사용자 발화를 이력에 추가(add_messages 리듀서가 누적).
                 out["messages"] = [HumanMessage(content=raw)]
                 out["trace"] = _trace(
@@ -476,6 +652,25 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
         has_prior_context = len(humans) >= 2 or bool(pending_cands) or bool(last_scen_path)
         if not settings.contextualize_enabled or not has_prior_context:
             return {"standalone_question": user_q, "contextualized": False}
+
+        # [명시적 후속 질문 버튼 클릭('네, [구체적 주제]에 대해 알려주세요') 보호]
+        # 사용자가 분리된 후속 버튼(1번 또는 2번 주제)을 클릭한 경우, 이미 질문 자체에 구체적 주제가 명시되어 있으므로
+        # contextualize LLM이 이전 턴의 첫 번째 주제로 잘못 덮어쓰지 않도록 원문(user_q) 그대로 독립 검색한다.
+        last_human_raw = (getattr(humans[-1], "content", "") or "").strip() if humans else ""
+        if _extract_explicit_followup_query(last_human_raw) is not None:
+            _node_meta(
+                {"rewritten": False, "explicit_followup_button": True, "standalone_question": user_q},
+                tags=["contextualize:bypass:explicit_followup_btn"],
+            )
+            return {
+                "standalone_question": user_q,
+                "normalized_question": state.get("normalized_question") or normalize_text(user_q),
+                "contextualized": False,
+                "trace": _trace(
+                    state, "contextualize_query",
+                    f"명시적 후속 질문 버튼 클릭 → 독립 주제 그대로 검색({user_q[:40]})",
+                ),
+            }
 
         # [최적화] 사용자의 현재 질문 원문 자체가 이미 FAQ/시나리오에 명확히 매칭(exact/accept)되는 경우,
         # 대화 맥락 재작성(LLM)을 건너뛰고 원문 그대로 즉시 매칭으로 직행한다.
@@ -939,8 +1134,13 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
         }
 
     # ---------- 9.5 compose_answer (Phase 4, 근거 종합 답변 작성) ----------
-    def _build_related_context(state: ChatState, route: str) -> str:
-        """현재 질문과 연관된 인접 FAQ 후보 및 RAG 보조 근거 요약을 조립한다 (LLM 0회, 캐시 재사용)."""
+    def _build_related_context(
+        state: ChatState,
+        route: str,
+        seen_fids: list[str],
+        seen_qs: list[str],
+    ) -> str:
+        """현재 질문과 연관된 인접 FAQ 후보 및 RAG 보조 근거 요약을 조립한다 (세션 내 이미 다룬 질문 제외)."""
         items: list[str] = []
         norm_q = state.get("normalized_question") or state.get("raw_question") or ""
         matched_id = (state.get("scenario_match") or {}).get("matched_id")
@@ -953,15 +1153,17 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
                     or (state.get("scenario_match") or {}).get("scale") == "semantic"
                 )
                 min_rel_score = 0.08 if is_semantic else 0.65
-                cands = curr_matcher.top_candidates(norm_q, k=4)
+                cands = curr_matcher.top_candidates(norm_q, k=8)
                 for c in cands:
                     fid = c.get("faq_id")
-                    if not fid or fid == matched_id:
+                    if not fid or fid == matched_id or fid in seen_fids:
                         continue
                     score = float(c.get("score") or 0.0)
                     if score < min_rel_score:
                         continue
                     q_text = (c.get("question") or "").strip()
+                    if not q_text or _is_duplicate_topic(q_text, seen_qs):
+                        continue
                     entry = curr_faq.get(fid) if curr_faq else None
                     ans_preview = ""
                     if entry and getattr(entry, "answer", ""):
@@ -971,8 +1173,7 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
                             if len(raw_a) > 120
                             else f" (핵심내용: {raw_a})"
                         )
-                    if q_text:
-                        items.append(f"- 연관 FAQ: {q_text}{ans_preview}")
+                    items.append(f"- 연관 FAQ: {q_text}{ans_preview}")
                     if len(items) >= 2:
                         break
             except Exception:
@@ -990,7 +1191,7 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
                     items.append(f"- 함께 검색된 보조 근거 문서: {dname} (p.{pnum})")
 
         if not items:
-            return "(별도 연관 후보 없음 — 위 [근거] 또는 [공식 모범답변] 내에 부가 절차·주의사항이 있을 때만 연관 안내를 작성하세요)"
+            return "(새로운 연관 FAQ 후보 없음 — 이미 다룬 주제는 절대 다시 추천하지 말고, 위 [근거] 내에 아직 다루지 않은 새로운 세부 주제가 있을 때만 추천하세요)"
         return "\n".join(items)
 
     def compose_answer(state: ChatState) -> dict:
@@ -1010,7 +1211,13 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
 
         question = (state.get("standalone_question") or state.get("user_input") or "").strip()
         history_summary = _format_history((state.get("messages") or [])[:-1], limit_chars=800)
-        related_context = _build_related_context(state, route)
+        seen_fids, seen_qs = _collect_session_seen(state)
+        related_context = _build_related_context(state, route, seen_fids, seen_qs)
+        already_discussed = (
+            "\n".join(f"- {q}" for q in seen_qs[-15:])
+            if seen_qs
+            else "(없음 — 첫 질문)"
+        )
 
         if route == "faq":
             base = (state.get("original_answer") or state.get("final_answer") or "").strip()
@@ -1021,6 +1228,7 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
             prompt = ctx.prompts.render(
                 name, question=question, original_answer=base,
                 history_summary=history_summary, related_context=related_context,
+                already_discussed=already_discussed,
             )
         else:
             rag = state.get("rag_result") or {}
@@ -1033,6 +1241,7 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
                 name, question=question, answer=base,
                 evidence_text=evidence_text, history_summary=history_summary,
                 related_context=related_context,
+                already_discussed=already_discussed,
             )
 
         # 추가 페르소나/응답정책은 기존 composer 파일과 분리된 선택적 확장이다.
@@ -1093,7 +1302,6 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
             meta["citations"] = citations
         elif route == "faq":
             # FAQ 톤앤매너 및 어체 일관성 보정 (Gemma 표준 상담체와 100% 동기화)
-            import re
             # 0. 모델이 프롬프트의 헤더 메타데이터를 복사 출력한 경우 완전 스트립
             out = re.sub(r"\[(질문|답변|상담원\s*답변|핵심\s*요약|공식\s*모범답변)\].*?(\n|$)", "", out)
             if question:
@@ -1117,14 +1325,21 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
             summary_match = re.search(r"<summary>(.*?)</summary>", out, re.DOTALL | re.IGNORECASE)
             details_match = re.search(r"<details>(.*?)</details>", out, re.DOTALL | re.IGNORECASE)
             followup_match = re.search(r"<followup>(.*?)</followup>", out, re.DOTALL | re.IGNORECASE)
+            followup_opts_match = re.search(
+                r"<followup_options>(.*?)</followup_options>", out, re.DOTALL | re.IGNORECASE
+            )
             followup_text = followup_match.group(1).strip() if followup_match else ""
+            followup_opts_raw = followup_opts_match.group(1).strip() if followup_opts_match else ""
 
             if summary_match:
                 summary_text = summary_match.group(1).strip()
                 details_text = details_match.group(1).strip() if details_match else base
             else:
                 out_without_followup = re.sub(
-                    r"<followup>.*?</followup>", "", out, flags=re.DOTALL | re.IGNORECASE
+                    r"<followup>.*?</followup>|<followup_options>.*?</followup_options>",
+                    "",
+                    out,
+                    flags=re.DOTALL | re.IGNORECASE,
                 ).strip()
                 lines = [
                     l.strip()
@@ -1137,12 +1352,66 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
             out = f"<summary>{summary_text}</summary>\n<details>{details_text}</details>"
             if followup_text:
                 out += f"\n<followup>{followup_text}</followup>"
+            if followup_opts_raw:
+                out += f"\n<followup_options>\n{followup_opts_raw}\n</followup_options>"
+
+        # [공통 후처리] <followup> 및 <followup_options> 2개 개별 버튼 보장 & 세션 내 중복 추천(순환) 필터링
+        fu_m = re.search(r"<followup>(.*?)</followup>", out, re.DOTALL | re.IGNORECASE)
+        fu_opt_m = re.search(r"<followup_options>(.*?)</followup_options>", out, re.DOTALL | re.IGNORECASE)
+        if fu_m or fu_opt_m:
+            fu_txt = fu_m.group(1).strip() if fu_m else ""
+            fu_opt_txt = fu_opt_m.group(1).strip() if fu_opt_m else ""
+            raw_opts = _extract_followup_options(fu_txt, fu_opt_txt)
+
+            valid_opts: list[str] = []
+            for opt in raw_opts:
+                if not _is_duplicate_topic(opt, seen_qs + valid_opts):
+                    valid_opts.append(opt)
+
+            # 기존 <followup>, <followup_options> 블록 일단 제거 후 유효한 새 주제가 있을 때만 재부착
+            base_out = re.sub(
+                r"\s*<followup>.*?</followup>|\s*<followup_options>.*?</followup_options>",
+                "",
+                out,
+                flags=re.DOTALL | re.IGNORECASE,
+            ).strip()
+
+            if valid_opts:
+                if len(valid_opts) == 1 and len(raw_opts) > 1:
+                    # 2개 중 1개가 이미 다룬 질문이라 제외된 경우, 남은 1개 주제에 맞게 안내 문구도 정돈
+                    t_clean = re.sub(
+                        r"^네,\s*|\s*에\s*대해(?:서)?\s*알려주세요[.!?]?$", "", valid_opts[0]
+                    ).strip()
+                    fu_txt = (
+                        f"관련된 내용으로는 {t_clean}과 같은 내용이 있습니다. "
+                        f"혹시 해당 내용에 대해서도 함께 안내해 드릴까요?"
+                    )
+                elif not fu_txt:
+                    t_list = [
+                        re.sub(r"^네,\s*|\s*에\s*대해(?:서)?\s*알려주세요[.!?]?$", "", o).strip()
+                        for o in valid_opts
+                    ]
+                    joined_t = "이나 ".join(t_list)
+                    fu_txt = (
+                        f"관련된 내용으로는 {joined_t}과 같은 내용이 있습니다. "
+                        f"혹시 해당 내용에 대해서도 함께 안내해 드릴까요?"
+                    )
+                opts_block = "\n".join(valid_opts)
+                out = f"{base_out}\n<followup>{fu_txt}</followup>\n<followup_options>\n{opts_block}\n</followup_options>"
+                for vo in valid_opts:
+                    if vo not in seen_qs:
+                        seen_qs.append(vo)
+            else:
+                # 새로 추천할 주제가 모두 이전 턴과 중복이면 <followup> 자체를 제거하여 무한 순환 차단
+                out = base_out
 
         _node_meta(meta, tags=["composed:ok"])
         return {
             "composed": True,
             "composed_answer": out,
             "citations": citations,
+            "seen_faq_ids": seen_fids,
+            "seen_questions": seen_qs,
             "timings": timings,
             "trace": _trace(state, "compose_answer",
                             f"{name} 합성 채택(len={len(out)}, 출처 {len(citations)}쪽)"),
@@ -1323,7 +1592,17 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
         timings["total_s"] = total
         out["timings"] = timings
 
-        # 후순위 연관 질문(비슷한 질문) 추출: 답변 완료 후 유사한 상위 FAQ 질문 추천
+        # 후순위 연관 질문(비슷한 질문) 추출: 답변 완료 후 유사한 상위 FAQ 질문 추천 (세션 내 중복 추천 완전 제외)
+        seen_fids, seen_qs = _collect_session_seen(state)
+        ans_for_dedup = str(out.get("final_answer") or state.get("final_answer") or "")
+        for opt_m in re.finditer(
+            r"<followup_options>(.*?)</followup_options>", ans_for_dedup, flags=re.DOTALL | re.IGNORECASE
+        ):
+            for line in opt_m.group(1).splitlines():
+                fmt_l = _format_followup_option_btn(line)
+                if fmt_l and fmt_l not in seen_qs:
+                    seen_qs.append(fmt_l)
+
         norm_q = state.get("normalized_question") or state.get("raw_question") or ""
         if norm_q and route in ("rag3x", "web_search", "faq"):
             try:
@@ -1334,16 +1613,30 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
                         or (state.get("scenario_match") or {}).get("scale") == "semantic"
                     )
                     min_cand_score = 0.10 if is_semantic else 0.65
-                    raw_cands = curr_matcher.top_candidates(norm_q, k=3)
+                    raw_cands = curr_matcher.top_candidates(norm_q, k=8)
                     matched_id = (state.get("scenario_match") or {}).get("matched_id")
-                    valid_cands = [
-                        c for c in raw_cands
-                        if float(c.get("score") or 0.0) >= min_cand_score and c.get("faq_id") != matched_id
-                    ]
+                    valid_cands: list[dict] = []
+                    for c in raw_cands:
+                        fid = c.get("faq_id")
+                        q_txt = (c.get("question") or "").strip()
+                        if not fid or fid == matched_id or fid in seen_fids:
+                            continue
+                        if float(c.get("score") or 0.0) < min_cand_score:
+                            continue
+                        if not q_txt or _is_duplicate_topic(q_txt, seen_qs):
+                            continue
+                        valid_cands.append(c)
+                        seen_fids.append(fid)
+                        seen_qs.append(q_txt)
+                        if len(valid_cands) >= 3:
+                            break
                     if valid_cands:
                         out["clarify"] = {"candidates": valid_cands}
             except Exception:
                 pass
+
+        out["seen_faq_ids"] = seen_fids
+        out["seen_questions"] = seen_qs
 
         # 대화 메모리: 상담봇 최종 답변을 이력에 추가(빈 답변/시나리오 메뉴 텍스트도 포함).
         ans_text = out.get("final_answer")

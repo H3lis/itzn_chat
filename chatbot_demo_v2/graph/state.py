@@ -28,6 +28,8 @@ class ChatState(TypedDict, total=False):
     last_scenario_path: list[str]              # 직전 시나리오 이동 경로(자유입력 전환 시 맥락 보존)
     scenario_completed: bool
     pending_clarify_candidates: list[dict]     # 직전 턴 되묻기 후보(자유입력 응답 시 맥락/선택 연동)
+    seen_faq_ids: list[str]                    # 세션 내 이미 답변했거나 추천한 FAQ ID 목록 (순환 추천 방지)
+    seen_questions: list[str]                  # 세션 내 이미 질문했거나 추천한 주제/질문 목록 (순환 추천 방지)
     messages: Annotated[list, add_messages]   # 대화 이력(Human/AI) — 절대 매 턴 초기화 금지
 
     # --- 입력(per-turn) ---

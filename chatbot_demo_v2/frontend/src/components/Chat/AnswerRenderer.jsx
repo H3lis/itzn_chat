@@ -10,6 +10,7 @@ function escapeHtml(s) {
 
 export function AnswerRenderer({ text, evidence = [], faqEvidence = [], onOpenEvidence, onSend }) {
   const [expanded, setExpanded] = useState(false);
+  const [clickedOptions, setClickedOptions] = useState({});
 
   // Index evidence by page number
   const evidenceByPage = useMemo(() => {
@@ -138,36 +139,104 @@ export function AnswerRenderer({ text, evidence = [], faqEvidence = [], onOpenEv
     return elements;
   };
 
-  // Check for <summary>, <details>, and <followup> XML tags
+  // Check for <summary>, <details>, <followup>, and <followup_options> XML tags
   const rawText = String(text || '');
   const summaryMatch = rawText.match(/<summary>([\s\S]*?)<\/summary>/i);
   const detailsMatch = rawText.match(/<details>([\s\S]*?)<\/details>/i);
   const followupMatch = rawText.match(/<followup>([\s\S]*?)<\/followup>/i);
+  const followupOptsMatch = rawText.match(/<followup_options>([\s\S]*?)<\/followup_options>/i);
   const followupText = followupMatch ? followupMatch[1].trim() : '';
+  const followupOptsRaw = followupOptsMatch ? followupOptsMatch[1].trim() : '';
+
+  const followupOptions = useMemo(() => {
+    const formatOptionBtn = (rawTopic) => {
+      let t = String(rawTopic || '')
+        .replace(/^[-*•\d.)\s"'`]+|["'`.!?]+$/g, '')
+        .trim();
+      if (!t) return '';
+      if (t.startsWith('네,') && t.includes('알려주세요')) {
+        return t.replace(/[.!?]+$/, '').trim();
+      }
+      t = t.replace(/^네,\s*/, '').trim();
+      t = t
+        .replace(
+          /\s*(?:에\s*대해(?:서)?(?:도)?|에\s*관해(?:서)?|도\s*함께)?\s*(?:안내해\s*드릴까요|알려주세요|알려줘요|알려줘)?[.!?]*$/,
+          ''
+        )
+        .trim();
+      if (!t) return '';
+      return `네, ${t}에 대해 알려주세요`;
+    };
+
+    const opts = [];
+    if (followupOptsRaw) {
+      followupOptsRaw.split('\n').forEach((line) => {
+        const formatted = formatOptionBtn(line);
+        if (formatted && formatted.length >= 10 && !opts.includes(formatted)) {
+          opts.push(formatted);
+        }
+      });
+    }
+
+    if (opts.length === 0 && followupText) {
+      const m1 = followupText.match(
+        /관련된\s*내용으로는\s*(.+?)\s*(?:와|과)\s*같은\s*(?:내용|항목|사항|절차|정보)/
+      );
+      let phrase = m1 ? m1[1].trim() : '';
+      if (!phrase) {
+        const m2 = followupText.match(
+          /혹시\s*(.+?)\s*(?:에\s*대해서도|에\s*대해|도\s*함께)\s*(?:함께\s*)?안내해/
+        );
+        if (m2) phrase = m2[1].trim();
+      }
+      if (phrase) {
+        const parts = phrase.split(/\s*(?:이나|거나|또는|및|그리고|,\s*)\s*|\s+나\s+/);
+        parts.forEach((p) => {
+          const cleanP = p.trim();
+          if (cleanP.length >= 3) {
+            const btn = formatOptionBtn(cleanP);
+            if (btn && !opts.includes(btn)) {
+              opts.push(btn);
+            }
+          }
+        });
+      }
+    }
+
+    return opts.slice(0, 2);
+  }, [followupText, followupOptsRaw]);
 
   const renderFollowupCard = () => {
-    if (!followupText) return null;
+    if (!followupText && followupOptions.length === 0) return null;
     return (
       <div className="ans-followup-card" onClick={(e) => e.stopPropagation()}>
         <div className="ans-followup-header">
           <Sparkles size={14} className="ans-followup-icon" />
           <span>연관 정보 및 후속 안내</span>
         </div>
-        <div className="ans-followup-body">{renderBlocks(followupText)}</div>
-        {onSend && (
+        {followupText && <div className="ans-followup-body">{renderBlocks(followupText)}</div>}
+        {onSend && followupOptions.length > 0 && (
           <div className="ans-followup-actions">
-            <button
-              type="button"
-              className="ans-followup-reply-btn"
-              onClick={(e) => {
-                e.stopPropagation();
-                onSend('네, 방금 제안해주신 관련 내용도 이어서 자세히 안내해 주세요.');
-              }}
-              title="클릭하면 제안된 연관 내용을 바로 이어서 질문합니다"
-            >
-              <MessageSquare size={13} />
-              <span>네, 관련 내용도 이어서 안내해 주세요</span>
-            </button>
+            {followupOptions.map((optText, idx) => {
+              const isClicked = Boolean(clickedOptions[optText]);
+              return (
+                <button
+                  key={idx}
+                  type="button"
+                  className={`ans-followup-reply-btn ${isClicked ? 'clicked' : ''}`}
+                  disabled={isClicked}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setClickedOptions((prev) => ({ ...prev, [optText]: true }));
+                    onSend(optText);
+                  }}
+                  title={isClicked ? '이미 질문한 항목입니다' : `클릭하면 '${optText}' 질문을 바로 전송합니다`}
+                >
+                  <MessageSquare size={13} />
+                  <span>{optText}</span>
+                </button>
+              );
+            })}
           </div>
         )}
       </div>
@@ -207,10 +276,11 @@ export function AnswerRenderer({ text, evidence = [], faqEvidence = [], onOpenEv
     );
   }
 
-  // Strip <followup> tag if present in non-XML or partial-XML output
+  // Strip <followup> and <followup_options> tags if present in non-XML or partial-XML output
   const cleanBodyText = rawText
     .replace(/<followup>[\s\S]*?<\/followup>/gi, '')
-    .replace(/<\/?(summary|details|followup)>/gi, '')
+    .replace(/<followup_options>[\s\S]*?<\/followup_options>/gi, '')
+    .replace(/<\/?(summary|details|followup|followup_options)>/gi, '')
     .trim();
 
   // If text is somewhat long, we provide a collapsible view as well
