@@ -7,10 +7,25 @@ function confLabel(c) {
   return map[c] || c;
 }
 
-export function BotMessage({ resp, isActive, onSelect, onOpenEvidence, onFeedback, onSend, isClient = false }) {
+export function BotMessage({
+  resp,
+  isActive,
+  onSelect,
+  onOpenEvidence,
+  onFeedback,
+  onSend,
+  onSelectOption,
+  inFlight = false,
+  isClient = false,
+}) {
   const safeResp = resp || {};
   const [feedbackState, setFeedbackState] = useState(null); // 'pos' | 'neg' | null
   const [feedbackSent, setFeedbackSent] = useState(false);
+
+  // 시나리오 하위 선택지 (초기 화면에서 시나리오를 선택해 다음 단계 질문이 이어질 때만 말풍선 내부에 표시)
+  const scenarioStepOptions = (safeResp.options || []).filter(
+    (opt) => opt && opt.node_id !== 'root'
+  );
 
   // 비슷한 질문(후순위 추천) 목록 추출
   const similarCandidates = safeResp.clarify?.candidates || [];
@@ -55,6 +70,28 @@ export function BotMessage({ resp, isActive, onSelect, onOpenEvidence, onFeedbac
         onOpenEvidence={onOpenEvidence}
         onSend={onSend}
       />
+
+      {/* 시나리오 진행 중일 때 하위 단계 선택 버튼 (말풍선 내부 인라인 표시) */}
+      {scenarioStepOptions.length > 0 && onSelectOption && (
+        <div className="inline-scenario-options" onClick={(e) => e.stopPropagation()}>
+          <div className="scenario-chips-wrapper">
+            {scenarioStepOptions.map((opt, idx) => {
+              const isRestart = opt.option_id === '__restart__' || opt.label?.trim() === '처음으로';
+              return (
+                <button
+                  key={`step_${opt.option_id || idx}`}
+                  type="button"
+                  className={`scenario-chip ${isRestart ? 'restart' : ''}`}
+                  disabled={inFlight}
+                  onClick={() => onSelectOption(opt)}
+                >
+                  {opt.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {/* 근거 문서 및 형광펜 바로가기 액션 바 */}
       {validEvidence.length > 0 && (

@@ -140,27 +140,12 @@ export class LocalScenarioNavigator {
     const botText = extractNodeText(targetNode);
     const isTerminal = targetNode.type === 'terminal';
 
-    const botMsg = {
-      id: 'msg_bot_' + Date.now(),
-      type: 'bot',
-      text: botText,
-      resp: {
-        answer: botText,
-        run_id: null,
-        evidence: [],
-        faq_evidence: [],
-        isOffline: true,
-      },
-      isOffline: true,
-      nodeId: nextNodeId,
-      scenarioId: targetNode.scenario_id,
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-    };
-
     // 다음 선택지 구성
     let nextOptions = [];
     if (Array.isArray(targetNode.options) && targetNode.options.length > 0) {
       nextOptions = targetNode.options.map((opt) => ({
+        scenario_id: targetNode.scenario_id || 'root',
+        node_id: nextNodeId,
         option_id: opt.option_id,
         label: opt.label,
         next_node_id: opt.next_node_id,
@@ -173,6 +158,8 @@ export class LocalScenarioNavigator {
       );
       if (!hasRestart) {
         nextOptions.push({
+          scenario_id: targetNode.scenario_id || 'root',
+          node_id: nextNodeId,
           option_id: '__restart__',
           label: '처음으로',
         });
@@ -181,11 +168,31 @@ export class LocalScenarioNavigator {
       // 리프 노드(최종 해결책 안내 노드)인 경우
       nextOptions = [
         {
+          scenario_id: targetNode.scenario_id || 'root',
+          node_id: nextNodeId,
           option_id: '__restart__',
           label: '처음으로',
         },
       ];
     }
+
+    const botMsg = {
+      id: 'msg_bot_' + Date.now(),
+      type: 'bot',
+      text: botText,
+      resp: {
+        answer: botText,
+        run_id: null,
+        evidence: [],
+        faq_evidence: [],
+        options: nextOptions,
+        isOffline: true,
+      },
+      isOffline: true,
+      nodeId: nextNodeId,
+      scenarioId: targetNode.scenario_id,
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+    };
 
     return {
       userMsg,

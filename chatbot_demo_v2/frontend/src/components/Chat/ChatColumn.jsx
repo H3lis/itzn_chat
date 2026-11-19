@@ -105,6 +105,8 @@ export function ChatColumn({
                   onOpenEvidence={onOpenEvidence}
                   onFeedback={onFeedback}
                   onSend={onSend}
+                  onSelectOption={handleOptionClick}
+                  inFlight={inFlight}
                   isClient={isClient}
                 />
               </div>
@@ -148,15 +150,6 @@ export function ChatColumn({
         busySteps={busySteps}
         elapsedSeconds={elapsedSeconds}
       />
-
-      {/* Scenario Action Strip (대화 진행 중일 때 하단 시나리오 칩 노출) */}
-      {messages.length > 0 && (
-        <ScenarioStrip
-          options={scenarioOptions}
-          inFlight={inFlight}
-          onSelectOption={handleOptionClick}
-        />
-      )}
 
       {/* Chat Composer */}
       <ChatComposer inFlight={inFlight} onSend={onSend} isOffline={isOffline} />

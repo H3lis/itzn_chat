@@ -857,6 +857,12 @@ body {
   box-shadow: 0 2px 6px rgba(2, 132, 199, 0.22);
 }
 
+.inline-scenario-options {
+  margin-top: 0.85rem;
+  padding-top: 0.7rem;
+  border-top: 1px dashed var(--border);
+}
+
 /* In-text Citation Chip [pXX] */
 .cite-chip {
   display: inline-flex;
