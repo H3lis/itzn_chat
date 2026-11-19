@@ -220,3 +220,65 @@ def test_contextualize_bypasses_when_faq_matched(tmp_path):
     assert len(contextualize_calls) == 0
     assert r2["route"] == "faq"
 
+
+def test_faq_composer_preserves_followup_tag_and_official_details(tmp_path):
+    """FAQ 합성 시 LLM이 <summary>와 <followup>을 출력하면 <details>에는 공식 모범답변 원문을 보존하고 3단 태그로 결합한다."""
+    llm = ScriptedLlm(
+        compose=(
+            "<summary>스쿨넷은 3개 통신사가 지역별로 제공합니다.</summary>\n"
+            "<followup>관련된 내용으로는 통신사별 담당자 연락처 확인 방법과 같은 내용이 있습니다. "
+            "혹시 이 부분에 대해서도 함께 안내해 드릴까요?</followup>"
+        )
+    )
+    s = _settings(tmp_path, GRADER_ENABLED="false")
+    ctx = build_context(s, rag_adapter=FakeRagAdapter(), llm=llm)
+    e0 = ctx.faq.entries[0]
+    r = ctx.graph.invoke(_text(e0.question), _cfg())
+    assert r["composed"] is True
+    assert "<summary>스쿨넷은 3개 통신사가 지역별로 제공합니다.</summary>" in r["final_answer"]
+    assert f"<details>{e0.answer}</details>" in r["final_answer"]
+    assert "<followup>관련된 내용으로는 통신사별 담당자 연락처 확인 방법과 같은 내용이 있습니다." in r["final_answer"]
+
+
+def test_rag_composer_followup_multi_turn_contextualize(tmp_path):
+    """1턴 답변의 <followup> 제안 직후 2턴에서 사용자가 '네 그것도 알려주세요'라고 답하면 대화 맥락 재작성이 정상 수행된다."""
+    prompts_seen = []
+
+    class FollowupMockLlm:
+        def chat(self, prompt: str, *args, **kwargs):
+            prompts_seen.append(prompt)
+            if "[독립 질문]" in prompt:
+                return "AP 엑셀 일괄 업로드 등록 방법은 어떻게 되나요?"
+            return (
+                "<summary>AP 개별 등록 방법 안내입니다.</summary>\n"
+                "<details>통합관제 시스템에서 추가 버튼을 눌러 등록합니다.</details>\n"
+                "<followup>관련된 내용으로는 엑셀 업로드를 통한 다중 추가 방법과 같은 내용이 있습니다. "
+                "혹시 엑셀 업로드 등록 방법에 대해서도 함께 안내해 드릴까요?</followup>"
+            )
+
+    s = _settings(tmp_path, CONTEXTUALIZE_ENABLED="true", GRADER_ENABLED="false")
+    rag = FakeRagAdapter(result={
+        "run_id": "r1",
+        "final_answer": "통합관제에서 추가 기능을 통해 개별 등록하거나 엑셀 업로드로 다중 추가할 수 있습니다.",
+        "answer_context": "통합관제 AP 개별 추가 및 엑셀 업로드 다중 추가 안내",
+        "answer_path": "text",
+        "confidence": "high",
+        "verification": {"abstain": False},
+        "evidence": [],
+        "metrics": {},
+        "selected_pages": [{"document_name": "통합관제.pdf", "page_number": 53}],
+    })
+    ctx = build_context(s, rag_adapter=rag, llm=FollowupMockLlm())
+    tid = "followup_thread"
+
+    # 1턴: RAG 답변 + <followup> 생성
+    r1 = ctx.graph.invoke(_text("생소한 AP 신규 등록 질문 zzz", tid=tid), _cfg(tid))
+    assert "<followup>" in r1["final_answer"]
+    assert any("[연관 참고 항목]" in p for p in prompts_seen)
+
+    # 2턴: 사용자가 후속 제안에 긍정 응답 -> contextualize_query가 <followup> 맥락을 받아 독립 질문으로 재작성
+    r2 = ctx.graph.invoke(_text("네, 방금 제안해주신 관련 내용도 이어서 자세히 안내해 주세요.", tid=tid), _cfg(tid))
+    assert r2["contextualized"] is True
+    assert r2["standalone_question"] == "AP 엑셀 일괄 업로드 등록 방법은 어떻게 되나요?"
+
+

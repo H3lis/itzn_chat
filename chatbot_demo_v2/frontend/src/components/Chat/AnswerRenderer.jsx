@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { ChevronDown, ChevronUp, FileText } from 'lucide-react';
+import { ChevronDown, ChevronUp, FileText, Sparkles, MessageSquare } from 'lucide-react';
 
 function escapeHtml(s) {
   return String(s || '')
@@ -8,7 +8,7 @@ function escapeHtml(s) {
     .replaceAll('>', '&gt;');
 }
 
-export function AnswerRenderer({ text, evidence = [], faqEvidence = [], onOpenEvidence }) {
+export function AnswerRenderer({ text, evidence = [], faqEvidence = [], onOpenEvidence, onSend }) {
   const [expanded, setExpanded] = useState(false);
 
   // Index evidence by page number
@@ -138,10 +138,41 @@ export function AnswerRenderer({ text, evidence = [], faqEvidence = [], onOpenEv
     return elements;
   };
 
-  // Check for <summary> and <details> XML tags
+  // Check for <summary>, <details>, and <followup> XML tags
   const rawText = String(text || '');
   const summaryMatch = rawText.match(/<summary>([\s\S]*?)<\/summary>/i);
   const detailsMatch = rawText.match(/<details>([\s\S]*?)<\/details>/i);
+  const followupMatch = rawText.match(/<followup>([\s\S]*?)<\/followup>/i);
+  const followupText = followupMatch ? followupMatch[1].trim() : '';
+
+  const renderFollowupCard = () => {
+    if (!followupText) return null;
+    return (
+      <div className="ans-followup-card" onClick={(e) => e.stopPropagation()}>
+        <div className="ans-followup-header">
+          <Sparkles size={14} className="ans-followup-icon" />
+          <span>연관 정보 및 후속 안내</span>
+        </div>
+        <div className="ans-followup-body">{renderBlocks(followupText)}</div>
+        {onSend && (
+          <div className="ans-followup-actions">
+            <button
+              type="button"
+              className="ans-followup-reply-btn"
+              onClick={(e) => {
+                e.stopPropagation();
+                onSend('네, 방금 제안해주신 관련 내용도 이어서 자세히 안내해 주세요.');
+              }}
+              title="클릭하면 제안된 연관 내용을 바로 이어서 질문합니다"
+            >
+              <MessageSquare size={13} />
+              <span>네, 관련 내용도 이어서 안내해 주세요</span>
+            </button>
+          </div>
+        )}
+      </div>
+    );
+  };
 
   if (summaryMatch && detailsMatch) {
     const summaryText = summaryMatch[1].trim();
@@ -171,15 +202,22 @@ export function AnswerRenderer({ text, evidence = [], faqEvidence = [], onOpenEv
             </>
           )}
         </button>
+        {renderFollowupCard()}
       </div>
     );
   }
 
+  // Strip <followup> tag if present in non-XML or partial-XML output
+  const cleanBodyText = rawText
+    .replace(/<followup>[\s\S]*?<\/followup>/gi, '')
+    .replace(/<\/?(summary|details|followup)>/gi, '')
+    .trim();
+
   // If text is somewhat long, we provide a collapsible view as well
-  const isLong = rawText.length > 350;
+  const isLong = cleanBodyText.length > 350;
   if (isLong) {
     // Split into first two paragraphs vs remainder
-    const paragraphs = rawText.split('\n\n');
+    const paragraphs = cleanBodyText.split('\n\n');
     if (paragraphs.length > 2) {
       const intro = paragraphs.slice(0, 2).join('\n\n');
       const rest = paragraphs.slice(2).join('\n\n');
@@ -207,11 +245,17 @@ export function AnswerRenderer({ text, evidence = [], faqEvidence = [], onOpenEv
               </>
             )}
           </button>
+          {renderFollowupCard()}
         </div>
       );
     }
   }
 
   // Standard render
-  return <div className="bot-answer">{renderBlocks(rawText)}</div>;
+  return (
+    <div className="bot-answer">
+      {renderBlocks(cleanBodyText)}
+      {renderFollowupCard()}
+    </div>
+  );
 }

@@ -53,6 +53,7 @@ export function BotMessage({ resp, isActive, onSelect, onOpenEvidence, onFeedbac
         evidence={safeResp.evidence}
         faqEvidence={safeResp.faq_evidence}
         onOpenEvidence={onOpenEvidence}
+        onSend={onSend}
       />
 
       {/* 근거 문서 및 형광펜 바로가기 액션 바 */}

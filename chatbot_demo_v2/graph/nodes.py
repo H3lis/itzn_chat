@@ -939,6 +939,60 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
         }
 
     # ---------- 9.5 compose_answer (Phase 4, 근거 종합 답변 작성) ----------
+    def _build_related_context(state: ChatState, route: str) -> str:
+        """현재 질문과 연관된 인접 FAQ 후보 및 RAG 보조 근거 요약을 조립한다 (LLM 0회, 캐시 재사용)."""
+        items: list[str] = []
+        norm_q = state.get("normalized_question") or state.get("raw_question") or ""
+        matched_id = (state.get("scenario_match") or {}).get("matched_id")
+        curr_matcher = _get_matcher()
+        curr_faq = _get_faq()
+        if norm_q and curr_matcher:
+            try:
+                is_semantic = bool(
+                    getattr(curr_matcher, "_ready", False)
+                    or (state.get("scenario_match") or {}).get("scale") == "semantic"
+                )
+                min_rel_score = 0.08 if is_semantic else 0.65
+                cands = curr_matcher.top_candidates(norm_q, k=4)
+                for c in cands:
+                    fid = c.get("faq_id")
+                    if not fid or fid == matched_id:
+                        continue
+                    score = float(c.get("score") or 0.0)
+                    if score < min_rel_score:
+                        continue
+                    q_text = (c.get("question") or "").strip()
+                    entry = curr_faq.get(fid) if curr_faq else None
+                    ans_preview = ""
+                    if entry and getattr(entry, "answer", ""):
+                        raw_a = " ".join(entry.answer.split())
+                        ans_preview = (
+                            f" (핵심내용: {raw_a[:120]}...)"
+                            if len(raw_a) > 120
+                            else f" (핵심내용: {raw_a})"
+                        )
+                    if q_text:
+                        items.append(f"- 연관 FAQ: {q_text}{ans_preview}")
+                    if len(items) >= 2:
+                        break
+            except Exception:
+                pass
+
+        if route == "rag3x":
+            rag = state.get("rag_result") or {}
+            sel_pages = rag.get("selected_pages") or []
+            seen_docs: set[str] = set()
+            for p in sel_pages[1:4]:
+                dname = (p.get("document_name") or "").strip()
+                pnum = p.get("page_number")
+                if dname and f"{dname}:{pnum}" not in seen_docs:
+                    seen_docs.add(f"{dname}:{pnum}")
+                    items.append(f"- 함께 검색된 보조 근거 문서: {dname} (p.{pnum})")
+
+        if not items:
+            return "(별도 연관 후보 없음 — 위 [근거] 또는 [공식 모범답변] 내에 부가 절차·주의사항이 있을 때만 연관 안내를 작성하세요)"
+        return "\n".join(items)
+
     def compose_answer(state: ChatState) -> dict:
         """FAQ 원문 / RAG 초안을 근거 기반으로 재구성해 composed_answer 에 담는다.
 
@@ -956,6 +1010,7 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
 
         question = (state.get("standalone_question") or state.get("user_input") or "").strip()
         history_summary = _format_history((state.get("messages") or [])[:-1], limit_chars=800)
+        related_context = _build_related_context(state, route)
 
         if route == "faq":
             base = (state.get("original_answer") or state.get("final_answer") or "").strip()
@@ -964,7 +1019,8 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
             evidence_text = base
             name = "composer_faq"
             prompt = ctx.prompts.render(
-                name, question=question, original_answer=base, history_summary=history_summary
+                name, question=question, original_answer=base,
+                history_summary=history_summary, related_context=related_context,
             )
         else:
             rag = state.get("rag_result") or {}
@@ -976,6 +1032,7 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
             prompt = ctx.prompts.render(
                 name, question=question, answer=base,
                 evidence_text=evidence_text, history_summary=history_summary,
+                related_context=related_context,
             )
 
         # 추가 페르소나/응답정책은 기존 composer 파일과 분리된 선택적 확장이다.
@@ -1014,7 +1071,7 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
             template_text = ctx.prompts.load(name).template
         except Exception:  # noqa: BLE001
             template_text = ""
-        unsupported = _unsupported_claims(out, f"{evidence_text}\n{base}\n{template_text}")
+        unsupported = _unsupported_claims(out, f"{evidence_text}\n{base}\n{related_context}\n{template_text}")
         meta = {"composer": name, "route": route, "unsupported": unsupported[:5]}
         meta["persona_prompts_enabled"] = bool(persona_files)
         meta["persona_prompt_files"] = persona_files
@@ -1056,17 +1113,30 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
             out = re.sub(r"^(네,?\s*안녕하세요[\.!\s]*|안녕하세요[\.!\s]*|네,?\s*)", "", out).strip()
             out = re.sub(r"(감사합니다[\.!\s]*|좋은\s*하루\s*되세요[\.!\s]*)$", "", out).strip()
 
-            # 4. <summary>와 <details> 태그 분리 및 결합
+            # 4. <summary>, <details>, <followup> 태그 분리 및 결합
             summary_match = re.search(r"<summary>(.*?)</summary>", out, re.DOTALL | re.IGNORECASE)
             details_match = re.search(r"<details>(.*?)</details>", out, re.DOTALL | re.IGNORECASE)
-            if summary_match and details_match:
+            followup_match = re.search(r"<followup>(.*?)</followup>", out, re.DOTALL | re.IGNORECASE)
+            followup_text = followup_match.group(1).strip() if followup_match else ""
+
+            if summary_match:
                 summary_text = summary_match.group(1).strip()
-                details_text = details_match.group(1).strip()
+                details_text = details_match.group(1).strip() if details_match else base
             else:
-                lines = [l.strip() for l in out.splitlines() if l.strip() and not l.strip().startswith("<")]
-                summary_text = lines[0] if lines else out.strip()
+                out_without_followup = re.sub(
+                    r"<followup>.*?</followup>", "", out, flags=re.DOTALL | re.IGNORECASE
+                ).strip()
+                lines = [
+                    l.strip()
+                    for l in out_without_followup.splitlines()
+                    if l.strip() and not l.strip().startswith("<")
+                ]
+                summary_text = lines[0] if lines else out_without_followup.strip()
                 details_text = base  # 관리자 검증 공식 모범답변 원문을 <details>에 무손실 보존
+
             out = f"<summary>{summary_text}</summary>\n<details>{details_text}</details>"
+            if followup_text:
+                out += f"\n<followup>{followup_text}</followup>"
 
         _node_meta(meta, tags=["composed:ok"])
         return {
@@ -1259,11 +1329,16 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
             try:
                 curr_matcher = _get_matcher()
                 if curr_matcher:
+                    is_semantic = bool(
+                        getattr(curr_matcher, "_ready", False)
+                        or (state.get("scenario_match") or {}).get("scale") == "semantic"
+                    )
+                    min_cand_score = 0.10 if is_semantic else 0.65
                     raw_cands = curr_matcher.top_candidates(norm_q, k=3)
                     matched_id = (state.get("scenario_match") or {}).get("matched_id")
                     valid_cands = [
                         c for c in raw_cands
-                        if float(c.get("score") or 0.0) >= 0.25 and c.get("faq_id") != matched_id
+                        if float(c.get("score") or 0.0) >= min_cand_score and c.get("faq_id") != matched_id
                     ]
                     if valid_cands:
                         out["clarify"] = {"candidates": valid_cands}
