@@ -657,6 +657,7 @@ body {
 
 .msg-row.bot {
   align-self: flex-start;
+  gap: 0.65rem;
 }
 
 .bubble-user {
@@ -789,6 +790,40 @@ body {
   background: var(--primary-light);
   color: var(--primary);
   border-color: var(--primary-border);
+}
+
+/* Separate Follow-up Speech Bubble (<followup> & similar questions) */
+.bubble-bot.followup-bubble {
+  cursor: default;
+  background: linear-gradient(135deg, #f8fbff, #f0f7ff);
+  border: 1px solid rgba(14, 165, 233, 0.28);
+  border-left: 3.5px solid #0284c7;
+  padding: 0.9rem 1.15rem;
+  box-shadow: 0 2px 8px rgba(2, 132, 199, 0.07);
+  animation: fadeIn 0.32s ease-out;
+}
+
+.bubble-bot.followup-bubble:hover {
+  border-color: rgba(14, 165, 233, 0.42);
+  border-left-color: #0284c7;
+  box-shadow: 0 3px 10px rgba(2, 132, 199, 0.11);
+}
+
+.followup-bubble-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.similar-questions-box.with-top-divider {
+  margin-top: 0.85rem;
+  padding-top: 0.75rem;
+  border-top: 1px dashed rgba(14, 165, 233, 0.25);
+}
+
+.similar-questions-box.no-top-margin {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
 }
 
 /* Conversational Follow-up Card (<followup>) */
