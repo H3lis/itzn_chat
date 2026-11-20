@@ -79,6 +79,23 @@ _EXPLICIT_FOLLOWUP_BTN_RE = re.compile(
 )
 _VAGUE_FOLLOWUP_WORDS = ("방금", "관련 내용", "그것", "그거", "이 부분", "이어서 자세히", "해당 내용")
 
+_SIMPLE_FACT_Q_RE = re.compile(
+    r"(전화번호|연락처|콜센터|고객센터|헬프데스크|몇\s*번으로|어디로\s*전화|"
+    r"무슨\s*약자|약자가\s*뭐|무슨\s*뜻|뜻이\s*뭐|내구연한이?\s*몇\s*년|보존\s*기간)"
+)
+_MULTI_STEP_ANS_RE = re.compile(r"(?:^|\n)\s*(?:1\.|①|첫째|1단계|-\s+.*?\n\s*-\s+)", re.DOTALL)
+
+
+def _is_simple_factual_turn(question: str, base_answer: str) -> bool:
+    """[기준 B] 단순 연락처·약자·단답형 사실 확인 질문이면서 단문 완결형 답변인 경우 후속 질문 말풍선 생략 판별."""
+    q = (question or "").strip()
+    a = (base_answer or "").strip()
+    if not q or not a:
+        return False
+    if _SIMPLE_FACT_Q_RE.search(q) and len(a) < 220 and not _MULTI_STEP_ANS_RE.search(a):
+        return True
+    return False
+
 
 def _extract_explicit_followup_query(raw: str) -> str | None:
     """'네, 무선 AP의 상태 확인 방법에 대해 알려주세요' 형태의 명시적 후속 질문 버튼 클릭인지 판별하고 핵심 질문을 추출한다."""
@@ -1139,8 +1156,8 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
         route: str,
         seen_fids: list[str],
         seen_qs: list[str],
-    ) -> str:
-        """현재 질문과 연관된 인접 FAQ 후보 및 RAG 보조 근거 요약을 조립한다 (세션 내 이미 다룬 질문 제외)."""
+    ) -> tuple[str, bool]:
+        """[기준 A] 고신뢰 연관 FAQ 후보(semantic >= 0.22) 및 유효 RAG 보조 근거만 엄선해 조립한다."""
         items: list[str] = []
         norm_q = state.get("normalized_question") or state.get("raw_question") or ""
         matched_id = (state.get("scenario_match") or {}).get("matched_id")
@@ -1152,7 +1169,8 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
                     getattr(curr_matcher, "_ready", False)
                     or (state.get("scenario_match") or {}).get("scale") == "semantic"
                 )
-                min_rel_score = 0.08 if is_semantic else 0.65
+                # [기준 A] 단순 단어 1개 겹침(0.08~0.18)으로 인한 무관 추천을 막기 위해 임계값을 0.22(fuzz 0.72)로 상향
+                min_rel_score = 0.22 if is_semantic else 0.72
                 cands = curr_matcher.top_candidates(norm_q, k=8)
                 for c in cands:
                     fid = c.get("faq_id")
@@ -1183,16 +1201,27 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
             rag = state.get("rag_result") or {}
             sel_pages = rag.get("selected_pages") or []
             seen_docs: set[str] = set()
+            if sel_pages:
+                first_p = sel_pages[0]
+                first_key = f"{(first_p.get('document_name') or '').strip()}:{first_p.get('page_number')}"
+                seen_docs.add(first_key)
             for p in sel_pages[1:4]:
                 dname = (p.get("document_name") or "").strip()
                 pnum = p.get("page_number")
+                p_score = p.get("score")
+                if p_score is not None and float(p_score) < 0.15:
+                    continue
                 if dname and f"{dname}:{pnum}" not in seen_docs:
                     seen_docs.add(f"{dname}:{pnum}")
                     items.append(f"- 함께 검색된 보조 근거 문서: {dname} (p.{pnum})")
 
         if not items:
-            return "(새로운 연관 FAQ 후보 없음 — 이미 다룬 주제는 절대 다시 추천하지 말고, 위 [근거] 내에 아직 다루지 않은 새로운 세부 주제가 있을 때만 추천하세요)"
-        return "\n".join(items)
+            return (
+                "(유의미한 별도 연관 후보 없음 — 본문(<details>)에서 이미 설명한 내용을 억지로 쪼개어 중복 질문하지 말고, "
+                "본문에 다루지 않은 확실한 추가 주제가 없다면 <followup> 및 <followup_options> 태그를 생략하세요)",
+                False,
+            )
+        return "\n".join(items), True
 
     def compose_answer(state: ChatState) -> dict:
         """FAQ 원문 / RAG 초안을 근거 기반으로 재구성해 composed_answer 에 담는다.
@@ -1212,7 +1241,7 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
         question = (state.get("standalone_question") or state.get("user_input") or "").strip()
         history_summary = _format_history((state.get("messages") or [])[:-1], limit_chars=800)
         seen_fids, seen_qs = _collect_session_seen(state)
-        related_context = _build_related_context(state, route, seen_fids, seen_qs)
+        related_context, has_valid_related = _build_related_context(state, route, seen_fids, seen_qs)
         already_discussed = (
             "\n".join(f"- {q}" for q in seen_qs[-15:])
             if seen_qs
@@ -1225,11 +1254,6 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
                 return {"composed": False}
             evidence_text = base
             name = "composer_faq"
-            prompt = ctx.prompts.render(
-                name, question=question, original_answer=base,
-                history_summary=history_summary, related_context=related_context,
-                already_discussed=already_discussed,
-            )
         else:
             rag = state.get("rag_result") or {}
             base = (rag.get("final_answer") or "").strip()
@@ -1237,6 +1261,19 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
             if not base:
                 return {"composed": False}
             name = "composer_rag"
+
+        # [기준 B] 단답형·단순 사실 확인 질문인 경우 후속 질문 생성을 원천 생략
+        skip_followup = _is_simple_factual_turn(question, base)
+        if skip_followup:
+            related_context = "(단답형·단순 사실 확인 질문이므로 <followup> 및 <followup_options> 태그를 절대 출력하지 마세요)"
+
+        if route == "faq":
+            prompt = ctx.prompts.render(
+                name, question=question, original_answer=base,
+                history_summary=history_summary, related_context=related_context,
+                already_discussed=already_discussed,
+            )
+        else:
             prompt = ctx.prompts.render(
                 name, question=question, answer=base,
                 evidence_text=evidence_text, history_summary=history_summary,
@@ -1359,16 +1396,6 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
         fu_m = re.search(r"<followup>(.*?)</followup>", out, re.DOTALL | re.IGNORECASE)
         fu_opt_m = re.search(r"<followup_options>(.*?)</followup_options>", out, re.DOTALL | re.IGNORECASE)
         if fu_m or fu_opt_m:
-            fu_txt = fu_m.group(1).strip() if fu_m else ""
-            fu_opt_txt = fu_opt_m.group(1).strip() if fu_opt_m else ""
-            raw_opts = _extract_followup_options(fu_txt, fu_opt_txt)
-
-            valid_opts: list[str] = []
-            for opt in raw_opts:
-                if not _is_duplicate_topic(opt, seen_qs + valid_opts):
-                    valid_opts.append(opt)
-
-            # 기존 <followup>, <followup_options> 블록 일단 제거 후 유효한 새 주제가 있을 때만 재부착
             base_out = re.sub(
                 r"\s*<followup>.*?</followup>|\s*<followup_options>.*?</followup_options>",
                 "",
@@ -1376,34 +1403,47 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
                 flags=re.DOTALL | re.IGNORECASE,
             ).strip()
 
-            if valid_opts:
-                if len(valid_opts) == 1 and len(raw_opts) > 1:
-                    # 2개 중 1개가 이미 다룬 질문이라 제외된 경우, 남은 1개 주제에 맞게 안내 문구도 정돈
-                    t_clean = re.sub(
-                        r"^네,\s*|\s*에\s*대해(?:서)?\s*알려주세요[.!?]?$", "", valid_opts[0]
-                    ).strip()
-                    fu_txt = (
-                        f"관련된 내용으로는 {t_clean}과 같은 내용이 있습니다. "
-                        f"혹시 해당 내용에 대해서도 함께 안내해 드릴까요?"
-                    )
-                elif not fu_txt:
-                    t_list = [
-                        re.sub(r"^네,\s*|\s*에\s*대해(?:서)?\s*알려주세요[.!?]?$", "", o).strip()
-                        for o in valid_opts
-                    ]
-                    joined_t = "이나 ".join(t_list)
-                    fu_txt = (
-                        f"관련된 내용으로는 {joined_t}과 같은 내용이 있습니다. "
-                        f"혹시 해당 내용에 대해서도 함께 안내해 드릴까요?"
-                    )
-                opts_block = "\n".join(valid_opts)
-                out = f"{base_out}\n<followup>{fu_txt}</followup>\n<followup_options>\n{opts_block}\n</followup_options>"
-                for vo in valid_opts:
-                    if vo not in seen_qs:
-                        seen_qs.append(vo)
-            else:
-                # 새로 추천할 주제가 모두 이전 턴과 중복이면 <followup> 자체를 제거하여 무한 순환 차단
+            if skip_followup:
+                # [기준 B] 단답형·단순 사실 확인 질문이면 후속 말풍선 무조건 제거
                 out = base_out
+            else:
+                fu_txt = fu_m.group(1).strip() if fu_m else ""
+                fu_opt_txt = fu_opt_m.group(1).strip() if fu_opt_m else ""
+                raw_opts = _extract_followup_options(fu_txt, fu_opt_txt)
+
+                valid_opts: list[str] = []
+                for opt in raw_opts:
+                    if not _is_duplicate_topic(opt, seen_qs + valid_opts):
+                        valid_opts.append(opt)
+
+                if valid_opts:
+                    if len(valid_opts) == 1 and len(raw_opts) > 1:
+                        # 2개 중 1개가 이미 다룬 질문이라 제외된 경우, 남은 1개 주제에 맞게 안내 문구도 정돈
+                        t_clean = re.sub(
+                            r"^네,\s*|\s*에\s*대해(?:서)?\s*알려주세요[.!?]?$", "", valid_opts[0]
+                        ).strip()
+                        fu_txt = (
+                            f"관련된 내용으로는 {t_clean}과 같은 내용이 있습니다. "
+                            f"혹시 해당 내용에 대해서도 함께 안내해 드릴까요?"
+                        )
+                    elif not fu_txt:
+                        t_list = [
+                            re.sub(r"^네,\s*|\s*에\s*대해(?:서)?\s*알려주세요[.!?]?$", "", o).strip()
+                            for o in valid_opts
+                        ]
+                        joined_t = "이나 ".join(t_list)
+                        fu_txt = (
+                            f"관련된 내용으로는 {joined_t}과 같은 내용이 있습니다. "
+                            f"혹시 해당 내용에 대해서도 함께 안내해 드릴까요?"
+                        )
+                    opts_block = "\n".join(valid_opts)
+                    out = f"{base_out}\n<followup>{fu_txt}</followup>\n<followup_options>\n{opts_block}\n</followup_options>"
+                    for vo in valid_opts:
+                        if vo not in seen_qs:
+                            seen_qs.append(vo)
+                else:
+                    # 새로 추천할 주제가 모두 이전 턴과 중복이면 <followup> 자체를 제거하여 무한 순환 차단
+                    out = base_out
 
         _node_meta(meta, tags=["composed:ok"])
         return {
@@ -1592,9 +1632,14 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
         timings["total_s"] = total
         out["timings"] = timings
 
-        # 후순위 연관 질문(비슷한 질문) 추출: 답변 완료 후 유사한 상위 FAQ 질문 추천 (세션 내 중복 추천 완전 제외)
+        # [기준 C] 두 번째 말풍선 내 중복 추천 일원화:
+        # 이미 compose_answer 에서 <followup> / <followup_options> 가 생성되었거나 단답형 질문(skip_followup)인 경우,
+        # 하단 clarify.candidates(비슷한 질문)를 중복 생성하지 않고 단일 포맷으로 통합한다.
         seen_fids, seen_qs = _collect_session_seen(state)
         ans_for_dedup = str(out.get("final_answer") or state.get("final_answer") or "")
+        has_composed_followup = bool(
+            re.search(r"<followup>|<followup_options>", ans_for_dedup, flags=re.IGNORECASE)
+        )
         for opt_m in re.finditer(
             r"<followup_options>(.*?)</followup_options>", ans_for_dedup, flags=re.DOTALL | re.IGNORECASE
         ):
@@ -1603,8 +1648,16 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
                 if fmt_l and fmt_l not in seen_qs:
                     seen_qs.append(fmt_l)
 
+        q_for_fact = str(state.get("standalone_question") or state.get("user_input") or "")
+        base_for_fact = str(
+            state.get("original_answer")
+            or (state.get("rag_result") or {}).get("final_answer")
+            or ans_for_dedup
+        )
+        is_simple_fact = _is_simple_factual_turn(q_for_fact, base_for_fact)
+
         norm_q = state.get("normalized_question") or state.get("raw_question") or ""
-        if norm_q and route in ("rag3x", "web_search", "faq"):
+        if norm_q and route in ("rag3x", "web_search", "faq") and not has_composed_followup and not is_simple_fact:
             try:
                 curr_matcher = _get_matcher()
                 if curr_matcher:
@@ -1612,7 +1665,8 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
                         getattr(curr_matcher, "_ready", False)
                         or (state.get("scenario_match") or {}).get("scale") == "semantic"
                     )
-                    min_cand_score = 0.10 if is_semantic else 0.65
+                    # [기준 A] 고신뢰 연관 질문(semantic >= 0.22, fuzz >= 0.72)만 최대 2개까지 선별
+                    min_cand_score = 0.22 if is_semantic else 0.72
                     raw_cands = curr_matcher.top_candidates(norm_q, k=8)
                     matched_id = (state.get("scenario_match") or {}).get("matched_id")
                     valid_cands: list[dict] = []
@@ -1628,7 +1682,7 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
                         valid_cands.append(c)
                         seen_fids.append(fid)
                         seen_qs.append(q_txt)
-                        if len(valid_cands) >= 3:
+                        if len(valid_cands) >= 2:
                             break
                     if valid_cands:
                         out["clarify"] = {"candidates": valid_cands}

@@ -44,10 +44,25 @@ export function BotMessage({
     (opt) => opt && opt.node_id !== 'root'
   );
 
-  // 비슷한 질문(후순위 추천) 목록 추출
+  // [기준 C] 두 번째 말풍선 내 추천 영역 단일 포맷 통합:
+  // <followup> / <followup_options> 가 있으면 이를 최우선 사용하고, 없을 때만 고신뢰 similarCandidates(최대 2개)를 동일 포맷으로 폴백
   const similarCandidates = safeResp.clarify?.candidates || [];
+  const unifiedFollowupOptions = useMemo(() => {
+    if (followupOptions.length > 0) return followupOptions.slice(0, 2);
+    return similarCandidates
+      .slice(0, 2)
+      .map((cd) => String(cd?.question || cd?.label || cd || '').trim())
+      .filter(Boolean);
+  }, [followupOptions, similarCandidates]);
+
+  const unifiedFollowupText =
+    followupText ||
+    (unifiedFollowupOptions.length > 0
+      ? '관련된 내용으로 아래 항목들도 함께 확인하실 수 있습니다. 혹시 해당 내용에 대해서도 안내해 드릴까요?'
+      : '');
+
   const hasFollowupBubble = Boolean(
-    followupText || followupOptions.length > 0 || similarCandidates.length > 0
+    unifiedFollowupText || unifiedFollowupOptions.length > 0
   );
 
   // 유효한 근거 문서(이미지 URL 보유) 중복 제거 목록
@@ -212,83 +227,46 @@ export function BotMessage({
         </div>
       </div>
 
-      {/* 2. 별도 분리된 추가 질문 / 연관 안내 말풍선 */}
+      {/* 2. 별도 분리된 추가 질문 / 연관 안내 단일 통합 말풍선 ([기준 C] 중복 추천 영역 일원화) */}
       {hasFollowupBubble && (
         <div
           className={`bubble-bot followup-bubble ${isClient ? 'client-bubble' : ''}`}
           onClick={(e) => e.stopPropagation()}
         >
-          {(followupText || followupOptions.length > 0) && (
-            <div className="followup-bubble-section">
-              <div className="ans-followup-header">
-                <Sparkles size={14} className="ans-followup-icon" />
-                <span>연관 정보 및 추가 질문</span>
-              </div>
-              {followupText && (
-                <div className="ans-followup-body">
-                  <AnswerRenderer text={followupText} />
-                </div>
-              )}
-              {onSend && followupOptions.length > 0 && (
-                <div className="ans-followup-actions">
-                  {followupOptions.map((optText, idx) => {
-                    const isClicked = Boolean(clickedFollowup[optText]);
-                    return (
-                      <button
-                        key={idx}
-                        type="button"
-                        className={`ans-followup-reply-btn ${isClicked ? 'clicked' : ''}`}
-                        disabled={isClicked}
-                        onClick={() => {
-                          setClickedFollowup((prev) => ({ ...prev, [optText]: true }));
-                          onSend(optText);
-                        }}
-                        title={isClicked ? '이미 질문한 항목입니다' : `클릭하면 '${optText}' 질문을 바로 전송합니다`}
-                      >
-                        <MessageSquare size={13} />
-                        <span>{optText}</span>
-                      </button>
-                    );
-                  })}
-                </div>
-              )}
+          <div className="followup-bubble-section">
+            <div className="ans-followup-header">
+              <Sparkles size={14} className="ans-followup-icon" />
+              <span>연관 정보 및 추가 질문</span>
             </div>
-          )}
-
-          {similarCandidates.length > 0 && (
-            <div
-              className={`similar-questions-box ${
-                followupText || followupOptions.length > 0 ? 'with-top-divider' : 'no-top-margin'
-              }`}
-            >
-              <div className="similar-questions-header">
-                <HelpCircle size={14} color="#0284c7" />
-                <span>비슷한 질문으로 이런 항목들도 확인해 보세요:</span>
+            {unifiedFollowupText && (
+              <div className="ans-followup-body">
+                <AnswerRenderer text={unifiedFollowupText} />
               </div>
-              <div className="similar-questions-list">
-                {similarCandidates.map((cd, idx) => {
-                  const qText = cd.question || cd.label || cd;
-                  const isClicked = Boolean(clickedSimilar[qText]);
+            )}
+            {onSend && unifiedFollowupOptions.length > 0 && (
+              <div className="ans-followup-actions">
+                {unifiedFollowupOptions.map((optText, idx) => {
+                  const isClicked = Boolean(clickedFollowup[optText]);
                   return (
                     <button
                       key={idx}
                       type="button"
-                      className={`similar-q-btn ${isClicked ? 'clicked' : ''}`}
+                      className={`ans-followup-reply-btn ${isClicked ? 'clicked' : ''}`}
                       disabled={isClicked}
                       onClick={() => {
-                        setClickedSimilar((prev) => ({ ...prev, [qText]: true }));
-                        onSend?.(qText);
+                        setClickedFollowup((prev) => ({ ...prev, [optText]: true }));
+                        onSend(optText);
                       }}
-                      title={isClicked ? '이미 질문한 항목입니다' : '클릭하여 이 질문으로 바로 상담 진행'}
+                      title={isClicked ? '이미 질문한 항목입니다' : `클릭하면 '${optText}' 질문을 바로 전송합니다`}
                     >
-                      <span className="similar-q-text">{qText}</span>
-                      <ChevronRight size={13} className="similar-q-arrow" />
+                      <MessageSquare size={13} />
+                      <span>{optText}</span>
                     </button>
                   );
                 })}
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       )}
     </>

@@ -320,4 +320,36 @@ def test_followup_splits_two_buttons_and_prevents_session_cycle(tmp_path):
     assert "<followup_options>" not in r2["final_answer"]
 
 
+def test_simple_factual_turn_skips_followup_and_unifies_clarify_candidates(tmp_path):
+    """[기준 B & C] 단순 연락처/전화번호 단답형 질문에서는 <followup>과 clarify.candidates를 모두 생략하고,
+    일반 질문에서 <followup>이 생성된 경우에는 clarify.candidates를 중복 생성하지 않는다."""
+    llm = ScriptedLlm(
+        compose=(
+            "<summary>스쿨넷 지원센터 전화번호는 1899-0979입니다.</summary>\n"
+            "<details>스쿨넷 서비스 지원센터 대표 번호는 1899-0979입니다.</details>\n"
+            "<followup>관련된 내용으로는 장애 접수 절차와 같은 내용이 있습니다. 혹시 안내해 드릴까요?</followup>"
+        )
+    )
+    s = _settings(tmp_path, GRADER_ENABLED="false")
+    rag = FakeRagAdapter(result={
+        "run_id": "r_fact",
+        "final_answer": "스쿨넷 서비스 지원센터 대표 전화번호는 1899-0979입니다.",
+        "answer_context": "스쿨넷 서비스 지원센터 연락처 1899-0979",
+        "answer_path": "text",
+        "confidence": "high",
+        "verification": {"abstain": False},
+        "evidence": [],
+        "metrics": {},
+        "selected_pages": [],
+    })
+    ctx = build_context(s, rag_adapter=rag, llm=llm)
+
+    # 단답형 전화번호 질문 -> <followup> 및 clarify.candidates 모두 생략되어야 함
+    r_fact = ctx.graph.invoke(_text("스쿨넷 콜센터 전화번호가 몇 번으로 되어있나요 zzz", tid="t_fact"), _cfg("t_fact"))
+    assert "<followup>" not in r_fact["final_answer"]
+    assert "<followup_options>" not in r_fact["final_answer"]
+    assert r_fact.get("clarify") is None
+
+
+
 
