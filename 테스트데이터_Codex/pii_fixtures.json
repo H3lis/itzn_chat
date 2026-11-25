@@ -1,0 +1,48 @@
+{
+  "P_PII_001": {
+    "use_only": "isolated_synthetic_test",
+    "values": [
+      {
+        "slot": "synthetic_name",
+        "type": "name",
+        "value": "탁모래",
+        "location": "첫 줄 단독 이름"
+      },
+      {
+        "slot": "synthetic_phone",
+        "type": "phone",
+        "value": "01000000000",
+        "location": "연락처 표기 다음"
+      },
+      {
+        "slot": "synthetic_ip",
+        "type": "ip",
+        "value": "192.0.2.47",
+        "location": "IP 표기 다음"
+      },
+      {
+        "slot": "synthetic_mac",
+        "type": "mac",
+        "value": "02:00:00:00:00:47",
+        "location": "MAC 표기 다음"
+      },
+      {
+        "slot": "synthetic_serial",
+        "type": "serial",
+        "value": "CODEXTEST000047",
+        "location": "시리얼 번호 표기 다음"
+      }
+    ],
+    "service_exception_variants": [
+      {
+        "inject_at": "question_masker",
+        "expect_plaintext_values": 0
+      },
+      {
+        "inject_at": "answer_masker",
+        "answer_text_template": "테스트 응답 {synthetic_serial}",
+        "expect_plaintext_values": 0
+      }
+    ]
+  }
+}
