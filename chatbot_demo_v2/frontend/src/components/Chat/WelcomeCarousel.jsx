@@ -258,14 +258,7 @@ export function WelcomeCarousel({ options = [], onSelectOption, onSend, isOfflin
 
   return (
     <div className="welcome-container">
-      {/* 1. 이전 상담 구분선 */}
-      <div className="welcome-divider-row">
-        <div className="welcome-divider-line" />
-        <span className="welcome-divider-text">이전 상담</span>
-        <div className="welcome-divider-line" />
-      </div>
-
-      {/* 2. 오늘 날짜 구분선 */}
+      {/* 1. 오늘 날짜 구분선 */}
       <div className="welcome-date-row">
         <div className="welcome-date-line" />
         <span className="welcome-date-text">{todayStr || '2026년 11월 2일 월요일'}</span>
