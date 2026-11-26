@@ -1,0 +1,25 @@
+{
+  "CL_PII_001": {
+    "use_only": "isolated_synthetic_test",
+    "note": "모든 값은 합성값이다. IP는 RFC 5737 문서용 대역(203.0.113.0/24), MAC은 RFC 7042 문서용 범위(00-00-5E-00-53-xx)를 썼다.",
+    "values": [
+      {"slot": "synthetic_name", "type": "name", "value": "편해솔", "location": "문장 첫머리 단독 이름(호칭 없음)"},
+      {"slot": "synthetic_serial", "type": "serial", "value": "CLTEST2611260058", "location": "'단말 시리얼' 표기 다음"},
+      {"slot": "synthetic_mac", "type": "mac", "value": "00:00:5E:00:53:2A", "location": "'MAC' 표기 다음"},
+      {"slot": "synthetic_ip", "type": "ipv4", "value": "203.0.113.58", "location": "'IP' 표기 다음, 조사 '이고'와 붙음"},
+      {"slot": "synthetic_phone", "type": "phone", "value": "01000005824", "location": "'연락은' 다음, 대시 없음, 조사 '로'와 붙음"}
+    ],
+    "residue_rule": "각 value 전체 문자열이 저장 필드에 그대로 남으면 잔존 1건이다. 마스킹 정책이 남기는 일부 문자(성씨, 010·끝 4자리, IP 앞 두 옥텟)는 잔존으로 세지 않고 '부분 노출'로 따로 기록한다.",
+    "service_exception_variants": [
+      {"variant_id": "CL_PII_001_QEXC", "inject_at": "question_masker", "target": "HistoryService.prepare_turn_payload 1차 질문 마스킹 예외",
+       "expectation_policy": "기록 생략 또는 고정 마스킹 문구 저장 중 하나를 시험 전에 정해 기록한다",
+       "expect_plaintext_values": 0,
+       "known_risk": "현행 코드는 예외 시 masked_text=raw_question으로 대체하므로 실패가 예상된다(원문 적재 추적 항목)."},
+      {"variant_id": "CL_PII_001_AEXC", "inject_at": "answer_masker", "target": "HistoryService.prepare_turn_payload 1차 답변 마스킹 예외",
+       "answer_text_template": "{synthetic_name} 선생님, 시리얼 {synthetic_serial} 단말의 IP {synthetic_ip}를 확인해 주세요.",
+       "expectation_policy": "질문 예외와 동일한 정책",
+       "expect_plaintext_values": 0,
+       "known_risk": "현행 코드는 예외 시 masked_answer=final_answer로 대체한다."}
+    ]
+  }
+}
