@@ -1,0 +1,28 @@
+{
+  "label": "on",
+  "base": "http://127.0.0.1:8111",
+  "started_at": "2026-11-26 14:54:34",
+  "routing": {
+    "backend": "gemini",
+    "match_threshold": 0.8,
+    "match_margin": 0.3,
+    "clarify_min_score": 0.35
+  },
+  "toggles": {
+    "clarify": true,
+    "composer_rag": true,
+    "composer_faq": true,
+    "contextualize": true,
+    "grader": true,
+    "rag_cache_ttl_s": 0
+  },
+  "web_search": {
+    "enabled": false,
+    "scope": "in_domain_unresolved",
+    "provider": "disabled",
+    "model": null,
+    "key_source": null,
+    "dedicated_key": false,
+    "usage": null
+  }
+}
