@@ -350,6 +350,11 @@ def _load_surnames() -> tuple[tuple[str, ...], set[str]]:
 
 _DOUBLE_SURNAMES, _SINGLE_SURNAMES = _load_surnames()
 
+# 줄 단위 단독 인명 판정(1-13)용 상수
+_CONTACT_CONTEXT_RE = re.compile(r"연락처|연락|전화|휴대폰|핸드폰|번호|IP|MAC|시리얼|이메일", re.IGNORECASE)
+_STANDALONE_FACILITY_SUFFIXES = ("실", "망", "넷", "관", "청", "소")
+_KIWI_KNOWN_NOUN_SCORE = -20.0
+
 # 복성 기반 3~4글자 인명 정규식 (장곡민지, 남궁민수, 제갈공명, 황보승희 등)
 _DOUBLE_SURNAME_PATTERN = re.compile(
     r"(?<![가-힣])(" + "|".join(sorted(_DOUBLE_SURNAMES, key=len, reverse=True)) + r")\s*([가-힣]{1,2})"
@@ -975,8 +980,37 @@ class PiiMasker:
         return masked, detected_types
 
 
-    def _mask_korean_names_rule(self, text: str) -> tuple[str, bool]:
-        """룰(정규식 + Kiwi 형태소 분석기) 기반 한국어 인명 가명화."""
+    def _is_standalone_name_line(self, word: str) -> bool:
+        """한 줄에 단독으로 적힌 2~4음절 한글 단어가 인명인지 보수적으로 판정한다."""
+        if not self.is_korean_name(word):
+            return False
+        # 성씨로 시작해야 한다(성 없는 2글자 허용 규칙은 여기서 쓰지 않는다).
+        if not (word[0] in _SINGLE_SURNAMES or any(word.startswith(ds) for ds in _DOUBLE_SURNAMES)):
+            return False
+        # 학교 시설·망 용어 접미사(과학실, 무선망, 스쿨넷, 본관 등)
+        if len(word) >= 3 and word.endswith(_STANDALONE_FACILITY_SUFFIXES):
+            return False
+        kiwi = self._get_kiwi()
+        if kiwi is not None:
+            try:
+                toks = kiwi.tokenize(word)
+            except Exception:  # noqa: BLE001
+                toks = []
+            if toks:
+                # 사전에 있는 단일 일반명사(장애, 회선, 전산실 …)는 인명이 아니다.
+                # 미등록 인명은 단일 토큰이어도 점수가 매우 낮다(-20 미만).
+                if len(toks) == 1 and toks[0].tag == "NNG" and toks[0].score > _KIWI_KNOWN_NOUN_SCORE:
+                    return False
+                # 의존명사·접미사가 섞인 조합(선번장 = 선/번/장, 공유기 = 공유/기)은 일반어로 본다.
+                if any(t.tag in ("NNB", "XSN", "XSV", "XSA", "VV", "VA", "JKS", "JX") for t in toks):
+                    return False
+        return True
+
+    def _mask_korean_names_rule(self, text: str, has_other_pii: bool = False) -> tuple[str, bool]:
+        """룰(정규식 + Kiwi 형태소 분석기) 기반 한국어 인명 가명화.
+
+        has_other_pii: 1단계 정규식에서 연락처·IP 등 다른 개인정보가 검출됐는지 여부.
+        """
         detected = False
         masked = text
 
@@ -1040,6 +1074,21 @@ class PiiMasker:
         if re.fullmatch(r"[가-힣]{2,4}", stripped) and self.is_korean_name(stripped):
             detected = True
             masked = masked.replace(stripped, self._mask_single_name(stripped))
+
+        # 1-13. 줄 단위 단독 인명 (예: "이름\n연락처 010-... / IP ...")
+        #   호칭·서술어 없이 한 줄에 이름만 쓴 서식은 위 규칙들이 모두 놓친다(파일럿 DS-5C).
+        #   오탐을 줄이기 위해 같은 메시지에 다른 개인정보·연락 단서가 있을 때만 적용한다.
+        if "\n" in masked and (has_other_pii or _CONTACT_CONTEXT_RE.search(masked)):
+            lines = masked.split("\n")
+            changed = False
+            for i, line in enumerate(lines):
+                cand = line.strip().rstrip(".,:;!~")
+                if re.fullmatch(r"[가-힣]{2,4}", cand) and self._is_standalone_name_line(cand):
+                    lines[i] = line.replace(cand, self._mask_single_name(cand), 1)
+                    changed = True
+            if changed:
+                detected = True
+                masked = "\n".join(lines)
 
         # Kiwi 형태소 분석기 보강
         kiwi = self._get_kiwi()
@@ -1370,7 +1419,7 @@ class PiiMasker:
         # 2단계: 성명, 상세 주소 및 문맥 가명화
         # ------------------------------------------------------------------
         # 2-1. 정규식 + 형태소 분석기(Kiwi) 기반 인명 가명화 (무누락 1차 실행)
-        masked, rule_detected = self._mask_korean_names_rule(masked)
+        masked, rule_detected = self._mask_korean_names_rule(masked, has_other_pii=bool(detected))
         if rule_detected:
             detected.add("name")
 

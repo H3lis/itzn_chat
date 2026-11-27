@@ -31,6 +31,29 @@ KST = timezone(timedelta(hours=9))
 class HistoryService:
     """대화 이력 저장 및 통계 분석 서비스."""
 
+    # 비식별화가 실패하면 원문 대신 이 문구를 저장한다(개인정보 평문 적재 원천 차단).
+    MASK_FAILED_PLACEHOLDER = "[비식별화 실패로 원문 저장 생략]"
+    MASK_ERROR_TYPE = "mask_error"
+
+    def _safe_mask(self, text: str, *, field: str, skip_sllm: bool = True):
+        """마스킹 결과를 반환하되, 예외·빈 결과에서는 절대 원문을 돌려주지 않는다."""
+        from .pii_service import MaskResult
+
+        if not text:
+            return MaskResult(masked_text="", detected_types=[], has_pii=False)
+        try:
+            res = self.pii_masker.mask_text(text, skip_sllm=skip_sllm)
+            if res is not None and (res.masked_text or "").strip():
+                return res
+            logger.warning("%s PII 비식별화 결과가 비어 있음 → 대체 문구 저장", field)
+        except Exception as e:  # noqa: BLE001
+            logger.warning("%s PII 비식별화 실패(%s) → 대체 문구 저장", field, type(e).__name__)
+        return MaskResult(
+            masked_text=self.MASK_FAILED_PLACEHOLDER,
+            detected_types=[self.MASK_ERROR_TYPE],
+            has_pii=True,
+        )
+
     def __init__(
         self,
         settings: Settings,
@@ -136,20 +159,10 @@ class HistoryService:
         created_at: Optional[str] = None,
     ) -> dict[str, Any]:
         """[1단계 즉시 실행] 0.02초 초고속 규칙 기반 1차 비식별화를 수행하여 큐 페이로드 생성."""
-        from .pii_service import MaskResult
-
-        try:
-            # 1단계는 무조건 초고속 규칙 기반만 수행하여 사용자 응답 블로킹 방어 (skip_sllm=True)
-            mask_q_res = self.pii_masker.mask_text(raw_question or "", skip_sllm=True)
-        except Exception as e:
-            logger.warning("1차 질문 PII 비식별화 실패 (원문 안전 fallback): %s", e)
-            mask_q_res = MaskResult(masked_text=raw_question or "", detected_types=[], has_pii=False)
-
-        try:
-            mask_ans_res = self.pii_masker.mask_text(final_answer or "", skip_sllm=True)
-        except Exception as e:
-            logger.warning("1차 답변 PII 비식별화 실패 (원문 안전 fallback): %s", e)
-            mask_ans_res = MaskResult(masked_text=final_answer or "", detected_types=[], has_pii=False)
+        # 1단계는 무조건 초고속 규칙 기반만 수행하여 사용자 응답 블로킹 방어 (skip_sllm=True).
+        # 실패 시 원문으로 대체하지 않는다(_safe_mask 가 대체 문구를 돌려줌).
+        mask_q_res = self._safe_mask(raw_question or "", field="질문")
+        mask_ans_res = self._safe_mask(final_answer or "", field="답변")
 
         now_str = created_at or datetime.now(KST).strftime("%Y-%m-%d %H:%M:%S")
         all_pii = sorted(list(set(mask_q_res.detected_types + mask_ans_res.detected_types)))
@@ -160,8 +173,8 @@ class HistoryService:
             "run_id": run_id,
             "raw_question": raw_question or "",
             "final_answer": final_answer or "",
-            "masked_question": mask_q_res.masked_text or raw_question or "(질문 내용 없음)",
-            "masked_answer": mask_ans_res.masked_text or final_answer or "",
+            "masked_question": mask_q_res.masked_text or "(질문 내용 없음)",
+            "masked_answer": mask_ans_res.masked_text or "",
             "route": route,
             "route_reason": route_reason,
             "latency_s": latency_s,
@@ -183,10 +196,19 @@ class HistoryService:
         run_id = payload["run_id"]
         raw_question = payload.get("raw_question", "")
         final_answer = payload.get("final_answer", "")
-        masked_q = payload.get("masked_question", raw_question)
-        masked_a = payload.get("masked_answer", final_answer)
         route = payload.get("route", "none")
         all_pii = list(payload.get("pii_types", []))
+        # 1차 마스킹 결과가 없는 페이로드가 와도 원문을 쓰지 않고 여기서 마스킹한다.
+        masked_q = payload.get("masked_question")
+        if masked_q is None:
+            res = self._safe_mask(raw_question, field="질문")
+            masked_q = res.masked_text or "(질문 내용 없음)"
+            all_pii = sorted(set(all_pii + res.detected_types))
+        masked_a = payload.get("masked_answer")
+        if masked_a is None:
+            res = self._safe_mask(final_answer, field="답변")
+            masked_a = res.masked_text
+            all_pii = sorted(set(all_pii + res.detected_types))
         now_str = payload.get("created_at") or datetime.now(KST).strftime("%Y-%m-%d %H:%M:%S")
         latency_s = float(payload.get("latency_s") or 0.0)
         confidence = str(payload.get("confidence") or "unknown")
@@ -294,6 +316,10 @@ class HistoryService:
         fb = str(feedback).upper()
         if fb not in ("POSITIVE", "NEGATIVE", "NONE"):
             raise ValueError(f"지원하지 않는 피드백 유형: {feedback}")
+
+        # 피드백 사유는 사용자 자유 입력이므로 저장 전에 비식별화한다.
+        if reason:
+            reason = self._safe_mask(str(reason), field="피드백 사유").masked_text
 
         now_str = datetime.now(KST).strftime("%Y-%m-%d %H:%M:%S")
         with self._lock, self._get_conn() as conn:

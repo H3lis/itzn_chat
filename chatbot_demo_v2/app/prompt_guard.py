@@ -26,6 +26,27 @@ from .safety_classifier import SafetyClassifier
 
 logger = logging.getLogger("chatbot_demo_v2.security.guard")
 
+_AUDIT_QUERY_MAX_CHARS = 300
+_AUDIT_MASK_FAILED = "[비식별화 실패로 원문 저장 생략]"
+
+
+def _mask_for_audit(text: str) -> str:
+    """감사로그용 차단 본문: 규칙 기반 비식별화 + 길이 제한. 실패하면 원문 대신 고정 문구."""
+    if not text:
+        return ""
+    try:
+        from .pii_service import default_masker
+
+        masked = default_masker.mask_text(text, skip_sllm=True).masked_text
+        if not (masked or "").strip():
+            return _AUDIT_MASK_FAILED
+    except Exception as e:  # noqa: BLE001
+        logger.warning("감사로그 차단 본문 비식별화 실패(%s) → 대체 문구 저장", type(e).__name__)
+        return _AUDIT_MASK_FAILED
+    if len(masked) > _AUDIT_QUERY_MAX_CHARS:
+        masked = masked[:_AUDIT_QUERY_MAX_CHARS] + "…"
+    return masked
+
 # 안전한 표준 거절 응답 문구
 SAFE_REFUSAL_MESSAGE = (
     "학교 네트워크 장애상담 범위를 벗어난 질의입니다. "
@@ -341,6 +362,8 @@ class PromptGuard:
         """차단 이벤트를 Phase 2 audit_log.db에 영구 기록."""
         if not self.audit_service:
             return
+        # 공격 문장에 개인정보가 섞일 수 있으므로 감사로그에는 비식별화한 본문만 남긴다.
+        safe_query = _mask_for_audit(input_text)
         try:
             self.audit_service.record_event_async(
                 action_type="PROMPT_ATTACK_BLOCKED",
@@ -350,7 +373,7 @@ class PromptGuard:
                 endpoint=endpoint,
                 status_code=200,
                 actor="guard",
-                payload={"blocked_query": input_text, "category": category, "reason": reason},
+                payload={"blocked_query": safe_query, "category": category, "reason": reason},
             )
         except Exception as e:
             logger.error("가드레일 차단 감사 로그 적재 실패: %s", e)
