@@ -251,6 +251,12 @@ class SemanticScenarioMatcher(ScenarioMatcher):
                                type(exc).__name__, exc, self._threshold, self._margin)
                 return False
 
+    def _high_conf_params(self) -> tuple[float, float]:
+        """높은 신뢰 margin 면제 기준 (설정이 없으면 0.99 / 0.01)."""
+        s = self._settings
+        return (float(getattr(s, "scenario_high_conf_score", 0.99) or 0.99),
+                float(getattr(s, "scenario_high_conf_margin", 0.01) or 0.01))
+
     # ---------- 점수 계산 ----------
     def _scored(self, question: str, k: int) -> list[tuple[str, str, float]]:
         """[(faq_id, 질문, 점수)] 를 점수 내림차순 상위 k개로 반환 (동일 질문 인메모리 캐시 지원)."""
@@ -331,6 +337,15 @@ class SemanticScenarioMatcher(ScenarioMatcher):
                 decision_reason=f"의미 유사도 {best:.3f} < 임계값 {self._threshold:.3f}",
                 **base)
         if margin_obs < self._margin:
+            # 높은 신뢰 면제: 리랭커는 비슷한 FAQ 에도 0.8~0.98 을 주므로, 1위가 사실상 완전 일치
+            # (0.99 이상)인데 고정 margin 0.30 때문에 되묻는 과발동을 막는다. 2위와 최소 차이는 둔다.
+            hc_score, hc_margin = self._high_conf_params()
+            if best >= hc_score and margin_obs >= hc_margin:
+                return MatchResult(
+                    decision="accept",
+                    decision_reason=(f"높은 신뢰 매칭 {best:.3f} >= {hc_score:.3f}, "
+                                     f"차이 {margin_obs:.3f} >= {hc_margin:.3f} (margin 면제)"),
+                    **base)
             return MatchResult(
                 decision="reject_ambiguous",
                 decision_reason=f"1~2위 점수 차 {margin_obs:.3f} < 여유 {self._margin:.3f} (애매)",

@@ -152,6 +152,15 @@ class Settings:
     jwt_expire_minutes: int = field(default=240)
     initial_admin_password: str = field(default="admin1234!")
 
+    # 높은 신뢰 매칭의 margin 면제 (2026-11-27, 파일럿 3종 통합 결과 2-1)
+    #   1위 점수가 이 값 이상이고 2위와의 차이가 최소 차이 이상이면, margin(0.30) 미달이어도 채택한다.
+    #   근거(calibrate_faq_threshold.py, rerank): 모호 질문 1위 최대 0.971, 오답 1위 최대 0.985,
+    #   파일럿 과발동 6턴 1위 0.998~1.000. 의미 유사도 스케일에서만 쓴다(문자 유사도 폴백 제외).
+    scenario_high_conf_score: float = field(default=0.99)
+    scenario_high_conf_margin: float = field(default=0.01)
+    # 되묻기 후보 최대 개수(하한 미만 후보는 제외). UI 확인 전까지 2 유지.
+    clarify_max_candidates: int = field(default=2)
+
     @property
     def faq_path(self) -> Path:
         return self.data_dir / "faq.json"
@@ -279,4 +288,7 @@ def load_settings(env: Mapping[str, str] | None = None) -> Settings:
         jwt_algorithm=_get(env, "JWT_ALGORITHM", "HS256"),
         jwt_expire_minutes=_get_int(env, "JWT_EXPIRE_MINUTES", 240),
         initial_admin_password=_get(env, "INITIAL_ADMIN_PASSWORD", "admin1234!"),
+        scenario_high_conf_score=_get_float(env, "SCENARIO_HIGH_CONF_SCORE", 0.99),
+        scenario_high_conf_margin=_get_float(env, "SCENARIO_HIGH_CONF_MARGIN", 0.01),
+        clarify_max_candidates=_get_int(env, "CLARIFY_MAX_CANDIDATES", 2),
     )

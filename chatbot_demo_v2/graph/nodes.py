@@ -9,6 +9,7 @@ Phase 2 에서 rag3x_answer 가 RAG 서브그래프 호출로 교체된다.
 
 from __future__ import annotations
 
+import logging
 import re
 import time
 from typing import Any, Callable
@@ -21,6 +22,8 @@ from ..scenario.tree import InvalidActionError
 from .routing import decide_route, evaluate_rag_result, parse_domain_verdict
 from .state import ChatState, new_turn_defaults
 
+logger = logging.getLogger("chatbot_demo_v2.graph.nodes")
+
 
 def _format_history(messages: list, limit_chars: int = 2000) -> str:
     """최근 대화 이력을 '역할: 내용' 텍스트로(길이 상한). contextualize 프롬프트용."""
@@ -32,6 +35,41 @@ def _format_history(messages: list, limit_chars: int = 2000) -> str:
             rows.append(f"{role}: {content}")
     text = "\n".join(rows)
     return text[-limit_chars:] if len(text) > limit_chars else text
+
+
+def _clarify_floor(match: dict, settings) -> float:
+    """되묻기 후보 하한. 문자 유사도(fuzz) 스케일은 decide_route 와 같은 0.75 하한을 쓴다."""
+    floor = float(getattr(settings, "clarify_min_score", 0.35) or 0.0)
+    if (match.get("scale") or "fuzz") == "fuzz":
+        floor = max(floor, 0.75)
+    return floor
+
+
+def _clarify_candidates(matcher, norm: str, match: dict, settings) -> list[dict]:
+    """되묻기 후보: 상위 k개 중 하한 이상인 것만 (파일럿에서 0.077 짜리 무관 후보가 2번에 노출됨)."""
+    if matcher is None or not norm:
+        return []
+    k = max(1, int(getattr(settings, "clarify_max_candidates", 2) or 2))
+    try:
+        cands = matcher.top_candidates(norm, k=k) or []
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("되묻기 후보 조회 실패(%s)", type(exc).__name__)
+        return []
+    floor = _clarify_floor(match, settings)
+    return [c for c in cands if float(c.get("score") or 0.0) >= floor]
+
+
+def _resolve_without_clarify(match: dict, settings, why: str) -> tuple[str, str, dict | None]:
+    """되묻지 않기로 했을 때: 1위가 자동채택 임계 이상이면 그 FAQ 로, 아니면 RAG 로 보낸다."""
+    best = float(match.get("best_score") or 0.0)
+    # 매처가 실제로 쓴 자동채택 임계(문자 유사도 폴백이면 0.90)를 우선한다.
+    threshold = float(match.get("threshold") or settings.scenario_match_threshold)
+    if match.get("matched_id") and best >= threshold:
+        new_match = dict(match)
+        new_match["decision"] = "accept"
+        new_match["decision_reason"] = f"{why} (best={best:.3f})"
+        return "faq", f"{why} → 1위 FAQ 채택", new_match
+    return "rag3x", f"{why} → RAG", None
 
 
 def _build_default_clarify_message(question: str, candidates: list[dict]) -> str:
@@ -797,12 +835,41 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
             route = "rag3x"
             reason = "되묻기 직후 후속 질문 → 연속 되묻기 방지 및 RAG 직행"
 
-        _node_meta({"route": route, "route_reason": reason}, tags=[f"route:{route}"])
+        match = dict(state.get("scenario_match") or {})
+        override_match: dict | None = None
 
+        # 챗봇이 제시한 후속 버튼('네, …에 대해 알려주세요')을 누른 턴은 주제가 이미 구체적이므로 되묻지 않는다.
+        # user_input 은 정규화 과정에서 '네,' 가 빠질 수 있으므로 마지막 사용자 메시지 원문으로 판별한다.
+        humans = [m for m in (state.get("messages") or []) if isinstance(m, HumanMessage)]
+        last_human_raw = (getattr(humans[-1], "content", "") or "").strip() if humans else ""
+        if route == "clarify" and _extract_explicit_followup_query(
+                last_human_raw or state.get("user_input") or "") is not None:
+            route, reason, override_match = _resolve_without_clarify(
+                match, settings, "후속 버튼 클릭 문장 → 되묻기 생략")
+
+        candidates: list[dict] = []
         if route == "clarify":
             norm = state.get("normalized_question") or ""
-            curr_matcher = _get_matcher()
-            candidates = curr_matcher.top_candidates(norm, k=2) if curr_matcher else []
+            candidates = _clarify_candidates(_get_matcher(), norm, match, settings)
+            # 관련 후보가 하나도 없으면 RAG, 1위만 남았고 1위가 자동채택 임계 이상이면 그 FAQ 로 답한다.
+            if not candidates:
+                route, reason = "rag3x", "되묻기 후보가 모두 하한 미만 → RAG"
+            elif len(candidates) == 1 and match.get("decision") == "reject_ambiguous":
+                route, reason, override_match = _resolve_without_clarify(
+                    match, settings, "되묻기 2위 후보가 하한 미만 → 1위 FAQ 채택")
+
+        _node_meta({"route": route, "route_reason": reason}, tags=[f"route:{route}"])
+
+        if override_match is not None:
+            return {
+                "route": route,
+                "route_reason": reason,
+                "scenario_match": override_match,
+                "pending_clarify_candidates": [],
+                "trace": _trace(state, "route_decider", f"route={route} ({reason})"),
+            }
+
+        if route == "clarify":
             user_q = (state.get("standalone_question") or state.get("user_input") or "").strip()
             clarify_msg = None
 
@@ -865,7 +932,7 @@ def make_nodes(ctx: Any) -> dict[str, Callable[[ChatState], dict]]:
         curr_faq = _get_faq()
         candidates = state.get("clarify_candidates")
         if not candidates and curr_matcher:
-            candidates = curr_matcher.top_candidates(norm, k=2)
+            candidates = _clarify_candidates(curr_matcher, norm, state.get("scenario_match") or {}, settings)
         candidates = candidates or []
         clarify_msg = state.get("clarify_message") or _build_default_clarify_message(
             state.get("user_input") or "", candidates

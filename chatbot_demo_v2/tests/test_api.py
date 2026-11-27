@@ -133,8 +133,11 @@ def test_clarify_roundtrip_over_http(settings):
         )
 
     ctx.matcher.match = fake_match
+    e1 = ctx.faq.entries[1]
+    # 2026-11-27: 하한 이상 후보가 1개뿐이면 되묻지 않으므로(개선계획 2-2), 2위 점수(0.84)에 맞춰 후보 2개를 준다.
     ctx.matcher.top_candidates = lambda norm, k=2: [
-        {"faq_id": e0.id, "question": e0.question, "score": 0.85}
+        {"faq_id": e0.id, "question": e0.question, "score": 0.85},
+        {"faq_id": e1.id, "question": e1.question, "score": 0.84},
     ]
 
     app = create_app(ctx)
